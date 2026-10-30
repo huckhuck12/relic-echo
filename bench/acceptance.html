@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>实战验收 · 遗迹肉鸽</title>
+<style>
+html,body{margin:0;background:#10221c;color:#edf0df;font:14px system-ui}details{position:fixed;right:8px;bottom:8px;z-index:9999;background:#142b25ed;border:1px solid #739079;border-radius:8px;padding:10px;max-width:min(410px,88vw);max-height:65vh;overflow:auto}summary{cursor:pointer}button,select{font:inherit;margin:4px;padding:6px;background:#29463b;color:inherit;border:1px solid #81987b;border-radius:4px}pre{white-space:pre-wrap;font:12px monospace}label{display:block;margin:8px 0}p{line-height:1.5}
+</style>
+<details open id="panel"><summary>实战验收（可收起，避免遮挡游戏）</summary>
+<p>无敌压力场景，复用正式战斗与 HUD。敌人生命强化用于保持负载；不代表正式局平衡。</p>
+<select id="weapon"><option value="storm">雷杖</option><option value="flame">炎炮</option><option value="blade">环刃</option></select>
+<select id="count"><option>240</option><option selected>600</option><option>1000</option></select>
+<button id="restart">重建场景</button><button id="cards">检查选卡恢复</button><button id="save">导出报告</button>
+<p>WASD / 鼠标移动，空格冲刺。切换窗口大小或手机横竖屏后，逐项观察并勾选。</p>
+<label><input type="checkbox" data-check="warning">紫色瞄准与橙色冲锋预警贴地、清楚可辨</label>
+<label><input type="checkbox" data-check="socket">法师弹道从杖头释放，动作与出手同步</label>
+<label><input type="checkbox" data-check="crowd">密集战斗时玩家、弹道和奖励能辨认</label>
+<label><input type="checkbox" data-check="layout">当前窗口 HUD、选卡和触控区域无裁切重叠</label>
+<pre id="status">初始化中…</pre>
+</details>
+<script src="../vendor/laya.core.js"></script><script src="../vendor/laya.webgl.js"></script><script type="module" src="acceptance.js"></script>
+</html>

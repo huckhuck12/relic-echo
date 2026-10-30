@@ -1,0 +1,197 @@
+{
+  "kind": "Node logic + no-op graphics; NOT browser FPS or GPU time",
+  "date": "2026-10-29T02:13:54.831Z",
+  "node": "v24.19.0",
+  "cpu": "Intel(R) Core(TM) i5-9600KF CPU @ 3.70GHz",
+  "rows": [
+    {
+      "count": 240,
+      "weapon": "storm",
+      "samples": 300,
+      "updateMs": {
+        "mean": 0.531,
+        "p50": 0.321,
+        "p95": 1.285,
+        "max": 10.038
+      },
+      "renderCommandsMs": {
+        "mean": 0.244,
+        "p50": 0.183,
+        "p95": 0.549,
+        "max": 1.365
+      },
+      "heapDeltaMiB": 0.45,
+      "enemies": 240,
+      "shots": 111,
+      "fx": 14
+    },
+    {
+      "count": 240,
+      "weapon": "flame",
+      "samples": 300,
+      "updateMs": {
+        "mean": 0.455,
+        "p50": 0.32,
+        "p95": 1.087,
+        "max": 3.238
+      },
+      "renderCommandsMs": {
+        "mean": 0.14,
+        "p50": 0.064,
+        "p95": 0.286,
+        "max": 3.053
+      },
+      "heapDeltaMiB": 0.35,
+      "enemies": 240,
+      "shots": 112,
+      "fx": 1
+    },
+    {
+      "count": 240,
+      "weapon": "blade",
+      "samples": 300,
+      "updateMs": {
+        "mean": 0.474,
+        "p50": 0.361,
+        "p95": 0.916,
+        "max": 3.798
+      },
+      "renderCommandsMs": {
+        "mean": 0.112,
+        "p50": 0.064,
+        "p95": 0.307,
+        "max": 2.486
+      },
+      "heapDeltaMiB": 0.18,
+      "enemies": 240,
+      "shots": 112,
+      "fx": 29
+    },
+    {
+      "count": 600,
+      "weapon": "storm",
+      "samples": 300,
+      "updateMs": {
+        "mean": 0.991,
+        "p50": 0.802,
+        "p95": 2.021,
+        "max": 11.117
+      },
+      "renderCommandsMs": {
+        "mean": 0.163,
+        "p50": 0.091,
+        "p95": 0.453,
+        "max": 3.33
+      },
+      "heapDeltaMiB": 0.14,
+      "enemies": 600,
+      "shots": 205,
+      "fx": 14
+    },
+    {
+      "count": 600,
+      "weapon": "flame",
+      "samples": 300,
+      "updateMs": {
+        "mean": 1.182,
+        "p50": 0.825,
+        "p95": 2.179,
+        "max": 22.877
+      },
+      "renderCommandsMs": {
+        "mean": 0.201,
+        "p50": 0.124,
+        "p95": 0.482,
+        "max": 5.141
+      },
+      "heapDeltaMiB": 0.15,
+      "enemies": 600,
+      "shots": 204,
+      "fx": 1
+    },
+    {
+      "count": 600,
+      "weapon": "blade",
+      "samples": 300,
+      "updateMs": {
+        "mean": 1.115,
+        "p50": 0.867,
+        "p95": 2.107,
+        "max": 22.263
+      },
+      "renderCommandsMs": {
+        "mean": 0.212,
+        "p50": 0.135,
+        "p95": 0.574,
+        "max": 1.709
+      },
+      "heapDeltaMiB": 0.16,
+      "enemies": 600,
+      "shots": 205,
+      "fx": 32
+    },
+    {
+      "count": 1000,
+      "weapon": "storm",
+      "samples": 300,
+      "updateMs": {
+        "mean": 1.935,
+        "p50": 1.506,
+        "p95": 3.87,
+        "max": 21.386
+      },
+      "renderCommandsMs": {
+        "mean": 0.192,
+        "p50": 0.132,
+        "p95": 0.429,
+        "max": 4.979
+      },
+      "heapDeltaMiB": 0.12,
+      "enemies": 1000,
+      "shots": 205,
+      "fx": 14
+    },
+    {
+      "count": 1000,
+      "weapon": "flame",
+      "samples": 300,
+      "updateMs": {
+        "mean": 1.604,
+        "p50": 1.493,
+        "p95": 2.11,
+        "max": 14.675
+      },
+      "renderCommandsMs": {
+        "mean": 0.216,
+        "p50": 0.148,
+        "p95": 0.67,
+        "max": 1.803
+      },
+      "heapDeltaMiB": 0.21,
+      "enemies": 1000,
+      "shots": 203,
+      "fx": 1
+    },
+    {
+      "count": 1000,
+      "weapon": "blade",
+      "samples": 300,
+      "updateMs": {
+        "mean": 1.955,
+        "p50": 1.623,
+        "p95": 4.113,
+        "max": 11.174
+      },
+      "renderCommandsMs": {
+        "mean": 0.298,
+        "p50": 0.162,
+        "p95": 0.887,
+        "max": 3.199
+      },
+      "heapDeltaMiB": 0.11,
+      "enemies": 1000,
+      "shots": 204,
+      "fx": 14
+    }
+  ]
+}

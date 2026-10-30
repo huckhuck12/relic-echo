@@ -1,0 +1,6 @@
+dist/
+_site/
+.npm-cache/
+node_modules/
+artifacts/
+*.log

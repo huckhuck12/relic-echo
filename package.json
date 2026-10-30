@@ -1,0 +1,24 @@
+{
+  "name": "relic-echo",
+  "version": "0.10.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:pages": "npm run build && node scripts/build-pages.mjs",
+    "preview:pages": "node scripts/serve.mjs --root _site --base /relic-echo",
+    "format": "node scripts/format.mjs",
+    "format:check": "node scripts/format.mjs --check",
+    "perf": "npm run build && node --expose-gc scripts/benchmark.mjs",
+    "perf:browser": "npm run build && node scripts/benchmark-browser.mjs",
+    "start": "node scripts/serve.mjs",
+    "dev": "npm run build && npm start",
+    "test": "npm run build && node --test --test-isolation=none tests/*.test.mjs"
+  },
+  "devDependencies": {
+    "typescript": "5.0.2"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
