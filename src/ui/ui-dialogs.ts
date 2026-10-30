@@ -1,4 +1,5 @@
 import { UIControls, C } from './ui-controls.js';
+import { renderSystemDialog } from './system-dialogs.js';
 import { renderBuffPanel } from './buff-panel.js';
 import type { BuffEditorState } from './buff-panel.js';
 import { fragment, PART_NAMES } from '../buffs/buffs.js';
@@ -85,6 +86,11 @@ export class GameDialogs {
         this.block(this.dialogs);
         const p = this.panel(this.dialogs, (width - w) / 2, (height - h) / 2, w, h, '#152b35', '#627d73');
         p.name = 'dialog-panel';
+        this.controls.effects.flash(p, C.mint, 260);
+        if (dialog.type === 'revive' || dialog.type === 'performance') {
+            renderSystemDialog(dialog.type, p, w, h, this.game, this.controls);
+            return;
+        }
         if (dialog.type === 'fragment') {
             this.fragmentDialog(p, dialog.choices, w, h);
             return;
@@ -157,7 +163,9 @@ export class GameDialogs {
         });
         return Math.ceil(entries.length / columns) * (cellH + gap) - gap;
     }
-    private responsiveDialog(p: any, dialog: NonNullable<Dialog>, w: number, h: number): void {
+    private responsiveDialog(p: any, dialog: Exclude<NonNullable<Dialog>, {
+        type: 'revive' | 'performance';
+    }>, w: number, h: number): void {
         if (dialog.type === 'fragment') {
             this.fragmentDialog(p, dialog.choices, w, h);
             return;

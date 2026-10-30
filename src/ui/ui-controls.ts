@@ -1,4 +1,5 @@
 import type { Loadout } from '../shared/model.js';
+import { UIEffects } from './ui-effects.js';
 import { avatarShapes, drawShapes } from '../rendering/appearance.js';
 declare const Laya: any;
 export const C = {
@@ -10,6 +11,7 @@ export const C = {
  * 节点由调用方挂入容器，清理容器时一并销毁，不能放进战斗节点池。
  */
 export class UIControls {
+    readonly effects = new UIEffects();
     constructor(private readonly enableAudio: () => void) { }
     /** 空白区域允许点击穿透；承载具体按钮时由子节点处理输入。 */
     layer(parent: any): any {
@@ -19,6 +21,7 @@ export class UIControls {
         return node;
     }
     clear(node: any): void {
+        this.effects.clear(node);
         node.destroyChildren();
         node.graphics.clear();
     }
@@ -58,6 +61,7 @@ export class UIControls {
         const node = this.panel(parent, x, y, w, h, primary ? C.mint : '#1b333c', primary ? '#c5efcf' : C.border);
         node.name = name;
         this.text(node, label, 8, (h - 18) / 2, w - 16, 12, primary ? '#18352c' : C.text, 'center');
+        node.on(Laya.Event.MOUSE_DOWN, this, () => this.effects.flash(node, C.gold, 220));
         node.on(Laya.Event.CLICK, this, (event: any) => {
             event.stopPropagation();
             this.enableAudio();

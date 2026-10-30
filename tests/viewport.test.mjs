@@ -48,7 +48,7 @@ test('real Laya sizing keeps CSS layout and touch targets independent of DPR thr
    };
    stage.setScreenSize(393*dpr,676*dpr);
    assert.equal(stage.width,393*dpr,'reproduce old physical-pixel stage');
-   if(dpr===3)assert.equal(screenLayout(stage.width,stage.height,true).sidebar,true);
+   if(dpr===3)assert.equal(screenLayout(stage.width,stage.height,false).sidebar,true);
    const dispose=bindViewport(stage);
    assert.match(meta,/viewport-fit=cover/);
    for(const [w,h,event]of [[393,676,null],[844,390,'orientationchange'],[393,600,'resize']]){

@@ -1,4 +1,5 @@
 import { InputController } from '../input/input-controller.js';
+import { ReviveService } from '../platform/revive-provider.js';
 import { GameLoop } from './game-loop.js';
 import { RunProgression } from '../progression/run-progression.js';
 import { FeedbackController } from '../combat/feedback-controller.js';
@@ -128,7 +129,7 @@ export class Game {
     sound = true;
     shake = true;
     /** 性能开关为本地设置；关闭后不采样，避免常驻诊断开销。 */
-    showPerformance = true;
+    showPerformance = false;
     private readonly performanceMonitor = new PerformanceMonitor();
     private readonly loop: GameLoop = new GameLoop({
         active: () => this.mode === 'battle' && !this.gate.paused, paused: () => this.gate.paused,
@@ -137,6 +138,10 @@ export class Game {
         monitor: this.performanceMonitor,
     });
     training = false;
+    readonly revival = new ReviveService();
+    reviveUsed = false;
+    private runGeneration = 0;
+    reviveMessage = '';
     previewBack = false;
     /** 显示树归渲染器所有；对象池只借用 actors 容器挂接节点。 */
     readonly scene: SceneRenderer;
@@ -227,6 +232,10 @@ export class Game {
      * Buff 恢复基础配方；所有字段初始化完后才通知 UI，不能展示旧局奖励。
      */
     start(weapon: Weapon, training = false): void {
+        this.revival.cancel();
+        this.runGeneration++;
+        this.reviveUsed = false;
+        this.reviveMessage = '';
         this.performanceMonitor.reset();
         this.input.clearMouse();
         for (const e of this.enemies)
@@ -298,7 +307,75 @@ export class Game {
     private show(dialog: NonNullable<Dialog>): void { this.flow.open(dialog); }
     close(): void { this.flow.close(); }
     /** UI 使用语义入口切换标题，不再分别写 dialog/mode 导致状态不同步。 */
-    returnToTitle(): void { this.flow.title(); }
+    returnToTitle(): void {
+        this.revival.cancel();
+        this.runGeneration++;
+        this.flow.title();
+    }
+    /** 监控细节按需进入暂停弹窗，战斗中只保留小尺寸 FPS 条。 */
+    openPerformance(): void {
+        if (this.mode === 'battle' && !this.dialog)
+            this.show({ type: 'performance' });
+    }
+    /** 只允许真实倒下触发；主动退出、超时和胜利不会提供复活。 */
+    private onPlayerDown(): void {
+        if (this.mode !== 'battle')
+            return;
+        if (this.reviveUsed)
+            this.finish(false, '探索者再次倒下了。');
+        else {
+            this.reviveMessage = '';
+            this.flow.down();
+        }
+    }
+    async requestRevive(): Promise<void> {
+        if (this.mode !== 'downed' || this.reviveUsed || this.revival.busy)
+            return;
+        const generation = this.runGeneration;
+        const pending = this.revival.request();
+        this.reviveMessage = '';
+        this.onChange();
+        const outcome = await pending;
+        if (generation !== this.runGeneration || this.mode !== 'downed')
+            return;
+        if (outcome !== 'rewarded') {
+            this.reviveMessage = outcome === 'cancelled' ? '已取消或等待超时，可重新尝试。' : '暂时无法完成复活，请重试。';
+            this.onChange();
+            return;
+        }
+        // 先消费次数与恢复生命，再通知 UI；重复/迟到回调无法重复发奖。
+        this.reviveUsed = true;
+        this.player.hp = Math.max(1, Math.ceil(this.stats.hp * .5));
+        this.player.inv = 3;
+        this.player.dash = 0;
+        this.player.dashTime = 0;
+        for (const shot of this.shots)
+            if (shot.hostile)
+                this.release(shot.node);
+        this.shots = this.shots.filter(shot => !shot.hostile);
+        // 推开近身怪，避免无敌结束时仍被重叠包围，不改变 Boss 血量。
+        for (const enemy of this.enemies) {
+            enemy.wind = 0;
+            enemy.charge = 0;
+            enemy.actionTime = 0;
+            enemy.cooldown = Math.max(1.2, enemy.cooldown);
+            const dx = enemy.x - this.player.x, dy = enemy.y - this.player.y, d = Math.hypot(dx, dy);
+            if (!enemy.dead && d < 150) {
+                enemy.x = clamp(this.player.x + (d ? dx / d : 1) * 150, -LIMIT, LIMIT);
+                enemy.y = clamp(this.player.y + (d ? dy / d : 0) * 150, -LIMIT, LIMIT);
+            }
+        }
+        this.grid.rebuild(this.enemies.filter(e => !e.dead));
+        this.feedback.hitStop = 0;
+        this.loop.accumulator = 0;
+        this.input.reset();
+        this.flow.revive();
+        // 广告常引起失焦；回来后要求玩家明确继续，不能直接恢复敌人攻击。
+        if (this.gate.paused)
+            this.show({ type: 'pause' });
+        this.ring(this.player.x, this.player.y, '#a6dc80');
+        this.onToast('回响重燃 · 已恢复 50% 生命 · 无敌 3 秒');
+    }
     /** 菜单切换不丢弃奖励；只有没有当前弹窗时，才允许打开普通暂停面板。 */
     togglePause(): void {
         if (this.dialog?.type === 'pause')
@@ -393,8 +470,10 @@ export class Game {
     private dashCooldown(): number { return COMBAT.dashCooldown * (1 - this.stats.dash) * (weaponOf(this.loadout) === 'blade' ? 1 - .08 * (this.levels.orbit || 0) : 1); }
     /** 先抢占流程显示结算，再记录战绩；训练局不保存，重复结算请求直接忽略。 */
     finish(win: boolean, reason: string): void {
-        if (this.mode !== 'battle')
+        if (this.mode !== 'battle' && this.mode !== 'downed')
             return;
+        this.revival.cancel();
+        this.runGeneration++;
         this.flow.finish(win, reason);
         this.beep(win ? 880 : 130, .35, .05);
         if (!this.training)
@@ -728,7 +807,7 @@ export class Game {
             for (const enemy of this.grid.query(p.x, p.y, 100))
                 this.hit(enemy, damage, { triggerBuffs: false });
         },
-        finish: () => this.finish(false, '探索者倒下了。重新组合装备，再次挑战遗迹。'),
+        finish: () => this.onPlayerDown(),
         triggerHurt: (x, y) => this.triggerBuff('hurt', x, y),
     };
     /** 装备数值在调用时快照；无敌、训练、扣血、反伤与死亡顺序交由规则模块。 */

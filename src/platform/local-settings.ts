@@ -16,11 +16,11 @@ export interface RunRecord {
 }
 /** localStorage 不可用、内容损坏或浏览器隐私限制都不能阻断开局。 */
 export function readSettings(): LocalSettings {
-    const defaults: LocalSettings = { sound: true, shake: true, quality: 'standard', showPerformance: true };
+    const defaults: LocalSettings = { sound: true, shake: true, quality: 'standard', showPerformance: false };
     try {
         const settings = JSON.parse(localStorage.getItem(STORAGE.settings) || '{}');
         return { sound: settings.sound !== false, shake: settings.shake !== false,
-            showPerformance: settings.showPerformance !== false, quality: visualQuality(settings.quality) };
+            showPerformance: settings.showPerformance === true, quality: visualQuality(settings.quality) };
     }
     catch {
         return defaults;

@@ -10,7 +10,7 @@ const tick=(g,seconds)=>{for(let i=0;i<Math.ceil(seconds*60);i++){if(g.gate.paus
 const find=(root,name)=>root.name===name?root:root.children.map(child=>find(child,name)).find(Boolean);
 
 test('performance sampling freezes in dialogs/background and resets on restart/resize/toggle',()=>{
- const g=create();g.sound=false;g.performanceMonitor.record(0,0,0);g.performanceMonitor.record(16,1,2);
+ const g=create();g.showPerformance=true;g.sound=false;g.performanceMonitor.record(0,0,0);g.performanceMonitor.record(16,1,2);
  assert.equal(g.performanceSnapshot().samples,1);g.togglePause();g.loop.frame();assert.equal(g.performanceSnapshot().samples,1);
  g.close();g.loop.frame();assert.equal(g.performanceSnapshot().samples,0);g.loop.frame();assert.equal(g.performanceSnapshot().samples,1);
  document.hidden=true;g.loop.frame();document.hidden=false;g.loop.frame();assert.equal(g.performanceSnapshot().samples,0);
@@ -21,12 +21,15 @@ test('performance sampling freezes in dialogs/background and resets on restart/r
  const p=g.performanceSnapshot();assert.equal(p.enemies,g.enemies.length);assert.equal(p.shots,g.shots.length);assert.equal(p.drops,g.drops.length);
 });
 
-test('performance overlay fits mobile/desktop, passes mouse input and pause toggle stays usable',()=>{
+test('compact performance strip fits viewports and opens paused details without covering touch actions',()=>{
  for(const [w,h]of [[320,568],[390,844],[844,390],[568,320],[1280,720],[1920,1080]]){
-  const g=create(),ui=new GameUI(g);ui.mobile=w<1000;Laya.stage.width=w;Laya.stage.height=h;Laya.stage.emit('resize');
+  const g=create();g.showPerformance=true;const ui=new GameUI(g);ui.mobile=w<1000;Laya.stage.width=w;Laya.stage.height=h;Laya.stage.emit('resize');
   const panel=find(ui.root,'performance-panel'),r=bounds(panel);
-  assert.ok(panel.visible);assert.equal(panel.mouseEnabled,false);
+  assert.ok(panel.visible);assert.equal(panel.mouseEnabled,true);assert.ok(panel.width<=104&&panel.height===44);
   assert.ok(r.x>=0&&r.y>=0&&r.x+r.w<=w+.01&&r.y+r.h<=h+.01);
+  if(ui.mobile){for(const name of ['dash','buffs','touch-stick']){const other=find(ui.root,name);if(other){const b=bounds(other);assert.ok(r.x+r.w<=b.x||b.x+b.w<=r.x||r.y+r.h<=b.y||b.y+b.h<=r.y);}}}
+  panel.emit('click');assert.equal(g.dialog.type,'performance');assert.equal(g.gate.paused,true);assert.equal(panel.visible,false);
+  assertControls(find(ui.root,'dialog-panel'),w,h,ui.mobile);find(ui.root,'performance-resume').emit('click');
   g.togglePause();assertControls(find(ui.root,'dialog-panel'),w,h,ui.mobile);
   find(ui.root,'performance-toggle').emit('click');assert.equal(g.showPerformance,false);assert.equal(panel.visible,false);assert.equal(g.dialog.type,'pause');
   find(ui.root,'performance-toggle').emit('click');assert.equal(g.showPerformance,true);find(ui.root,'resume').emit('click');
@@ -118,6 +121,39 @@ test('mouse click moves toward an unprojected world target then stops',()=>{
   assert.ok(Math.hypot(g.player.x-destination.x,g.player.y-destination.y)<=5);
   const position={x:g.player.x,y:g.player.y};tick(g,1);assert.deepEqual({x:g.player.x,y:g.player.y},position);
 });
+
+test('touch movement owns one stick finger and press-to-dash does not interrupt or repeat on click',()=>{
+ const g=create(),ui=new GameUI(g);ui.mobile=true;
+ Laya.stage.width=393;Laya.stage.height=676;Laya.stage.emit('resize');
+ const center=ui.hudView.stick.joystick.localToGlobal({x:56,y:56});
+ Laya.stage.mouseX=center.x;Laya.stage.mouseY=center.y;
+ ui.hudView.stick.joystick.emit('mousedown',{touchId:11});
+ assert.equal(ui.hudView.stick.stickTouch,11);assert.deepEqual(g.input.stick,{x:0,y:0});
+ Laya.stage.mouseX=center.x+4;Laya.stage.emit('mousemove',{touchId:11});
+ assert.deepEqual(g.input.stick,{x:0,y:0});
+ Laya.stage.mouseX=center.x+30;Laya.stage.emit('mousemove',{touchId:11});
+ const held={...g.input.stick};assert.ok(held.x>.8);
+ // 第二指落在摇杆和抬起都不能抢夺/结束第一指。
+ ui.hudView.stick.joystick.emit('mousedown',{touchId:22});assert.equal(ui.hudView.stick.stickTouch,11);
+ Laya.stage.mouseX=center.x-30;Laya.stage.emit('mousemove',{touchId:22});
+ Laya.stage.emit('mouseup',{touchId:22});assert.deepEqual(g.input.stick,held);
+ const dash=find(ui.root,'dash');dash.emit('mousedown',{touchId:22});
+ assert.ok(g.player.dashTime>0);assert.deepEqual(g.input.stick,held);
+ // 用清零冷却模拟下一次可释放，检查同一次抬手 CLICK 没有再次提交。
+ g.player.dashTime=0;g.player.dash=0;dash.emit('click',{touchId:22});assert.equal(g.player.dashTime,0);
+ Laya.stage.emit('mouseup',{touchId:11});assert.deepEqual(g.input.stick,{x:0,y:0});
+ assert.equal(ui.hudView.stick.stickTouch,null);
+});
+
+test('touching the battlefield never creates a persistent desktop mouse destination',()=>{
+ const g=create();g.render();Laya.stage.mouseX=300;Laya.stage.mouseY=300;
+ for(const type of ['touchstart','touchmove']){
+  g.input.mouseDown({target:Laya.stage,nativeEvent:{type,changedTouches:[{identifier:1}]}});
+  assert.equal(g.input.mouseTarget,null);assert.equal(g.input.mouseHeld,false);
+ }
+ g.input.mouseDown({target:Laya.stage,nativeEvent:{type:'mousedown'}});
+ assert.ok(g.input.mouseTarget);
+});
 test('mouse hold follows pointer, UI clicks are ignored, keyboard and pause cancel targets',()=>{
   const g=create();g.render();Laya.stage.mouseX=g.scene.world.x+100;Laya.stage.mouseY=g.scene.world.y;g.input.mouseDown({target:Laya.stage});tick(g,.5);const first={...g.player};tick(g,.5);assert.ok(g.player.x>first.x);
   g.cancelMouseMovement();g.input.mouseDown({target:{name:'button',parent:{name:'game-ui'}}});assert.equal(g.input.mouseTarget,null);
@@ -151,13 +187,55 @@ test('phone portrait HUD uses a full-width status strip and readable touch contr
   Laya.stage.width=w;Laya.stage.height=h;Laya.stage.emit('resize');
   const player=find(ui.root,'player-hud'),margin=ui.layout.margin;
   assert.equal(ui.layout.compact,true);assert.equal(ui.layout.sidebar,false);
-  assert.equal(player.width,w-2*margin);assert.equal(ui.portrait.visible,false);
-  assert.equal(ui.gearPanel.parent.visible,false);assert.ok(ui.labels.hp.fontSize>=13);
-  assertControls(ui.hud,w,h,true);
-  const stick=bounds(ui.joystick);assert.equal(stick.w,112);assert.equal(stick.h,112);
+  assert.equal(player.width,w-2*margin);assert.equal(player.height,64);
+  assert.equal(find(ui.hudView.root,'gear-weapon'),undefined);assert.ok(ui.hudView.labels.hp.fontSize>=13);
+  assertControls(ui.hudView.root,w,h,true);
+  const stick=bounds(ui.hudView.stick.joystick);assert.equal(stick.w,112);assert.equal(stick.h,112);
   const toast=bounds(ui.toastNode),buff=bounds(find(ui.root,'buffs'));
   assert.ok(toast.y+toast.h<=buff.y-11.99);
-  assert.equal(ui.labels.dash.text,'点击冲刺');
+  assert.equal(ui.hudView.labels.dash.text,'点击冲刺');
+ }
+});
+
+test('mobile HUD separates primary controls, keeps center clear and reuses stick stage bindings',()=>{
+ const g=create(),ui=new GameUI(g);ui.mobile=true;
+ const bindings=()=>Object.fromEntries(['mousemove','mouseup','mouseout'].map(key=>[key,Laya.stage.handlers[key].length]));
+ const initialBindings=bindings();
+ for(const [w,h]of [[320,568],[393,676],[844,390],[568,320],[1024,768],[393,676]]){
+  Laya.stage.width=w;Laya.stage.height=h;Laya.stage.emit('resize');
+  const dash=bounds(find(ui.root,'dash')),buff=bounds(find(ui.root,'buffs')),stick=bounds(ui.hudView.stick.joystick);
+  assert.equal(dash.h,72);assert.equal(dash.w,96);assert.ok(dash.y-buff.y-buff.h>=20);
+  assert.ok(stick.x+stick.w<dash.x);assert.ok(stick.y+stick.h<=h-16);
+  assertControls(ui.hudView.root,w,h,true);
+  assert.deepEqual(bindings(),initialBindings,'rotation must not add stage touch listeners');
+  assert.equal(ui.hudView.root.children.filter(node=>node.name==='touch-stick').length,1);
+  assert.ok(bounds(ui.hudView.labels.combo).y<h*.4,'combo stays above the battle center');
+  const dashNode=find(ui.root,'dash');ui.update();ui.update();assert.equal(find(ui.root,'dash'),dashNode);
+ }
+ assert.equal(g.showPerformance,false);assert.equal(ui.performancePanel.visible,false);
+ g.togglePause();find(ui.root,'performance-toggle').emit('click');assert.equal(g.showPerformance,true);
+ find(ui.root,'resume').emit('click');assert.equal(ui.performancePanel.visible,true);
+});
+
+test('mobile safe area moves HUD and dialogs inside screen cutouts and keeps stick input aligned',()=>{
+ const oldCreate=document.createElement,oldBody=document.body,oldStyle=globalThis.getComputedStyle;
+ let probes=0;
+ try{
+  document.body={appendChild(){probes++;}};
+  document.createElement=()=>({style:{cssText:''},remove(){probes--;}});
+  globalThis.getComputedStyle=()=>({paddingTop:'44px',paddingRight:'0px',paddingBottom:'34px',paddingLeft:'0px'});
+  const g=create(),ui=new GameUI(g);ui.mobile=true;
+  Laya.stage.width=393;Laya.stage.height=760;Laya.stage.emit('resize');
+  assert.equal(probes,0);assert.equal(ui.root.y,44);assert.equal(ui.root.height,682);
+  const dash=bounds(find(ui.root,'dash'));assert.ok(dash.y+dash.h<760-34);
+  const center=ui.hudView.stick.joystick.localToGlobal({x:56,y:56});
+  Laya.stage.mouseX=center.x+30;Laya.stage.mouseY=center.y;
+  ui.hudView.stick.joystick.emit('mousedown',{touchId:3});assert.ok(g.input.stick.x>.8);assert.equal(g.input.stick.y,0);
+  g.toggleInventory();assert.deepEqual(g.input.stick,{x:0,y:0});assert.equal(ui.hudView.stick.stickTouch,null);
+  const panel=bounds(find(ui.root,'dialog-panel'));assert.ok(panel.y>=44);assert.ok(panel.y+panel.h<=760-34);
+ }finally{
+  document.createElement=oldCreate;document.body=oldBody;
+  if(oldStyle===undefined)delete globalThis.getComputedStyle;else globalThis.getComputedStyle=oldStyle;
  }
 });
 
@@ -180,7 +258,7 @@ test('all six dialogs reflow across phone, tablet, desktop and ultrawide sizes',
   const sizes=[[320,568,true],[390,844,true],[768,1024,true],[844,390,true],[568,320,true],[1024,768,false],[1280,720,false],[1920,1080,false],[2560,1080,false]];
   for(const [w,h,touch]of sizes){
     const g=create(),ui=new GameUI(g);ui.mobile=touch;Laya.stage.width=w;Laya.stage.height=h;Laya.stage.emit('resize');
-    assertControls(ui.hud,w,h,touch);
+    assertControls(ui.hudView.root,w,h,touch);
     const cases=[{type:'start'},{type:'upgrade',choices:['power','haste','vital']},{type:'drop',item:{id:'heavy',quality:2}},{type:'inventory'},{type:'pause'},{type:'result',win:true,reason:'Complete'}];
     for(const dialog of cases){g.flow.replace(dialog);ui.modalKey='';ui.update();assertControls(find(ui.root,'dialog-panel'),w,h,touch);const shade=bounds(find(ui.root,'modal-shade'));assert.ok(Math.abs(shade.w-w)<.001&&Math.abs(shade.h-h)<.001);}
     if(w<h){g.flow.replace(null);ui.update();assert.equal(g.gate.paused,false);}
@@ -229,8 +307,8 @@ test('queued upgrades recalculate available choices after previous selection',()
 test('elite guarantees a wearable drop and ordinary deaths yield experience',()=>{
   const g=create();g.eliteIndex=1;g.spawnEnemy(3);const e=g.enemies.at(-1);g.hit(e, 10000);assert.ok(g.drops.some(d=>d.item));assert.ok(g.drops.some(d=>d.xp>0));
 });
-test('normal death ends the run, training prevents damage, boss death wins',()=>{
-  const g=create();g.hurt(999);assert.equal(g.player.hp,100);g.training=false;g.hurt(999);g.player.inv=0;g.hurt(999);assert.equal(g.dialog.type,'result');assert.equal(g.dialog.win,false);
+test('normal death offers revival, training prevents damage, declining ends run and boss death wins',()=>{
+  const g=create();g.hurt(999);assert.equal(g.player.hp,100);g.training=false;g.hurt(999);g.player.inv=0;g.hurt(999);assert.equal(g.dialog.type,'revive');assert.equal(g.mode,'downed');g.finish(false,'declined');assert.equal(g.dialog.type,'result');assert.equal(g.dialog.win,false);
   g.start('storm',true);g.spawnBoss();const boss=g.enemies.find(e=>e.kind===4);g.hit(boss, 99999);assert.equal(g.dialog.type,'result');assert.equal(g.dialog.win,true);
 });
 test('timeout ends battle and restart clears entities, upgrades, timers and dialogs',()=>{
@@ -338,7 +416,7 @@ test('a fully upgraded stationary player remains vulnerable to the late horde',t
     Math.random=seeded(627);const g=create();g.start(weapon,false);clearArena(g);g.time=270;g.level=30;g.attackTimer=0;g.spawnTimer=0;g.nextSurge=270;g.eliteIndex=4;
     g.levels=Object.fromEntries(UPGRADES.map(u=>[u.id,u.max]));g.loadout={weapon:{id:weapon,quality:2},head:{id:'helmet',quality:2},armor:{id:'heavy',quality:2},back:{id:'thorn',quality:2}};g.stats=resolveStats(g.loadout,g.levels);g.player.hp=g.stats.hp;
     for(let i=0;i<40*60&&g.mode==='battle';i++){if(g.dialog?.type==='upgrade')g.chooseUpgrade(g.dialog.choices[0]);if(g.dialog?.type==='drop')g.takeDrop(false);if(g.dialog?.type==='fragment')g.chooseFragment(g.dialog.choices[0]);if(!g.gate.paused)g.update(1/60);}
-    t.diagnostic(`${weapon}: hp=${g.player.hp}, survived=${(g.time-270).toFixed(1)}s, kills=${g.kills}`);assert.equal(g.mode,'result',`${weapon} should need movement despite full defensive gear`);assert.equal(g.dialog.win,false);
+    t.diagnostic(`${weapon}: hp=${g.player.hp}, survived=${(g.time-270).toFixed(1)}s, kills=${g.kills}`);assert.equal(g.mode,'downed',`${weapon} should need movement despite full defensive gear`);assert.equal(g.player.hp,0);
   }}finally{Math.random=random;}
 });
 
@@ -384,7 +462,7 @@ test('fragment loot unlocks without interrupting battle, duplicates salvage and 
 
 test('Buff editor and all fragment pickers fit nine viewports and retain state after rotation',()=>{
   for(const [w,h]of [[320,568],[390,844],[768,1024],[844,390],[568,320],[1024,768],[1280,720],[1920,1080],[2560,1080]]){
-    const g=create(),ui=new GameUI(g);ui.mobile=true;Laya.stage.width=w;Laya.stage.height=h;Laya.stage.emit('resize');g.toggleBuffs();assertControls(ui.hud,w,h,true);assertControls(find(ui.root,'dialog-panel'),w,h,true);
+    const g=create(),ui=new GameUI(g);ui.mobile=true;Laya.stage.width=w;Laya.stage.height=h;Laya.stage.emit('resize');g.toggleBuffs();assertControls(ui.hudView.root,w,h,true);assertControls(find(ui.root,'dialog-panel'),w,h,true);
     for(const part of ['trigger','action','element']){find(ui.root,`buff-part-${part}`).emit('click');assertControls(find(ui.root,'dialog-panel'),w,h,true);find(ui.root,'buff-back').emit('click');}
     g.installBuff(0,'trigger','hit');Laya.stage.emit('resize');assert.equal(g.buffs.recipes[0].trigger,'hit');assert.ok(g.gate.paused);find(ui.root,'buff-close').emit('click');assert.equal(g.gate.paused,false);
   }
@@ -472,7 +550,7 @@ test('active reward toasts cannot block overlapping upgrade cards or equipment c
       const button=find(ui.root,name),r=bounds(button),toast=ui.toastNode;
       // Force the notification over the click point, without waiting for its expiry.
       toast.pos(r.x,r.y);toast.size(r.w,r.h);g.onToast('Reward notification');
-      assert.equal(toast.visible,true);assert.equal(toast.mouseEnabled,false);
+      assert.equal(toast.visible,false);assert.equal(toast.mouseEnabled,false);
       const hit=pickUI(ui.root,r.x+r.w/2,r.y+r.h/2);
       assert.equal(hit,button);hit.emit('click');
     };

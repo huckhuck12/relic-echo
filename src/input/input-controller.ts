@@ -88,6 +88,10 @@ export class InputController {
         return false;
     }
     mouseDown(event: any): void {
+        // Laya 把 touchstart/move/end 合成为鼠标事件。手机只用摇杆移动，
+        // 不能把右手点击战场或操作按钮留下的触点变成持续寻点目标。
+        if (event.nativeEvent?.type?.startsWith('touch') || event.nativeEvent?.changedTouches)
+            return;
         if (!this.host.active() || this.overUI(event.target))
             return;
         this.mouseHeld = true;

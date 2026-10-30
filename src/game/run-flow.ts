@@ -2,6 +2,10 @@ import type { Item } from '../progression/config.js';
 import { PauseGate } from '../shared/model.js';
 /** UI 请求描述，不含 Laya 节点，流程模块可在无浏览器环境下测试。 */
 export type Dialog = {
+    type: 'revive';
+} | {
+    type: 'performance';
+} | {
     type: 'start';
 } | {
     type: 'upgrade';
@@ -23,7 +27,7 @@ export type Dialog = {
     win: boolean;
     reason: string;
 } | null;
-export type RunMode = 'ready' | 'battle' | 'result';
+export type RunMode = 'ready' | 'battle' | 'downed' | 'result';
 type Request = NonNullable<Dialog>;
 export interface RunFlowHooks {
     /** 打开或排队时清理按键、摇杆和鼠标目标，避免选择后继续旧移动。 */
@@ -72,6 +76,8 @@ export class RunFlow {
      * focus 需要由玩家明确继续或完成选择才解除，不能自动恢复战斗。
      */
     close(): void {
+        if (this.state === 'downed')
+            return;
         this.gate.remove('focus');
         this.current = null;
         this.gate.remove('dialog');
@@ -86,6 +92,20 @@ export class RunFlow {
     finish(win: boolean, reason: string): void {
         this.state = 'result';
         this.replace({ type: 'result', win, reason });
+    }
+    /** 倒下独立于战斗，立即停止本 tick 剩余伤害；未领取奖励作废。 */
+    down(): void {
+        this.state = 'downed';
+        this.replace({ type: 'revive' });
+    }
+    /** 调用方先提交生命和清场；保留失焦等暂停原因。 */
+    revive(): void {
+        if (this.state !== 'downed')
+            return;
+        this.state = 'battle';
+        this.current = null;
+        this.gate.remove('dialog');
+        this.hooks.changed();
     }
     /** 标题页入口同时清空旧奖励和暂停状态，避免下一局继承悬挂选择。 */
     title(): void {
