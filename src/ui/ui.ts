@@ -128,7 +128,8 @@ export class GameUI {
         this.performanceLabel.width = perfW - 16;
         this.gearKey = '';
         const toastWidth = Math.min(480, width - 2 * margin);
-        this.toastNode.pos((width - toastWidth) / 2, height - margin - 145);
+        // 手机提示条放在整组触控按钮上方，不覆盖 Buff 按钮和摇杆。
+        this.toastNode.pos((width - toastWidth) / 2, height - margin - (this.mobile ? 198 : 145));
         this.toastNode.size(toastWidth, 54);
         this.toastNode.graphics.clear();
         this.toastNode.graphics.drawRect(0, 0, toastWidth, 54, C.panel, C.border, 1);
@@ -145,7 +146,7 @@ export class GameUI {
             this.text(this.hud, '单人探索  /  方石庭院', m + 280, m + 13, 280, 12, C.muted);
         }
         const actionY = m, actionH = this.mobile ? 44 : 40, inventoryW = compact ? 86 : 153, pauseW = compact ? 62 : 100;
-        this.button(this.hud, compact ? '装备 E' : '角色 / 装备 E', w - m - pauseW - inventoryW - 8, actionY, inventoryW, actionH, () => {
+        this.button(this.hud, this.mobile ? '装备' : compact ? '装备 E' : '角色 / 装备 E', w - m - pauseW - inventoryW - 8, actionY, inventoryW, actionH, () => {
             if (this.game.mode === 'battle')
                 this.game.toggleInventory();
         }, false, 'inventory');
@@ -157,7 +158,9 @@ export class GameUI {
             this.text(this.hud, '方 石 庭 院', w / 2 - 180, 107, 360, 15, '#becdc3', 'center');
             this.text(this.hud, 'THE BLOCK SANCTUARY', w / 2 - 180, 134, 360, 10, '#637f80', 'center');
         }
-        const playerW = compact ? Math.min(220, w - 2 * m) : 220, playerY = m + actionH + (compact ? 12 : 43);
+        // 竖屏将血量/经验铺成顶部状态条，不保留桌面侧栏的窄卡片宽度。
+        const phone = this.mobile && portrait && compact;
+        const playerW = phone ? w - 2 * m : compact ? Math.min(220, w - 2 * m) : 220, playerY = m + actionH + (compact ? 12 : 43);
         const player = this.panel(this.hud, m, playerY, playerW, compact ? 106 : 226);
         player.name = 'player-hud';
         this.portrait = this.layer(player);
@@ -167,16 +170,18 @@ export class GameUI {
         this.label('subtitle', '', player, 76, 48, 130, 11, C.muted);
         this.labels.subtitle.visible = !compact;
         const inset = compact ? 12 : 17, barW = playerW - 2 * inset;
-        this.label('hp', '', player, inset, compact ? 10 : 89, barW, 11, C.muted);
+        this.label('hp', '', player, inset, compact ? 10 : 89, barW, phone ? 13 : 11, C.muted);
         this.bar(player, 'hp', inset, compact ? 30 : 110, barW, 5);
-        this.label('xp', '', player, inset, compact ? 43 : 127, barW, 11, C.muted);
+        this.label('xp', '', player, inset, compact ? 43 : 127, barW, phone ? 12 : 11, C.muted);
         this.bar(player, 'xp', inset, compact ? 63 : 148, barW, 3);
         this.label('time', '', player, inset, compact ? 79 : 198, 76, compact ? 13 : 19);
-        this.label('kills', '', player, compact ? 100 : 101, compact ? 79 : 198, 55, compact ? 13 : 19);
-        this.label('level', '', player, compact ? 174 : 163, compact ? 79 : 198, 40, compact ? 13 : 19);
+        const killsX = phone ? Math.round(playerW * .48) : compact ? 100 : 101;
+        const levelX = phone ? playerW - 42 : compact ? 174 : 163;
+        this.label('kills', '', player, killsX, compact ? 79 : 198, 55, compact ? 13 : 19);
+        this.label('level', '', player, levelX, compact ? 79 : 198, 40, compact ? 13 : 19);
         if (compact) {
-            this.text(player, '×', 85, 79, 13, 12, C.muted);
-            this.text(player, 'Lv', 153, 80, 23, 11, C.muted);
+            this.text(player, '×', killsX - 15, 79, 13, 12, C.muted);
+            this.text(player, 'Lv', levelX - 21, 80, 23, 11, C.muted);
         }
         else {
             player.graphics.drawLine(17, 167, 203, 167, C.border, 1);
@@ -302,13 +307,13 @@ export class GameUI {
         this.bars.combo.visible = s.combo > 0 || s.overdrive > 0;
         this.fill('combo', s.overdrive > 0 ? s.overdrive / COMBAT.frenzyDuration : s.momentum / COMBAT.frenzyKills, s.overdrive > 0 ? '#ffc76a' : C.mint);
         this.set('buffs', `Buff ${this.game.buffs.recipes.filter(complete).length}/2 · 碎片 ${this.game.buffs.owned.size}/12`);
-        this.set('dash', s.dash > 0 ? `冷却 ${s.dash.toFixed(1)} 秒` : '已就绪 · SPACE');
+        this.set('dash', s.dash > 0 ? `冷却 ${s.dash.toFixed(1)} 秒` : this.mobile ? '点击冲刺' : '已就绪 · SPACE');
         this.fill('dash', 1 - s.dash / s.dashMax, C.mint);
         this.set('perf', `${s.fps} FPS · ${s.enemies} ENEMIES${this.game.training ? ' · 试装' : ''}`);
         this.performancePanel.visible = this.game.showPerformance && this.game.mode === 'battle';
         if (this.performancePanel.visible) {
             const p = this.game.performanceSnapshot();
-            const text = p.samples ? `${p.fps.toFixed(0)} FPS · 帧 ${p.frameMs.toFixed(1)} / P95 ${p.p95Ms.toFixed(1)} ms` : '性能采样中 · P 键隐藏';
+            const text = p.samples ? `${p.fps.toFixed(0)} FPS · 帧 ${p.frameMs.toFixed(1)} / P95 ${p.p95Ms.toFixed(1)} ms` : this.mobile ? '性能采样中 · 暂停菜单可隐藏' : '性能采样中 · P 键隐藏';
             const value = `${text}\n更新 ${p.updateMs.toFixed(1)} / 绘图 ${p.renderMs.toFixed(1)} ms${p.paused ? ' · 暂停' : ''}\n怪 ${p.enemies} · 弹 ${p.shots} · 掉落 ${p.drops} · 效果 ${p.effects}`;
             if (this.performanceLabel.text !== value)
                 this.performanceLabel.text = value;

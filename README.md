@@ -1,6 +1,6 @@
 # 遗迹回响 · Relic Echo
 
-LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.1`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
+LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.2`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
 
 ## 本地运行与 GitHub Pages
 
@@ -8,7 +8,15 @@ LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.1`�
 
 项目已包含 [GitHub Pages 工作流](.github/workflows/pages.yml)。上传到自己的 GitHub 仓库，在 **Settings → Pages → Source** 选择 **GitHub Actions**；向 main/master 推送或手动运行工作流，构建和测试通过后自动发布。所有资源使用相对路径，支持 `https://用户名.github.io/仓库名/` 和账号主页站点。
 
-本地生成发布包：`npm run build:pages`。模拟仓库子路径：`npm run preview:pages -- --port 8081`，访问 `http://localhost:8081/relic-echo/`。详见[开发与发布说明](docs/开发与发布.md)。当前工作区尚无 Git 仓库/远端，未执行线上部署。
+本地生成发布包：`npm run build:pages`。模拟仓库子路径：`npm run preview:pages -- --port 8081`，访问 `http://localhost:8081/relic-echo/`。详见[开发与发布说明](docs/开发与发布.md)。仓库为 `huckhuck12/relic-echo`，本地修改需推送后等待 GitHub Actions 部署成功才会更新线上站点。
+
+## 0.10.2 手机高像素比布局修复
+
+- 修复 LayaAir 2 的 full 模式将舞台设置为物理像素、使 DPR=3 手机误用桌面布局的问题。改用 fixedwidth，设计尺寸跟随浏览器 CSS 视口；保留高清画布，不改引擎源码或全局 pixelRatio。
+- 手机竖屏血量/经验改为整行状态条，字号增大；触控按钮按 CSS 尺寸保持可点击，提示条移到触控区上方，移除手机按钮中的键盘提示。
+- 横竖屏切换、浏览器工具栏引起的视口变化同步设计尺寸；恢复引擎初始化时被覆盖的 viewport-fit 设置。
+- 测试直接执行仓库内 Laya 的真实 setScreenSize 方法，覆盖 DPR 1/2/3、旋转和高度变化，避免仅用节点替身遗漏高像素比问题。自动检查不代替手机实机画面验收。
+- 格式检查及全套 **164 项测试通过**，发布包根/子路径的资源依赖检查通过；手机实际画面需部署后复验。
 
 ## 0.10.1 目录分层与 Game 拆分
 

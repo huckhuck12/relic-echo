@@ -11,6 +11,7 @@ import { PerformanceMonitor } from './performance-monitor.js';
 import { WORLD_RULES, WORLD_PILLARS } from './game-config.js';
 import { readSettings, writeSettings, saveRunRecord } from '../platform/local-settings.js';
 import { ProceduralAudio } from '../platform/procedural-audio.js';
+import { bindViewport } from '../platform/viewport.js';
 import { BuffRuntime, FRAGMENTS, Part, Trigger } from '../buffs/buffs.js';
 import { COMBAT, GEARS, Item, SLOTS, WEAPONS, Weapon, multiplier } from '../progression/config.js';
 import { Loadout, SpatialGrid, Stats, clamp, emptyLoadout, nextXP, project, resolveStats, rollItem } from '../shared/model.js';
@@ -167,7 +168,7 @@ export class Game {
     private pickupTone = 0;
     constructor() {
         Laya.init(window.innerWidth, window.innerHeight, Laya.WebGL);
-        Laya.stage.scaleMode = 'full';
+        bindViewport(Laya.stage);
         Laya.stage.bgColor = '#18291f';
         this.scene = new SceneRenderer(this.pillars);
         this.nodes = new NodePool(this.scene.actors);

@@ -145,6 +145,22 @@ test('native UI resize preserves display tree, pause state and usable viewport f
   assert.equal(ui.root.width*ui.root.scaleX,844);assert.equal(ui.root.height*ui.root.scaleY,390);assert.equal(ui.root.scaleX,1);assert.equal(g.dialog.type,'inventory');assert.ok(find(ui.root,'close-inventory'));assert.ok(g.gate.paused);
 });
 
+test('phone portrait HUD uses a full-width status strip and readable touch controls',()=>{
+ for(const [w,h]of [[320,568],[393,676],[430,780]]){
+  const g=create(),ui=new GameUI(g);ui.mobile=true;
+  Laya.stage.width=w;Laya.stage.height=h;Laya.stage.emit('resize');
+  const player=find(ui.root,'player-hud'),margin=ui.layout.margin;
+  assert.equal(ui.layout.compact,true);assert.equal(ui.layout.sidebar,false);
+  assert.equal(player.width,w-2*margin);assert.equal(ui.portrait.visible,false);
+  assert.equal(ui.gearPanel.parent.visible,false);assert.ok(ui.labels.hp.fontSize>=13);
+  assertControls(ui.hud,w,h,true);
+  const stick=bounds(ui.joystick);assert.equal(stick.w,112);assert.equal(stick.h,112);
+  const toast=bounds(ui.toastNode),buff=bounds(find(ui.root,'buffs'));
+  assert.ok(toast.y+toast.h<=buff.y-11.99);
+  assert.equal(ui.labels.dash.text,'点击冲刺');
+ }
+});
+
 const buttons=(root)=>root.visible===false?[]:[...(root.handlers.click?.length?[root]:[]),...root.children.flatMap(buttons)];
 // Model Laya's front-to-back hit traversal, including disabled parent subtrees.
 function pickUI(root,x,y){
