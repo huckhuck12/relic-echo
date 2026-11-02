@@ -11,6 +11,7 @@ import { Item, QUALITY, QUALITY_COLOR, SLOTS, SLOT_NAME, UPGRADES, WEAPONS, Weap
 import { Loadout, emptyLoadout, resolveStats } from '../shared/model.js';
 import type { ScreenLayout } from './layout.js';
 import { clock, percent, SYMBOLS } from './ui-config.js';
+import { platform } from '../platform/runtime.js';
 export interface DialogHooks {
     /** 使原有弹窗缓存失效，保留编辑槽位；绘制层不自行推进战斗。 */
     invalidate(): void;
@@ -268,7 +269,9 @@ export class GameDialogs {
             pair('返回探索 →', () => this.game.close(), 'close-inventory');
         }
         if (dialog.type === 'pause') {
-            const settingW = (inner - gap) / 2;
+            const copyDiagnostics = platform().copyDiagnostics;
+            const columns = copyDiagnostics && footer - body < 154 ? 3 : 2;
+            const settingW = (inner - gap * (columns - 1)) / columns;
             this.button(p, `${this.game.sound ? '■' : '□'} 程序音效`, pad, body, settingW, 44, () => {
                 this.game.sound = !this.game.sound;
                 this.game.saveSettings();
@@ -279,8 +282,10 @@ export class GameDialogs {
                 this.game.saveSettings();
                 this.hooks.refresh();
             }, false, 'shake');
-            this.visualQualityButton(p, pad, body + 50, settingW);
-            this.performanceButton(p, pad + settingW + gap, body + 50, settingW);
+            this.visualQualityButton(p, columns === 3 ? pad + 2 * (settingW + gap) : pad, columns === 3 ? body : body + 50, settingW);
+            this.performanceButton(p, columns === 3 ? pad : pad + settingW + gap, body + 50, settingW);
+            if (copyDiagnostics)
+                this.button(p, '复制运行诊断', columns === 3 ? pad + settingW + gap : pad, columns === 3 ? body + 50 : body + 100, columns === 3 ? 2 * settingW + gap : inner, 44, copyDiagnostics, false, 'copy-diagnostics');
             if (footer - body > 225)
                 this.text(p, '鼠标点击 / 按住移动 · WASD 移动\n空格冲刺 · E 装备 · Esc 暂停\n窗口大小与横竖屏切换会保留本局进度。', pad, body + 156, inner, 12, C.muted);
             pair('继续探索 →', () => this.game.close(), 'resume', '结束本局', () => this.game.finish(false, '本次探索已主动结束。'), 'quit');

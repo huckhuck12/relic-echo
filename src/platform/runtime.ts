@@ -32,6 +32,7 @@ export interface RuntimePlatform {
     readStorage(key: string): string | null;
     writeStorage(key: string, value: string): void;
     createAudio(): GameAudio;
+    copyDiagnostics?(): void;
 }
 let current: RuntimePlatform | undefined;
 export function platform(): RuntimePlatform { return current ??= createBrowserPlatform(); }

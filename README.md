@@ -1,6 +1,6 @@
 # 遗迹回响 · Relic Echo
 
-LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.11.1`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
+LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.11.2`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
 
 ## 本地运行与 GitHub Pages
 
@@ -9,6 +9,12 @@ LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.11.1`�
 项目已包含 [GitHub Pages 工作流](.github/workflows/pages.yml)。上传到自己的 GitHub 仓库，在 **Settings → Pages → Source** 选择 **GitHub Actions**；向 main/master 推送或手动运行工作流，构建和测试通过后自动发布。所有资源使用相对路径，支持 `https://用户名.github.io/仓库名/` 和账号主页站点。
 
 本地生成发布包：`npm run build:pages`。模拟仓库子路径：`npm run preview:pages -- --port 8081`，访问 `http://localhost:8081/relic-echo/`。详见[开发与发布说明](docs/开发与发布.md)。仓库为 `huckhuck12/relic-echo`，本地修改需推送后等待 GitHub Actions 部署成功才会更新线上站点。
+
+## 0.11.2 微信闪退排查与音频资源回收
+
+- 程序音效最多同时保留 8 组振荡器/增益节点；结束、失败、切后台时断开连接，缺少 ended 回调时按音频时钟回收。此项修复资源生命周期，尚不能据此判定真机闪退根因。
+- 微信启动时监听脚本错误、未处理拒绝和内存告警，每 10 秒保存一份有界运行摘要。保留本次与上次运行，暂停菜单可“复制运行诊断”，无需开启真机控制台，不自动上传。
+- 微信进程被系统或原生层结束时可能没有回调；诊断只保留最近已写入的线索，Laya 记录的资源量不等于进程总内存或 GPU 总占用。
 
 ## 0.11.1 手机触控连续性与密集怪潮开销
 

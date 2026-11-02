@@ -1,4 +1,5 @@
 import type { RuntimePlatform, GameAudio, Insets } from './runtime.js';
+import { ToneVoices } from './tone-voices.js';
 export interface WechatWindowInfo {
     windowWidth: number;
     windowHeight: number;
@@ -38,6 +39,7 @@ export interface WechatAPI {
 }
 class WechatAudio implements GameAudio {
     private context: AudioContext | null = null;
+    private readonly voices = new ToneVoices();
     constructor(private readonly api: WechatAPI) { }
     enable(): void {
         try {
@@ -51,27 +53,21 @@ class WechatAudio implements GameAudio {
         if (!enabled || !context || context.state === 'suspended' || context.state === 'closed')
             return;
         try {
-            const now = context.currentTime, oscillator = context.createOscillator(), gain = context.createGain();
-            oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(frequency, now);
-            oscillator.frequency.exponentialRampToValueAtTime(Math.max(50, frequency * .55), now + duration);
-            gain.gain.setValueAtTime(volume, now);
-            gain.gain.exponentialRampToValueAtTime(.001, now + duration);
-            oscillator.connect(gain);
-            gain.connect(context.destination);
-            oscillator.start(now);
-            oscillator.stop(now + duration);
+            this.voices.play(context, frequency, duration, volume);
         }
         catch { /* SDK 音频能力差异不能中断奖励或战斗。 */ }
     }
     suspend(): void {
+        this.voices.clear();
         try {
             void this.context?.suspend?.()?.catch?.(() => { });
         }
         catch { }
     }
 }
-export function createWechatPlatform(api: WechatAPI): RuntimePlatform {
+export function createWechatPlatform(api: WechatAPI, diagnostics?: {
+    copy(): void;
+}): RuntimePlatform {
     let hidden = false;
     const info = () => api.getWindowInfo?.() ?? api.getSystemInfoSync();
     const subscribe = (on: (fn: () => void) => void, off: ((fn: () => void) => void) | undefined, callback: () => void) => {
@@ -80,6 +76,7 @@ export function createWechatPlatform(api: WechatAPI): RuntimePlatform {
     };
     return {
         kind: 'wechat',
+        copyDiagnostics: diagnostics ? () => diagnostics.copy() : undefined,
         viewport: () => {
             const w = info();
             return { width: Math.max(1, w.windowWidth), height: Math.max(1, w.windowHeight), pixelRatio: w.pixelRatio || 1 };

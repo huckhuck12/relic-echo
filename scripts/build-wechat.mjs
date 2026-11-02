@@ -36,7 +36,7 @@ export async function buildWechat({appid=process.env.WECHAT_APPID || 'touristapp
   for(const [filename,source]of output){await mkdir(resolve(filename,'..'),{recursive:true});await writeFile(filename,source);}
   output.clear();
   for(const name of ['game.js','engine-environment.js']){
-    const source=await readFile(join(root,'wechat',name),'utf8');
+    const source=(await readFile(join(root,'wechat',name),'utf8')).replaceAll('__RELIC_VERSION__',JSON.parse(await readFile(join(root,'package.json'),'utf8')).version);
     const result=ts.transpileModule(source,{compilerOptions:{target:ts.ScriptTarget.ES2018,module:ts.ModuleKind.CommonJS},fileName:name});
     await writeFile(join(wechatRoot,name),result.outputText);
   }

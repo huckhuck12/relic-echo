@@ -1,7 +1,10 @@
+import { ToneVoices } from './tone-voices.js';
 /** 程序音效适配器；只在用户手势中恢复音频，不依赖素材，不持有局内战斗状态。 */
 export class BrowserAudio {
     private context: AudioContext | null = null;
+    private readonly voices = new ToneVoices();
     suspend(): void {
+        this.voices.clear();
         try {
             void this.context?.suspend()?.catch(() => { });
         }
@@ -19,15 +22,6 @@ export class BrowserAudio {
     play(enabled: boolean, frequency: number, duration = .045, volume = .025): void {
         if (!enabled || !this.context || this.context.state !== 'running')
             return;
-        const now = this.context.currentTime, oscillator = this.context.createOscillator(), gain = this.context.createGain();
-        oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(frequency, now);
-        oscillator.frequency.exponentialRampToValueAtTime(Math.max(50, frequency * .55), now + duration);
-        gain.gain.setValueAtTime(volume, now);
-        gain.gain.exponentialRampToValueAtTime(.001, now + duration);
-        oscillator.connect(gain);
-        gain.connect(this.context.destination);
-        oscillator.start(now);
-        oscillator.stop(now + duration);
+        this.voices.play(this.context, frequency, duration, volume);
     }
 }
