@@ -1,4 +1,5 @@
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
+<style>.wx-screen{width:100vw;height:100vh;display:block}</style>
 <body style="margin:0;background:#18291f"><script type="module">
 // Runs the generated CommonJS package and actual Laya engine with a mock wx API.
 // Uses real browser Canvas/WebGL; it is not a WeChat devtools or device test.
@@ -9,7 +10,7 @@ let info={windowWidth:393,windowHeight:852,screenWidth:393,screenHeight:852,pixe
 const wx={
  getSystemInfoSync:()=>({...info}),getWindowInfo:()=>({...info}),
  getMenuButtonBoundingClientRect:()=>({top:48,bottom:80,left:297,right:384}),
- createCanvas(){const c=document.createElement('canvas');if(!document.querySelector('canvas'))document.body.appendChild(c);return c;},
+ createCanvas(){const c=document.createElement('canvas');if(!document.querySelector('canvas')){c.className='wx-screen';document.body.appendChild(c);}return c;},
  createImage:()=>new Image(),createInnerAudioContext:()=>({}),
  getFileSystemManager:()=>({mkdir:options=>options.success({})}),env:{USER_DATA_PATH:'mock-user-data'},
  getStorageSync:key=>storage.get(key)||'',setStorageSync:(key,value)=>storage.set(key,value),removeStorageSync:key=>storage.delete(key),clearStorageSync:()=>storage.clear(),

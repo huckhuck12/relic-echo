@@ -7,9 +7,12 @@ test('WeChat engine bridge provides native 2D bindings without browser globals',
  const source=await readFile(new URL('../wechat/engine-environment.js',import.meta.url),'utf8');
  const sandbox=vm.createContext({module:{exports:{}}});
  vm.runInContext('"use strict";\n'+source,sandbox);
- const canvases=[],handlers=new Map();
+ const canvases=[],handlers=new Map(),nativeStyles=new WeakMap();
  class NativeContext {createImageData(width,height){return{width,height,data:new Uint8ClampedArray(width*height*4)};}}
  class NativeCanvas {
+  constructor(){nativeStyles.set(this,{width:'393px',height:'852px',transform:''});}
+  get style(){return nativeStyles.get(this);}
+  set style(value){nativeStyles.get(this).cssText=String(value);}
   get parentNode(){return null;}
   getContext(){return new NativeContext();}
  }
@@ -20,6 +23,11 @@ test('WeChat engine bridge provides native 2D bindings without browser globals',
  assert.equal(vm.runInContext('typeof CanvasRenderingContext2D',sandbox),'undefined');
  assert.equal(vm.runInContext('typeof performance',sandbox),'undefined');
  assert.equal(root.canvas,canvases[0],'First canvas remains the visible surface');
+ root.canvas.style.transform='matrix(0.333333,0,0,0.333333,0,0)';
+ assert.equal(nativeStyles.get(root.canvas).transform,'','Engine CSS must not shrink the SDK screen canvas');
+ assert.equal(nativeStyles.get(root.canvas).cssText,undefined,'Native CSS setter is never invoked');
+ const offscreen=root.document.createElement('canvas');offscreen.style.transform='scale(0.5)';
+ assert.equal(nativeStyles.get(offscreen).transform,'');
  assert.equal(root.CanvasRenderingContext2D.prototype,NativeContext.prototype);
  const image=new root.ImageData(2,3);assert.equal(image.data.length,24);
  assert.ok(Number.isFinite(root.performance.now()));

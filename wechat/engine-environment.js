@@ -43,6 +43,13 @@ module.exports = function installEngineEnvironment(wx, timers) {
     node.focus = node.blur = () => {};
     return node;
   }
+  function canvasStyle(target) {
+    // The SDK owns on-screen sizing. On devtools Canvas.style is a native DOM
+    // accessor: assigning {} changes cssText rather than replacing that style.
+    // Keep Laya's browser-only CSS transforms on a separate plain object.
+    Object.defineProperty(target,'style',{value:{},writable:true,configurable:true});
+    return target;
+  }
   const info = wx.getSystemInfoSync();
   const canvas = wx.createCanvas(); // First canvas is the visible game surface.
   // MiniAdpter exposes a constructor on its window facade, but the old core
@@ -50,14 +57,14 @@ module.exports = function installEngineEnvironment(wx, timers) {
   const context2d = wx.createCanvas().getContext('2d');
   function CanvasContext() {}
   CanvasContext.prototype = Object.getPrototypeOf(context2d);
-  canvas.style = {};
+  canvasStyle(canvas);
   events(canvas);
   canvas.getBoundingClientRect = () => ({left:0,top:0,right:root.innerWidth,bottom:root.innerHeight,width:root.innerWidth,height:root.innerHeight});
   const doc = events({hidden:false,visibilityState:'visible'});
   doc.body = element('body');doc.head = element('head');doc.documentElement = element('html');
   const meta = element('meta');meta.name='viewport';doc.head.appendChild(meta);
   doc.createElement = type => {
-    if (type === 'canvas') {const c=wx.createCanvas();c.style={};return c;}
+    if (type === 'canvas') return canvasStyle(wx.createCanvas());
     if (type === 'img' || type === 'image') return wx.createImage();
     const node=element(type);
     if (type === 'audio') {node.canPlayType=()=>'';node.play=()=>Promise.resolve();node.pause=()=>{};}

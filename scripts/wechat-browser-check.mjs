@@ -17,6 +17,8 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  const initial=await evaluate(`(()=>{const t=wechatTest,{game,ui}=t.app;return{dialog:game.dialog?.type,stage:[t.root.Laya.stage.width,t.root.Laya.stage.height],mobile:ui.mobile,top:ui.root.y,adapter:!!t.root.Laya.MiniAdpter?._inited,canvas:[t.root.canvas.width,t.root.canvas.height]};})()`);
  assert.equal(initial.dialog,'start');assert.equal(initial.mobile,true);assert.equal(initial.adapter,true);assert.equal(initial.top,88);
  assert.deepEqual(initial.stage,[393,852]);assert.deepEqual(initial.canvas,[1179,2556]);
+ const screenRect=await evaluate(`(()=>{const b=Element.prototype.getBoundingClientRect.call(document.querySelector('canvas'));return {x:b.x,y:b.y,width:b.width,height:b.height};})()`);
+ assert.deepEqual(screenRect,{x:0,y:0,width:393,height:852},'SDK already fits the canvas to the screen; engine CSS must not shrink it again');
  const screenshot=async name=>{const shot=await send('Page.captureScreenshot',{format:'png'});await writeFile(resolve(directory,'wechat-'+name+'.png'),Buffer.from(shot.data,'base64'));};
  await screenshot('menu');
  await evaluate(`wechatTest.tap('start')`);await new Promise(r=>setTimeout(r,900));
