@@ -2,6 +2,8 @@
 
 LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.11.2`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
 
+当前优化计划、优先级和真机验收状态见[优化清单](docs/优化清单.md)。
+
 ## 本地运行与 GitHub Pages
 
 使用 Node.js 22+（推荐 24）：`npm ci` 后运行 `npm run dev`，访问 `http://localhost:8080/`。
