@@ -125,17 +125,17 @@ test('mouse click moves toward an unprojected world target then stops',()=>{
 test('touch movement owns one stick finger and press-to-dash does not interrupt or repeat on click',()=>{
  const g=create(),ui=new GameUI(g);ui.mobile=true;
  Laya.stage.width=393;Laya.stage.height=676;Laya.stage.emit('resize');
- const center=ui.hudView.stick.joystick.localToGlobal({x:56,y:56});
+ const center=ui.hudView.stick.joystick.localToGlobal({x:72,y:72});
  Laya.stage.mouseX=center.x;Laya.stage.mouseY=center.y;
  ui.hudView.stick.joystick.emit('mousedown',{touchId:11});
  assert.equal(ui.hudView.stick.stickTouch,11);assert.deepEqual(g.input.stick,{x:0,y:0});
  Laya.stage.mouseX=center.x+4;Laya.stage.emit('mousemove',{touchId:11});
  assert.deepEqual(g.input.stick,{x:0,y:0});
- Laya.stage.mouseX=center.x+30;Laya.stage.emit('mousemove',{touchId:11});
+ Laya.stage.mouseX=center.x+40;Laya.stage.emit('mousemove',{touchId:11});
  const held={...g.input.stick};assert.ok(held.x>.8);
  // 第二指落在摇杆和抬起都不能抢夺/结束第一指。
  ui.hudView.stick.joystick.emit('mousedown',{touchId:22});assert.equal(ui.hudView.stick.stickTouch,11);
- Laya.stage.mouseX=center.x-30;Laya.stage.emit('mousemove',{touchId:22});
+ Laya.stage.mouseX=center.x-40;Laya.stage.emit('mousemove',{touchId:22});
  Laya.stage.emit('mouseup',{touchId:22});assert.deepEqual(g.input.stick,held);
  const dash=find(ui.root,'dash');dash.emit('mousedown',{touchId:22});
  assert.ok(g.player.dashTime>0);assert.deepEqual(g.input.stick,held);
@@ -143,6 +143,26 @@ test('touch movement owns one stick finger and press-to-dash does not interrupt 
  g.player.dashTime=0;g.player.dash=0;dash.emit('click',{touchId:22});assert.equal(g.player.dashTime,0);
  Laya.stage.emit('mouseup',{touchId:11});assert.deepEqual(g.input.stick,{x:0,y:0});
  assert.equal(ui.hudView.stick.stickTouch,null);
+});
+
+test('floating stick starts neutral anywhere in its left zone, releases and relocates without stealing another finger',()=>{
+ const g=create(),ui=new GameUI(g);ui.mobile=true;
+ Laya.stage.width=393;Laya.stage.height=852;Laya.stage.emit('resize');
+ const stick=ui.hudView.stick,area=stick.activation,home={x:stick.joystick.x,y:stick.joystick.y};
+ assert.ok(area.width>144&&area.height>250);
+ for(const [x,y]of [[100,530],[160,660],[25,800]]){
+  Laya.stage.mouseX=x;Laya.stage.mouseY=y;area.emit('mousedown',{touchId:7});
+  assert.deepEqual(g.input.stick,{x:0,y:0});assert.deepEqual(stick.stickOrigin,{x,y});
+  assert.ok(stick.joystick.x-72>=ui.layout.margin);
+  assert.ok(stick.joystick.y+72<=ui.layout.height-ui.layout.margin-16);
+  area.emit('mousedown',{touchId:8});assert.equal(stick.stickTouch,7);
+  Laya.stage.mouseX=x+100;Laya.stage.emit('mousemove',{touchId:7});
+  assert.equal(g.input.stick.x,1);assert.equal(stick.knob.x,116);
+  Laya.stage.emit('mouseup',{touchId:8});assert.equal(stick.stickTouch,7);
+  Laya.stage.emit('mouseup',{touchId:7});assert.deepEqual(g.input.stick,{x:0,y:0});
+  assert.equal(stick.joystick.x,home.x);assert.equal(stick.joystick.y,home.y);
+ }
+ g.togglePause();area.emit('mousedown',{touchId:9});assert.equal(stick.stickTouch,null);
 });
 
 test('touching the battlefield never creates a persistent desktop mouse destination',()=>{
@@ -190,7 +210,7 @@ test('phone portrait HUD uses a full-width status strip and readable touch contr
   assert.equal(player.width,w-2*margin);assert.equal(player.height,64);
   assert.equal(find(ui.hudView.root,'gear-weapon'),undefined);assert.ok(ui.hudView.labels.hp.fontSize>=13);
   assertControls(ui.hudView.root,w,h,true);
-  const stick=bounds(ui.hudView.stick.joystick);assert.equal(stick.w,112);assert.equal(stick.h,112);
+  const stick=bounds(ui.hudView.stick.joystick);assert.equal(stick.w,144);assert.equal(stick.h,144);
   const toast=bounds(ui.toastNode),buff=bounds(find(ui.root,'buffs'));
   assert.ok(toast.y+toast.h<=buff.y-11.99);
   assert.equal(ui.hudView.labels.dash.text,'点击冲刺');
@@ -228,9 +248,10 @@ test('mobile safe area moves HUD and dialogs inside screen cutouts and keeps sti
   Laya.stage.width=393;Laya.stage.height=760;Laya.stage.emit('resize');
   assert.equal(probes,0);assert.equal(ui.root.y,44);assert.equal(ui.root.height,682);
   const dash=bounds(find(ui.root,'dash'));assert.ok(dash.y+dash.h<760-34);
-  const center=ui.hudView.stick.joystick.localToGlobal({x:56,y:56});
-  Laya.stage.mouseX=center.x+30;Laya.stage.mouseY=center.y;
-  ui.hudView.stick.joystick.emit('mousedown',{touchId:3});assert.ok(g.input.stick.x>.8);assert.equal(g.input.stick.y,0);
+  const center=ui.hudView.stick.joystick.localToGlobal({x:72,y:72});
+  Laya.stage.mouseX=center.x;Laya.stage.mouseY=center.y;
+  ui.hudView.stick.joystick.emit('mousedown',{touchId:3});
+  Laya.stage.mouseX=center.x+40;Laya.stage.emit('mousemove',{touchId:3});assert.ok(g.input.stick.x>.8);assert.equal(g.input.stick.y,0);
   g.toggleInventory();assert.deepEqual(g.input.stick,{x:0,y:0});assert.equal(ui.hudView.stick.stickTouch,null);
   const panel=bounds(find(ui.root,'dialog-panel'));assert.ok(panel.y>=44);assert.ok(panel.y+panel.h<=760-34);
  }finally{

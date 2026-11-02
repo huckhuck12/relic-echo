@@ -1,6 +1,6 @@
 # 遗迹回响 · Relic Echo
 
-LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.6`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
+LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.7`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
 
 ## 本地运行与 GitHub Pages
 
@@ -9,6 +9,13 @@ LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.6`�
 项目已包含 [GitHub Pages 工作流](.github/workflows/pages.yml)。上传到自己的 GitHub 仓库，在 **Settings → Pages → Source** 选择 **GitHub Actions**；向 main/master 推送或手动运行工作流，构建和测试通过后自动发布。所有资源使用相对路径，支持 `https://用户名.github.io/仓库名/` 和账号主页站点。
 
 本地生成发布包：`npm run build:pages`。模拟仓库子路径：`npm run preview:pages -- --port 8081`，访问 `http://localhost:8081/relic-echo/`。详见[开发与发布说明](docs/开发与发布.md)。仓库为 `huckhuck12/relic-echo`，本地修改需推送后等待 GitHub Actions 部署成功才会更新线上站点。
+
+## 0.10.7 左下浮动摇杆
+
+- 摇杆底盘由 112px 扩为 144px，摇帽扩大至 52px，拖动行程为 44px；保留 6px 中心死区。
+- 左下区域落指即重新定位中心，按下不移动，拖动后控制方向；触点移出起始区域仍可继续操控，松手停止并回到低透明度待机位置。
+- 底盘显示限制在安全区内，并避开右侧冲刺；首指持有控制权，另一指按下/松开不会抢夺或取消移动。打开菜单、旋转屏幕清理旧输入。
+- 自动回归覆盖浮动落点、中立按下、边缘位置、双指及暂停；真实引擎浏览器验证从固定底盘外的左下区域落指并拖动。
 
 ## 0.10.6 手机启动修复与 UI 字体整理
 

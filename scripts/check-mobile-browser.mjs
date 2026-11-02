@@ -60,7 +60,7 @@ try{
    const {game,ui}=await import('/dist/main.js');
    const find=(node,name)=>{if(node.name===name)return node;for(let i=0;i<node.numChildren;i++){const found=find(node.getChildAt(i),name);if(found)return found;}};
    const start=find(ui.root,'start'),stick=find(ui.root,'touch-stick'),dash=find(ui.root,'dash');
-   if(!start||!stick||!dash)throw Error('Incomplete mobile UI');
+   if(!start||!stick||!dash)throw Error('Incomplete mobile UI: '+JSON.stringify({start:!!start,stick:!!stick,dash:!!dash}));
    const point=start.localToGlobal(new Laya.Point(start.width/2,start.height/2));
    return {dialog:game.dialog?.type,stickVisible:stick.visible,font:dash.getChildAt(0).font,point:{x:point.x,y:point.y},stage:[Laya.stage.width,Laya.stage.height]};
   })()`);
@@ -80,10 +80,14 @@ try{
   assert.equal(battle.mode,'battle');assert.ok(battle.time>.2,'Simulation advances after start');
   if(touch){
    const stick=await evaluate(`import('/dist/main.js').then(({ui,game})=>{
-    const s=ui.hudView.stick.joystick,p=s.localToGlobal(new Laya.Point(56,56));
+    const s=ui.hudView.stick.activation,p=s.localToGlobal(new Laya.Point(s.width*.6,s.height*.35));
     return {x:p.x,y:p.y,playerX:game.player.x,playerY:game.player.y};
    })`);
-   await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:stick.x+24,y:stick.y}]});
+   await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:stick.x,y:stick.y}]});
+   const origin=await evaluate(`import('/dist/main.js').then(({ui})=>({touch:ui.hudView.stick.stickTouch,origin:ui.hudView.stick.stickOrigin}))`);
+   assert.notEqual(origin.touch,null,'Touch outside the resting base activates the left zone');
+   assert.ok(Math.hypot(origin.origin.x-stick.x,origin.origin.y-stick.y)<2,'Floating origin follows actual press');
+   await send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:stick.x+44,y:stick.y}]});
    await new Promise(r=>setTimeout(r,250));
    await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
    const moved=await evaluate(`import('/dist/main.js').then(({game})=>({x:game.player.x,y:game.player.y}))`);

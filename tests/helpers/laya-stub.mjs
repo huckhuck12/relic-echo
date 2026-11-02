@@ -13,7 +13,7 @@ class Sprite {
   on(type,caller,listener){this.handlers[type]=(this.handlers[type]||[]).filter(h=>h.caller!==caller||h.listener!==listener);this.handlers[type].push({caller,listener});return this;}
   emit(type,event={}){for(const h of [...(this.handlers[type]||[])])h.listener.call(h.caller,{stopPropagation(){},...event});}
   destroyChildren(){for(const child of [...this.children])child.destroy();}
-  destroy(){this.destroyChildren();this.handlers={};this.removeSelf();}
+  destroy(){this.destroyed=true;this.destroyChildren();this.handlers={};this.removeSelf();}
   localToGlobal(point){let x=point.x,y=point.y;for(let p=this;p;p=p.parent){x=(x-(p.pivotX||0))*p.scaleX+p.x;y=(y-(p.pivotY||0))*p.scaleY+p.y;}return {x,y};}
 }
 class Text extends Sprite {}

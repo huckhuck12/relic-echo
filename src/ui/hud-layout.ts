@@ -1,7 +1,7 @@
 import type { ScreenLayout } from './layout.js';
 /** HUD 与触控区共用尺寸，避免提示条、冲刺和摇杆各自硬编码后相互覆盖。 */
 export const TOUCH_UI = {
-    stickSize: 112, stickTravel: 34, stickDeadZone: 6,
+    stickSize: 144, stickTravel: 44, stickDeadZone: 6,
     dashWidth: 96, dashHeight: 72, buffWidth: 96, buffHeight: 44,
     actionGap: 20, bottomGap: 16, toastDuration: 1700,
 };
@@ -17,6 +17,10 @@ export function mobileHUDLayout(layout: ScreenLayout) {
         buffX: w - m - TOUCH_UI.buffWidth, buffY,
         stickX: m + TOUCH_UI.stickSize / 2,
         stickY: h - m - TOUCH_UI.bottomGap - TOUCH_UI.stickSize / 2,
+        stickAreaX: m,
+        stickAreaY: Math.max(m + 136, h * .52),
+        stickAreaWidth: w * .48 - m,
+        stickAreaBottom: h - m - TOUCH_UI.bottomGap,
         comboX: portrait ? m : m + 176,
         comboY: portrait ? m + 122 : m + 8,
         comboWidth: portrait ? Math.min(260, w - 2 * m) : Math.max(80, w - 2 * m - 304),
