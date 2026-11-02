@@ -7,7 +7,7 @@ test('WeChat engine bridge provides native 2D bindings without browser globals',
  const source=await readFile(new URL('../wechat/engine-environment.js',import.meta.url),'utf8');
  const sandbox=vm.createContext({module:{exports:{}}});
  vm.runInContext('"use strict";\n'+source,sandbox);
- const canvases=[],handlers=new Map(),nativeStyles=new WeakMap();
+ const canvases=[],handlers=new Map(),nativeStyles=new WeakMap(),frameRateRequests=[];
  class NativeContext {createImageData(width,height){return{width,height,data:new Uint8ClampedArray(width*height*4)};}}
  class NativeCanvas {
   constructor(){nativeStyles.set(this,{width:'393px',height:'852px',transform:''});}
@@ -17,9 +17,13 @@ test('WeChat engine bridge provides native 2D bindings without browser globals',
   getContext(){return new NativeContext();}
  }
  const wx={getSystemInfoSync:()=>({windowWidth:393,windowHeight:852,pixelRatio:3}),
+  setPreferredFramesPerSecond(fps){assert.equal(this,wx);frameRateRequests.push(fps);},
   createCanvas:()=>{const canvas=new NativeCanvas();canvases.push(canvas);return canvas;}};
  for(const name of ['WindowResize','Hide','Show','TouchStart','TouchMove','TouchEnd','TouchCancel'])wx['on'+name]=fn=>handlers.set(name,fn);
  const root=sandbox.module.exports(wx,{});
+ assert.deepEqual(frameRateRequests,[60],'Request 60 FPS before engine startup');
+ handlers.get('Show')();
+ assert.deepEqual(frameRateRequests,[60,60],'Restore target after returning to foreground');
  assert.equal(vm.runInContext('typeof CanvasRenderingContext2D',sandbox),'undefined');
  assert.equal(vm.runInContext('typeof performance',sandbox),'undefined');
  assert.equal(root.canvas,canvases[0],'First canvas remains the visible surface');
@@ -48,4 +52,9 @@ test('WeChat engine bridge provides native 2D bindings without browser globals',
  container.appendChild(child);assert.equal(child.parentNode,container);
  other.appendChild(child);assert.equal(child.parentNode,other);assert.equal(container.contains(child),false);
  other.removeChild(child);assert.equal(child.parentNode,null);
+ const unsupported={...wx};delete unsupported.setPreferredFramesPerSecond;
+ assert.doesNotThrow(()=>sandbox.module.exports(unsupported,{}));
+ const rejected={...wx,setPreferredFramesPerSecond(){throw Error('unsupported');}};
+ assert.doesNotThrow(()=>sandbox.module.exports(rejected,{}));
+ assert.doesNotThrow(()=>handlers.get('Show')());
 });

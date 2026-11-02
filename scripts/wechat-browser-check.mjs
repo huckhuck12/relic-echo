@@ -11,6 +11,8 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
   if(status.ready){ready=true;break;}await new Promise(r=>setTimeout(r,100));
  }
  assert.ok(ready,'Generated WeChat package starts with real engine');
+ assert.deepEqual(await evaluate(`wechatTest.frameRateRequests`),[60],'Startup requests native 60 FPS');
+ assert.equal(await evaluate(`wechatTest.root.Laya.stage.frameRate`),'fast','Engine does not skip alternate frames');
  assert.equal(await evaluate(`(()=>{const r=wechatTest.root,p=r.canvas.parentNode,a=r.document.createElement('div'),b=r.document.createElement('div');a.appendChild(r.canvas);b.appendChild(r.canvas);const moved=!a.contains(r.canvas)&&b.contains(r.canvas);b.removeChild(r.canvas);return moved&&!b.contains(r.canvas)&&r.canvas.parentNode===p;})()`),true,'Synthetic containers do not write the native Canvas parentNode');
  assert.equal(await evaluate(`wechatTest.host.window===window && wechatTest.root!==wechatTest.host && wechatTest.root.window===wechatTest.root && wechatTest.host.Laya===wechatTest.root.Laya`),true,'Read-only devtools host globals remain untouched');
  assert.equal(await evaluate(`(()=>{const r=wechatTest.root,c=r.wx.createCanvas().getContext('2d'),pixels=new r.ImageData(2,3);return r.CanvasRenderingContext2D.prototype===Object.getPrototypeOf(c)&&typeof c.drawTexture==='function'&&pixels.width===2&&pixels.height===3&&Number.isFinite(r.performance.now());})()`),true,'Native 2D prototype and pixel allocation work without host DOM constructors');
@@ -21,7 +23,7 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  assert.deepEqual(screenRect,{x:0,y:0,width:393,height:852},'SDK already fits the canvas to the screen; engine CSS must not shrink it again');
  const screenshot=async name=>{const shot=await send('Page.captureScreenshot',{format:'png'});await writeFile(resolve(directory,'wechat-'+name+'.png'),Buffer.from(shot.data,'base64'));};
  await screenshot('menu');
- await evaluate(`wechatTest.tap('start')`);await new Promise(r=>setTimeout(r,900));
+ await evaluate(`wechatTest.tap('start');wechatTest.app.game.showPerformance=true`);await new Promise(r=>setTimeout(r,900));
  const battle=await evaluate(`({mode:wechatTest.app.game.mode,time:wechatTest.app.game.time})`);
  assert.equal(battle.mode,'battle');assert.ok(battle.time>.1);
  const stick=await evaluate(`(()=>{const t=wechatTest,s=t.app.ui.hudView.stick.activation,p=s.localToGlobal(new t.root.Laya.Point(s.width*.6,s.height*.35));const touch={identifier:7,clientX:p.x,clientY:p.y};t.touch('Start',[touch]);t.touch('Move',[{...touch,clientX:p.x+44}]);return{x:p.x,y:p.y,playerX:t.app.game.player.x,playerY:t.app.game.player.y};})()`);
@@ -37,7 +39,11 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  await evaluate(`wechatTest.emit('Hide');wechatTest.emit('Show')`);
  const paused=await evaluate(`({dialog:wechatTest.app.game.dialog?.type,owner:wechatTest.app.ui.hudView.stick.stickTouch,stick:wechatTest.app.game.input.stick})`);
  assert.equal(paused.dialog,'pause');assert.equal(paused.owner,null);assert.deepEqual(paused.stick,{x:0,y:0});
+ assert.deepEqual(await evaluate(`wechatTest.frameRateRequests`),[60,60],'Foreground restores native 60 FPS');
  await evaluate(`wechatTest.tap('resume')`);
+ await new Promise(r=>setTimeout(r,2000));
+ const performance=await evaluate(`wechatTest.app.game.performanceSnapshot()`);
+ assert.ok(performance.samples>0,'Collect actual battle frame intervals rather than treating requested FPS as measured FPS');
  await evaluate(`(()=>{const t=wechatTest,{UPGRADES}=t.load('/app/progression/config.js'),g=t.app.game;g.levels=Object.fromEntries(UPGRADES.map(u=>[u.id,u.max]));for(let i=0;i<3;i++)g.show({type:'upgrade',choices:[]});t.app.ui.update();})()`);
  for(let i=0;i<3;i++){
   const result=await evaluate(`(()=>{const t=wechatTest,g=t.app.game,id=g.flow.dialogId;t.tap('upgrade-heal');return{pending:g.flow.pendingCount,dialog:g.dialog?.type,stale:g.claimReward(id,{type:'upgrade',id:'heal'})};})()`);
@@ -48,5 +54,5 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  await screenshot('battle');
  const death=await evaluate(`(()=>{const g=wechatTest.app.game;g.training=false;g.player.inv=0;g.hurt(999999);return{dialog:g.dialog?.type,revival:g.revival.provider.available};})()`);
  assert.equal(death.dialog,'result');assert.equal(death.revival,false);
- return {kind:'wechat-package-in-browser',initial,battle,dual,paused,death};
+ return {kind:'wechat-package-in-browser',initial,battle,dual,paused,death,performance};
 }

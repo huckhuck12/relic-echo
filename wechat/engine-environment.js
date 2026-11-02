@@ -4,6 +4,11 @@ module.exports = function installEngineEnvironment(wx, timers) {
   // Devtools exposes a real Window with read-only window/document/navigator.
   // Keep the legacy engine's browser facade private; never patch that host.
   const root = {};
+  function prefer60FPS() {
+    // Ask the native scheduler directly; another JS timer cannot bypass its cap.
+    try { wx.setPreferredFramesPerSecond?.(60); } catch { /* Older SDKs keep their supported rate. */ }
+  }
+  prefer60FPS();
   const syntheticNodes = new WeakSet();
   const parents = new WeakMap();
   function events(target) {
@@ -95,7 +100,7 @@ module.exports = function installEngineEnvironment(wx, timers) {
   }
   resize();wx.onWindowResize(resize);
   wx.onHide(()=>{doc.hidden=true;doc.visibilityState='hidden';root.dispatchEvent({type:'blur'});doc.dispatchEvent({type:'visibilitychange'});});
-  wx.onShow(()=>{resize();doc.hidden=false;doc.visibilityState='visible';root.dispatchEvent({type:'focus'});doc.dispatchEvent({type:'visibilitychange'});});
+  wx.onShow(()=>{prefer60FPS();resize();doc.hidden=false;doc.visibilityState='visible';root.dispatchEvent({type:'focus'});doc.dispatchEvent({type:'visibilitychange'});});
   function touch(type,event) {
     const points = list => (list || []).map(t=>({...t,clientX:t.clientX ?? t.x,clientY:t.clientY ?? t.y,pageX:t.pageX ?? t.clientX ?? t.x,pageY:t.pageY ?? t.clientY ?? t.y}));
     const native={...event,type,target:canvas,touches:points(event.touches),changedTouches:points(event.changedTouches),preventDefault(){},stopPropagation(){}};

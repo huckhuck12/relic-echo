@@ -3,11 +3,12 @@
 <body style="margin:0;background:#18291f"><script type="module">
 // Runs the generated CommonJS package and actual Laya engine with a mock wx API.
 // Uses real browser Canvas/WebGL; it is not a WeChat devtools or device test.
-const callbacks=new Map(),storage=new Map();
+const callbacks=new Map(),storage=new Map(),frameRateRequests=[];
 const on=(name,fn)=>{if(!callbacks.has(name))callbacks.set(name,new Set());callbacks.get(name).add(fn);};
 const emit=(name,event={})=>{for(const fn of callbacks.get(name)||[])fn(event);};
 let info={windowWidth:393,windowHeight:852,screenWidth:393,screenHeight:852,pixelRatio:3,platform:'ios',system:'iOS',model:'iPhone Air',safeArea:{top:44,left:0,right:393,bottom:818}};
 const wx={
+ setPreferredFramesPerSecond:fps=>frameRateRequests.push(fps),
  getSystemInfoSync:()=>({...info}),getWindowInfo:()=>({...info}),
  getMenuButtonBoundingClientRect:()=>({top:48,bottom:80,left:297,right:384}),
  createCanvas(){const c=document.createElement('canvas');if(!document.querySelector('canvas')){c.className='wx-screen';document.body.appendChild(c);}return c;},
@@ -44,6 +45,6 @@ try{
  const point=name=>{const n=find(app.ui.root,name),p=n.localToGlobal(new root.Laya.Point(n.width/2,n.height/2));return{x:p.x,y:p.y};};
  const touch=(phase,points,changed=points)=>emit('Touch'+phase,{touches:points,changedTouches:changed,timeStamp:Date.now()});
  const tap=name=>{const p=point(name),t={identifier:1,clientX:p.x,clientY:p.y};touch('Start',[t]);touch('End',[],[t]);};
- window.wechatTest={app,root:root.__relicEngineWindow,host:root,wx,load,find,point,tap,touch,emit,storage,resize:(width,height)=>{info={...info,windowWidth:width,windowHeight:height,safeArea:{top:0,left:0,right:width,bottom:height}};emit('WindowResize');}};
+ window.wechatTest={app,root:root.__relicEngineWindow,host:root,wx,load,find,point,tap,touch,emit,storage,frameRateRequests,resize:(width,height)=>{info={...info,windowWidth:width,windowHeight:height,safeArea:{top:0,left:0,right:width,bottom:height}};emit('WindowResize');}};
 }catch(error){window.wechatError=String(error.stack||error);console.error(error);}
 </script></body></html>
