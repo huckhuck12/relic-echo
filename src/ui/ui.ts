@@ -3,6 +3,7 @@ import { UIControls, C } from './ui-controls.js';
 import { GameDialogs } from './ui-dialogs.js';
 import type { BuffEditorState } from './buff-panel.js';
 import { Game } from '../game/game.js';
+import type { Dialog } from '../game/run-flow.js';
 import { ScreenLayout, screenLayout } from './layout.js';
 import { mobileHUDLayout, TOUCH_UI } from './hud-layout.js';
 import { readSafeArea } from '../platform/safe-area.js';
@@ -26,6 +27,7 @@ export class GameUI {
     private readonly controls = new UIControls(() => this.game.enableAudio());
     /** 只有内容或布局改变才重建弹窗，避免每帧销毁按钮导致输入丢失。 */
     private modalKey = '';
+    private modalDialog: Dialog | undefined;
     private toastExpiry = 0;
     private readonly dialogRenderer: GameDialogs;
     private mobile = typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0;
@@ -119,10 +121,11 @@ export class GameUI {
                 this.performanceLabel.text = value;
         }
         this.toastNode.visible = !this.game.dialog && performance.now() < this.toastExpiry;
-        const key = JSON.stringify(this.game.dialog) + (this.game.dialog?.type === 'revive' ? `${this.game.revival.busy}:${this.game.reviveMessage}` : '') + (this.game.dialog?.type === 'buffs' ? JSON.stringify(this.game.buffs.recipes) + this.game.buffs.recipes.map(r => this.game.buffs.levelOf(r)).join(',') + [...this.game.buffs.owned].join(',') + this.buffEditor.slot + this.buffEditor.picker : '') + (this.game.dialog?.type === 'inventory' ? JSON.stringify(s.loadout) + this.game.previewBack : '');
+        const key = JSON.stringify(this.game.dialog) + ':' + this.game.flow.pendingCount + (this.game.dialog?.type === 'revive' ? `${this.game.revival.busy}:${this.game.reviveMessage}` : '') + (this.game.dialog?.type === 'buffs' ? JSON.stringify(this.game.buffs.recipes) + this.game.buffs.recipes.map(r => this.game.buffs.levelOf(r)).join(',') + [...this.game.buffs.owned].join(',') + this.buffEditor.slot + this.buffEditor.picker : '') + (this.game.dialog?.type === 'inventory' ? JSON.stringify(s.loadout) + this.game.previewBack : '');
         // 流程状态只通过 Game 的语义入口修改；这里按最终弹窗数据重建显示树。
-        if (key !== this.modalKey) {
+        if (key !== this.modalKey || this.modalDialog !== this.game.dialog) {
             this.modalKey = key;
+            this.modalDialog = this.game.dialog;
             this.hudView.stick.release();
             this.dialogRenderer.render(this.game.dialog, this.layout, this.mobile);
         }

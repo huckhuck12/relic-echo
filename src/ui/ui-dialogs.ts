@@ -163,6 +163,14 @@ export class GameDialogs {
         });
         return Math.ceil(entries.length / columns) * (cellH + gap) - gap;
     }
+    private healDescription(): string {
+        const amount = Math.min(this.game.stats.hp - this.game.player.hp, this.game.stats.hp * .3);
+        return amount > 0 ? `恢复 ${Math.round(amount)} 点生命（最多 30%）。` : '生命已满 · 点击领取并继续。';
+    }
+    private upgradeStatus(): string {
+        const remaining = this.game.flow.pendingCount + 1;
+        return `${this.game.upgradeFeedback ? this.game.upgradeFeedback + ' · ' : ''}待领取 ${remaining} 份奖励`;
+    }
     private responsiveDialog(p: any, dialog: Exclude<NonNullable<Dialog>, {
         type: 'revive' | 'performance';
     }>, w: number, h: number): void {
@@ -223,17 +231,17 @@ export class GameDialogs {
                     const tiny = cardH < 72;
                     this.text(card, u?.icon || '✚', 12, tiny ? 10 : 20, 48, tiny ? 24 : 32, C.gold);
                     this.text(card, u?.name || '生命回响', 69, tiny ? 7 : 12, cardW - 81, tiny ? 14 : 17);
-                    this.text(card, u?.note || '恢复 30% 最大生命。', 69, tiny ? 30 : 44, cardW - 81, tiny ? 10 : 11, C.muted);
+                    this.text(card, u?.note || this.healDescription(), 69, tiny ? 30 : 44, cardW - 81, tiny ? 10 : 11, C.muted);
                 }
                 else {
                     this.text(card, u?.icon || '✚', 16, 19, cardW - 32, 38, C.gold);
                     if (cardH >= 180)
                         this.text(card, u ? `${(this.game.levels[id] || 0) + 1} / ${u.max}` : '恢复', 16, cardH - 104, cardW - 32, 11, C.gold);
                     this.text(card, u?.name || '生命回响', 16, cardH - 76, cardW - 32, 18);
-                    this.text(card, u?.note || '恢复 30% 最大生命。', 16, cardH - 43, cardW - 32, 12, C.muted);
+                    this.text(card, u?.note || this.healDescription(), 16, cardH - 43, cardW - 32, 12, C.muted);
                 }
             });
-            this.text(p, '选择后生效 · 战斗已暂停', pad, h - pad - 18, inner, 11, C.muted);
+            this.text(p, this.upgradeStatus(), pad, h - pad - 32, inner, 11, C.gold);
         }
         if (dialog.type === 'drop') {
             const item = dialog.item, g = gear(item), old = this.game.loadout[g.slot], next = { ...this.game.loadout, [g.slot]: item }, cw = (inner - gap) / 2, ch = Math.min(325, footer - body - (short ? 42 : 65));
@@ -346,9 +354,9 @@ export class GameDialogs {
             this.text(card, u?.icon || '✚', 20, 30, 197, 49, C.gold);
             this.text(card, u ? `${(this.game.levels[id] || 0) + 1} / ${u.max}` : '恢复', 20, 113, 197, 11, C.gold);
             this.text(card, u?.name || '生命回响', 20, 148, 197, 20);
-            this.text(card, u?.note || '恢复 30% 最大生命。', 20, 197, 197, 12, C.muted);
+            this.text(card, u?.note || this.healDescription(), 20, 197, 197, 12, C.muted);
         });
-        this.text(p, '选择后立即生效。武器专属强化随对应武器启用。', 32, 521, 730, 12, C.muted);
+        this.text(p, this.upgradeStatus(), 32, 521, 730, 12, C.gold);
     }
     private dropDialog(p: any, item: Item): void {
         const g = gear(item), old = this.game.loadout[g.slot], next = { ...this.game.loadout, [g.slot]: item };

@@ -17,6 +17,7 @@ export interface ProgressionState {
     levels: Record<string, number>;
     xp: number;
     level: number;
+    upgradeFeedback: string;
 }
 export interface ProgressionHooks {
     groundFragments(): string[];
@@ -61,9 +62,12 @@ export class RunProgression {
         if (state.dialog?.type !== 'upgrade' || !state.dialog.choices.includes(id))
             return;
         if (id === 'heal') {
+            const before = state.player.hp;
             state.player.hp = Math.min(state.stats.hp, state.player.hp + state.stats.hp * .3);
+            state.upgradeFeedback = state.player.hp > before ? `已恢复 ${Math.round(state.player.hp - before)} 点生命` : '生命已满，本次奖励已领取';
         }
         else {
+            state.upgradeFeedback = '';
             state.levels[id] = (state.levels[id] || 0) + 1;
             state.stats = resolveStats(state.loadout, state.levels);
             if (id === 'vital')
@@ -71,6 +75,8 @@ export class RunProgression {
         }
         this.hooks.beep(850, .12);
         this.hooks.close();
+        if (state.upgradeFeedback)
+            this.hooks.onToast(state.upgradeFeedback);
     }
     /** 穿戴和分解都可能产生升级，必须先结算后关闭比较面板。 */
     takeDrop(accept: boolean): void {

@@ -325,6 +325,23 @@ test('queued upgrades recalculate available choices after previous selection',()
   // Select power if it was not randomly drawn, using an explicit currently offered card.
   g.dialog.choices=['power'];g.chooseUpgrade('power');assert.equal(g.levels.power,5);assert.equal(g.dialog.type,'upgrade');assert.ok(!g.dialog.choices.includes('power'));
 });
+test('identical queued healing cards refresh, report full health and each consume exactly one reward',async()=>{
+ const {UPGRADES}=await import('../dist/progression/config.js');
+ const g=create();g.levels=Object.fromEntries(UPGRADES.map(u=>[u.id,u.max]));g.stats.hp=100;g.player.hp=70;
+ const ui=new GameUI(g);ui.mobile=true;Laya.stage.width=393;Laya.stage.height=852;Laya.stage.emit('resize');
+ for(let i=0;i<3;i++)g.show({type:'upgrade',choices:[]});ui.update();
+ const first=find(ui.root,'upgrade-heal');assert.ok(first);assert.equal(g.flow.pendingCount,2);
+ first.emit('click');assert.equal(g.player.hp,100);assert.equal(g.flow.pendingCount,1);assert.equal(first.destroyed,true);
+ const second=find(ui.root,'upgrade-heal');assert.notEqual(first,second);assert.equal(g.upgradeFeedback,'已恢复 30 点生命');
+ const texts=n=>[n.text||'',...n.children.flatMap(texts)];
+ assert.ok(texts(ui.root).some(t=>t.includes('生命已满')));
+ assert.ok(texts(ui.root).some(t=>t.includes('待领取 2')));
+ second.emit('click');assert.equal(g.flow.pendingCount,0);assert.equal(g.player.hp,100);
+ assert.equal(g.upgradeFeedback,'生命已满，本次奖励已领取');
+ find(ui.root,'upgrade-heal').emit('click');assert.equal(g.dialog,null);assert.equal(g.gate.paused,false);
+ assert.equal(ui.toastNode.visible,true);assert.equal(ui.toastLabel.text,g.upgradeFeedback);
+});
+
 test('elite guarantees a wearable drop and ordinary deaths yield experience',()=>{
   const g=create();g.eliteIndex=1;g.spawnEnemy(3);const e=g.enemies.at(-1);g.hit(e, 10000);assert.ok(g.drops.some(d=>d.item));assert.ok(g.drops.some(d=>d.xp>0));
 });

@@ -1,6 +1,6 @@
 # 遗迹回响 · Relic Echo
 
-LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.7`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
+LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.8`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
 
 ## 本地运行与 GitHub Pages
 
@@ -9,6 +9,12 @@ LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.7`�
 项目已包含 [GitHub Pages 工作流](.github/workflows/pages.yml)。上传到自己的 GitHub 仓库，在 **Settings → Pages → Source** 选择 **GitHub Actions**；向 main/master 推送或手动运行工作流，构建和测试通过后自动发布。所有资源使用相对路径，支持 `https://用户名.github.io/仓库名/` 和账号主页站点。
 
 本地生成发布包：`npm run build:pages`。模拟仓库子路径：`npm run preview:pages -- --port 8081`，访问 `http://localhost:8081/relic-echo/`。详见[开发与发布说明](docs/开发与发布.md)。仓库为 `huckhuck12/relic-echo`，本地修改需推送后等待 GitHub Actions 部署成功才会更新线上站点。
+
+## 0.10.8 回血奖励反馈与 Boss 预警层级
+
+- 连续相同回血奖励以当前弹窗实例刷新，不再因 JSON 内容相同复用上一张卡；显示实际恢复量、生命已满状态和剩余待领取奖励数量。最后一张领取后恢复战斗并显示反馈。
+- Boss 地面重击的填充、外圈、收缩计时圈和落点标记全部移至地面效果层，低于角色/敌人，预警半径与伤害逻辑保持一致。
+- 179 项回归测试通过；真实引擎浏览器验证卡片不同位置触控，以及横竖屏连续三张满血回血卡全部领取后返回战斗。
 
 ## 0.10.7 左下浮动摇杆
 

@@ -122,6 +122,7 @@ export class Game {
     time = 0;
     xp = 0;
     level = 1;
+    upgradeFeedback = '';
     kills = 0;
     damage = 0;
     quality: VisualQuality = 'standard';
@@ -236,6 +237,7 @@ export class Game {
         this.runGeneration++;
         this.reviveUsed = false;
         this.reviveMessage = '';
+        this.upgradeFeedback = '';
         this.performanceMonitor.reset();
         this.input.clearMouse();
         for (const e of this.enemies)

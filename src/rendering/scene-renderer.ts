@@ -315,15 +315,15 @@ export class SceneRenderer {
                 drawChargeWarning(floor, e);
             }
             if (e.wind > 0 && e.kind === 4 && e.charge === 1) {
-                this.ellipse(g, e.dx, e.dy, 145, '#6e423d', '#e6a083');
-                this.ellipse(g, e.dx, e.dy, 145 * (1 - enemyWindProgress(e)), null, '#ffe0a2');
+                this.ellipse(floor, e.dx, e.dy, 145, '#6e423d', '#e6a083');
+                this.ellipse(floor, e.dx, e.dy, 145 * (1 - enemyWindProgress(e)), null, '#ffe0a2');
                 const target = project(e.dx, e.dy);
                 // 四角向落点收拢，地面实线仍表示真实 145 世界单位伤害范围。
                 const inset = 18 + 30 * (1 - enemyWindProgress(e));
                 for (const side of [-1, 1])
-                    g.drawPoly(target.x + side * inset, target.y - inset * .5, [0, -7, side * 7, 0, 0, 7, -side * 7, 0], null, '#ffe0a2', 1.5);
-                g.drawLine(target.x - 10, target.y, target.x + 10, target.y, '#ffe5bb', 2);
-                g.drawLine(target.x, target.y - 6, target.x, target.y + 6, '#ffe5bb', 2);
+                    floor.drawPoly(target.x + side * inset, target.y - inset * .5, [0, -7, side * 7, 0, 0, 7, -side * 7, 0], null, '#ffe0a2', 1.5);
+                floor.drawLine(target.x - 10, target.y, target.x + 10, target.y, '#ffe5bb', 2);
+                floor.drawLine(target.x, target.y - 6, target.x, target.y + 6, '#ffe5bb', 2);
             }
         }
     }

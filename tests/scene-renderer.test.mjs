@@ -90,6 +90,19 @@ test('orange charger route and arrow render below actors while health bars remai
  enemy.wind=0;scene.render(state);assert.equal(floor.filter(isRoute).length,0);
 });
 
+test('Boss ground slam fill, shrinking ring and target markers all stay below player and clear on release',()=>{
+ const {scene,state,enemy}=fixture();Object.assign(enemy,{kind:4,wind:.4,charge:1,dx:0,dy:0,radius:58});
+ const floor=[],overlay=[];
+ for(const [graphics,commands]of [[scene.groundEffects.graphics,floor],[scene.effects.graphics,overlay]]){
+  graphics.clear=()=>{commands.length=0;};
+  for(const name of ['drawPoly','drawLine','drawRect','drawCircle'])graphics[name]=(...args)=>commands.push({name,args});
+ }
+ const warning=c=>c.args.some(v=>['#6e423d','#e6a083','#ffe0a2','#ffe5bb'].includes(v));
+ scene.render(state);assert.equal(floor.filter(warning).length,6);assert.equal(overlay.filter(warning).length,0);
+ assert.ok(scene.world.children.indexOf(scene.groundEffects)<scene.world.children.indexOf(scene.actors));
+ enemy.wind=0;scene.render(state);assert.equal(floor.filter(warning).length,0);
+});
+
 test('cast poses cache within a phase, advance when standing, and cancel visually on weapon change',()=>{
  const {scene,state}=fixture();const player={...state.player,castTime:.28,castWeapon:'storm'};
  let paints=0;scene.playerNode.graphics.clear=()=>paints++;

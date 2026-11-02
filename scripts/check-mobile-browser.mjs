@@ -95,6 +95,38 @@ try{
   }
   const shot=await send('Page.captureScreenshot',{format:'png'});
   await writeFile(resolve(directory,`${width}x${height}-battle.png`),Buffer.from(shot.data,'base64'));
+  // Exercise the actual card surface, including icon/title/description.
+  if(touch)for(const [u,v]of [[.15,.25],[.5,.5],[.85,.75]]){
+   const card=await evaluate(`import('/dist/main.js').then(({game,ui})=>{
+    game.show({type:'upgrade',choices:[]});
+    const id=game.dialog.choices[0];
+    const find=n=>{if(n.name==='upgrade-'+id)return n;for(let i=0;i<n.numChildren;i++){const found=find(n.getChildAt(i));if(found)return found;}};
+    const node=find(ui.root),p=node.localToGlobal(new Laya.Point(node.width*${u},node.height*${v}));
+    return {id,before:game.levels[id]||0,x:p.x,y:p.y};
+   })`);
+   await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{id:1,x:card.x,y:card.y}]});
+   await new Promise(r=>setTimeout(r,200));
+   await send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{id:1,x:card.x+3,y:card.y+3}]});
+   await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+   const after=await evaluate(`import('/dist/main.js').then(({game})=>({level:game.levels[${JSON.stringify(card.id)}]||0,dialog:game.dialog?.type}))`);
+   assert.equal(after.level,card.before+1,`Card ${card.id} responds at ${u},${v}`);
+  }
+  if(touch){
+   await evaluate(`(async()=>{const {game,ui}=await import('/dist/main.js'),{UPGRADES}=await import('/dist/progression/config.js');
+    game.levels=Object.fromEntries(UPGRADES.map(u=>[u.id,u.max]));game.player.hp=game.stats.hp;
+    for(let i=0;i<3;i++)game.show({type:'upgrade',choices:[]});ui.update();})()`);
+   for(let remaining=3;remaining>0;remaining--){
+    const card=await evaluate(`import('/dist/main.js').then(({game,ui})=>{
+     const find=n=>{if(n.name==='upgrade-heal')return n;for(let i=0;i<n.numChildren;i++){const r=find(n.getChildAt(i));if(r)return r;}};
+     const n=find(ui.root),p=n.localToGlobal(new Laya.Point(n.width*.5,n.height*.5));return {x:p.x,y:p.y,pending:game.flow.pendingCount};})`);
+    assert.equal(card.pending,remaining-1);
+    await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:card.x,y:card.y}]});
+    await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+    const outcome=await evaluate(`import('/dist/main.js').then(({game})=>({dialog:game.dialog?.type,pending:game.flow.pendingCount,feedback:game.upgradeFeedback}))`);
+    assert.equal(outcome.dialog,remaining>1?'upgrade':undefined);
+    assert.equal(outcome.feedback,'生命已满，本次奖励已领取');
+   }
+  }
   assert.equal(errors.length,0,JSON.stringify(errors));
   reports.push({width,height,dpr,touch,initial,battle});
  }
