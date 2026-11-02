@@ -1,6 +1,6 @@
 # 遗迹回响 · Relic Echo
 
-LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.11.0`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
+LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.11.1`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
 
 ## 本地运行与 GitHub Pages
 
@@ -9,6 +9,13 @@ LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.11.0`�
 项目已包含 [GitHub Pages 工作流](.github/workflows/pages.yml)。上传到自己的 GitHub 仓库，在 **Settings → Pages → Source** 选择 **GitHub Actions**；向 main/master 推送或手动运行工作流，构建和测试通过后自动发布。所有资源使用相对路径，支持 `https://用户名.github.io/仓库名/` 和账号主页站点。
 
 本地生成发布包：`npm run build:pages`。模拟仓库子路径：`npm run preview:pages -- --port 8081`，访问 `http://localhost:8081/relic-echo/`。详见[开发与发布说明](docs/开发与发布.md)。仓库为 `huckhuck12/relic-echo`，本地修改需推送后等待 GitHub Actions 部署成功才会更新线上站点。
+
+## 0.11.1 手机触控连续性与密集怪潮开销
+
+- 奖励卡片只暂停移动，保留仍按住的摇杆触点，最后一张领取后继续；抬指、失焦、暂停、换局和旋转仍释放。忽略其他触点合成的 mouseout，避免选卡和飘字后误清移动。
+- 场景及池化伤害数字不参与触控命中，选卡后测试底盘以外的浮动区域；沿用真实 SDK 触点而非仅调用按钮回调。
+- 微信渲染像素比最高 2，逻辑尺寸和安全区不变；缓存静态地面向量命令，复用有界的怪物形状数据，降低绘制及怪潮分配开销。
+- 增加 `node scripts/check-mobile-browser.mjs --wechat --stress`，比较 240 怪物、208 初始弹道、170 掉落的缓存开销。模拟测试不能代替 iPhone 真机性能验收。
 
 ## 0.11.0 微信小游戏最小包与双端平台接口
 

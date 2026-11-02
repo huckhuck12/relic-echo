@@ -21,6 +21,9 @@ test('WeChat engine bridge provides native 2D bindings without browser globals',
   createCanvas:()=>{const canvas=new NativeCanvas();canvases.push(canvas);return canvas;}};
  for(const name of ['WindowResize','Hide','Show','TouchStart','TouchMove','TouchEnd','TouchCancel'])wx['on'+name]=fn=>handlers.set(name,fn);
  const root=sandbox.module.exports(wx,{});
+ assert.equal(root.devicePixelRatio,2);
+ assert.equal(root.wx.getSystemInfoSync().pixelRatio,2,'Only engine rendering is capped');
+ assert.equal(wx.getSystemInfoSync().pixelRatio,3,'Native SDK coordinates/info remain intact');
  assert.deepEqual(frameRateRequests,[60],'Request 60 FPS before engine startup');
  handlers.get('Show')();
  assert.deepEqual(frameRateRequests,[60,60],'Restore target after returning to foreground');

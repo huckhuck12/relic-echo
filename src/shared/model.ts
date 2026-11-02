@@ -84,6 +84,7 @@ export class PauseGate {
     remove(reason: string): void { this.reasons.delete(reason); }
     clear(): void { this.reasons.clear(); }
     get paused(): boolean { return this.reasons.size > 0; }
+    pausedOnlyBy(reason: string): boolean { return this.reasons.size === 1 && this.reasons.has(reason); }
 }
 /** 复用桶数组的空间网格；查询只遍历相交网格，不能替换成每帧全敌人扫描。
  * nearest 同距时保留先遇到的对象，以稳定技能选敌和固定种子回归。

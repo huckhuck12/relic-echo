@@ -165,6 +165,27 @@ test('floating stick starts neutral anywhere in its left zone, releases and relo
  g.togglePause();area.emit('mousedown',{touchId:9});assert.equal(stick.stickTouch,null);
 });
 
+test('held floating stick survives reward cards and transient toasts but releases on lift or pause',()=>{
+ const g=create(),ui=new GameUI(g);ui.mobile=true;
+ Laya.stage.width=393;Laya.stage.height=852;Laya.stage.emit('resize');
+ const stick=ui.hudView.stick;
+ const hold=()=>{Laya.stage.mouseX=150;Laya.stage.mouseY=540;stick.activation.emit('mousedown',{touchId:7});Laya.stage.mouseX=194;Laya.stage.emit('mousemove',{touchId:7});};
+ hold();const direction={...g.input.stick};assert.ok(direction.x>.9);
+ g.onToast('怪潮涌入');g.onChange();assert.equal(stick.stickTouch,7);assert.deepEqual(g.input.stick,direction);
+ g.addXP(10);assert.equal(g.dialog.type,'upgrade');assert.equal(stick.stickTouch,7);assert.deepEqual(g.input.stick,{x:0,y:0});
+ Laya.stage.emit('mouseout',{target:Laya.stage,touchId:1,nativeEvent:{type:'touchend'}});
+ assert.equal(stick.stickTouch,7,'Another finger ending must not release the stick');
+ Laya.stage.emit('mousemove',{touchId:7});assert.equal(stick.stickTouch,7);assert.deepEqual(g.input.stick,{x:0,y:0});
+ g.claimReward(g.flow.dialogId,{type:'upgrade',id:g.dialog.choices[0]});
+ assert.equal(g.dialog,null);assert.equal(stick.stickTouch,7);assert.deepEqual(g.input.stick,direction);
+ g.addXP(100);Laya.stage.emit('mouseup',{touchId:7});
+ while(g.dialog?.type==='upgrade')g.claimReward(g.flow.dialogId,{type:'upgrade',id:g.dialog.choices[0]});
+ assert.equal(stick.stickTouch,null);assert.deepEqual(g.input.stick,{x:0,y:0});
+ hold();assert.equal(stick.stickTouch,7);g.togglePause();assert.equal(stick.stickTouch,null);
+ g.close();hold();g.addXP(100);assert.equal(stick.stickTouch,7);
+ g.gate.add('focus');g.onChange();assert.equal(stick.stickTouch,null,'Losing focus during a reward must discard the held finger');
+});
+
 test('touching the battlefield never creates a persistent desktop mouse destination',()=>{
  const g=create();g.render();Laya.stage.mouseX=300;Laya.stage.mouseY=300;
  for(const type of ['touchstart','touchmove']){

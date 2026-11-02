@@ -5,6 +5,7 @@ import { QUALITY_COLOR, WEAPONS } from '../progression/config.js';
 import type { Loadout } from '../shared/model.js';
 import { project, unproject, clamp } from '../shared/model.js';
 import { avatarShapes, drawShapes, weaponOf } from './appearance.js';
+import type { Shape } from './appearance.js';
 import { enemyShapes, shade } from './voxel.js';
 import { castFrame } from './player-pose.js';
 import { enemyArtPose } from '../enemies/enemy-actions.js';
@@ -62,10 +63,12 @@ export class SceneRenderer {
     readonly playerNode: any;
     private readonly pillarNodes: any[];
     private lastAvatar = '';
+    private readonly enemyShapeCache = new Map<string, Shape[]>();
     get avatarKey(): string { return this.lastAvatar; }
     /** 调用前必须完成 Laya.init；这里只构建节点与静态地图。 */
     constructor(private readonly pillars: readonly Point[]) {
         this.world = new Laya.Sprite();
+        this.world.mouseEnabled = false;
         this.ground = new Laya.Sprite();
         this.groundEffects = new Laya.Sprite();
         this.actors = new Laya.Sprite();
@@ -78,6 +81,8 @@ export class SceneRenderer {
         this.world.addChild(this.effects);
         this.actors.addChild(this.playerNode);
         this.pillarNodes = buildWorldMap(this.ground, this.actors, pillars);
+        // Static vector commands can be reused without a giant bitmap texture.
+        this.ground.cacheAs = 'normal';
     }
     /** 鼠标反投影复用当前相机，缩放、震屏和横竖屏变化后仍与画面一致。 */
     screenToWorld(x: number, y: number): Point {
@@ -100,13 +105,21 @@ export class SceneRenderer {
     }
     /** 受击、减速状态或画质变化才重建形状，避免每帧重画方块面片。 */
     paintEnemy(e: Enemy, buffs: Pick<BuffRuntime<Enemy>, 'speedMultiplier'>, visuals: VisualSettings): void {
-        const art = enemyArtPose(e), frozen = buffs.speedMultiplier(e) < 1, shapes = enemyShapes(e.kind, e.flash > 0, visuals.detail, art);
-        if (frozen && e.flash <= 0)
-            for (let i = 1; i < shapes.length; i++) {
-                const shape = shapes[i];
-                if (shape.type === 'poly' || shape.p[2] > 10)
-                    shape.fill = shade('#8bcedf', shape.type === 'poly' ? .8 : 1);
-            }
+        const art = enemyArtPose(e), frozen = buffs.speedMultiplier(e) < 1;
+        const key = `${e.kind}:${e.flash > 0}:${frozen}:${visuals.detail}:${art.key}`;
+        let shapes = this.enemyShapeCache.get(key);
+        if (!shapes) {
+            shapes = enemyShapes(e.kind, e.flash > 0, visuals.detail, art);
+            if (frozen && e.flash <= 0)
+                for (let i = 1; i < shapes.length; i++) {
+                    const shape = shapes[i];
+                    if (shape.type === 'poly' || shape.p[2] > 10)
+                        shape.fill = shade('#8bcedf', shape.type === 'poly' ? .8 : 1);
+                }
+            if (this.enemyShapeCache.size >= 256)
+                this.enemyShapeCache.delete(this.enemyShapeCache.keys().next().value!);
+            this.enemyShapeCache.set(key, shapes);
+        }
         drawShapes(e.node.graphics, shapes);
         e.flashPaint = e.flash > 0;
         e.icePaint = frozen;

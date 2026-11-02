@@ -109,6 +109,7 @@ export class GameUI {
         this.update();
     }
     private update(): void {
+        this.hudView.stick.sync();
         const s = this.game.snapshot();
         this.hudView.update(s);
         this.performancePanel.visible = this.game.showPerformance && this.game.mode === 'battle' && !this.game.dialog;
@@ -124,7 +125,6 @@ export class GameUI {
         if (this.modalDirty || this.modalRevision !== this.game.flow.revision) {
             this.modalDirty = false;
             this.modalRevision = this.game.flow.revision;
-            this.hudView.stick.release();
             this.dialogRenderer.render(this.game.dialog, this.layout, this.mobile);
         }
     }

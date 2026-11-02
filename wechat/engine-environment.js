@@ -56,6 +56,13 @@ module.exports = function installEngineEnvironment(wx, timers) {
     return target;
   }
   const info = wx.getSystemInfoSync();
+  // Keep gameplay/UI in logical pixels, while limiting the native render cost.
+  const renderRatio = value => Math.min(2, Math.max(1, value || 1));
+  const engineAPI = new Proxy(wx, {get(target,key){
+    if(key==='getSystemInfoSync')return ()=>{const value=target.getSystemInfoSync();return {...value,pixelRatio:renderRatio(value.pixelRatio)};};
+    const value=Reflect.get(target,key,target);
+    return typeof value==='function'?value.bind(target):value;
+  }});
   const canvas = wx.createCanvas(); // First canvas is the visible game surface.
   // MiniAdpter exposes a constructor on its window facade, but the old core
   // also uses bare constructor names. Both must share the native prototype.
@@ -79,10 +86,10 @@ module.exports = function installEngineEnvironment(wx, timers) {
   doc.getElementById = id => id===canvas.id?canvas:null;
   const ios = /ios/i.test(info.platform || '');
   Object.assign(root, timers, {
-    window:root,self:root,top:root,parent:root,document:doc,canvas,wx,
+    window:root,self:root,top:root,parent:root,document:doc,canvas,wx:engineAPI,
     navigator:{userAgent:ios?'MiniGame Mobile MicroMessenger (iPhone; CPU iPhone OS 16_0 like Mac OS X)':'MiniGame Mobile MicroMessenger Android',platform:info.platform || 'wechat',maxTouchPoints:5,geolocation:{}},
     location:{href:'game.js',pathname:'game.js',search:'',protocol:'game:'},
-    devicePixelRatio:info.pixelRatio || 1,screen:{width:info.screenWidth,height:info.screenHeight},orientation:0,
+    devicePixelRatio:renderRatio(info.pixelRatio),screen:{width:info.screenWidth,height:info.screenHeight},orientation:0,
     localStorage:{getItem:key=>wx.getStorageSync(key)||null,setItem:(key,value)=>wx.setStorageSync(key,value),removeItem:key=>wx.removeStorageSync(key),clear:()=>wx.clearStorageSync()},
     Image:function(){return wx.createImage();},
     CanvasRenderingContext2D:CanvasContext,
@@ -93,7 +100,7 @@ module.exports = function installEngineEnvironment(wx, timers) {
   events(root);
   function resize() {
     const w=wx.getWindowInfo?.() || wx.getSystemInfoSync();
-    root.innerWidth=w.windowWidth;root.innerHeight=w.windowHeight;root.devicePixelRatio=w.pixelRatio || 1;
+    root.innerWidth=w.windowWidth;root.innerHeight=w.windowHeight;root.devicePixelRatio=renderRatio(w.pixelRatio);
     doc.body.clientWidth=doc.documentElement.clientWidth=w.windowWidth;
     doc.body.clientHeight=doc.documentElement.clientHeight=w.windowHeight;
     root.dispatchEvent({type:'resize'});

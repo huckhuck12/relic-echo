@@ -12,12 +12,14 @@ export class TouchStick {
     stickTouch: number | null = null;
     stickOrigin = { x: 0, y: 0 };
     private home = { x: 0, y: 0 };
+    private direction = { x: 0, y: 0 };
+    private suspended = false;
     private limits = { left: 0, right: 0, top: 0, bottom: 0 };
     constructor(private readonly game: Game, private readonly controls: UIControls, private readonly root: LayaSprite) {
         Laya.stage.on(Laya.Event.MOUSE_MOVE, this, this.dragStick);
         Laya.stage.on(Laya.Event.MOUSE_UP, this, this.release);
         Laya.stage.on(Laya.Event.MOUSE_OUT, this, (e: LayaEvent) => {
-            if (e.target === Laya.stage)
+            if (e.target === Laya.stage && e.nativeEvent?.type === 'mouseout')
                 this.release();
         });
     }
@@ -71,7 +73,7 @@ export class TouchStick {
     private dragStick(e: LayaEvent): void {
         if (this.stickTouch === null || (e.touchId ?? 0) !== this.stickTouch)
             return;
-        if (this.game.gate.paused) {
+        if (this.game.gate.paused && !this.rewardOpen()) {
             this.release();
             return;
         }
@@ -79,12 +81,34 @@ export class TouchStick {
         const radius = TOUCH_UI.stickSize / 2;
         this.knob.pos(radius + dx * ratio, radius + dy * ratio);
         // 中心留 6px 死区，避免拇指自然抖动触发满速移动；超出后按屏幕方向走。
-        this.game.setStick(d <= TOUCH_UI.stickDeadZone ? 0 : dx * ratio / TOUCH_UI.stickTravel, d <= TOUCH_UI.stickDeadZone ? 0 : dy * ratio / TOUCH_UI.stickTravel);
+        this.direction = { x: d <= TOUCH_UI.stickDeadZone ? 0 : dx * ratio / TOUCH_UI.stickTravel, y: d <= TOUCH_UI.stickDeadZone ? 0 : dy * ratio / TOUCH_UI.stickTravel };
+        this.game.setStick(this.game.gate.paused ? 0 : this.direction.x, this.game.gate.paused ? 0 : this.direction.y);
+    }
+    private rewardOpen(): boolean {
+        return this.game.gate.pausedOnlyBy('dialog') && !!this.game.dialog && ['upgrade', 'fragment', 'drop'].includes(this.game.dialog.type);
+    }
+    /** 奖励只暂停移动，仍按住的左指在最后一张卡领取后继续；失焦/菜单必须释放。 */
+    sync(): void {
+        if (this.game.mode !== 'battle' || (this.game.gate.paused && !this.rewardOpen())) {
+            this.release();
+            return;
+        }
+        if (this.game.gate.paused) {
+            this.suspended = true;
+            this.game.setStick(0, 0);
+        }
+        else if (this.suspended) {
+            this.suspended = false;
+            if (this.stickTouch !== null)
+                this.game.setStick(this.direction.x, this.direction.y);
+        }
     }
     release(e?: LayaEvent): void {
         if (e && this.stickTouch !== null && (e.touchId ?? 0) !== this.stickTouch)
             return;
         this.stickTouch = null;
+        this.direction = { x: 0, y: 0 };
+        this.suspended = false;
         this.game.setStick(0, 0);
         if (this.knob && !this.knob.destroyed)
             this.knob.pos(TOUCH_UI.stickSize / 2, TOUCH_UI.stickSize / 2);

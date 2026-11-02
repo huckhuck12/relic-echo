@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
+import {checkWechatStress} from './wechat-stress-check.mjs';
 export async function checkWechatBrowser({send,evaluate,origin,directory}){
  await send('Emulation.setDeviceMetricsOverride',{width:393,height:852,deviceScaleFactor:3,mobile:true});
  await send('Page.navigate',{url:origin+'/bench/wechat-smoke.html'});
@@ -18,7 +19,7 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  assert.equal(await evaluate(`(()=>{const r=wechatTest.root,c=r.wx.createCanvas().getContext('2d'),pixels=new r.ImageData(2,3);return r.CanvasRenderingContext2D.prototype===Object.getPrototypeOf(c)&&typeof c.drawTexture==='function'&&pixels.width===2&&pixels.height===3&&Number.isFinite(r.performance.now());})()`),true,'Native 2D prototype and pixel allocation work without host DOM constructors');
  const initial=await evaluate(`(()=>{const t=wechatTest,{game,ui}=t.app;return{dialog:game.dialog?.type,stage:[t.root.Laya.stage.width,t.root.Laya.stage.height],mobile:ui.mobile,top:ui.root.y,adapter:!!t.root.Laya.MiniAdpter?._inited,canvas:[t.root.canvas.width,t.root.canvas.height]};})()`);
  assert.equal(initial.dialog,'start');assert.equal(initial.mobile,true);assert.equal(initial.adapter,true);assert.equal(initial.top,88);
- assert.deepEqual(initial.stage,[393,852]);assert.deepEqual(initial.canvas,[1179,2556]);
+ assert.deepEqual(initial.stage,[393,852]);assert.deepEqual(initial.canvas,[786,1704]);
  const screenRect=await evaluate(`(()=>{const b=Element.prototype.getBoundingClientRect.call(document.querySelector('canvas'));return {x:b.x,y:b.y,width:b.width,height:b.height};})()`);
  assert.deepEqual(screenRect,{x:0,y:0,width:393,height:852},'SDK already fits the canvas to the screen; engine CSS must not shrink it again');
  const screenshot=async name=>{const shot=await send('Page.captureScreenshot',{format:'png'});await writeFile(resolve(directory,'wechat-'+name+'.png'),Buffer.from(shot.data,'base64'));};
@@ -44,15 +45,25 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  await new Promise(r=>setTimeout(r,2000));
  const performance=await evaluate(`wechatTest.app.game.performanceSnapshot()`);
  assert.ok(performance.samples>0,'Collect actual battle frame intervals rather than treating requested FPS as measured FPS');
+ const beforeReward=await evaluate(`(()=>{const t=wechatTest,s=t.app.ui.hudView.stick,a=s.activation,p=a.localToGlobal(new t.root.Laya.Point(a.width*.8,a.height*.15));t.heldStick={identifier:7,clientX:p.x+44,clientY:p.y};t.touch('Start',[{...t.heldStick,clientX:p.x}]);t.touch('Move',[t.heldStick]);const g=t.app.game;g.onToast('怪潮涌入');const n=g.acquire(true);n.text='999';g.labels.push({node:n,x:g.player.x,y:g.player.y,rise:48,life:.65});g.render();g.onChange();return{owner:s.stickTouch,direction:g.input.stick,decorative:n.mouseEnabled};})()`);
+ assert.equal(beforeReward.owner,7);assert.ok(beforeReward.direction.x>.9);assert.equal(beforeReward.decorative,false);
  await evaluate(`(()=>{const t=wechatTest,{UPGRADES}=t.load('/app/progression/config.js'),g=t.app.game;g.levels=Object.fromEntries(UPGRADES.map(u=>[u.id,u.max]));for(let i=0;i<3;i++)g.show({type:'upgrade',choices:[]});t.app.ui.update();})()`);
  for(let i=0;i<3;i++){
-  const result=await evaluate(`(()=>{const t=wechatTest,g=t.app.game,id=g.flow.dialogId;t.tap('upgrade-heal');return{pending:g.flow.pendingCount,dialog:g.dialog?.type,stale:g.claimReward(id,{type:'upgrade',id:'heal'})};})()`);
+  const result=await evaluate(`(()=>{const t=wechatTest,g=t.app.game,id=g.flow.dialogId;t.tap('upgrade-heal',[t.heldStick]);return{pending:g.flow.pendingCount,dialog:g.dialog?.type,owner:t.app.ui.hudView.stick.stickTouch,stick:g.input.stick,stale:g.claimReward(id,{type:'upgrade',id:'heal'})};})()`);
   assert.equal(result.pending,Math.max(0,1-i));assert.equal(result.dialog,i<2?'upgrade':undefined);assert.equal(result.stale,false);
+  assert.equal(result.owner,7,'Left thumb stays owned while right thumb claims cards');
+  assert.equal(result.stick.x,i<2?0:1,'Movement stays paused until the final card, then resumes without lifting');
+ }
+ await evaluate(`wechatTest.touch('End',[],[wechatTest.heldStick])`);
+ for(const fraction of [.12,.85]){
+  const owner=await evaluate(`(()=>{const t=wechatTest,s=t.app.ui.hudView.stick,a=s.activation,p=a.localToGlobal(new t.root.Laya.Point(a.width*.75,a.height*${fraction})),finger={identifier:9,clientX:p.x,clientY:p.y};t.touch('Start',[finger]);t.touch('Move',[{...finger,clientX:p.x+44}]);const result={owner:s.stickTouch,x:t.app.game.input.stick.x};t.touch('End',[],[finger]);return result;})()`);
+  assert.equal(owner.owner,9,'Floating activation area remains interactive after rewards');assert.ok(owner.x>.9);
  }
  await evaluate(`wechatTest.resize(393,760)`);await new Promise(r=>setTimeout(r,200));
  assert.equal(await evaluate(`wechatTest.root.Laya.stage.height`),760);
  await screenshot('battle');
  const death=await evaluate(`(()=>{const g=wechatTest.app.game;g.training=false;g.player.inv=0;g.hurt(999999);return{dialog:g.dialog?.type,revival:g.revival.provider.available};})()`);
  assert.equal(death.dialog,'result');assert.equal(death.revival,false);
- return {kind:'wechat-package-in-browser',initial,battle,dual,paused,death,performance};
+ const stress=process.argv.includes('--stress')?await checkWechatStress({evaluate,directory}):undefined;
+ return {kind:'wechat-package-in-browser',initial,battle,dual,paused,death,performance,stress};
 }

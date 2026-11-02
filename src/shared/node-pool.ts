@@ -11,6 +11,7 @@ export class NodePool {
     acquire(text = false): any {
         const node = text ? this.texts.pop() || new Laya.Text() : this.sprites.pop() || new Laya.Sprite();
         node.visible = true;
+        node.mouseEnabled = false;
         node.alpha = 1;
         node.scale(1, 1);
         node.rotation = 0;

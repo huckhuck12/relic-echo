@@ -44,7 +44,7 @@ export async function buildWechat({appid=process.env.WECHAT_APPID || 'touristapp
   const project=JSON.parse(await readFile(join(root,'wechat/project.config.json'),'utf8'));project.appid=appid;
   await writeFile(join(wechatRoot,'project.config.json'),JSON.stringify(project,null,2)+'\n');
   const webgl=libs['laya.webgl.js'],adapter=libs['laya.wxmini.js'];
-  const engineBindings='var window=GameGlobal.__relicEngineWindow, document=window.document, laya=window.laya||(window.laya={});\n'
+  const engineBindings='var window=GameGlobal.__relicEngineWindow, document=window.document, wx=window.wx, laya=window.laya||(window.laya={});\n'
     +'var CanvasRenderingContext2D=window.CanvasRenderingContext2D, ImageData=window.ImageData, performance=window.performance;\n';
   await writeFile(join(wechatRoot,'engine.js'),engineBindings+core+'\n'+webgl+'\n'+adapter);
   await cp(join(root,'vendor/LICENSE-LayaAir.txt'),join(wechatRoot,'LICENSE-LayaAir.txt'));

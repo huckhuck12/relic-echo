@@ -27,6 +27,19 @@ test('standalone renderer updates display nodes without changing frozen world st
   assert.deepEqual(childrenOf(scene.world),[scene.ground,scene.groundEffects,scene.actors,scene.effects]);
 });
 
+test('cached enemy shapes keep normal, frozen, flash and quality appearances isolated',()=>{
+ const {scene,enemy}=fixture();const commands=[];
+ for(const name of ['drawPoly','drawRect','drawCircle'])enemy.node.graphics[name]=(...args)=>commands.push({name,args});
+ const paint=(slow,flash,quality)=>{commands.length=0;enemy.flash=flash;scene.paintEnemy(enemy,{speedMultiplier:()=>slow},quality);return JSON.stringify(commands);};
+ const normal=paint(1,0,QUALITY_PRESETS.standard);
+ const frozen=paint(.5,0,QUALITY_PRESETS.standard);assert.notEqual(frozen,normal);
+ const hit=paint(.5,.1,QUALITY_PRESETS.standard);assert.notEqual(hit,frozen);
+ paint(1,0,QUALITY_PRESETS.high);
+ assert.equal(paint(1,0,QUALITY_PRESETS.standard),normal);
+ assert.equal(paint(.5,0,QUALITY_PRESETS.standard),frozen);
+ assert.equal(scene.world.mouseEnabled,false,'Decorative world nodes are excluded from input hit testing');
+});
+
 test('renderer reuses its map across frames, reads replacement players and shares the live camera transform with input',()=>{
   const {scene,state}=fixture();const ground=scene.ground,children=[...childrenOf(ground)];
   for(const [w,h]of [[390,844],[844,390],[1280,720]]){
