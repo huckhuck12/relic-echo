@@ -1,3 +1,4 @@
+import { platform } from '../platform/runtime.js';
 import { ELEMENTS } from '../buffs/buffs.js';
 import type { BuffRuntime } from '../buffs/buffs.js';
 import { QUALITY_COLOR, WEAPONS } from '../progression/config.js';
@@ -152,7 +153,7 @@ export class SceneRenderer {
         const pp = project(p.x, p.y);
         this.playerNode.pos(pp.x, pp.y);
         this.depth(this.playerNode, p.x + p.y);
-        this.playerNode.alpha = p.inv > 0 ? .55 + .35 * Math.sin(performance.now() * .04) : 1;
+        this.playerNode.alpha = p.inv > 0 ? .55 + .35 * Math.sin(platform().now() * .04) : 1;
         this.playerNode.scale(1 + state.recoil * .7, 1 - state.recoil * .6);
         this.playerNode.rotation = state.recoil * 18 * p.face;
         return { w, h, zoom };

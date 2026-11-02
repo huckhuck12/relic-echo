@@ -1,0 +1,11 @@
+{
+  "description": "Relic Echo WeChat minigame",
+  "projectname": "relic-echo",
+  "appid": "touristappid",
+  "compileType": "game",
+  "setting": {
+    "es6": true,
+    "minified": true,
+    "urlCheck": true
+  }
+}

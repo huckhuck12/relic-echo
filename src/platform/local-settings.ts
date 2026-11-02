@@ -1,4 +1,5 @@
 import { STORAGE } from '../game/game-config.js';
+import { platform } from './runtime.js';
 import { visualQuality } from '../rendering/quality.js';
 import type { VisualQuality } from '../rendering/quality.js';
 export interface LocalSettings {
@@ -18,7 +19,7 @@ export interface RunRecord {
 export function readSettings(): LocalSettings {
     const defaults: LocalSettings = { sound: true, shake: true, quality: 'standard', showPerformance: false };
     try {
-        const settings = JSON.parse(localStorage.getItem(STORAGE.settings) || '{}');
+        const settings = JSON.parse(platform().readStorage(STORAGE.settings) || '{}');
         return { sound: settings.sound !== false, shake: settings.shake !== false,
             showPerformance: settings.showPerformance === true, quality: visualQuality(settings.quality) };
     }
@@ -28,15 +29,15 @@ export function readSettings(): LocalSettings {
 }
 export function writeSettings(settings: LocalSettings): void {
     try {
-        localStorage.setItem(STORAGE.settings, JSON.stringify(settings));
+        platform().writeStorage(STORAGE.settings, JSON.stringify(settings));
     }
     catch { /* 存储失败不影响当前设置。 */ }
 }
 export function saveRunRecord(record: RunRecord): void {
     try {
-        const records = JSON.parse(localStorage.getItem(STORAGE.records) || '[]');
+        const records = JSON.parse(platform().readStorage(STORAGE.records) || '[]');
         records.unshift(record);
-        localStorage.setItem(STORAGE.records, JSON.stringify(records.slice(0, STORAGE.recordLimit)));
+        platform().writeStorage(STORAGE.records, JSON.stringify(records.slice(0, STORAGE.recordLimit)));
     }
     catch { /* 战绩为可选本地功能，不阻断结算。 */ }
 }

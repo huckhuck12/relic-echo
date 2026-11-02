@@ -1,4 +1,5 @@
 import type { LayaSprite, LayaText, LayaEvent } from '../platform/laya.js';
+import { platform } from '../platform/runtime.js';
 export type LayaButton = LayaSprite & {
     caption: LayaText;
 };
@@ -10,7 +11,7 @@ export const C = {
     surface: '#242c35', ink: '#191d24'
 };
 /** 原生字体无需下载；iPhone 使用苹方，Android/桌面由系统选择中文黑体。 */
-export const UI_FONT = typeof navigator !== 'undefined' && /iPhone|iPad|iPod/.test(navigator.userAgent || '') ? 'PingFang SC' : 'system-ui';
+export const UI_FONT = platform().font();
 /**
  * 原生 Laya 控件工厂，仅负责显示节点与事件隔离，不读取 Game 或布局状态。
  * 所有尺寸为 UI 局部坐标，外层 GameUI 负责响应式重排。

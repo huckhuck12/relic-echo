@@ -1,4 +1,5 @@
 import type { LayaSprite } from '../platform/laya.js';
+import { platform } from '../platform/runtime.js';
 interface Flash {
     node: LayaSprite;
     target: LayaSprite;
@@ -9,15 +10,15 @@ interface Flash {
 /** UI 共用一条帧循环，最多 12 个矩形叠层，无滤镜/粒子；不改变命中区域或延迟选择回调。 */
 export class UIEffects {
     private active: Flash[] = [];
-    private readonly reduced = typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    private readonly reduced = platform().reducedMotion();
     constructor() { Laya.timer.frameLoop(1, this, this.tick); }
     get count(): number { return this.active.length; }
     flash(target: LayaSprite, color: string, duration = 360): void {
-        if (!target || this.reduced || document.hidden)
+        if (!target || this.reduced || platform().hidden())
             return;
         const existing = this.active.find(f => f.target === target);
         if (existing) {
-            existing.started = performance.now();
+            existing.started = platform().now();
             existing.color = color;
             return;
         }
@@ -28,7 +29,7 @@ export class UIEffects {
         node.name = 'ui-flash';
         target.addChild(node);
         const flash = {
-            node, target, color, duration, started: performance.now()
+            node, target, color, duration, started: platform().now()
         };
         this.active.push(flash);
         this.paint(flash, 0);
@@ -44,12 +45,12 @@ export class UIEffects {
             }
         }
     }
-    tick(now = performance.now()): void {
+    tick(now = platform().now()): void {
         if (!this.active.length)
             return;
         for (const flash of [...this.active]) {
             const t = (now - flash.started) / flash.duration;
-            if (t >= 1 || !flash.target.parent || document.hidden)
+            if (t >= 1 || !flash.target.parent || platform().hidden())
                 this.remove(flash);
             else
                 this.paint(flash, Math.max(0, t));

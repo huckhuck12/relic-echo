@@ -4,6 +4,7 @@ import {resolve} from 'node:path';
 import {once} from 'node:events';
 import assert from 'node:assert/strict';
 import {createStaticServer} from './serve.mjs';
+import {checkWechatBrowser} from './wechat-browser-check.mjs';
 
 // Real bundled Laya + WebGL. Emulates touch/DPR, not an iOS GPU or Safari.
 const directory=resolve('artifacts','mobile-check-'+Date.now());
@@ -28,12 +29,13 @@ try{
  let serial=0;const pending=new Map(),errors=[];
  ws.onmessage=event=>{
   const value=JSON.parse(event.data);
+  if(process.env.WECHAT_TRACE&&value.method==='Runtime.consoleAPICalled')console.log('Browser:',value.params.args.map(a=>a.value||a.description).join(' '));
   if(value.method==='Runtime.exceptionThrown')errors.push(value.params.exceptionDetails);
   const callback=pending.get(value.id);if(callback){pending.delete(value.id);callback(value);}
  };
  const send=(method,params={})=>new Promise((resolve,reject)=>{
   const id=++serial;
-  const timeout=setTimeout(()=>{pending.delete(id);reject(Error(`Timed out: ${method}`));},15000);
+  const timeout=setTimeout(()=>{pending.delete(id);reject(Error(`Timed out: ${method}`));},method==='Page.navigate'?30000:15000);
   pending.set(id,value=>{clearTimeout(timeout);value.error?reject(Error(JSON.stringify(value.error))):resolve(value.result);});
   ws.send(JSON.stringify({id,method,params}));
  });
@@ -44,7 +46,9 @@ try{
  };
  await send('Runtime.enable');await send('Page.enable');
  const reports=[];
- for(const [width,height,dpr,touch] of [[393,852,3,true],[852,393,3,true],[1280,720,1,false]]){
+ const wechat=process.argv.includes('--wechat');
+ if(wechat)reports.push(await checkWechatBrowser({send,evaluate,origin,directory}));
+ for(const [width,height,dpr,touch] of wechat?[]:[[393,852,3,true],[852,393,3,true],[1280,720,1,false]]){
   await send('Emulation.setUserAgentOverride',{userAgent:touch?'Mozilla/5.0 (iPhone; CPU iPhone OS 26_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1':'Mozilla/5.0 Chrome/140.0.0.0 Safari/537.36',platform:touch?'iPhone':'Win32'});
   await send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:dpr,mobile:touch});
   await send('Emulation.setTouchEmulationEnabled',{enabled:touch,maxTouchPoints:touch?5:1});
@@ -145,6 +149,7 @@ try{
   assert.equal(errors.length,0,JSON.stringify(errors));
   reports.push({width,height,dpr,touch,initial,battle});
  }
+ assert.equal(errors.length,0,JSON.stringify(errors));
  await writeFile(resolve(directory,'report.json'),JSON.stringify(reports,null,2));
  console.log(JSON.stringify({passed:true,directory,reports},null,2));
 }finally{ws?.close();browser.kill();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}

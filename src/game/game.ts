@@ -1,5 +1,6 @@
 import { InputController } from '../input/input-controller.js';
-import { ReviveService } from '../platform/revive-provider.js';
+import { platform } from '../platform/runtime.js';
+import { ReviveService, unavailableReviveProvider } from '../platform/revive-provider.js';
 import { GameLoop } from './game-loop.js';
 import { RunProgression } from '../progression/run-progression.js';
 import type { RewardChoice } from '../progression/run-progression.js';
@@ -139,7 +140,7 @@ export class Game {
         monitor: this.performanceMonitor,
     });
     training = false;
-    readonly revival = new ReviveService();
+    readonly revival = new ReviveService(platform().kind === 'wechat' ? unavailableReviveProvider : undefined);
     reviveUsed = false;
     private runGeneration = 0;
     reviveMessage = '';
@@ -173,7 +174,8 @@ export class Game {
     private dashTrail = 0;
     private pickupTone = 0;
     constructor() {
-        Laya.init(window.innerWidth, window.innerHeight, Laya.WebGL);
+        const host = platform(), viewport = host.viewport();
+        Laya.init(viewport.width, viewport.height, Laya.WebGL);
         bindViewport(Laya.stage);
         Laya.stage.bgColor = '#18291f';
         this.scene = new SceneRenderer(this.pillars);
@@ -181,10 +183,15 @@ export class Game {
         this.drawAvatar();
         Object.assign(this, readSettings());
         this.input.bind();
-        window.addEventListener('blur', () => this.lostFocus());
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden)
-                this.lostFocus();
+        host.onHide(() => {
+            this.audio.suspend();
+            this.lostFocus();
+        });
+        host.onShow(() => {
+            this.loop.last = host.now();
+            this.loop.accumulator = 0;
+            this.performanceMonitor.suspend();
+            this.onChange();
         });
         Laya.stage.on(Laya.Event.RESIZE, this, () => {
             this.performanceMonitor.reset();
@@ -323,8 +330,8 @@ export class Game {
     private onPlayerDown(): void {
         if (this.mode !== 'battle')
             return;
-        if (this.reviveUsed)
-            this.finish(false, '探索者再次倒下了。');
+        if (this.reviveUsed || this.revival.provider.available === false)
+            this.finish(false, this.reviveUsed ? '探索者再次倒下了。' : '探索者倒下了。');
         else {
             this.reviveMessage = '';
             this.flow.down();

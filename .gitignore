@@ -1,5 +1,7 @@
 dist/
 _site/
+_wechat/
+wechat/project.private.config.json
 .npm-cache/
 node_modules/
 artifacts/

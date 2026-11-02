@@ -29,6 +29,16 @@ jobs:
         run: node scripts/check-mobile-browser.mjs
         env:
           PERF_BROWSER: google-chrome
+      - name: Build WeChat minigame package
+        run: npm run build:wechat
+      - name: Check generated WeChat package with real engine and mock SDK
+        run: node scripts/check-mobile-browser.mjs --wechat
+        env:
+          PERF_BROWSER: google-chrome
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wechat-minigame
+          path: _wechat/
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

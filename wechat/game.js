@@ -1,0 +1,9 @@
+// Entry order is important: environment -> pinned engine/adapter -> platform -> game.
+require('./engine-environment.js')(GameGlobal, wx, {
+  setTimeout,clearTimeout,setInterval,clearInterval,requestAnimationFrame,cancelAnimationFrame,
+});
+require('./engine.js');
+const {installPlatform} = require('./app/platform/runtime.js');
+const {createWechatPlatform} = require('./app/platform/wechat-platform.js');
+installPlatform(createWechatPlatform(wx));
+module.exports = require('./app/main.js');

@@ -1,0 +1,42 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
+<body style="margin:0;background:#18291f"><script type="module">
+// Runs the generated CommonJS package and actual Laya engine with a mock wx API.
+// Uses real browser Canvas/WebGL; it is not a WeChat devtools or device test.
+const callbacks=new Map(),storage=new Map();
+const on=(name,fn)=>{if(!callbacks.has(name))callbacks.set(name,new Set());callbacks.get(name).add(fn);};
+const emit=(name,event={})=>{for(const fn of callbacks.get(name)||[])fn(event);};
+let info={windowWidth:393,windowHeight:852,screenWidth:393,screenHeight:852,pixelRatio:3,platform:'ios',system:'iOS',model:'iPhone Air',safeArea:{top:44,left:0,right:393,bottom:818}};
+const wx={
+ getSystemInfoSync:()=>({...info}),getWindowInfo:()=>({...info}),
+ getMenuButtonBoundingClientRect:()=>({top:48,bottom:80,left:297,right:384}),
+ createCanvas(){const c=document.createElement('canvas');if(!document.querySelector('canvas'))document.body.appendChild(c);return c;},
+ createImage:()=>new Image(),createInnerAudioContext:()=>({}),
+ getFileSystemManager:()=>({mkdir:options=>options.success({})}),env:{USER_DATA_PATH:'mock-user-data'},
+ getStorageSync:key=>storage.get(key)||'',setStorageSync:(key,value)=>storage.set(key,value),removeStorageSync:key=>storage.delete(key),clearStorageSync:()=>storage.clear(),
+ downloadFile(){throw Error('Unexpected remote resource download in offline game');},
+ onMessage:fn=>on('message',fn),
+};
+for(const name of ['WindowResize','Hide','Show','TouchStart','TouchMove','TouchEnd','TouchCancel']){
+ wx['on'+name]=fn=>on(name,fn);wx['off'+name]=fn=>callbacks.get(name)?.delete(fn);
+}
+const root={},cache=new Map();
+try{
+ const manifest=await (await fetch('/_wechat/manifest.json')).json(),sources=new Map();
+ await Promise.all(manifest.scripts.map(async path=>sources.set('/'+path,await (await fetch('/_wechat/'+path)).text())));
+ function load(path){
+  if(cache.has(path))return cache.get(path).exports;
+  if(!sources.has(path))throw Error('Unknown package module '+path);
+  const module={exports:{}};cache.set(path,module);
+  const localRequire=name=>load(new URL(name,'https://package.invalid'+path).pathname);
+  const timers=Object.fromEntries(['setTimeout','clearTimeout','setInterval','clearInterval','requestAnimationFrame','cancelAnimationFrame'].map(name=>[name,window[name].bind(window)]));
+  new Function('require','module','exports','GameGlobal','wx',...Object.keys(timers),sources.get(path))(localRequire,module,module.exports,root,wx,...Object.values(timers));
+  return module.exports;
+ }
+ const app=load('/game.js');
+ const find=(n,name)=>{if(n.name===name)return n;for(let i=0;i<n.numChildren;i++){const r=find(n.getChildAt(i),name);if(r)return r;}};
+ const point=name=>{const n=find(app.ui.root,name),p=n.localToGlobal(new root.Laya.Point(n.width/2,n.height/2));return{x:p.x,y:p.y};};
+ const touch=(phase,points,changed=points)=>emit('Touch'+phase,{touches:points,changedTouches:changed,timeStamp:Date.now()});
+ const tap=name=>{const p=point(name),t={identifier:1,clientX:p.x,clientY:p.y};touch('Start',[t]);touch('End',[],[t]);};
+ window.wechatTest={app,root,wx,load,find,point,tap,touch,emit,storage,resize:(width,height)=>{info={...info,windowWidth:width,windowHeight:height,safeArea:{top:0,left:0,right:width,bottom:height}};emit('WindowResize');}};
+}catch(error){window.wechatError=String(error.stack||error);console.error(error);}
+</script></body></html>

@@ -1,4 +1,5 @@
 import { KEY_CODES, WORLD_RULES } from '../game/game-config.js';
+import { platform } from '../platform/runtime.js';
 import { clamp, screenInput } from '../shared/model.js';
 import type { Player } from '../shared/entities.js';
 const LIMIT = WORLD_RULES.limit;
@@ -89,7 +90,7 @@ export class InputController {
     mouseDown(event: any): void {
         // Laya 把 touchstart/move/end 合成为鼠标事件。手机只用摇杆移动，
         // 不能把右手点击战场或操作按钮留下的触点变成持续寻点目标。
-        if (event.nativeEvent?.type?.startsWith('touch') || event.nativeEvent?.changedTouches)
+        if (platform().kind === 'wechat' || event.nativeEvent?.type?.startsWith('touch') || event.nativeEvent?.changedTouches)
             return;
         if (!this.host.active() || this.overUI(event.target))
             return;

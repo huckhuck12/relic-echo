@@ -1,6 +1,6 @@
 # 遗迹回响 · Relic Echo
 
-LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.10`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
+LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.11.0`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
 
 ## 本地运行与 GitHub Pages
 
@@ -9,6 +9,13 @@ LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.10`�
 项目已包含 [GitHub Pages 工作流](.github/workflows/pages.yml)。上传到自己的 GitHub 仓库，在 **Settings → Pages → Source** 选择 **GitHub Actions**；向 main/master 推送或手动运行工作流，构建和测试通过后自动发布。所有资源使用相对路径，支持 `https://用户名.github.io/仓库名/` 和账号主页站点。
 
 本地生成发布包：`npm run build:pages`。模拟仓库子路径：`npm run preview:pages -- --port 8081`，访问 `http://localhost:8081/relic-echo/`。详见[开发与发布说明](docs/开发与发布.md)。仓库为 `huckhuck12/relic-echo`，本地修改需推送后等待 GitHub Actions 部署成功才会更新线上站点。
+
+## 0.11.0 微信小游戏最小包与双端平台接口
+
+- `npm run build:wechat` 生成独立 `_wechat`，供小游戏开发者工具导入；AppID 暂为占位，可通过 WECHAT_APPID 指定。保留 H5 构建，不向微信后台自动上传。
+- 浏览器/微信分别适配屏幕、安全区与胶囊、前后台、字体、存储和程序音效；微信回前台保持暂停，关闭测试复活。
+- 补齐与现有 Laya 2.0.2 同源的官方微信适配器及许可证，校验引擎版本，输出 CommonJS 模块；业务不依赖 DOM AbortController。
+- 193 项自动测试；真实引擎配合模拟微信 API 验证启动、高清画布、双指、暂停和奖励流程。仍待真实 AppID 的开发者工具与微信真机验收。详见[微信小游戏接入](docs/微信小游戏接入.md)。
 
 ## 0.10.10 奖励结算统一入口
 

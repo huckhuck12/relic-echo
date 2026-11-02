@@ -1,3 +1,4 @@
+import { platform } from '../platform/runtime.js';
 import { SIMULATION } from './game-config.js';
 import type { PerformanceMonitor } from './performance-monitor.js';
 /** 回调均读取当前局；循环不保存实体，不结算奖励或修改暂停原因。 */
@@ -14,7 +15,7 @@ export interface LoopHost {
 /** 固定步调度：暂停清积累，顿帧扣除模拟时间，UI 按独立低频刷新。 */
 export class GameLoop {
     accumulator = 0;
-    last = performance.now();
+    last = platform().now();
     fps = 60;
     private uiTime = 0;
     private frameCount = 0;
@@ -26,7 +27,7 @@ export class GameLoop {
      * CPU 采样只覆盖 update/render 回调，不能视为 GPU 帧耗时。
      */
     frame(): void {
-        const now = performance.now(), rawDt = Math.max(0, (now - this.last) / 1000), dt = Math.min(rawDt, SIMULATION.maxDelta);
+        const now = platform().now(), rawDt = Math.max(0, (now - this.last) / 1000), dt = Math.min(rawDt, SIMULATION.maxDelta);
         this.last = now;
         this.fpsTime += rawDt;
         this.frameCount++;
@@ -35,7 +36,7 @@ export class GameLoop {
             this.fpsTime = 0;
             this.frameCount = 0;
         }
-        const measure = this.host.measuring() && !document.hidden && this.host.active();
+        const measure = this.host.measuring() && !platform().hidden() && this.host.active();
         if (this.host.active()) {
             const stopped = this.host.consumeHitStop(dt);
             this.accumulator += dt - stopped;
@@ -49,10 +50,10 @@ export class GameLoop {
         }
         else
             this.accumulator = 0;
-        const updatedAt = this.host.measuring() ? performance.now() : now;
+        const updatedAt = this.host.measuring() ? platform().now() : now;
         this.host.render();
         if (measure && this.host.active())
-            this.host.monitor.record(now, updatedAt - now, performance.now() - updatedAt);
+            this.host.monitor.record(now, updatedAt - now, platform().now() - updatedAt);
         else
             this.host.monitor.suspend();
         this.uiTime += dt;

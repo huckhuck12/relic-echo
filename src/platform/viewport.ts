@@ -1,4 +1,5 @@
 /** 使用公开 Stage 接口，布局坐标始终为 CSS 像素，高清分辨率只影响画布缓冲区。 */
+import { platform } from './runtime.js';
 export interface ViewportStage {
     scaleMode: string;
     useRetinalCanvas: boolean;
@@ -14,11 +15,12 @@ export function bindViewport(stage: ViewportStage): () => void {
     stage.scaleMode = 'fixedwidth';
     stage.useRetinalCanvas = true;
     // 引擎初始化会重写 viewport meta；恢复刘海屏所需的 viewport-fit。
-    document.querySelector?.('meta[name="viewport"]')?.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover');
+    const host = platform();
+    host.prepareViewport();
     let previousWidth = 0, previousHeight = 0;
     const sync = () => {
         // 不使用 screen.width 或物理画布大小；浏览器工具栏收起后 innerHeight 会更新。
-        const width = Math.max(1, window.innerWidth), height = Math.max(1, window.innerHeight);
+        const { width, height } = host.viewport();
         if (width === previousWidth && height === previousHeight)
             return;
         previousWidth = width;
@@ -27,12 +29,9 @@ export function bindViewport(stage: ViewportStage): () => void {
         stage.size(width, height);
     };
     sync();
-    window.addEventListener('resize', sync);
-    window.addEventListener('orientationchange', sync);
-    window.visualViewport?.addEventListener('resize', sync);
+    const offResize = host.onResize(sync), offShow = host.onShow(sync);
     return () => {
-        window.removeEventListener('resize', sync);
-        window.removeEventListener('orientationchange', sync);
-        window.visualViewport?.removeEventListener('resize', sync);
+        offResize();
+        offShow();
     };
 }

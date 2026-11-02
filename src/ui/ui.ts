@@ -1,4 +1,5 @@
 import type { LayaSprite, LayaText } from '../platform/laya.js';
+import { platform } from '../platform/runtime.js';
 import { BattleHUD } from './battle-hud.js';
 import { UIControls, C } from './ui-controls.js';
 import { GameDialogs } from './ui-dialogs.js';
@@ -29,7 +30,7 @@ export class GameUI {
     private modalDirty = true;
     private toastExpiry = 0;
     private readonly dialogRenderer: GameDialogs;
-    private mobile = typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0;
+    private mobile = platform().touch();
     private layout: ScreenLayout = screenLayout(1280, 720);
     constructor(private game: Game) {
         this.root = new Laya.Sprite();
@@ -118,7 +119,7 @@ export class GameUI {
             if (this.performanceLabel.text !== value)
                 this.performanceLabel.text = value;
         }
-        this.toastNode.visible = !this.game.dialog && performance.now() < this.toastExpiry;
+        this.toastNode.visible = !this.game.dialog && platform().now() < this.toastExpiry;
         // 流程状态只通过 Game 的语义入口修改；内容版本改变才重建显示树。
         if (this.modalDirty || this.modalRevision !== this.game.flow.revision) {
             this.modalDirty = false;
@@ -129,7 +130,7 @@ export class GameUI {
     }
     private toast(message: string): void {
         this.toastLabel.text = message;
-        this.toastExpiry = performance.now() + (this.mobile ? TOUCH_UI.toastDuration : 3200);
+        this.toastExpiry = platform().now() + (this.mobile ? TOUCH_UI.toastDuration : 3200);
         this.toastNode.visible = !this.game.dialog;
     }
 }
