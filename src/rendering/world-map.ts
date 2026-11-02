@@ -3,7 +3,6 @@ import { project } from '../shared/model.js';
 import { block, shade } from './voxel.js';
 import { drawShapes } from './appearance.js';
 import type { Point } from '../shared/entities.js';
-declare const Laya: any;
 export function buildWorldMap(ground: any, actors: any, pillars: readonly Point[]): any[] {
     const pillarNodes: any[] = [];
     const g = ground.graphics;

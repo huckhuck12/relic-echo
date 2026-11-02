@@ -1,3 +1,4 @@
+import type { LayaSprite } from '../platform/laya.js';
 import { UIControls, C } from './ui-controls.js';
 import { renderSystemDialog } from './system-dialogs.js';
 import { renderBuffPanel } from './buff-panel.js';
@@ -15,36 +16,26 @@ export interface DialogHooks {
     invalidate(): void;
     refresh(): void;
     toast(message: string): void;
-    equipment(parent: any, loadout: Loadout, x: number, y: number, width: number, columns?: number): void;
 }
 /** 只管理弹窗绘制：桌面/响应式布局、选择回调和编辑状态，不持有奖励队列。
  * GameUI 保留 HUD/触控/刷新缓存；所有玩法写入仍走 Game 的语义动作入口。
  */
 export class GameDialogs {
     private selected: Weapon = 'storm';
-    constructor(private readonly game: Game, private readonly dialogs: any, private readonly controls: UIControls, private readonly buffEditor: BuffEditorState, private readonly hooks: DialogHooks) { }
+    constructor(private readonly game: Game, private readonly dialogs: LayaSprite, private readonly controls: UIControls, private readonly buffEditor: BuffEditorState, private readonly hooks: DialogHooks) { }
     private clear(...args: Parameters<UIControls['clear']>) { return this.controls.clear(...args); }
     private block(...args: Parameters<UIControls['block']>) { return this.controls.block(...args); }
     private panel(...args: Parameters<UIControls['panel']>) { return this.controls.panel(...args); }
     private text(...args: Parameters<UIControls['text']>) { return this.controls.text(...args); }
-    private button(...args: Parameters<UIControls['button']>) { return this.controls.button(...args); }
+    private button(...args: Parameters<UIControls['button']>) {
+        const dialogId = this.game.flow.dialogId, action = args[6];
+        args[6] = () => {
+            if (this.game.flow.dialogId === dialogId)
+                action();
+        };
+        return this.controls.button(...args);
+    }
     private avatar(...args: Parameters<UIControls['avatar']>) { return this.controls.avatar(...args); }
-    private equipment(...args: Parameters<DialogHooks['equipment']>) { return this.hooks.equipment(...args); }
-    private heading(parent: any, eyebrow: string, title: string, description: string): void {
-        this.text(parent, eyebrow, 32, 25, 710, 10, C.mint);
-        this.text(parent, title, 32, 52, 710, 27);
-        this.text(parent, description, 32, 101, 730, 12, C.muted);
-    }
-    private statRow(parent: any, y: number, entries: [
-        string,
-        string
-    ][]): void {
-        entries.forEach(([label, value], i) => {
-            const panel = this.panel(parent, 32 + i * 187, y, 175, 77);
-            this.text(panel, label, 13, 10, 149, 10, C.muted);
-            this.text(panel, value, 13, 34, 149, 22);
-        });
-    }
     private describe(item: Item | null): string {
         if (!item)
             return '尚未装备该部位';
@@ -99,25 +90,10 @@ export class GameDialogs {
             this.buffDialog(p, w, h);
             return;
         }
-        if (w < 800 || h < 620 || mobile) {
-            this.responsiveDialog(p, dialog, w, h);
-            return;
-        }
-        if (dialog.type === 'start')
-            this.startDialog(p);
-        if (dialog.type === 'upgrade')
-            this.upgradeDialog(p, dialog.choices);
-        if (dialog.type === 'drop')
-            this.dropDialog(p, dialog.item);
-        if (dialog.type === 'inventory')
-            this.inventoryDialog(p);
-        if (dialog.type === 'pause')
-            this.pauseDialog(p);
-        if (dialog.type === 'result')
-            this.resultDialog(p, dialog.win, dialog.reason);
+        this.standardDialog(p, dialog, w, h, mobile);
     }
     /** 手机竖屏按行排列，短横屏改为列；共用正式弹窗遮罩与暂停，不额外开启计时器。 */
-    private fragmentDialog(p: any, choices: string[], w: number, h: number): void {
+    private fragmentDialog(p: LayaSprite, choices: string[], w: number, h: number): void {
         const pad = Math.min(24, w * .05), gap = 10, inner = w - pad * 2;
         const rows = w < 480, top = h < 330 ? 70 : 92, bottom = h - pad - 32;
         const cardW = rows ? inner : (inner - gap * (choices.length - 1)) / choices.length;
@@ -132,13 +108,13 @@ export class GameDialogs {
         });
         this.text(p, '领取后按 B / Buff 组合装入配方，不自动替换。', pad, h - pad - 23, inner, 11, C.muted);
     }
-    private buffDialog(p: any, w: number, h: number): void {
+    private buffDialog(p: LayaSprite, w: number, h: number): void {
         renderBuffPanel(p, w, h, this.buffEditor, { buffs: this.game.buffs, stats: this.game.stats, training: this.game.training }, this.controls, {
             refresh: () => { this.hooks.refresh(); }, toast: message => this.hooks.toast(message),
             installBuff: (...args) => this.game.installBuff(...args), unlockFragments: () => this.game.unlockFragments(), close: () => this.game.close(),
         });
     }
-    private compactEquipment(parent: any, loadout: Loadout, x: number, y: number, width: number, columns: number, rowH: number, cycle = false): number {
+    private compactEquipment(parent: LayaSprite, loadout: Loadout, x: number, y: number, width: number, columns: number, rowH: number, cycle = false): number {
         const gap = 8, cardW = (width - gap * (columns - 1)) / columns;
         SLOTS.forEach((slot, i) => {
             const item = loadout[slot], node = this.button(parent, '', x + (i % columns) * (cardW + gap), y + Math.floor(i / columns) * (rowH + gap), cardW, rowH, () => {
@@ -151,7 +127,7 @@ export class GameDialogs {
         });
         return Math.ceil(4 / columns) * (rowH + gap) - gap;
     }
-    private compactStats(parent: any, x: number, y: number, width: number, entries: [
+    private compactStats(parent: LayaSprite, x: number, y: number, width: number, entries: [
         string,
         string
     ][], columns: number, cellH: number): number {
@@ -171,9 +147,9 @@ export class GameDialogs {
         const remaining = this.game.flow.pendingCount + 1;
         return `${this.game.upgradeFeedback ? this.game.upgradeFeedback + ' · ' : ''}待领取 ${remaining} 份奖励`;
     }
-    private responsiveDialog(p: any, dialog: Exclude<NonNullable<Dialog>, {
+    private standardDialog(p: LayaSprite, dialog: Exclude<NonNullable<Dialog>, {
         type: 'revive' | 'performance';
-    }>, w: number, h: number): void {
+    }>, w: number, h: number, mobile: boolean): void {
         if (dialog.type === 'fragment') {
             this.fragmentDialog(p, dialog.choices, w, h);
             return;
@@ -217,7 +193,7 @@ export class GameDialogs {
                 }
             });
             if (!short)
-                this.text(p, typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0 ? '左手摇杆移动 · 右手点击冲刺\n自动攻击，收集回响强化构筑。' : '左键点击 / 按住移动，或使用 WASD。\n空格冲刺 · E 装备。', pad, footer - 52, inner, 11, C.muted);
+                this.text(p, mobile ? '左手摇杆移动 · 右手点击冲刺\n自动攻击，收集回响强化构筑。' : '左键点击 / 按住移动，或使用 WASD。\n空格冲刺 · E 装备。', pad, footer - 52, inner, 11, C.muted);
             pair('开始探索 →', () => this.game.start(this.selected), 'start', '试装与练习', () => {
                 this.game.start(this.selected, true);
                 this.game.toggleInventory();
@@ -267,7 +243,7 @@ export class GameDialogs {
             const s = this.game.snapshot(), pw = narrow ? Math.min(116, inner * .34) : 150, eqX = pad + pw + 12, eqW = inner - pw - 12, columns = narrow ? 1 : 2, rowH = short || h < 600 ? 44 : 50;
             const eqH = this.compactEquipment(p, s.loadout, eqX, body, eqW, columns, rowH, this.game.training), portrait = this.panel(p, pad, body, pw, eqH);
             this.avatar(portrait, s.loadout, pw / 2, eqH - 61, Math.min(1.8, (pw - 15) / 85, (eqH - 64) / 83), this.game.previewBack);
-            this.button(p, `查看${this.game.previewBack ? '正面' : '背面'}`, 6, eqH - 44, pw - 12, 44, () => {
+            this.button(portrait, `查看${this.game.previewBack ? '正面' : '背面'}`, 6, eqH - 44, pw - 12, 44, () => {
                 this.game.previewBack = !this.game.previewBack;
                 this.hooks.refresh();
             }, false, 'turn');
@@ -318,120 +294,16 @@ export class GameDialogs {
             pair('再次挑战 →', () => this.game.start(this.selected, this.game.training), 'restart', '更换武器', () => { this.game.returnToTitle(); }, 'title');
         }
     }
-    private startDialog(p: any): void {
-        this.heading(p, 'RELIC ECHO / EXPEDITION 001', '唤醒遗迹中的回响', '选择初始武器，在六分钟的怪潮中构筑力量。发现装备，穿在身上，挑战遗迹核心。');
-        (['storm', 'flame', 'blade'] as Weapon[]).forEach((weapon, i) => {
-            const card = this.button(p, '', 32 + i * 249, 151, 237, 255, () => {
-                this.selected = weapon;
-                this.hooks.refresh();
-            }, false, `select-${weapon}`);
-            if (weapon === this.selected)
-                card.graphics.drawRect(0, 0, 237, 255, null, C.gold, 2);
-            this.avatar(card, emptyLoadout(weapon), 118, 143, 1.5);
-            this.text(card, `0${i + 1} / ${WEAPONS[weapon].name}流派`, 16, 165, 205, 9, C.gold);
-            this.text(card, gear(weapon).name, 16, 190, 205, 17);
-            this.text(card, gear(weapon).note, 16, 225, 205, 11, C.muted);
-        });
-        this.button(p, '开始探索 →', 32, 433, 220, 45, () => this.game.start(this.selected), true, 'start');
-        this.button(p, '试装与练习', 267, 433, 180, 45, () => {
-            this.game.start(this.selected, true);
-            this.game.toggleInventory();
-        }, false, 'training');
-        this.text(p, '鼠标左键点击地面移动，按住持续跟随；WASD 也可移动。\n空格 / 屏幕按钮冲刺 · E 装备 · Esc 暂停 · 手机摇杆移动。', 32, 504, 736, 11, C.muted);
-        let record = '首次探索 · 全部画面与界面由 LayaAir 渲染';
-        try {
-            const records = JSON.parse(localStorage.getItem('relic-records') || '[]');
-            if (records.length)
-                record = `最近探索：${records[0].win ? '胜利' : '未完成'} · ${clock(records[0].time)} · 击败 ${records[0].kills}`;
-        }
-        catch { }
-        this.text(p, record, 32, 582, 736, 10, '#6c8b8f');
-    }
-    private upgradeDialog(p: any, choices: string[]): void {
-        this.heading(p, `ECHO AWAKENED / LEVEL ${this.game.level}`, '选择你的回响', '战斗已暂停。选择一项强化，塑造本局的战斗方式。');
-        choices.forEach((id, i) => {
-            const u = UPGRADES.find(u => u.id === id), card = this.button(p, '', 32 + i * 249, 174, 237, 290, () => this.game.chooseUpgrade(id), false, `upgrade-${id}`);
-            this.text(card, u?.icon || '✚', 20, 30, 197, 49, C.gold);
-            this.text(card, u ? `${(this.game.levels[id] || 0) + 1} / ${u.max}` : '恢复', 20, 113, 197, 11, C.gold);
-            this.text(card, u?.name || '生命回响', 20, 148, 197, 20);
-            this.text(card, u?.note || this.healDescription(), 20, 197, 197, 12, C.muted);
-        });
-        this.text(p, this.upgradeStatus(), 32, 521, 730, 12, C.gold);
-    }
-    private dropDialog(p: any, item: Item): void {
-        const g = gear(item), old = this.game.loadout[g.slot], next = { ...this.game.loadout, [g.slot]: item };
-        this.heading(p, `RELIC DISCOVERED / ${SLOT_NAME[g.slot]}`, '发现新的装备', '穿戴会立即改变角色外观。替换后，旧装备分解为经验。');
-        [this.game.loadout, next].forEach((loadout, i) => {
-            const candidate = i === 1, current = candidate ? item : old, card = this.panel(p, 32 + i * 377, 151, 359, 325, '#20262e', candidate ? '#8fbeb0' : C.border);
-            this.text(card, candidate ? `${QUALITY[item.quality]} · 候选装备` : '当前穿戴', 17, 17, 325, 11, candidate ? QUALITY_COLOR[item.quality] : C.gold, 'center');
-            this.avatar(card, loadout, 179, 205, 1.9);
-            this.text(card, current ? gear(current).name : '空槽位', 17, 229, 325, 18, C.text, 'center');
-            this.text(card, this.describe(current), 18, 264, 323, 11, C.muted, 'center');
-        });
-        this.text(p, this.comparison(item), 32, 494, 736, 11, C.mint);
-        this.button(p, '穿戴装备 →', 32, 552, 225, 43, () => this.game.takeDrop(true), true, 'equip');
-        this.button(p, `分解为 ${[5, 10, 20][item.quality]} 经验`, 272, 552, 225, 43, () => this.game.takeDrop(false), false, 'salvage');
-    }
-    private inventoryDialog(p: any): void {
-        const s = this.game.snapshot();
-        this.heading(p, 'EXPLORER / VISIBLE LOADOUT', '探索者装备', '武器、头饰、护甲与背饰，直接显示在角色身上。');
-        this.button(p, '×', 737, 19, 40, 32, () => this.game.close(), false, 'close');
-        const portrait = this.panel(p, 32, 149, 180, 270, '#20262e');
-        this.avatar(portrait, s.loadout, 90, 198, 2, this.game.previewBack);
-        this.button(p, `查看${this.game.previewBack ? '正面' : '背面'} ↻`, 16, 223, 148, 32, () => {
-            this.game.previewBack = !this.game.previewBack;
-            this.hooks.refresh();
-        }, false, 'turn');
-        this.equipment(p, s.loadout, 231, 149, 537, 2);
-        if (this.game.training) {
-            SLOTS.forEach((slot, i) => this.button(p, `切换${SLOT_NAME[slot]}`, 231 + (i % 2) * 275, 312 + Math.floor(i / 2) * 39, 262, 32, () => this.game.testGear(slot), false, `cycle-${slot}`));
-            this.button(p, '切换品质', 231, 390, 262, 32, () => this.game.testQuality(), false, 'quality');
-            this.button(p, '跳到 Boss', 506, 390, 262, 32, () => this.game.testBoss(), false, 'boss');
-        }
-        else
-            this.text(p, '击败精英保证掉落装备。\n靠近装备可对比外观、属性与特殊效果。', 231, 326, 537, 12, C.muted);
-        this.statRow(p, 447, [['最大生命', String(Math.round(s.maxHp))], ['通用伤害', `+${percent(s.stats.damage)}`], ['暴击率', percent(s.stats.crit)], ['移动加成', percent(s.stats.speed)]]);
-        this.button(p, '返回探索 →', 32, 552, 225, 43, () => this.game.close(), true, 'close-inventory');
-        this.text(p, this.game.training ? '练习模式 · 所有换装工具已启用' : '战斗已暂停', 285, 566, 480, 11, C.muted);
-    }
-    private visualQualityButton(p: any, x: number, y: number, w: number): void {
+    private visualQualityButton(p: LayaSprite, x: number, y: number, w: number): void {
         this.button(p, '画质：' + this.game.visuals.name + ' · 点击切换', x, y, w, 44, () => {
             this.game.cycleVisualQuality();
             this.hooks.refresh();
         }, false, 'visual-quality');
     }
-    private performanceButton(p: any, x: number, y: number, w: number): void {
+    private performanceButton(p: LayaSprite, x: number, y: number, w: number): void {
         this.button(p, `性能指标：${this.game.showPerformance ? '开' : '关'}`, x, y, w, 44, () => {
             this.hooks.invalidate();
             this.game.togglePerformance();
         }, false, 'performance-toggle');
-    }
-    private pauseDialog(p: any): void {
-        this.performanceButton(p, 410, 174, 358);
-        this.visualQualityButton(p, 32, 308, 360);
-        this.heading(p, 'SIGNAL ON HOLD', '探索已暂停', '遗迹的时间在此停留。准备好后继续前进。');
-        this.button(p, `${this.game.sound ? '■' : '□'} 启用程序音效`, 32, 174, 360, 50, () => {
-            this.game.sound = !this.game.sound;
-            this.game.saveSettings();
-            this.hooks.refresh();
-        }, false, 'sound');
-        this.button(p, `${this.game.shake ? '■' : '□'} 启用战斗震动`, 32, 241, 360, 50, () => {
-            this.game.shake = !this.game.shake;
-            this.game.saveSettings();
-            this.hooks.refresh();
-        }, false, 'shake');
-        this.text(p, '鼠标左键：点击移动 / 按住跟随\nWASD / 方向键：移动　空格：冲刺　E：装备　Esc：暂停\n\n切换浏览器标签或窗口会自动暂停，需要点击继续恢复。', 32, 380, 736, 13, C.muted);
-        this.button(p, '继续探索 →', 32, 552, 225, 43, () => this.game.close(), true, 'resume');
-        this.button(p, '结束本局', 272, 552, 225, 43, () => this.game.finish(false, '本次探索已主动结束。'), false, 'quit');
-    }
-    private resultDialog(p: any, win: boolean, reason: string): void {
-        this.heading(p, `EXPEDITION ${win ? 'COMPLETE' : 'ENDED'}`, win ? '回响归来' : '探索终止', reason);
-        this.statRow(p, 153, [['探索时间', clock(this.game.time)], ['击败敌人', String(this.game.kills)], ['最终等级', String(this.game.level)], ['总伤害', String(Math.round(this.game.damage))]]);
-        const portrait = this.panel(p, 32, 254, 180, 250, '#20262e');
-        this.avatar(portrait, this.game.loadout, 90, 205, 2);
-        this.equipment(p, this.game.loadout, 231, 254, 537, 2);
-        this.text(p, this.game.training ? '练习结果不计入战绩' : '战绩保存在本机浏览器。局内强化和装备在新一局重置。', 231, 433, 537, 11, C.muted);
-        this.button(p, '再次挑战 →', 32, 552, 225, 43, () => this.game.start(this.selected, this.game.training), true, 'restart');
-        this.button(p, '选择其他武器', 272, 552, 225, 43, () => { this.game.returnToTitle(); }, false, 'title');
     }
 }

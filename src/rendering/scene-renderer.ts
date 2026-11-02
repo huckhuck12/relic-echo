@@ -16,7 +16,6 @@ import { lightningStroke, bladePulse, flameBurst, burningGround, drawBladeOrbit,
 import type { Player, Enemy, Shot, Drop, Field, Effect, DamageLabel, Point } from '../shared/entities.js';
 import type { VisualSettings } from './quality.js';
 import type { RunMode } from '../game/run-flow.js';
-declare const Laya: any;
 /**
  * 单帧输入契约。实体数组只读且不复制，避免怪群战斗时每帧分配数组。
  * 允许修改 node 与 flashPaint/icePaint 绘图缓存，禁止推进坐标、血量或冷却。

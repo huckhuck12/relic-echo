@@ -1,7 +1,7 @@
-declare const Laya: any;
+import type { LayaSprite } from '../platform/laya.js';
 interface Flash {
-    node: any;
-    target: any;
+    node: LayaSprite;
+    target: LayaSprite;
     started: number;
     duration: number;
     color: string;
@@ -12,7 +12,7 @@ export class UIEffects {
     private readonly reduced = typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
     constructor() { Laya.timer.frameLoop(1, this, this.tick); }
     get count(): number { return this.active.length; }
-    flash(target: any, color: string, duration = 360): void {
+    flash(target: LayaSprite, color: string, duration = 360): void {
         if (!target || this.reduced || document.hidden)
             return;
         const existing = this.active.find(f => f.target === target);
@@ -34,9 +34,9 @@ export class UIEffects {
         this.paint(flash, 0);
     }
     /** 销毁容器前取消整个子树的动画，避免引用旧卡片或旧 HUD。 */
-    clear(root: any): void {
+    clear(root: LayaSprite): void {
         for (const flash of [...this.active]) {
-            for (let p = flash.target; p; p = p.parent) {
+            for (let p: LayaSprite | null = flash.target; p; p = p.parent) {
                 if (p === root) {
                     this.remove(flash);
                     break;

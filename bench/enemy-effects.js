@@ -16,7 +16,7 @@ let paused=false,quality='standard',time=0;
 controls.button(root,'暂停 / 继续',24,92,150,44,()=>paused=!paused);
 const qualityButton=controls.button(root,'画质：标准',188,92,170,44,()=>{
  const modes=['low','standard','high'];quality=modes[(modes.indexOf(quality)+1)%3];
- qualityButton.children[0].text='画质：'+QUALITY_PRESETS[quality].name;
+ qualityButton.caption.text='画质：'+QUALITY_PRESETS[quality].name;
  for(const e of enemies)renderer.paintEnemy(e,buffs,QUALITY_PRESETS[quality]);
 });
 controls.button(root,'从头播放',372,92,150,44,()=>time=0);

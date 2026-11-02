@@ -1,3 +1,4 @@
+import type { LayaSprite } from '../platform/laya.js';
 import { FRAGMENTS, PARTS, PART_NAMES, complete, fragment, recipeDescription } from '../buffs/buffs.js';
 import type { Part, BuffRuntime } from '../buffs/buffs.js';
 import type { Enemy } from '../shared/entities.js';
@@ -28,7 +29,7 @@ export interface BuffPanelHooks {
  * 窄屏改为单列，低高度改为双列，所有可点控件保持 44px 高度。
  * 先修改 editor/实际配方再刷新，回调不直接维护冷却，避免换配方刷免费释放。
  */
-export function renderBuffPanel(p: any, w: number, h: number, editor: BuffEditorState, state: BuffPanelState, controls: UIControls, hooks: BuffPanelHooks): void {
+export function renderBuffPanel(p: LayaSprite, w: number, h: number, editor: BuffEditorState, state: BuffPanelState, controls: UIControls, hooks: BuffPanelHooks): void {
     const pad = 16, inner = w - 32, gap = 8, short = h < 420, narrow = w < 500, footer = h - pad - 44, recipe = state.buffs.recipes[editor.slot];
     const refresh = hooks.refresh;
     controls.text(p, '碎片组合 · 战斗已暂停', pad, 12, inner, short ? 17 : 21, C.gold);

@@ -29,6 +29,10 @@ export type Dialog = {
 } | null;
 export type RunMode = 'ready' | 'battle' | 'downed' | 'result';
 type Request = NonNullable<Dialog>;
+interface DialogEntry {
+    id: number;
+    request: Request;
+}
 export interface RunFlowHooks {
     /** 打开或排队时清理按键、摇杆和鼠标目标，避免选择后继续旧移动。 */
     beforeOpen: () => void;
@@ -46,11 +50,22 @@ export class RunFlow {
     readonly gate = new PauseGate();
     private current: Dialog = { type: 'start' };
     private state: RunMode = 'ready';
-    private pending: Request[] = [];
+    private pending: DialogEntry[] = [];
+    private sequence = 1;
+    private activeId = 1;
+    private viewRevision = 0;
     constructor(private readonly hooks: RunFlowHooks) { this.gate.add('dialog'); }
     get dialog(): Dialog { return this.current; }
     get mode(): RunMode { return this.state; }
     get pendingCount(): number { return this.pending.length; }
+    /** Identity belongs to the request, not its serialized content or display node. */
+    get dialogId(): number { return this.activeId; }
+    get revision(): number { return this.viewRevision; }
+    /** Content changes within the same dialog keep its identity and explicitly invalidate its view. */
+    refresh(): void {
+        this.viewRevision++;
+        this.hooks.changed();
+    }
     /**
      * 开局只重置流程，不通知 UI。调用方必须先初始化角色、实体和 Buff，
      * 再统一发出 onChange，防止 UI 读取到半初始化的新局。
@@ -58,17 +73,21 @@ export class RunFlow {
     begin(): void {
         this.state = 'battle';
         this.current = null;
+        this.activeId = 0;
+        this.viewRevision++;
         this.pending = [];
         this.gate.clear();
     }
     /** 已有选择时只排队；队列保存请求，不提前冻结升级候选。 */
     open(request: Request): void {
         this.hooks.beforeOpen();
+        const entry = { id: ++this.sequence, request };
         if (this.current) {
-            this.pending.push(request);
+            this.pending.push(entry);
+            this.viewRevision++;
             return;
         }
-        this.activate(request);
+        this.activate(entry);
         this.hooks.changed();
     }
     /**
@@ -80,6 +99,8 @@ export class RunFlow {
             return;
         this.gate.remove('focus');
         this.current = null;
+        this.activeId = 0;
+        this.viewRevision++;
         this.gate.remove('dialog');
         const next = this.pending.shift();
         if (next) {
@@ -104,6 +125,8 @@ export class RunFlow {
             return;
         this.state = 'battle';
         this.current = null;
+        this.activeId = 0;
+        this.viewRevision++;
         this.gate.remove('dialog');
         this.hooks.changed();
     }
@@ -121,12 +144,16 @@ export class RunFlow {
         this.pending = [];
         this.gate.clear();
         this.current = null;
+        this.activeId = 0;
+        this.viewRevision++;
         if (dialog)
-            this.activate(dialog);
+            this.activate({ id: ++this.sequence, request: dialog });
         this.hooks.changed();
     }
-    private activate(request: Request): void {
-        this.current = this.hooks.prepare(request);
+    private activate(entry: DialogEntry): void {
+        this.current = this.hooks.prepare(entry.request);
+        this.activeId = entry.id;
+        this.viewRevision++;
         this.gate.add('dialog');
     }
 }

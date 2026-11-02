@@ -1,7 +1,6 @@
 import { KEY_CODES, WORLD_RULES } from '../game/game-config.js';
 import { clamp, screenInput } from '../shared/model.js';
 import type { Player } from '../shared/entities.js';
-declare const Laya: any;
 const LIMIT = WORLD_RULES.limit;
 /** 只阻止会滚动页面的游戏按键；移动键另用于取消鼠标目标。 */
 const PREVENT_DEFAULT_KEYS = new Set(['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']);

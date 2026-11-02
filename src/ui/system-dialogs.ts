@@ -1,7 +1,8 @@
+import type { LayaSprite } from '../platform/laya.js';
 import type { Game } from '../game/game.js';
 import { UIControls, C } from './ui-controls.js';
 /** 平台/诊断弹窗共用响应式排版；不自行处理广告结果或修改生命。 */
-export function renderSystemDialog(type: 'revive' | 'performance', parent: any, w: number, h: number, game: Game, ui: UIControls): void {
+export function renderSystemDialog(type: 'revive' | 'performance', parent: LayaSprite, w: number, h: number, game: Game, ui: UIControls): void {
     const pad = Math.min(24, w * .05), inner = w - pad * 2, short = h < 400;
     ui.text(parent, type === 'revive' ? 'RELIC ECHO / SECOND CHANCE' : 'RELIC ECHO / PERFORMANCE', pad, pad, inner, 10, C.mint);
     ui.text(parent, type === 'revive' ? '让回响再次燃起' : '性能详情', pad, pad + 26, inner, 23, C.gold);

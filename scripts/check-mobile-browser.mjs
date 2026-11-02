@@ -10,8 +10,9 @@ const directory=resolve('artifacts','mobile-check-'+Date.now());
 await mkdir(directory,{recursive:true});
 const server=createStaticServer();server.listen(0,'127.0.0.1');await once(server,'listening');
 const origin=`http://127.0.0.1:${server.address().port}`;
-const browser=spawn(process.env.PERF_BROWSER||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',[
+const browser=spawn(process.env.PERF_BROWSER||(process.platform==='win32'?'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe':'google-chrome'),[
  '--headless=new','--no-first-run','--no-default-browser-check','--disable-extensions',
+ ...(process.env.CI?['--no-sandbox','--enable-unsafe-swiftshader']:[]),
  '--remote-debugging-port=0',`--user-data-dir=${directory}`,'about:blank'
 ],{windowsHide:true,stdio:['ignore','ignore','pipe']});
 let ws;
@@ -47,10 +48,11 @@ try{
   await send('Emulation.setUserAgentOverride',{userAgent:touch?'Mozilla/5.0 (iPhone; CPU iPhone OS 26_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1':'Mozilla/5.0 Chrome/140.0.0.0 Safari/537.36',platform:touch?'iPhone':'Win32'});
   await send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:dpr,mobile:touch});
   await send('Emulation.setTouchEmulationEnabled',{enabled:touch,maxTouchPoints:touch?5:1});
-  await send('Page.navigate',{url:origin});
+  const caseUrl=origin+'/?case='+width+'x'+height;
+  await send('Page.navigate',{url:caseUrl});
   let ready=false;
   for(let i=0;i<80;i++){
-   ready=await evaluate(`document.readyState==='complete' && !!window.Laya?.stage?.getChildByName('game-ui')`);
+   ready=await evaluate(`location.href===${JSON.stringify(caseUrl)} && document.readyState==='complete' && !!window.Laya?.stage?.getChildByName('game-ui')`);
    if(ready)break;
    if(errors.length)throw Error(JSON.stringify(errors));
    await new Promise(r=>setTimeout(r,100));
@@ -115,6 +117,14 @@ try{
    await evaluate(`(async()=>{const {game,ui}=await import('/dist/main.js'),{UPGRADES}=await import('/dist/progression/config.js');
     game.levels=Object.fromEntries(UPGRADES.map(u=>[u.id,u.max]));game.player.hp=game.stats.hp;
     for(let i=0;i<3;i++)game.show({type:'upgrade',choices:[]});ui.update();})()`);
+   const rewardId=await evaluate(`import('/dist/main.js').then(({game})=>game.flow.dialogId)`);
+   await send('Emulation.setDeviceMetricsOverride',{width:height,height:width,deviceScaleFactor:dpr,mobile:true});
+   await new Promise(r=>setTimeout(r,300));
+   assert.equal(await evaluate(`import('/dist/main.js').then(({game})=>game.flow.dialogId)`),rewardId,'Rotation preserves current reward identity');
+   await send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:dpr,mobile:true});
+   await new Promise(r=>setTimeout(r,300));
+   const rewardShot=await send('Page.captureScreenshot',{format:'png'});
+   await writeFile(resolve(directory,`${width}x${height}-reward.png`),Buffer.from(rewardShot.data,'base64'));
    for(let remaining=3;remaining>0;remaining--){
     const card=await evaluate(`import('/dist/main.js').then(({game,ui})=>{
      const find=n=>{if(n.name==='upgrade-heal')return n;for(let i=0;i<n.numChildren;i++){const r=find(n.getChildAt(i));if(r)return r;}};
@@ -127,6 +137,9 @@ try{
     assert.equal(outcome.feedback,'生命已满，本次奖励已领取');
    }
   }
+  await evaluate(`import('/dist/main.js').then(({game})=>game.toggleInventory())`);
+  const inventoryShot=await send('Page.captureScreenshot',{format:'png'});
+  await writeFile(resolve(directory,`${width}x${height}-inventory.png`),Buffer.from(inventoryShot.data,'base64'));
   assert.equal(errors.length,0,JSON.stringify(errors));
   reports.push({width,height,dpr,touch,initial,battle});
  }

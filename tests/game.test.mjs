@@ -1,13 +1,13 @@
 ﻿import test from 'node:test';
 import assert from 'node:assert/strict';
-import {setupLayaStub} from './helpers/laya-stub.mjs';
+import {setupLayaStub,childrenOf} from './helpers/laya-stub.mjs';
 setupLayaStub();
 const {Game}=await import('../dist/game/game.js');
 const {GameUI}=await import('../dist/ui/ui.js');
 // Isolate weapon and input checks from the starter Buff's random procs.
 const create=()=>{const g=new Game();g.start('storm',true);for(let i=0;i<2;i++)for(const part of ['trigger','action','element'])g.buffs.install(i,part,null);return g;};
 const tick=(g,seconds)=>{for(let i=0;i<Math.ceil(seconds*60);i++){if(g.gate.paused||g.mode!=='battle')break;g.update(1/60);g.render();}};
-const find=(root,name)=>root.name===name?root:root.children.map(child=>find(child,name)).find(Boolean);
+const find=(root,name)=>root.name===name?root:childrenOf(root).map(child=>find(child,name)).find(Boolean);
 
 test('performance sampling freezes in dialogs/background and resets on restart/resize/toggle',()=>{
  const g=create();g.showPerformance=true;g.sound=false;g.performanceMonitor.record(0,0,0);g.performanceMonitor.record(16,1,2);
@@ -83,9 +83,9 @@ test('Buff panel shows upgraded level/benefit on phone and refreshes without res
  for(const [w,h]of [[320,568],[390,844],[568,320],[844,390]]){
   Laya.stage.width=w;Laya.stage.height=h;Laya.stage.emit('resize');
   assert.match(find(ui.root,'buff-description').text,/伤害 \+20%/);
-  assert.ok(find(ui.root,'buff-slot-0').children.some(c=>c.text?.includes('Lv.2')));assertControls(find(ui.root,'dialog-panel'),w,h,true);
+  assert.ok(childrenOf(find(ui.root,'buff-slot-0')).some(c=>c.text?.includes('Lv.2')));assertControls(find(ui.root,'dialog-panel'),w,h,true);
  }
- assert.equal(g.buffs.cooldowns[0],1.5);g.buffs.receiveFragment('fire');g.onChange();assert.match(find(ui.root,'buff-description').text,/伤害 \+40%/);
+ assert.equal(g.buffs.cooldowns[0],1.5);g.buffs.receiveFragment('fire');g.flow.refresh();assert.match(find(ui.root,'buff-description').text,/伤害 \+40%/);
 });
 
 test('fragment cards remain clickable and inside desktop/phone dialogs across rotation',()=>{
@@ -228,7 +228,7 @@ test('mobile HUD separates primary controls, keeps center clear and reuses stick
   assert.ok(stick.x+stick.w<dash.x);assert.ok(stick.y+stick.h<=h-16);
   assertControls(ui.hudView.root,w,h,true);
   assert.deepEqual(bindings(),initialBindings,'rotation must not add stage touch listeners');
-  assert.equal(ui.hudView.root.children.filter(node=>node.name==='touch-stick').length,1);
+  assert.equal(childrenOf(ui.hudView.root).filter(node=>node.name==='touch-stick').length,1);
   assert.ok(bounds(ui.hudView.labels.combo).y<h*.4,'combo stays above the battle center');
   const dashNode=find(ui.root,'dash');ui.update();ui.update();assert.equal(find(ui.root,'dash'),dashNode);
  }
@@ -260,11 +260,11 @@ test('mobile safe area moves HUD and dialogs inside screen cutouts and keeps sti
  }
 });
 
-const buttons=(root)=>root.visible===false?[]:[...(root.handlers.click?.length?[root]:[]),...root.children.flatMap(buttons)];
+const buttons=(root)=>root.visible===false?[]:[...(root.handlers.click?.length?[root]:[]),...childrenOf(root).flatMap(buttons)];
 // Model Laya's front-to-back hit traversal, including disabled parent subtrees.
 function pickUI(root,x,y){
   if(root.visible===false||root.mouseEnabled===false)return null;
-  for(const child of [...root.children].reverse()){const hit=pickUI(child,x,y);if(hit)return hit;}
+  for(const child of [...childrenOf(root)].reverse()){const hit=pickUI(child,x,y);if(hit)return hit;}
   const r=bounds(root);
   return root.mouseThrough!==true&&x>=r.x&&x<r.x+r.w&&y>=r.y&&y<r.y+r.h?root:null;
 }
@@ -281,7 +281,7 @@ test('all six dialogs reflow across phone, tablet, desktop and ultrawide sizes',
     const g=create(),ui=new GameUI(g);ui.mobile=touch;Laya.stage.width=w;Laya.stage.height=h;Laya.stage.emit('resize');
     assertControls(ui.hudView.root,w,h,touch);
     const cases=[{type:'start'},{type:'upgrade',choices:['power','haste','vital']},{type:'drop',item:{id:'heavy',quality:2}},{type:'inventory'},{type:'pause'},{type:'result',win:true,reason:'Complete'}];
-    for(const dialog of cases){g.flow.replace(dialog);ui.modalKey='';ui.update();assertControls(find(ui.root,'dialog-panel'),w,h,touch);const shade=bounds(find(ui.root,'modal-shade'));assert.ok(Math.abs(shade.w-w)<.001&&Math.abs(shade.h-h)<.001);}
+    for(const dialog of cases){g.flow.replace(dialog);ui.modalDirty=true;ui.update();assertControls(find(ui.root,'dialog-panel'),w,h,touch);const shade=bounds(find(ui.root,'modal-shade'));assert.ok(Math.abs(shade.w-w)<.001&&Math.abs(shade.h-h)<.001);}
     if(w<h){g.flow.replace(null);ui.update();assert.equal(g.gate.paused,false);}
   }
 });
@@ -331,9 +331,12 @@ test('identical queued healing cards refresh, report full health and each consum
  const ui=new GameUI(g);ui.mobile=true;Laya.stage.width=393;Laya.stage.height=852;Laya.stage.emit('resize');
  for(let i=0;i<3;i++)g.show({type:'upgrade',choices:[]});ui.update();
  const first=find(ui.root,'upgrade-heal');assert.ok(first);assert.equal(g.flow.pendingCount,2);
+ const stale=first.handlers.click[0];
+ for(let i=0;i<10;i++)g.onChange();assert.equal(find(ui.root,'upgrade-heal'),first);
  first.emit('click');assert.equal(g.player.hp,100);assert.equal(g.flow.pendingCount,1);assert.equal(first.destroyed,true);
+ stale.listener.call(stale.caller,{stopPropagation(){}});assert.equal(g.flow.pendingCount,1);
  const second=find(ui.root,'upgrade-heal');assert.notEqual(first,second);assert.equal(g.upgradeFeedback,'已恢复 30 点生命');
- const texts=n=>[n.text||'',...n.children.flatMap(texts)];
+ const texts=n=>[n.text||'',...childrenOf(n).flatMap(texts)];
  assert.ok(texts(ui.root).some(t=>t.includes('生命已满')));
  assert.ok(texts(ui.root).some(t=>t.includes('待领取 2')));
  second.emit('click');assert.equal(g.flow.pendingCount,0);assert.equal(g.player.hp,100);
@@ -363,7 +366,7 @@ test('fixed budgets survive a full six-minute training simulation and five resta
   }
   assert.equal(g.mode,'result');
   for(let i=0;i<5;i++){g.start('storm',true);tick(g,3);}
-  assert.ok(g.scene.actors.children.length<50);assert.ok(g.nodes.sprites.length<=500);
+  assert.ok(childrenOf(g.scene.actors).length<50);assert.ok(g.nodes.sprites.length<=500);
 });
 
 function clearArena(g){for(const e of g.enemies)g.release(e.node);g.enemies=[];g.grid.rebuild([]);g.spawnTimer=999;g.attackTimer=999;}
@@ -523,7 +526,7 @@ test('visual quality saves and reloads, bounds feedback, and leaves gameplay sta
 test('ground aim stays below actors and staff charge renders after Buff effects on every quality',()=>{
   for(const quality of ['low','standard','high']){
     const g=create();clearArena(g);g.quality=quality;
-    assert.ok(g.scene.world.children.indexOf(g.scene.groundEffects)<g.scene.world.children.indexOf(g.scene.actors));
+    assert.ok(childrenOf(g.scene.world).indexOf(g.scene.groundEffects)<childrenOf(g.scene.world).indexOf(g.scene.actors));
     const e=enemyAt(g,60,0);e.kind=1;e.wind=.3;e.dx=1;e.dy=0;
     const calls=[],aim=[];g.scene.effects.graphics.drawPoly=()=>calls.push('warning');g.scene.groundEffects.graphics.drawLine=(...a)=>aim.push(a);g.buffs.render=()=>calls.push('buff');
     g.render();assert.ok(calls.indexOf('warning')>calls.indexOf('buff'));assert.equal(aim.length,8);

@@ -16,7 +16,7 @@ ui.text(root,'技能表现 · 施放 / 飞行 / 命中',24,22,1050,25,'#e8d795')
 ui.text(root,'雷杖：跳跃电弧　　炎炮：热芯与焰冠　　环刃：抬手引导 / 外扩回收',24,65,1050,14,'#b4c2a2');
 let time=0,paused=false,quality='standard';
 ui.button(root,'暂停 / 继续',24,100,150,44,()=>paused=!paused);
-const qualityButton=ui.button(root,'画质：标准',188,100,170,44,()=>{const modes=['low','standard','high'];quality=modes[(modes.indexOf(quality)+1)%3];qualityButton.children[0].text='画质：'+QUALITY_PRESETS[quality].name;});
+const qualityButton=ui.button(root,'画质：标准',188,100,170,44,()=>{const modes=['low','standard','high'];quality=modes[(modes.indexOf(quality)+1)%3];qualityButton.caption.text='画质：'+QUALITY_PRESETS[quality].name;});
 ui.button(root,'从头播放',372,100,150,44,()=>{time=0;for(const c of cells)c.spin=0;});
 const origin=unproject(-80,0),target=unproject(65,-8),cells=[];
 for(const [i,weapon]of ['storm','flame','blade'].entries()){

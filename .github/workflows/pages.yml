@@ -25,6 +25,17 @@ jobs:
       - run: npm ci
       - run: npm run format:check
       - run: npm test
+      - name: Check production entry and touch interactions in Chromium
+        run: node scripts/check-mobile-browser.mjs
+        env:
+          PERF_BROWSER: google-chrome
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: mobile-browser-diagnostics
+          path: |
+            artifacts/mobile-check-*/*.png
+            artifacts/mobile-check-*/report.json
       - run: npm run build:pages
       - uses: actions/upload-pages-artifact@v3
         with:

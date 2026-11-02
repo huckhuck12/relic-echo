@@ -1,27 +1,27 @@
+import type { LayaSprite, LayaEvent } from '../platform/laya.js';
 import type { Game } from '../game/game.js';
 import type { ScreenLayout } from './layout.js';
 import { UIControls, C } from './ui-controls.js';
 import { mobileHUDLayout, TOUCH_UI } from './hud-layout.js';
 import { clamp } from '../shared/model.js';
-declare const Laya: any;
 /** 只拥有摇杆节点和首指身份。实例仅绑定一次舞台事件，重排先释放旧触点。 */
 export class TouchStick {
-    joystick: any;
-    knob: any;
-    activation: any;
+    joystick!: LayaSprite;
+    knob!: LayaSprite;
+    activation!: LayaSprite;
     stickTouch: number | null = null;
     stickOrigin = { x: 0, y: 0 };
     private home = { x: 0, y: 0 };
     private limits = { left: 0, right: 0, top: 0, bottom: 0 };
-    constructor(private readonly game: Game, private readonly controls: UIControls, private readonly root: any) {
+    constructor(private readonly game: Game, private readonly controls: UIControls, private readonly root: LayaSprite) {
         Laya.stage.on(Laya.Event.MOUSE_MOVE, this, this.dragStick);
         Laya.stage.on(Laya.Event.MOUSE_UP, this, this.release);
-        Laya.stage.on(Laya.Event.MOUSE_OUT, this, (e: any) => {
+        Laya.stage.on(Laya.Event.MOUSE_OUT, this, (e: LayaEvent) => {
             if (e.target === Laya.stage)
                 this.release();
         });
     }
-    build(parent: any, layout: ScreenLayout, mobile: boolean): void {
+    build(parent: LayaSprite, layout: ScreenLayout, mobile: boolean): void {
         this.release();
         const position = mobileHUDLayout(layout);
         const radius = TOUCH_UI.stickSize / 2;
@@ -56,7 +56,7 @@ export class TouchStick {
         this.joystick.on(Laya.Event.MOUSE_DOWN, this, this.begin);
     }
     /** 每次落指重设中心；边缘只约束底盘显示，按下瞬间不让角色突然走动。 */
-    private begin(e: any): void {
+    private begin(e: LayaEvent): void {
         e.stopPropagation();
         if (this.stickTouch !== null || this.game.gate.paused || this.game.mode !== 'battle')
             return;
@@ -68,7 +68,7 @@ export class TouchStick {
         this.joystick.alpha = .75;
         this.game.setStick(0, 0);
     }
-    private dragStick(e: any): void {
+    private dragStick(e: LayaEvent): void {
         if (this.stickTouch === null || (e.touchId ?? 0) !== this.stickTouch)
             return;
         if (this.game.gate.paused) {
@@ -81,7 +81,7 @@ export class TouchStick {
         // 中心留 6px 死区，避免拇指自然抖动触发满速移动；超出后按屏幕方向走。
         this.game.setStick(d <= TOUCH_UI.stickDeadZone ? 0 : dx * ratio / TOUCH_UI.stickTravel, d <= TOUCH_UI.stickDeadZone ? 0 : dy * ratio / TOUCH_UI.stickTravel);
     }
-    release(e?: any): void {
+    release(e?: LayaEvent): void {
         if (e && this.stickTouch !== null && (e.touchId ?? 0) !== this.stickTouch)
             return;
         this.stickTouch = null;

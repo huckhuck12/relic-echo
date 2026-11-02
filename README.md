@@ -1,6 +1,6 @@
 # 遗迹回响 · Relic Echo
 
-LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.8`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
+LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.9`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
 
 ## 本地运行与 GitHub Pages
 
@@ -9,6 +9,13 @@ LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.8`�
 项目已包含 [GitHub Pages 工作流](.github/workflows/pages.yml)。上传到自己的 GitHub 仓库，在 **Settings → Pages → Source** 选择 **GitHub Actions**；向 main/master 推送或手动运行工作流，构建和测试通过后自动发布。所有资源使用相对路径，支持 `https://用户名.github.io/仓库名/` 和账号主页站点。
 
 本地生成发布包：`npm run build:pages`。模拟仓库子路径：`npm run preview:pages -- --port 8081`，访问 `http://localhost:8081/relic-echo/`。详见[开发与发布说明](docs/开发与发布.md)。仓库为 `huckhuck12/relic-echo`，本地修改需推送后等待 GitHub Actions 部署成功才会更新线上站点。
+
+## 0.10.9 引擎接口与弹窗流程重构
+
+- 定义项目使用的 Laya 公共接口，UI 节点、按钮标题和触点事件使用明确类型；移除全局引擎 any，预览页也改用按钮 caption。测试替身通过公共节点遍历 API 工作，并加入编译期契约检查。
+- RunFlow 为每份弹窗请求分配独立 ID，以 revision 显式通知内容更新。普通 HUD 刷新保留按钮节点；连续相同奖励与新一局仍有不同身份，过期卡片回调不能领取下一份奖励。
+- 桌面与手机共用弹窗内容、动作和布局入口，修正装备面板转身按钮的父节点坐标。
+- 181 项测试通过；真实引擎浏览器检查覆盖开局、浮动摇杆、卡片触控、同局旋转和连续回血奖励，GitHub CI 在部署前执行并保留失败截图。浏览器模拟仍需配合 iPhone Safari 真机复验。
 
 ## 0.10.8 回血奖励反馈与 Boss 预警层级
 

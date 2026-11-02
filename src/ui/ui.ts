@@ -1,13 +1,12 @@
+import type { LayaSprite, LayaText } from '../platform/laya.js';
 import { BattleHUD } from './battle-hud.js';
 import { UIControls, C } from './ui-controls.js';
 import { GameDialogs } from './ui-dialogs.js';
 import type { BuffEditorState } from './buff-panel.js';
 import { Game } from '../game/game.js';
-import type { Dialog } from '../game/run-flow.js';
 import { ScreenLayout, screenLayout } from './layout.js';
 import { mobileHUDLayout, TOUCH_UI } from './hud-layout.js';
 import { readSafeArea } from '../platform/safe-area.js';
-declare const Laya: any;
 /**
  * UI 编排层：组装 HUD/弹窗，控制模态缓存、诊断与短提示的层序。
  * 战斗节点和缓存归 BattleHUD，摇杆触点归 TouchStick；布局变化通过 resize 原子重建。
@@ -15,19 +14,19 @@ declare const Laya: any;
  * 只通过 Game 的动作入口修改玩法，不能分别赋值 dialog/mode/gate。
  */
 export class GameUI {
-    readonly root: any;
+    readonly root: LayaSprite;
     private readonly hudView: BattleHUD;
-    private dialogs: any;
-    private performancePanel: any;
-    private performanceLabel: any;
-    private toastNode: any;
-    private toastLabel: any;
+    private dialogs: LayaSprite;
+    private performancePanel: LayaSprite;
+    private performanceLabel: LayaText;
+    private toastNode: LayaSprite;
+    private toastLabel: LayaText;
     /** 仅保存正在编辑哪条配方/哪个槽位；实际配方与冷却属于 BuffRuntime。 */
     private readonly buffEditor: BuffEditorState = { slot: 0, picker: null };
     private readonly controls = new UIControls(() => this.game.enableAudio());
     /** 只有内容或布局改变才重建弹窗，避免每帧销毁按钮导致输入丢失。 */
-    private modalKey = '';
-    private modalDialog: Dialog | undefined;
+    private modalRevision = -1;
+    private modalDirty = true;
     private toastExpiry = 0;
     private readonly dialogRenderer: GameDialogs;
     private mobile = typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0;
@@ -49,13 +48,12 @@ export class GameUI {
         this.performanceLabel = this.text(this.performancePanel, '', 4, 14, 96, 10, C.mint, 'center');
         this.dialogs = this.layer(this.root);
         this.dialogRenderer = new GameDialogs(this.game, this.dialogs, this.controls, this.buffEditor, {
-            invalidate: () => { this.modalKey = ''; },
+            invalidate: () => { this.modalDirty = true; },
             refresh: () => {
-                this.modalKey = '';
+                this.modalDirty = true;
                 this.update();
             },
             toast: message => this.toast(message),
-            equipment: (...args) => this.hudView.equipment(...args),
         });
         // Toasts sit above dialogs, so they must never take part in mouse hit testing.
         this.toastNode = this.panel(this.root, 400, 585, 480, 45);
@@ -106,7 +104,7 @@ export class GameUI {
         this.toastLabel.leading = this.mobile ? 4 : 6;
         this.toastLabel.height = this.mobile ? 32 : 42;
         this.toastLabel.overflow = 'hidden';
-        this.modalKey = '';
+        this.modalDirty = true;
         this.update();
     }
     private update(): void {
@@ -121,11 +119,10 @@ export class GameUI {
                 this.performanceLabel.text = value;
         }
         this.toastNode.visible = !this.game.dialog && performance.now() < this.toastExpiry;
-        const key = JSON.stringify(this.game.dialog) + ':' + this.game.flow.pendingCount + (this.game.dialog?.type === 'revive' ? `${this.game.revival.busy}:${this.game.reviveMessage}` : '') + (this.game.dialog?.type === 'buffs' ? JSON.stringify(this.game.buffs.recipes) + this.game.buffs.recipes.map(r => this.game.buffs.levelOf(r)).join(',') + [...this.game.buffs.owned].join(',') + this.buffEditor.slot + this.buffEditor.picker : '') + (this.game.dialog?.type === 'inventory' ? JSON.stringify(s.loadout) + this.game.previewBack : '');
-        // 流程状态只通过 Game 的语义入口修改；这里按最终弹窗数据重建显示树。
-        if (key !== this.modalKey || this.modalDialog !== this.game.dialog) {
-            this.modalKey = key;
-            this.modalDialog = this.game.dialog;
+        // 流程状态只通过 Game 的语义入口修改；内容版本改变才重建显示树。
+        if (this.modalDirty || this.modalRevision !== this.game.flow.revision) {
+            this.modalDirty = false;
+            this.modalRevision = this.game.flow.revision;
             this.hudView.stick.release();
             this.dialogRenderer.render(this.game.dialog, this.layout, this.mobile);
         }

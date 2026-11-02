@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {BuffEvolutions,EVOLUTION_LIMITS,evolutionOf} from '../dist/buffs/buff-evolutions.js';
 import {BuffRuntime,FRAGMENTS,recipeDescription} from '../dist/buffs/buffs.js';
 import {drawEvolutionState} from '../dist/buffs/buff-evolution-visuals.js';
-import {setupLayaStub} from './helpers/laya-stub.mjs';
+import {setupLayaStub,childrenOf} from './helpers/laya-stub.mjs';
 
 function fixture(count=12){
  const targets=Array.from({length:count},(_,i)=>({x:40+i*8,y:0,dead:false,hp:100000})),hits=[],bursts=[],arcs=[],slows=[];
@@ -100,7 +100,7 @@ test('evolution mechanics survive zero visual budget and render is finite, culle
 setupLayaStub();
 const {Game}=await import('../dist/game/game.js');
 const {GameUI}=await import('../dist/ui/ui.js');
-const find=(node,name)=>node.name===name?node:node.children.map(c=>find(c,name)).find(Boolean);
+const find=(node,name)=>node.name===name?node:childrenOf(node).map(c=>find(c,name)).find(Boolean);
 test('evolution timers freeze in menus, clear on restart and descriptions fit mobile layouts',()=>{
  for(const [w,h]of [[320,568],[390,844],[568,320],[844,390]])for(const [action,element]of [['bolt','lightning'],['field','fire'],['orbit','ice']]){
   const g=new Game(),ui=new GameUI(g);g.start('storm',true);g.toggleBuffs();g.unlockFragments();g.installBuff(0,'action',action);g.installBuff(0,'element',element);

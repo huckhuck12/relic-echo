@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {setupLayaStub} from './helpers/laya-stub.mjs';
+import {setupLayaStub,childrenOf} from './helpers/laya-stub.mjs';
 setupLayaStub();
 const {SceneRenderer}=await import('../dist/rendering/scene-renderer.js');
 const {emptyLoadout}=await import('../dist/shared/model.js');
@@ -24,11 +24,11 @@ test('standalone renderer updates display nodes without changing frozen world st
   scene.render(Object.freeze(state));scene.render(Object.freeze(state));
   const after={...enemy};delete after.node;delete after.flashPaint;delete after.icePaint;
   assert.deepEqual(after,enemyBefore);assert.equal(enemy.node.visible,true);
-  assert.deepEqual(scene.world.children,[scene.ground,scene.groundEffects,scene.actors,scene.effects]);
+  assert.deepEqual(childrenOf(scene.world),[scene.ground,scene.groundEffects,scene.actors,scene.effects]);
 });
 
 test('renderer reuses its map across frames, reads replacement players and shares the live camera transform with input',()=>{
-  const {scene,state}=fixture();const ground=scene.ground,children=[...ground.children];
+  const {scene,state}=fixture();const ground=scene.ground,children=[...childrenOf(ground)];
   for(const [w,h]of [[390,844],[844,390],[1280,720]]){
     Laya.stage.width=w;Laya.stage.height=h;
     scene.render({...state,player:{...state.player,x:100,y:200}});
@@ -36,7 +36,7 @@ test('renderer reuses its map across frames, reads replacement players and share
     const point=scene.screenToWorld(screen.x,screen.y);
     assert.ok(Math.abs(point.x-100)<1e-8);assert.ok(Math.abs(point.y-200)<1e-8);
   }
-  assert.equal(scene.ground,ground);assert.deepEqual(ground.children,children);
+  assert.equal(scene.ground,ground);assert.deepEqual(childrenOf(ground),children);
 });
 
 test('animated enemies reuse cached graphics, freeze at paused run time, and reset charge rotation',()=>{
@@ -86,7 +86,7 @@ test('orange charger route and arrow render below actors while health bars remai
  const isRoute=c=>c.args.some(value=>warningColors.includes(value));
  assert.equal(floor.filter(isRoute).length,3);assert.equal(overlay.filter(isRoute).length,0);
  assert.equal(overlay.filter(c=>c.name==='drawRect').length,2);
- assert.ok(scene.world.children.indexOf(scene.groundEffects)<scene.world.children.indexOf(scene.actors));
+ assert.ok(childrenOf(scene.world).indexOf(scene.groundEffects)<childrenOf(scene.world).indexOf(scene.actors));
  enemy.wind=0;scene.render(state);assert.equal(floor.filter(isRoute).length,0);
 });
 
@@ -99,7 +99,7 @@ test('Boss ground slam fill, shrinking ring and target markers all stay below pl
  }
  const warning=c=>c.args.some(v=>['#6e423d','#e6a083','#ffe0a2','#ffe5bb'].includes(v));
  scene.render(state);assert.equal(floor.filter(warning).length,6);assert.equal(overlay.filter(warning).length,0);
- assert.ok(scene.world.children.indexOf(scene.groundEffects)<scene.world.children.indexOf(scene.actors));
+ assert.ok(childrenOf(scene.world).indexOf(scene.groundEffects)<childrenOf(scene.world).indexOf(scene.actors));
  enemy.wind=0;scene.render(state);assert.equal(floor.filter(warning).length,0);
 });
 

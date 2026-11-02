@@ -1,3 +1,4 @@
+import type { LayaSprite, LayaText, LayaEvent } from '../platform/laya.js';
 import { UIControls, C } from './ui-controls.js';
 import { TouchStick } from './touch-stick.js';
 import type { Game, Snapshot } from '../game/game.js';
@@ -9,21 +10,20 @@ import type { Loadout } from '../shared/model.js';
 import { RUN } from '../game/pace.js';
 import { clock, SYMBOLS } from './ui-config.js';
 import { mobileHUDLayout, TOUCH_UI } from './hud-layout.js';
-declare const Laya: any;
 /** HUD 持有战斗显示节点与缓存；只通过 Game 动作请求交互，不写战斗数值。 */
 export class BattleHUD {
     private previous: Pick<Snapshot, 'hp' | 'level' | 'dash' | 'time' | 'mode'> | null = null;
-    readonly root: any;
+    readonly root: LayaSprite;
     readonly stick: TouchStick;
-    private labels: Record<string, any> = {};
-    private bars: Record<string, any> = {};
-    private gearPanel: any;
-    private portrait: any;
-    private buildPanel: any;
+    private labels: Record<string, LayaText> = {};
+    private bars: Record<string, LayaSprite> = {};
+    private gearPanel!: LayaSprite;
+    private portrait!: LayaSprite;
+    private buildPanel!: LayaSprite;
     private gearKey = '';
     private layout!: ScreenLayout;
     private mobile = false;
-    constructor(private readonly game: Game, private readonly controls: UIControls, parent: any, private readonly openBuffs: () => void) {
+    constructor(private readonly game: Game, private readonly controls: UIControls, parent: LayaSprite, private readonly openBuffs: () => void) {
         this.root = controls.layer(parent);
         this.stick = new TouchStick(game, controls, parent);
     }
@@ -45,7 +45,7 @@ export class BattleHUD {
     private text(...args: Parameters<UIControls['text']>): ReturnType<UIControls['text']> { return this.controls.text(...args); }
     private button(...args: Parameters<UIControls['button']>): ReturnType<UIControls['button']> { return this.controls.button(...args); }
     private avatar(...args: Parameters<UIControls['avatar']>): ReturnType<UIControls['avatar']> { return this.controls.avatar(...args); }
-    private bar(parent: any, id: string, x: number, y: number, w: number, h: number): void {
+    private bar(parent: LayaSprite, id: string, x: number, y: number, w: number, h: number): void {
         const node = this.layer(parent);
         node.pos(x, y);
         node.size(w, h);
@@ -59,7 +59,7 @@ export class BattleHUD {
         node.graphics.drawRect(0, 0, node.width, node.height, '#303842');
         node.graphics.drawRect(0, 0, node.width * clamp(amount, 0, 1), node.height, color);
     }
-    private label(id: string, value: string, parent: any, x: number, y: number, w: number, size = 12, color = C.text, align = 'left'): void { this.labels[id] = this.text(parent, value, x, y, w, size, color, align); }
+    private label(id: string, value: string, parent: LayaSprite, x: number, y: number, w: number, size = 12, color = C.text, align = 'left'): void { this.labels[id] = this.text(parent, value, x, y, w, size, color, align); }
     private set(id: string, value: string): void {
         if (!this.labels[id])
             return;
@@ -155,7 +155,7 @@ export class BattleHUD {
                 this.game.dash();
         }, false, 'dash');
         // 手机冲刺在按下时提交，不等待抬手 CLICK；左手继续持有摇杆。
-        dashButton.on(Laya.Event.MOUSE_DOWN, this, (e: any) => {
+        dashButton.on(Laya.Event.MOUSE_DOWN, this, (e: LayaEvent) => {
             e.stopPropagation();
             if (this.mobile) {
                 this.game.enableAudio();
@@ -203,8 +203,8 @@ export class BattleHUD {
         this.label('buffs', '', buff, 4, 13, TOUCH_UI.buffWidth - 8, 13, C.gold, 'center');
         const dash = this.button(this.root, '冲刺', p.dashX, p.dashY, TOUCH_UI.dashWidth, TOUCH_UI.dashHeight, () => { }, true, 'dash');
         // 冲刺主文字扩大；冷却放按钮下方，不覆盖文字和命中区域。
-        dash.getChildAt(0).fontSize = 18;
-        dash.on(Laya.Event.MOUSE_DOWN, this, (e: any) => {
+        dash.caption.fontSize = 18;
+        dash.on(Laya.Event.MOUSE_DOWN, this, (e: LayaEvent) => {
             e.stopPropagation();
             this.game.enableAudio();
             this.game.dash();
@@ -213,7 +213,7 @@ export class BattleHUD {
         this.label('dash', '', this.root, p.dashX, p.dashY + TOUCH_UI.dashHeight + 4, TOUCH_UI.dashWidth, 11, C.muted, 'center');
         this.stick.build(this.root, this.layout, true);
     }
-    equipment(parent: any, loadout: Loadout, x: number, y: number, width: number, columns = 1): void {
+    equipment(parent: LayaSprite, loadout: Loadout, x: number, y: number, width: number, columns = 1): void {
         const gap = 10, w = (width - (columns - 1) * gap) / columns;
         SLOTS.forEach((slot, index) => {
             const item = loadout[slot], card = this.button(parent, '', x + (index % columns) * (w + gap), y + Math.floor(index / columns) * 73, w, 64, () => {

@@ -2,6 +2,15 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {RunFlow} from '../dist/game/run-flow.js';
 
+test('dialog identity survives content refresh but differs for identical queued rewards and new runs',()=>{
+ const {flow}=fixture();flow.open({type:'upgrade',choices:[]});
+ const first=flow.dialogId,revision=flow.revision;
+ flow.refresh();assert.equal(flow.dialogId,first);assert.ok(flow.revision>revision);
+ flow.open({type:'upgrade',choices:[]});assert.equal(flow.dialogId,first);
+ flow.close();const second=flow.dialogId;assert.ok(second>first);
+ flow.begin();assert.equal(flow.dialogId,0);flow.open({type:'upgrade',choices:[]});assert.ok(flow.dialogId>second);
+});
+
 function fixture(){
   const events=[];
   let rank=0;

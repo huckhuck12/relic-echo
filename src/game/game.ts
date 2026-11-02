@@ -31,7 +31,6 @@ export type { Dialog } from './run-flow.js';
 import { RUN } from './pace.js';
 import { difficultyAt } from './difficulty.js';
 import { QUALITY_PRESETS, VisualQuality } from '../rendering/quality.js';
-declare const Laya: any;
 export interface Snapshot {
     time: number;
     hp: number;
@@ -226,7 +225,7 @@ export class Game {
         while (this.labels.length > this.visuals.labels)
             this.release(this.labels.pop()!.node);
         this.saveSettings();
-        this.onChange();
+        this.flow.refresh();
     }
     /**
      * 开局事务：先归还显示节点，再替换实体/角色与清除冷却，最后重置流程。
@@ -336,13 +335,13 @@ export class Game {
         const generation = this.runGeneration;
         const pending = this.revival.request();
         this.reviveMessage = '';
-        this.onChange();
+        this.flow.refresh();
         const outcome = await pending;
         if (generation !== this.runGeneration || this.mode !== 'downed')
             return;
         if (outcome !== 'rewarded') {
             this.reviveMessage = outcome === 'cancelled' ? '已取消或等待超时，可重新尝试。' : '暂时无法完成复活，请重试。';
-            this.onChange();
+            this.flow.refresh();
             return;
         }
         // 先消费次数与恢复生命，再通知 UI；重复/迟到回调无法重复发奖。
@@ -407,7 +406,7 @@ export class Game {
             return;
         if (this.buffs.install(slot, part, id)) {
             this.drawAvatar(true);
-            this.onChange();
+            this.flow.refresh();
         }
     }
     unlockFragments(): void {
@@ -415,7 +414,7 @@ export class Game {
             return;
         for (const f of FRAGMENTS)
             this.buffs.grant(f.id);
-        this.onChange();
+        this.flow.refresh();
     }
     private triggerBuff(event: Trigger, x: number, y: number): void {
         this.buffs.setVisualBudget(this.visuals.buffFeedback);
@@ -433,7 +432,7 @@ export class Game {
         const pool = GEARS.filter(g => g.slot === slot), current = this.loadout[slot as keyof Loadout];
         const index = pool.findIndex(g => g.id === current?.id);
         this.putOn({ id: pool[(index + 1) % pool.length].id, quality: current?.quality || 0 });
-        this.onChange();
+        this.flow.refresh();
     }
     testQuality(): void {
         if (!this.training)
@@ -444,7 +443,7 @@ export class Game {
         this.stats = resolveStats(this.loadout, this.levels);
         this.player.hp = Math.min(this.player.hp, this.stats.hp);
         this.drawAvatar(true);
-        this.onChange();
+        this.flow.refresh();
     }
     testBoss(): void {
         if (!this.training)
@@ -706,7 +705,7 @@ export class Game {
     }
     private readonly lootHooks: LootSystem.LootHooks = {
         acquire: () => this.acquire(), release: node => this.release(node), addXP: amount => this.addXP(amount),
-        show: dialog => this.show(dialog), onToast: message => this.onToast(message), onChange: () => this.onChange(),
+        show: dialog => this.show(dialog), onToast: message => this.onToast(message), onChange: () => this.flow.refresh(),
         pickupSound: () => {
             if (this.pickupTone <= 0) {
                 this.pickupTone = .08;

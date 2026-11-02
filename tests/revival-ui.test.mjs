@@ -1,12 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {setupLayaStub} from './helpers/laya-stub.mjs';
+import {setupLayaStub,childrenOf} from './helpers/laya-stub.mjs';
 import {ReviveService} from '../dist/platform/revive-provider.js';
 setupLayaStub();
 const {Game}=await import('../dist/game/game.js');
 const {GameUI}=await import('../dist/ui/ui.js');
 const {UIControls}=await import('../dist/ui/ui-controls.js');
-const find=(root,name)=>root.name===name?root:root.children.map(c=>find(c,name)).find(Boolean);
+const find=(root,name)=>root.name===name?root:childrenOf(root).map(c=>find(c,name)).find(Boolean);
 const down=()=>{const g=new Game();g.start('storm');g.hurt(99999);return g;};
 
 test('revival grants once, preserves build, clears hostile shots and windups, and second death ends run',async()=>{
@@ -65,7 +65,7 @@ test('UI feedback remains bounded, never delays actions or changes hit bounds, a
  const ui=new UIControls(()=>{}),root=new Laya.Sprite();Laya.stage.addChild(root);let clicks=0;
  const button=ui.button(root,'选择',12,20,100,44,()=>clicks++);
  for(let i=0;i<30;i++)button.emit('mousedown');assert.equal(ui.effects.count,1);
- button.emit('click');assert.equal(clicks,1);assert.equal(button.x,12);assert.equal(button.width,100);assert.equal(button.children.at(-1).mouseEnabled,false);
+ button.emit('click');assert.equal(clicks,1);assert.equal(button.x,12);assert.equal(button.width,100);assert.equal(childrenOf(button).at(-1).mouseEnabled,false);
  for(let i=0;i<30;i++){const node=ui.panel(root,0,0,50,44);ui.effects.flash(node,'#fff');}
  assert.equal(ui.effects.count,12);ui.effects.tick(performance.now()+1000);assert.equal(ui.effects.count,0);
  ui.effects.flash(button,'#fff');ui.clear(root);assert.equal(ui.effects.count,0);
