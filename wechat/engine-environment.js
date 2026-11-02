@@ -29,6 +29,11 @@ module.exports = function installEngineEnvironment(wx, timers) {
   }
   const info = wx.getSystemInfoSync();
   const canvas = wx.createCanvas(); // First canvas is the visible game surface.
+  // MiniAdpter exposes a constructor on its window facade, but the old core
+  // also uses bare constructor names. Both must share the native prototype.
+  const context2d = wx.createCanvas().getContext('2d');
+  function CanvasContext() {}
+  CanvasContext.prototype = Object.getPrototypeOf(context2d);
   canvas.style = {};
   events(canvas);
   canvas.getBoundingClientRect = () => ({left:0,top:0,right:root.innerWidth,bottom:root.innerHeight,width:root.innerWidth,height:root.innerHeight});
@@ -52,6 +57,9 @@ module.exports = function installEngineEnvironment(wx, timers) {
     devicePixelRatio:info.pixelRatio || 1,screen:{width:info.screenWidth,height:info.screenHeight},orientation:0,
     localStorage:{getItem:key=>wx.getStorageSync(key)||null,setItem:(key,value)=>wx.setStorageSync(key,value),removeItem:key=>wx.removeStorageSync(key),clear:()=>wx.clearStorageSync()},
     Image:function(){return wx.createImage();},
+    CanvasRenderingContext2D:CanvasContext,
+    ImageData:function(width,height){return context2d.createImageData(width,height);},
+    performance:{now:()=>Date.now()},
     focus(){},scrollTo(){},
   });
   events(root);

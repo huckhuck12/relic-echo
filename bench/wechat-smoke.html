@@ -33,7 +33,9 @@ try{
   const module={exports:{}};cache.set(path,module);
   const localRequire=name=>load(new URL(name,'https://package.invalid'+path).pathname);
   const timers=Object.fromEntries(['setTimeout','clearTimeout','setInterval','clearInterval','requestAnimationFrame','cancelAnimationFrame'].map(name=>[name,window[name].bind(window)]));
-  new Function('require','module','exports','GameGlobal','wx',...Object.keys(timers),sources.get(path))(localRequire,module,module.exports,root,wx,...Object.values(timers));
+  // A browser must not silently supply globals absent from the WeChat VM.
+  const absent=['window','document','navigator','localStorage','CanvasRenderingContext2D','ImageData','DOMParser','performance'];
+  new Function('require','module','exports','GameGlobal','wx',...Object.keys(timers),...absent,sources.get(path))(localRequire,module,module.exports,root,wx,...Object.values(timers),...absent.map(()=>undefined));
   return module.exports;
  }
  const app=load('/game.js');

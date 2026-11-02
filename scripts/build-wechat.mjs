@@ -22,8 +22,12 @@ export async function buildWechat({appid=process.env.WECHAT_APPID || 'touristapp
   const program=ts.createProgram(parsed.fileNames,options);
   const diagnostics=ts.getPreEmitDiagnostics(program);
   if(diagnostics.length)throw Error(ts.formatDiagnosticsWithColorAndContext(diagnostics,{getCurrentDirectory:()=>root,getCanonicalFileName:f=>f,getNewLine:()=> '\n'}));
-  // Only this fixed generated directory is replaced; credentials belong in the environment/local devtools config.
-  await rm(wechatRoot,{recursive:true,force:true});await mkdir(wechatRoot,{recursive:true});
+  // Devtools may hold this directory open on Windows. Clean its contents rather
+  // than removing the project root, and keep the tool's private local settings.
+  await mkdir(wechatRoot,{recursive:true});
+  for(const name of await readdir(wechatRoot)){
+    if(name!=='project.private.config.json')await rm(join(wechatRoot,name),{recursive:true,force:true});
+  }
   const emitted=program.emit(undefined,(filename,source)=>{
     // TS emitter is synchronous; collect files and write them below.
     output.set(filename,'var Laya = GameGlobal.Laya;\n'+source);
@@ -40,7 +44,9 @@ export async function buildWechat({appid=process.env.WECHAT_APPID || 'touristapp
   const project=JSON.parse(await readFile(join(root,'wechat/project.config.json'),'utf8'));project.appid=appid;
   await writeFile(join(wechatRoot,'project.config.json'),JSON.stringify(project,null,2)+'\n');
   const webgl=libs['laya.webgl.js'],adapter=libs['laya.wxmini.js'];
-  await writeFile(join(wechatRoot,'engine.js'),'var window=GameGlobal.__relicEngineWindow, document=window.document, laya=window.laya||(window.laya={});\n'+core+'\n'+webgl+'\n'+adapter);
+  const engineBindings='var window=GameGlobal.__relicEngineWindow, document=window.document, laya=window.laya||(window.laya={});\n'
+    +'var CanvasRenderingContext2D=window.CanvasRenderingContext2D, ImageData=window.ImageData, performance=window.performance;\n';
+  await writeFile(join(wechatRoot,'engine.js'),engineBindings+core+'\n'+webgl+'\n'+adapter);
   await cp(join(root,'vendor/LICENSE-LayaAir.txt'),join(wechatRoot,'LICENSE-LayaAir.txt'));
   async function files(dir){const names=[];for(const e of await readdir(dir,{withFileTypes:true})){const path=join(dir,e.name);names.push(...e.isDirectory()?await files(path):[path]);}return names;}
   const all=await files(wechatRoot),scripts=all.filter(f=>f.endsWith('.js')).map(f=>relative(wechatRoot,f).replaceAll('\\','/'));
