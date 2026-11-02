@@ -4,6 +4,8 @@ module.exports = function installEngineEnvironment(wx, timers) {
   // Devtools exposes a real Window with read-only window/document/navigator.
   // Keep the legacy engine's browser facade private; never patch that host.
   const root = {};
+  const syntheticNodes = new WeakSet();
+  const parents = new WeakMap();
   function events(target) {
     const listeners = new Map();
     target.addEventListener = (type, fn) => {
@@ -19,8 +21,22 @@ module.exports = function installEngineEnvironment(wx, timers) {
   }
   function element(tagName) {
     const node = events({tagName, style:{}, children:[], parentNode:null, value:'', textContent:''});
-    node.appendChild = child => {node.children.push(child);child.parentNode=node;return child;};
-    node.removeChild = child => {node.children=node.children.filter(n=>n!==child);child.parentNode=null;return child;};
+    syntheticNodes.add(node);
+    node.appendChild = child => {
+      parents.get(child)?.removeChild(child);
+      node.children.push(child);parents.set(child,node);
+      // Native Canvas/Image nodes own their read-only DOM relationships.
+      if(syntheticNodes.has(child))child.parentNode=node;
+      return child;
+    };
+    node.removeChild = child => {
+      node.children=node.children.filter(n=>n!==child);
+      if(parents.get(child)===node){
+        parents.delete(child);
+        if(syntheticNodes.has(child))child.parentNode=null;
+      }
+      return child;
+    };
     node.setAttribute = (name,value) => {node[name]=value;};
     node.getAttribute = name => node[name];
     node.contains = child => node.children.includes(child);

@@ -6,11 +6,15 @@ import vm from 'node:vm';
 test('WeChat engine bridge provides native 2D bindings without browser globals',async()=>{
  const source=await readFile(new URL('../wechat/engine-environment.js',import.meta.url),'utf8');
  const sandbox=vm.createContext({module:{exports:{}}});
- vm.runInContext(source,sandbox);
+ vm.runInContext('"use strict";\n'+source,sandbox);
  const canvases=[],handlers=new Map();
  class NativeContext {createImageData(width,height){return{width,height,data:new Uint8ClampedArray(width*height*4)};}}
+ class NativeCanvas {
+  get parentNode(){return null;}
+  getContext(){return new NativeContext();}
+ }
  const wx={getSystemInfoSync:()=>({windowWidth:393,windowHeight:852,pixelRatio:3}),
-  createCanvas:()=>{const canvas={getContext:()=>new NativeContext()};canvases.push(canvas);return canvas;}};
+  createCanvas:()=>{const canvas=new NativeCanvas();canvases.push(canvas);return canvas;}};
  for(const name of ['WindowResize','Hide','Show','TouchStart','TouchMove','TouchEnd','TouchCancel'])wx['on'+name]=fn=>handlers.set(name,fn);
  const root=sandbox.module.exports(wx,{});
  assert.equal(vm.runInContext('typeof CanvasRenderingContext2D',sandbox),'undefined');
@@ -23,4 +27,17 @@ test('WeChat engine bridge provides native 2D bindings without browser globals',
  handlers.get('TouchCancel')({changedTouches:[{identifier:4,x:10,y:20}]});
  assert.equal(cancelled.clientX,10);assert.equal(cancelled.clientY,20);
  assert.equal(root.window,root);
+ const container=root.document.createElement('div'),other=root.document.createElement('div');
+ assert.equal(container.appendChild(root.canvas),root.canvas);
+ assert.equal(container.contains(root.canvas),true);
+ assert.equal(root.canvas.parentNode,null,'Native getter is untouched');
+ other.appendChild(root.canvas);
+ assert.equal(container.contains(root.canvas),false);
+ assert.equal(other.contains(root.canvas),true);
+ assert.equal(other.removeChild(root.canvas),root.canvas);
+ assert.equal(other.contains(root.canvas),false);
+ const child=root.document.createElement('span');
+ container.appendChild(child);assert.equal(child.parentNode,container);
+ other.appendChild(child);assert.equal(child.parentNode,other);assert.equal(container.contains(child),false);
+ other.removeChild(child);assert.equal(child.parentNode,null);
 });
