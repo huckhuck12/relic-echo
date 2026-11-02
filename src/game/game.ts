@@ -2,6 +2,7 @@ import { InputController } from '../input/input-controller.js';
 import { ReviveService } from '../platform/revive-provider.js';
 import { GameLoop } from './game-loop.js';
 import { RunProgression } from '../progression/run-progression.js';
+import type { RewardChoice } from '../progression/run-progression.js';
 import { FeedbackController } from '../combat/feedback-controller.js';
 import * as EnemySpawner from '../enemies/enemy-spawner.js';
 import * as EnemyAI from '../enemies/enemy-ai.js';
@@ -80,7 +81,7 @@ export class Game {
         resetRecoil: () => { this.recoil = 0; }, scheduleAttack: delay => { this.attackTimer = delay; },
         drawAvatar: force => this.drawAvatar(force), ring: (x, y, color) => this.ring(x, y, color),
         beep: (frequency, duration) => this.beep(frequency, duration),
-        show: dialog => this.show(dialog), close: () => this.close(), onToast: message => this.onToast(message),
+        show: dialog => this.show(dialog), settleReward: (id, commit) => this.flow.settleReward(id, commit), onToast: message => this.onToast(message),
     });
     /** Buff 通过有限回调进入伤害系统，triggerBuffs=false 阻止 Buff 再触发 Buff。 */
     readonly buffs = new BuffRuntime<Enemy>({ player: this.playerProxy(), query: (x, y, r) => this.grid.query(x, y, r).filter(e => !e.dead), damage: (e, value, feedback = true, quiet = false) => {
@@ -421,9 +422,7 @@ export class Game {
         if (this.mode === 'battle')
             this.buffs.trigger(event, x, y, 1 + this.stats.damage + this.stats.element);
     }
-    chooseFragment(id: string): void { this.progression.chooseFragment(id); }
-    chooseUpgrade(id: string): void { this.progression.chooseUpgrade(id); }
-    takeDrop(accept: boolean): void { this.progression.takeDrop(accept); }
+    claimReward(dialogId: number, choice: RewardChoice): boolean { return this.progression.claimReward(dialogId, choice); }
     private putOn(item: Item): void { this.progression.putOn(item); }
     /** 练习专用：真实执行穿戴流程，正式局不开放试装切换。 */
     testGear(slot: string): void {

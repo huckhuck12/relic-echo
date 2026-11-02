@@ -43,7 +43,7 @@ export interface RunFlowHooks {
 }
 /**
  * 局内流程的唯一所有者：模式、当前弹窗、FIFO 奖励队列和暂停原因。
- * 不发经验、不穿装备、不画界面；奖励的实际结算仍由 Game 完成。
+ * 不发经验、不穿装备、不画界面；奖励的实际写入交给 RunProgression。
  * gate 的各原因独立：关闭弹窗不能清掉 orientation 等其他暂停原因。
  */
 export class RunFlow {
@@ -54,6 +54,7 @@ export class RunFlow {
     private sequence = 1;
     private activeId = 1;
     private viewRevision = 0;
+    private settlingReward = false;
     constructor(private readonly hooks: RunFlowHooks) { this.gate.add('dialog'); }
     get dialog(): Dialog { return this.current; }
     get mode(): RunMode { return this.state; }
@@ -89,6 +90,22 @@ export class RunFlow {
         }
         this.activate(entry);
         this.hooks.changed();
+    }
+    /** 领取令牌只对应当前奖励；提交期间拒绝重入，结束后只公布一次最终队列状态。 */
+    settleReward(dialogId: number, commit: () => boolean): boolean {
+        if (this.settlingReward || this.state !== 'battle' || this.activeId !== dialogId ||
+            !this.current || !['upgrade', 'fragment', 'drop'].includes(this.current.type))
+            return false;
+        this.settlingReward = true;
+        try {
+            if (!commit())
+                return false;
+            this.close();
+            return true;
+        }
+        finally {
+            this.settlingReward = false;
+        }
     }
     /**
      * 原子地关闭并提升下一个奖励，UI 只收到一次最终状态通知。

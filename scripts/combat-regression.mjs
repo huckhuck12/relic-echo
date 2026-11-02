@@ -21,9 +21,9 @@ try{
   }
   for(let step=0;step<400*60&&g.mode==='battle';step++){
    // 自动处理正式奖励入口，不跳过候选生成/装备分解；移动路线固定，不依赖画面时钟。
-   if(g.dialog?.type==='upgrade')g.chooseUpgrade(g.dialog.choices[0]);
-   if(g.dialog?.type==='drop')g.takeDrop(true);
-   if(g.dialog?.type==='fragment')g.chooseFragment(g.dialog.choices[0]);
+   if(g.dialog?.type==='upgrade')g.claimReward(g.flow.dialogId,{type:'upgrade',id:g.dialog.choices[0]});
+   if(g.dialog?.type==='drop')g.claimReward(g.flow.dialogId,{type:'drop',accept:true});
+   if(g.dialog?.type==='fragment')g.claimReward(g.flow.dialogId,{type:'fragment',id:g.dialog.choices[0]});
    g.setStick(Math.cos(step/180),Math.sin(step/180));
    if(step%240===0)g.dash();
    if(!g.gate.paused)g.update(1/60);

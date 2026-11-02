@@ -43,9 +43,9 @@ test('first elite choice is once per run, freezes simulation and preserves later
  killElite();assert.equal(g.dialog.type,'fragment');assert.equal(g.dialog.choices.length,3);
  assert.equal(g.drops.filter(d=>d.fragment).length,0);assert.ok(g.drops.some(d=>d.item));
  const before=g.time,recipes=JSON.stringify(g.buffs.recipes);tick(g,1);assert.equal(g.time,before);
- g.chooseFragment('invalid');assert.equal(g.dialog.type,'fragment');
- const id=g.dialog.choices[0];g.chooseFragment(id);assert.ok(g.buffs.owned.has(id));assert.equal(g.dialog,null);
- assert.equal(JSON.stringify(g.buffs.recipes),recipes);g.chooseFragment(id);assert.equal(g.dialog,null);
+ g.claimReward(g.flow.dialogId,{type:'fragment',id:'invalid'});assert.equal(g.dialog.type,'fragment');
+ const id=g.dialog.choices[0];g.claimReward(g.flow.dialogId,{type:'fragment',id:id});assert.ok(g.buffs.owned.has(id));assert.equal(g.dialog,null);
+ assert.equal(JSON.stringify(g.buffs.recipes),recipes);g.claimReward(g.flow.dialogId,{type:'fragment',id:id});assert.equal(g.dialog,null);
  killElite();assert.equal(g.dialog,null);assert.equal(g.drops.filter(d=>d.fragment).length,1);
  g.start('storm',true);killElite();assert.equal(g.dialog.type,'fragment');
 });
@@ -55,11 +55,11 @@ test('fragment reward refreshes on activation and chains upgrade/equipment witho
  g.show({type:'drop',item:{id:'heavy',quality:1}});
  for(const f of FRAGMENTS_FOR_REWARD())g.buffs.grant(f);
  // 排队后只剩冰霜未拥有；真正显示时必须重新生成候选。
- g.chooseUpgrade(g.dialog.choices[0]);assert.equal(g.dialog.type,'fragment');assert.deepEqual(g.dialog.choices,['ice']);
- g.chooseFragment('ice');assert.equal(g.dialog.type,'drop');assert.ok(g.gate.paused);
- g.takeDrop(true);assert.equal(g.dialog,null);assert.equal(g.gate.paused,false);
- g.show({type:'fragment',choices:[]});g.chooseFragment(g.dialog.choices[0]);assert.equal(g.xp,5);
- g.show({type:'fragment',choices:[]});g.finish(false,'test');g.chooseFragment('field');assert.equal(g.dialog.type,'result');
+ g.claimReward(g.flow.dialogId,{type:'upgrade',id:g.dialog.choices[0]});assert.equal(g.dialog.type,'fragment');assert.deepEqual(g.dialog.choices,['ice']);
+ g.claimReward(g.flow.dialogId,{type:'fragment',id:'ice'});assert.equal(g.dialog.type,'drop');assert.ok(g.gate.paused);
+ g.claimReward(g.flow.dialogId,{type:'drop',accept:true});assert.equal(g.dialog,null);assert.equal(g.gate.paused,false);
+ g.show({type:'fragment',choices:[]});g.claimReward(g.flow.dialogId,{type:'fragment',id:g.dialog.choices[0]});assert.equal(g.xp,5);
+ g.show({type:'fragment',choices:[]});g.finish(false,'test');g.claimReward(g.flow.dialogId,{type:'fragment',id:'field'});assert.equal(g.dialog.type,'result');
  g.start('storm',true);assert.equal(g.flow.pendingCount,0);assert.equal(g.dialog,null);
 });
 function FRAGMENTS_FOR_REWARD(){return ['hit','dash','kill','hurt','bolt','blast','field','orbit','fire','lightning','force'];}
@@ -70,11 +70,11 @@ test('ground and elite duplicate fragments use the same upgrade settlement and p
  g.updateDrops(.01);assert.equal(g.buffs.levelOf(r),2);assert.equal(g.xp,0);assert.equal(g.drops.length,0);
  for(const id of FRAGMENTS_FOR_REWARD())g.buffs.grant(id);g.buffs.grant('ice');
  g.show({type:'fragment',choices:[]});assert.ok(g.dialog.choices.includes('fire'));
- g.chooseFragment('fire');assert.equal(g.buffs.levelOf(r),3);assert.equal(g.dialog,null);assert.equal(g.gate.paused,false);
+ g.claimReward(g.flow.dialogId,{type:'fragment',id:'fire'});assert.equal(g.buffs.levelOf(r),3);assert.equal(g.dialog,null);assert.equal(g.gate.paused,false);
  g.buffs.receiveFragment('fire');g.buffs.receiveFragment('fire');assert.equal(g.buffs.levelOf(r),5);
  g.xp=5;g.drops.push({x:0,y:0,xp:0,fragment:'fire',collecting:false,node:g.acquire()});g.updateDrops(.01);
  assert.equal(g.dialog.type,'upgrade');assert.equal(g.buffs.levelOf(r),5);
- g.chooseUpgrade(g.dialog.choices[0]);assert.equal(g.gate.paused,false);
+ g.claimReward(g.flow.dialogId,{type:'upgrade',id:g.dialog.choices[0]});assert.equal(g.gate.paused,false);
  g.start('storm',true);assert.equal(g.buffs.levelOf(g.buffs.recipes[0]),1);
 });
 
@@ -323,7 +323,7 @@ test('equipment updates health, appearance and attack family together',()=>{
 test('queued upgrades recalculate available choices after previous selection',()=>{
   const g=create();g.levels.power=4;g.addXP(26);assert.equal(g.dialog.type,'upgrade');assert.equal(g.flow.pendingCount,1);
   // Select power if it was not randomly drawn, using an explicit currently offered card.
-  g.dialog.choices=['power'];g.chooseUpgrade('power');assert.equal(g.levels.power,5);assert.equal(g.dialog.type,'upgrade');assert.ok(!g.dialog.choices.includes('power'));
+  g.dialog.choices=['power'];g.claimReward(g.flow.dialogId,{type:'upgrade',id:'power'});assert.equal(g.levels.power,5);assert.equal(g.dialog.type,'upgrade');assert.ok(!g.dialog.choices.includes('power'));
 });
 test('identical queued healing cards refresh, report full health and each consume exactly one reward',async()=>{
  const {UPGRADES}=await import('../dist/progression/config.js');
@@ -358,9 +358,9 @@ test('timeout ends battle and restart clears entities, upgrades, timers and dial
 test('fixed budgets survive a full six-minute training simulation and five restarts',()=>{
   const g=new Game();g.start('storm',true);
   for(let i=0;i<21610&&g.mode==='battle';i++){
-    if(g.dialog?.type==='upgrade')g.chooseUpgrade(g.dialog.choices[0]);
-    if(g.dialog?.type==='drop')g.takeDrop(true);
-    if(g.dialog?.type==='fragment')g.chooseFragment(g.dialog.choices[0]);
+    if(g.dialog?.type==='upgrade')g.claimReward(g.flow.dialogId,{type:'upgrade',id:g.dialog.choices[0]});
+    if(g.dialog?.type==='drop')g.claimReward(g.flow.dialogId,{type:'drop',accept:true});
+    if(g.dialog?.type==='fragment')g.claimReward(g.flow.dialogId,{type:'fragment',id:g.dialog.choices[0]});
     if(!g.gate.paused)g.update(1/60);
     if(i%60===0){g.render();assert.ok(g.enemies.length<=240);assert.ok(g.shots.length<=240);assert.ok(g.drops.length<=170);}
   }
@@ -456,7 +456,7 @@ test('a fully upgraded stationary player remains vulnerable to the late horde',t
   try {for(const weapon of ['storm','flame','blade']){
     Math.random=seeded(627);const g=create();g.start(weapon,false);clearArena(g);g.time=270;g.level=30;g.attackTimer=0;g.spawnTimer=0;g.nextSurge=270;g.eliteIndex=4;
     g.levels=Object.fromEntries(UPGRADES.map(u=>[u.id,u.max]));g.loadout={weapon:{id:weapon,quality:2},head:{id:'helmet',quality:2},armor:{id:'heavy',quality:2},back:{id:'thorn',quality:2}};g.stats=resolveStats(g.loadout,g.levels);g.player.hp=g.stats.hp;
-    for(let i=0;i<40*60&&g.mode==='battle';i++){if(g.dialog?.type==='upgrade')g.chooseUpgrade(g.dialog.choices[0]);if(g.dialog?.type==='drop')g.takeDrop(false);if(g.dialog?.type==='fragment')g.chooseFragment(g.dialog.choices[0]);if(!g.gate.paused)g.update(1/60);}
+    for(let i=0;i<40*60&&g.mode==='battle';i++){if(g.dialog?.type==='upgrade')g.claimReward(g.flow.dialogId,{type:'upgrade',id:g.dialog.choices[0]});if(g.dialog?.type==='drop')g.claimReward(g.flow.dialogId,{type:'drop',accept:false});if(g.dialog?.type==='fragment')g.claimReward(g.flow.dialogId,{type:'fragment',id:g.dialog.choices[0]});if(!g.gate.paused)g.update(1/60);}
     t.diagnostic(`${weapon}: hp=${g.player.hp}, survived=${(g.time-270).toFixed(1)}s, kills=${g.kills}`);assert.equal(g.mode,'downed',`${weapon} should need movement despite full defensive gear`);assert.equal(g.player.hp,0);
   }}finally{Math.random=random;}
 });
@@ -548,7 +548,7 @@ test('every weapon starts with an editable working Buff and deals opening damage
     assert.deepEqual(g.buffs.recipes[0],{trigger:'hit',action:'blast',element:'fire'});
     assert.equal(g.buffs.recipes[1].trigger,null);assert.equal(g.buffs.owned.size,3);
     tick(g,3);assert.ok(g.damage>0);assert.ok(g.buffs.procs>0,weapon);
-    while(g.dialog?.type==='upgrade')g.chooseUpgrade(g.dialog.choices[0]);
+    while(g.dialog?.type==='upgrade')g.claimReward(g.flow.dialogId,{type:'upgrade',id:g.dialog.choices[0]});
     g.toggleBuffs();g.installBuff(0,'trigger',null);assert.equal(g.buffs.recipes[0].trigger,null);
   }}finally{Math.random=random;}
 });
@@ -557,7 +557,7 @@ test('twenty-second catch-up grants only missing first-level XP and pauses for t
   const g=create();clearArena(g);g.time=19.98;g.xp=4;
   g.update(.01);assert.equal(g.level,1);assert.equal(g.dialog,null);
   g.update(.02);assert.equal(g.level,2);assert.equal(g.xp,0);assert.equal(g.dialog.type,'upgrade');
-  const time=g.time;tick(g,1);assert.equal(g.time,time);g.chooseUpgrade(g.dialog.choices[0]);tick(g,.1);
+  const time=g.time;tick(g,1);assert.equal(g.time,time);g.claimReward(g.flow.dialogId,{type:'upgrade',id:g.dialog.choices[0]});tick(g,.1);
   assert.equal(g.level,2);assert.equal(g.dialog,null);assert.equal(g.flow.pendingCount,0);
   g.start('storm',true);assert.equal(g.level,1);assert.equal(g.xp,0);
 });

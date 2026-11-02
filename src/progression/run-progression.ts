@@ -1,7 +1,7 @@
 import { candidates, equip, nextXP, resolveStats, salvage } from '../shared/model.js';
 import type { Loadout, Stats } from '../shared/model.js';
 import type { Player, Enemy } from '../shared/entities.js';
-import { gear } from './config.js';
+import { gear, UPGRADES } from './config.js';
 import type { Item } from './config.js';
 import { weaponOf } from '../rendering/appearance.js';
 import { FRAGMENTS, BuffRuntime } from '../buffs/buffs.js';
@@ -27,8 +27,26 @@ export interface ProgressionHooks {
     ring(x: number, y: number, color: string): void;
     beep(frequency: number, duration: number): void;
     show(dialog: NonNullable<Dialog>): void;
-    close(): void;
+    settleReward(dialogId: number, commit: () => boolean): boolean;
     onToast(message: string): void;
+}
+/** UI 必须提交绘制时的 dialogId，内容相同也不能借用下一份奖励的身份。 */
+export type RewardChoice = {
+    type: 'upgrade';
+    id: string;
+} | {
+    type: 'fragment';
+    id: string;
+} | {
+    type: 'drop';
+    accept: boolean;
+};
+interface RewardReceipt {
+    message?: string;
+    sound?: [
+        number,
+        number
+    ];
 }
 /** 奖励先提交数据，再推进弹窗队列；候选仅在实际显示时依据最新状态生成。 */
 export class RunProgression {
@@ -45,22 +63,52 @@ export class RunProgression {
         }
         return dialog;
     }
-    /** 重复碎片的经验兜底先入队，再关闭本次选择。 */
-    chooseFragment(id: string): void {
-        const state = this.state();
-        if (state.dialog?.type !== 'fragment' || !state.dialog.choices.includes(id))
-            return;
-        const reward = state.buffs.receiveFragment(id);
-        if (reward.kind === 'xp')
-            this.addXP(reward.amount);
-        this.hooks.onToast(fragmentRewardText(id, reward));
-        this.hooks.close();
+    /** 校验、写入、推进队列共用一个入口；反馈仅在成功领取后发出。 */
+    claimReward(dialogId: number, choice: RewardChoice): boolean {
+        let receipt: RewardReceipt = {};
+        const claimed = this.hooks.settleReward(dialogId, () => {
+            const applied = this.applyReward(choice);
+            if (!applied)
+                return false;
+            receipt = applied;
+            return true;
+        });
+        if (!claimed)
+            return false;
+        if (receipt.sound)
+            this.hooks.beep(...receipt.sound);
+        if (receipt.message)
+            this.hooks.onToast(receipt.message);
+        return true;
     }
-    /** 只接受当前候选，强化提交后再推进下一份奖励。 */
-    chooseUpgrade(id: string): void {
+    /** 这里只提交当前候选；经验产生的新奖励在当前奖励之后排队。 */
+    private applyReward(choice: RewardChoice): RewardReceipt | null {
         const state = this.state();
-        if (state.dialog?.type !== 'upgrade' || !state.dialog.choices.includes(id))
-            return;
+        const dialog = state.dialog;
+        if (!dialog || dialog.type !== choice.type)
+            return null;
+        if (choice.type === 'fragment' && dialog.type === 'fragment') {
+            if (!dialog.choices.includes(choice.id) || !FRAGMENTS.some(f => f.id === choice.id))
+                return null;
+            const reward = state.buffs.receiveFragment(choice.id);
+            if (reward.kind === 'xp')
+                this.addXP(reward.amount);
+            return { message: fragmentRewardText(choice.id, reward) };
+        }
+        if (choice.type === 'drop' && dialog.type === 'drop') {
+            if (choice.accept)
+                return { message: this.equipItem(dialog.item) };
+            this.addXP(salvage(dialog.item.quality));
+            return {};
+        }
+        if (choice.type !== 'upgrade' || dialog.type !== 'upgrade' || !dialog.choices.includes(choice.id))
+            return null;
+        const id = choice.id;
+        if (id !== 'heal') {
+            const upgrade = UPGRADES.find(u => u.id === id);
+            if (!upgrade || (state.levels[id] || 0) >= upgrade.max)
+                return null;
+        }
         if (id === 'heal') {
             const before = state.player.hp;
             state.player.hp = Math.min(state.stats.hp, state.player.hp + state.stats.hp * .3);
@@ -73,25 +121,13 @@ export class RunProgression {
             if (id === 'vital')
                 state.player.hp = Math.min(state.stats.hp, state.player.hp + 20);
         }
-        this.hooks.beep(850, .12);
-        this.hooks.close();
-        if (state.upgradeFeedback)
-            this.hooks.onToast(state.upgradeFeedback);
-    }
-    /** 穿戴和分解都可能产生升级，必须先结算后关闭比较面板。 */
-    takeDrop(accept: boolean): void {
-        const state = this.state();
-        if (state.dialog?.type !== 'drop')
-            return;
-        const item = state.dialog.item;
-        if (accept)
-            this.putOn(item);
-        else
-            this.addXP(salvage(item.quality));
-        this.hooks.close();
+        return { message: state.upgradeFeedback, sound: [850, .12] };
     }
     /** 整套重算属性；旧装备分解，换装不会额外回血。 */
     putOn(item: Item): void {
+        this.hooks.onToast(this.equipItem(item));
+    }
+    private equipItem(item: Item): string {
         const state = this.state();
         const result = equip(state.loadout, item, state.player.hp, state.levels);
         state.loadout = result.loadout;
@@ -108,7 +144,7 @@ export class RunProgression {
         this.hooks.drawAvatar(true);
         this.hooks.ring(state.player.x, state.player.y, gear(item).color);
         this.hooks.beep(730, .12);
-        this.hooks.onToast(`已穿戴 ${gear(item).name} · 角色外观已更新`);
+        return `已穿戴 ${gear(item).name} · 角色外观已更新`;
     }
     /** 经验立即扣除并提升等级，多个选卡请求按顺序进入 RunFlow。 */
     addXP(amount: number): void {

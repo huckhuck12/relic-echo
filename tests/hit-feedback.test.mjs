@@ -57,7 +57,7 @@ test('three weapon simulations keep identical combat state with presentation ena
   const g=create();g.start(weapon,true);g.spawnTimer=999;g.nextSurge=999;
   if(!enabled)g.weaponHooks.hit=(e,damage,{feedback,...options}={})=>g.hit(e,damage,options);
   for(let i=0;i<12;i++){g.spawnEnemy(i%3);Object.assign(g.enemies.at(-1),{x:60+i*7,y:i*6,hp:99999,max:99999});}
-  for(let i=0;i<480;i++){if(g.dialog?.type==='upgrade')g.chooseUpgrade(g.dialog.choices[0]);g.update(1/60);g.render();}
+  for(let i=0;i<480;i++){if(g.dialog?.type==='upgrade')g.claimReward(g.flow.dialogId,{type:'upgrade',id:g.dialog.choices[0]});g.update(1/60);g.render();}
   return {seed,time:g.time,damage:g.damage,kills:g.kills,player:{...g.player},
    enemies:g.enemies.map(({node,hitReaction,flashPaint,icePaint,actionPaint,...combat})=>combat),
    shots:g.shots.map(({node,...shot})=>shot),fields:g.fields};

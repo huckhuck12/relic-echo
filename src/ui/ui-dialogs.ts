@@ -94,6 +94,7 @@ export class GameDialogs {
     }
     /** 手机竖屏按行排列，短横屏改为列；共用正式弹窗遮罩与暂停，不额外开启计时器。 */
     private fragmentDialog(p: LayaSprite, choices: string[], w: number, h: number): void {
+        const dialogId = this.game.flow.dialogId;
         const pad = Math.min(24, w * .05), gap = 10, inner = w - pad * 2;
         const rows = w < 480, top = h < 330 ? 70 : 92, bottom = h - pad - 32;
         const cardW = rows ? inner : (inner - gap * (choices.length - 1)) / choices.length;
@@ -102,7 +103,7 @@ export class GameDialogs {
         this.text(p, '选择一枚解锁，战斗已暂停。', pad, pad + 35, inner, 12, C.muted);
         choices.forEach((id, i) => {
             const f = fragment(id)!;
-            const card = this.button(p, '', pad + (rows ? 0 : i * (cardW + gap)), top + (rows ? i * (cardH + gap) : 0), cardW, cardH, () => this.game.chooseFragment(id), false, `fragment-${id}`);
+            const card = this.button(p, '', pad + (rows ? 0 : i * (cardW + gap)), top + (rows ? i * (cardH + gap) : 0), cardW, cardH, () => this.game.claimReward(dialogId, { type: 'fragment', id }), false, `fragment-${id}`);
             this.text(card, `${f.name} · ${PART_NAMES[f.part]}`, 12, 10, cardW - 24, 15, C.gold);
             this.text(card, fragmentRouteHint(id, this.game.buffs.owned, this.game.buffs.upgradePreview(id)), 12, 38, cardW - 24, 11, C.text);
         });
@@ -150,6 +151,7 @@ export class GameDialogs {
     private standardDialog(p: LayaSprite, dialog: Exclude<NonNullable<Dialog>, {
         type: 'revive' | 'performance';
     }>, w: number, h: number, mobile: boolean): void {
+        const dialogId = this.game.flow.dialogId;
         if (dialog.type === 'fragment') {
             this.fragmentDialog(p, dialog.choices, w, h);
             return;
@@ -202,7 +204,7 @@ export class GameDialogs {
         if (dialog.type === 'upgrade') {
             const available = h - pad - 35 - body, cardW = narrow ? inner : (inner - gap * (dialog.choices.length - 1)) / dialog.choices.length, cardH = narrow ? Math.min(112, (available - gap * (dialog.choices.length - 1)) / dialog.choices.length) : Math.min(290, available);
             dialog.choices.forEach((id, i) => {
-                const u = UPGRADES.find(u => u.id === id), card = this.button(p, '', pad + (narrow ? 0 : i * (cardW + gap)), body + (narrow ? i * (cardH + gap) : 0), cardW, cardH, () => this.game.chooseUpgrade(id), false, `upgrade-${id}`);
+                const u = UPGRADES.find(u => u.id === id), card = this.button(p, '', pad + (narrow ? 0 : i * (cardW + gap)), body + (narrow ? i * (cardH + gap) : 0), cardW, cardH, () => this.game.claimReward(dialogId, { type: 'upgrade', id }), false, `upgrade-${id}`);
                 if (narrow) {
                     const tiny = cardH < 72;
                     this.text(card, u?.icon || '✚', 12, tiny ? 10 : 20, 48, tiny ? 24 : 32, C.gold);
@@ -237,7 +239,7 @@ export class GameDialogs {
                 }
             });
             this.text(p, this.comparison(item), pad, body + ch + 10, inner, 11, C.mint);
-            pair('穿戴装备 →', () => this.game.takeDrop(true), 'equip', `分解 ${[5, 10, 20][item.quality]} 经验`, () => this.game.takeDrop(false), 'salvage');
+            pair('穿戴装备 →', () => this.game.claimReward(dialogId, { type: 'drop', accept: true }), 'equip', `分解 ${[5, 10, 20][item.quality]} 经验`, () => this.game.claimReward(dialogId, { type: 'drop', accept: false }), 'salvage');
         }
         if (dialog.type === 'inventory') {
             const s = this.game.snapshot(), pw = narrow ? Math.min(116, inner * .34) : 150, eqX = pad + pw + 12, eqW = inner - pw - 12, columns = narrow ? 1 : 2, rowH = short || h < 600 ? 44 : 50;

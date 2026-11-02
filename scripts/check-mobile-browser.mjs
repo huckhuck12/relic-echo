@@ -128,13 +128,15 @@ try{
    for(let remaining=3;remaining>0;remaining--){
     const card=await evaluate(`import('/dist/main.js').then(({game,ui})=>{
      const find=n=>{if(n.name==='upgrade-heal')return n;for(let i=0;i<n.numChildren;i++){const r=find(n.getChildAt(i));if(r)return r;}};
-     const n=find(ui.root),p=n.localToGlobal(new Laya.Point(n.width*.5,n.height*.5));return {x:p.x,y:p.y,pending:game.flow.pendingCount};})`);
+     const n=find(ui.root),p=n.localToGlobal(new Laya.Point(n.width*.5,n.height*.5));return {x:p.x,y:p.y,pending:game.flow.pendingCount,dialogId:game.flow.dialogId};})`);
     assert.equal(card.pending,remaining-1);
     await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:card.x,y:card.y}]});
     await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
     const outcome=await evaluate(`import('/dist/main.js').then(({game})=>({dialog:game.dialog?.type,pending:game.flow.pendingCount,feedback:game.upgradeFeedback}))`);
     assert.equal(outcome.dialog,remaining>1?'upgrade':undefined);
     assert.equal(outcome.feedback,'生命已满，本次奖励已领取');
+    const stale=await evaluate(`import('/dist/main.js').then(({game})=>({claimed:game.claimReward(${card.dialogId},{type:'upgrade',id:'heal'}),pending:game.flow.pendingCount}))`);
+    assert.equal(stale.claimed,false,'Settlement rejects the consumed card ID');assert.equal(stale.pending,Math.max(0,remaining-2));
    }
   }
   await evaluate(`import('/dist/main.js').then(({game})=>game.toggleInventory())`);

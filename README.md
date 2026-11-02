@@ -1,6 +1,6 @@
 # 遗迹回响 · Relic Echo
 
-LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.9`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
+LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.10`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
 
 ## 本地运行与 GitHub Pages
 
@@ -9,6 +9,13 @@ LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.9`�
 项目已包含 [GitHub Pages 工作流](.github/workflows/pages.yml)。上传到自己的 GitHub 仓库，在 **Settings → Pages → Source** 选择 **GitHub Actions**；向 main/master 推送或手动运行工作流，构建和测试通过后自动发布。所有资源使用相对路径，支持 `https://用户名.github.io/仓库名/` 和账号主页站点。
 
 本地生成发布包：`npm run build:pages`。模拟仓库子路径：`npm run preview:pages -- --port 8081`，访问 `http://localhost:8081/relic-echo/`。详见[开发与发布说明](docs/开发与发布.md)。仓库为 `huckhuck12/relic-echo`，本地修改需推送后等待 GitHub Actions 部署成功才会更新线上站点。
+
+## 0.10.10 奖励结算统一入口
+
+- 升级、回血、装备穿戴/分解和精英碎片选择统一通过 claimReward(dialogId, choice) 领取；校验当前奖励身份、类型与候选后才写入，拒绝旧卡片、跨局回调和结算期间的重复进入。
+- 状态写入完成后统一推进队列、通知 UI，再显示领取提示；换装分解与重复碎片产生的升级追加到队尾，保留先前奖励和独立暂停原因。
+- 移除不带奖励 ID 的选择方法，正式界面、测试和战斗回归脚本使用相同入口；练习试装仍复用装备规则。
+- 188 项回归测试通过；真实引擎浏览器在触控领取后再次提交已消费卡片 ID，确认不会误领下一份奖励。
 
 ## 0.10.9 引擎接口与弹窗流程重构
 
