@@ -11,6 +11,7 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
   if(status.ready){ready=true;break;}await new Promise(r=>setTimeout(r,100));
  }
  assert.ok(ready,'Generated WeChat package starts with real engine');
+ assert.equal(await evaluate(`wechatTest.host.window===window && wechatTest.root!==wechatTest.host && wechatTest.root.window===wechatTest.root && wechatTest.host.Laya===wechatTest.root.Laya`),true,'Read-only devtools host globals remain untouched');
  const initial=await evaluate(`(()=>{const t=wechatTest,{game,ui}=t.app;return{dialog:game.dialog?.type,stage:[t.root.Laya.stage.width,t.root.Laya.stage.height],mobile:ui.mobile,top:ui.root.y,adapter:!!t.root.Laya.MiniAdpter?._inited,canvas:[t.root.canvas.width,t.root.canvas.height]};})()`);
  assert.equal(initial.dialog,'start');assert.equal(initial.mobile,true);assert.equal(initial.adapter,true);assert.equal(initial.top,88);
  assert.deepEqual(initial.stage,[393,852]);assert.deepEqual(initial.canvas,[1179,2556]);

@@ -20,6 +20,10 @@ for(const name of ['WindowResize','Hide','Show','TouchStart','TouchMove','TouchE
  wx['on'+name]=fn=>on(name,fn);wx['off'+name]=fn=>callbacks.get(name)?.delete(fn);
 }
 const root={},cache=new Map();
+// Match devtools host globals: these aliases must never be assigned by the bridge.
+for(const name of ['window','self','top','parent','document','navigator','location','localStorage','screen','devicePixelRatio','innerWidth','innerHeight']){
+ Object.defineProperty(root,name,{get:()=>window[name]});
+}
 try{
  const manifest=await (await fetch('/_wechat/manifest.json')).json(),sources=new Map();
  await Promise.all(manifest.scripts.map(async path=>sources.set('/'+path,await (await fetch('/_wechat/'+path)).text())));
@@ -37,6 +41,6 @@ try{
  const point=name=>{const n=find(app.ui.root,name),p=n.localToGlobal(new root.Laya.Point(n.width/2,n.height/2));return{x:p.x,y:p.y};};
  const touch=(phase,points,changed=points)=>emit('Touch'+phase,{touches:points,changedTouches:changed,timeStamp:Date.now()});
  const tap=name=>{const p=point(name),t={identifier:1,clientX:p.x,clientY:p.y};touch('Start',[t]);touch('End',[],[t]);};
- window.wechatTest={app,root,wx,load,find,point,tap,touch,emit,storage,resize:(width,height)=>{info={...info,windowWidth:width,windowHeight:height,safeArea:{top:0,left:0,right:width,bottom:height}};emit('WindowResize');}};
+ window.wechatTest={app,root:root.__relicEngineWindow,host:root,wx,load,find,point,tap,touch,emit,storage,resize:(width,height)=>{info={...info,windowWidth:width,windowHeight:height,safeArea:{top:0,left:0,right:width,bottom:height}};emit('WindowResize');}};
 }catch(error){window.wechatError=String(error.stack||error);console.error(error);}
 </script></body></html>

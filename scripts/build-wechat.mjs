@@ -40,7 +40,7 @@ export async function buildWechat({appid=process.env.WECHAT_APPID || 'touristapp
   const project=JSON.parse(await readFile(join(root,'wechat/project.config.json'),'utf8'));project.appid=appid;
   await writeFile(join(wechatRoot,'project.config.json'),JSON.stringify(project,null,2)+'\n');
   const webgl=libs['laya.webgl.js'],adapter=libs['laya.wxmini.js'];
-  await writeFile(join(wechatRoot,'engine.js'),'var window=GameGlobal, document=window.document, laya=window.laya||(window.laya={});\n'+core+'\n'+webgl+'\n'+adapter);
+  await writeFile(join(wechatRoot,'engine.js'),'var window=GameGlobal.__relicEngineWindow, document=window.document, laya=window.laya||(window.laya={});\n'+core+'\n'+webgl+'\n'+adapter);
   await cp(join(root,'vendor/LICENSE-LayaAir.txt'),join(wechatRoot,'LICENSE-LayaAir.txt'));
   async function files(dir){const names=[];for(const e of await readdir(dir,{withFileTypes:true})){const path=join(dir,e.name);names.push(...e.isDirectory()?await files(path):[path]);}return names;}
   const all=await files(wechatRoot),scripts=all.filter(f=>f.endsWith('.js')).map(f=>relative(wechatRoot,f).replaceAll('\\','/'));

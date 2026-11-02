@@ -1,6 +1,9 @@
 // Minimal environment bridge for the pinned Laya 2.0.2 engine.
 // Not a general browser/DOM implementation. Game code uses platform interfaces.
-module.exports = function installEngineEnvironment(root, wx, timers) {
+module.exports = function installEngineEnvironment(wx, timers) {
+  // Devtools exposes a real Window with read-only window/document/navigator.
+  // Keep the legacy engine's browser facade private; never patch that host.
+  const root = {};
   function events(target) {
     const listeners = new Map();
     target.addEventListener = (type, fn) => {
@@ -69,5 +72,5 @@ module.exports = function installEngineEnvironment(root, wx, timers) {
   }
   wx.onTouchStart(e=>touch('touchstart',e));wx.onTouchMove(e=>touch('touchmove',e));
   wx.onTouchEnd(e=>touch('touchend',e));wx.onTouchCancel(e=>touch('touchcancel',e));
-  return canvas;
+  return root;
 };
