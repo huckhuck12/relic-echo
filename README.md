@@ -1,6 +1,6 @@
 # 遗迹回响 · Relic Echo
 
-LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.5`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
+LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.6`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
 
 ## 本地运行与 GitHub Pages
 
@@ -9,6 +9,13 @@ LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.10.5`�
 项目已包含 [GitHub Pages 工作流](.github/workflows/pages.yml)。上传到自己的 GitHub 仓库，在 **Settings → Pages → Source** 选择 **GitHub Actions**；向 main/master 推送或手动运行工作流，构建和测试通过后自动发布。所有资源使用相对路径，支持 `https://用户名.github.io/仓库名/` 和账号主页站点。
 
 本地生成发布包：`npm run build:pages`。模拟仓库子路径：`npm run preview:pages -- --port 8081`，访问 `http://localhost:8081/relic-echo/`。详见[开发与发布说明](docs/开发与发布.md)。仓库为 `huckhuck12/relic-echo`，本地修改需推送后等待 GitHub Actions 部署成功才会更新线上站点。
+
+## 0.10.6 手机启动修复与 UI 字体整理
+
+- 修复手机冲刺按钮使用不存在的 `Sprite.children` 导致 UI 构造中断：按钮会亮，但菜单、摇杆和数值未创建，看起来像卡死。改用真实引擎的 `getChildAt`。
+- iPhone 使用系统苹方，其他平台使用系统黑体；标题/主按钮明确字重，深色面板、暖白正文与暖金强调统一替代绿底杂色，扫光改成短暂淡入反馈。
+- 增加 `npm run check:mobile`：启动隐藏的 Edge，以仓库内真实 Laya/WebGL 和生产入口检查 DPR=3 手机横竖屏及桌面，触控开局、计时推进、摇杆移动并保存截图。需要本机 Edge，或用 `PERF_BROWSER` 指定兼容 Chromium 浏览器路径。
+- 浏览器模拟不能代替 iPhone Safari 真机复验。原生分辨率和战斗数值保持原样；本次启动故障定位为接口异常，未据此降低画质。
 
 ## 0.10.5 UI 反馈、轻量监控与一次复活
 

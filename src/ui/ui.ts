@@ -87,7 +87,7 @@ export class GameUI {
         this.performancePanel.pos(perfX, height - margin - 44);
         this.performancePanel.size(perfWidth, 44);
         this.performancePanel.graphics.clear();
-        this.performancePanel.graphics.drawRect(0, 0, perfWidth, 44, '#1b333c', C.border, 1);
+        this.performancePanel.graphics.drawRect(0, 0, perfWidth, 44, '#242c35', C.border, 1);
         this.performanceLabel.width = perfWidth - 8;
         this.performanceLabel.y = perfWidth < 90 ? 5 : 14;
         const mobileLayout = mobileHUDLayout(this.layout);

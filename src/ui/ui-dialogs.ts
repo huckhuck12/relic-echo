@@ -79,14 +79,14 @@ export class GameDialogs {
         if (!dialog)
             return;
         const { width, height, dialogWidth: w, dialogHeight: h } = layout;
-        const shade = this.panel(this.dialogs, 0, 0, width, height, '#07141c', '#07141c');
+        const shade = this.panel(this.dialogs, 0, 0, width, height, '#0e1218', '#0e1218');
         shade.name = 'modal-shade';
         shade.alpha = .88;
         this.dialogs.size(width, height);
         this.block(this.dialogs);
-        const p = this.panel(this.dialogs, (width - w) / 2, (height - h) / 2, w, h, '#152b35', '#627d73');
+        const p = this.panel(this.dialogs, (width - w) / 2, (height - h) / 2, w, h, '#181e25', '#39414a');
         p.name = 'dialog-panel';
-        this.controls.effects.flash(p, C.mint, 260);
+        p.graphics.drawRect(0, 0, 3, Math.min(48, h), C.gold);
         if (dialog.type === 'revive' || dialog.type === 'performance') {
             renderSystemDialog(dialog.type, p, w, h, this.game, this.controls);
             return;
@@ -195,7 +195,7 @@ export class GameDialogs {
                     this.hooks.refresh();
                 }, false, `select-${weapon}`);
                 if (weapon === this.selected)
-                    card.graphics.drawRect(0, 0, cardW, cardH, null, C.gold, 2);
+                    card.graphics.drawRect(0, 0, cardW, cardH, null, C.gold, 1);
                 if (narrow) {
                     this.avatar(card, emptyLoadout(weapon), 40, cardH - 7, Math.min(1.05, (cardH - 12) / 85));
                     this.text(card, gear(weapon).name, 84, cardH < 72 ? 10 : 14, cardW - 96, cardH < 72 ? 14 : 17);
@@ -209,7 +209,7 @@ export class GameDialogs {
                 }
             });
             if (!short)
-                this.text(p, '左键点击 / 按住移动，或使用 WASD。\n空格冲刺 · E 装备 · 手机使用摇杆。', pad, footer - 52, inner, 11, C.muted);
+                this.text(p, typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0 ? '左手摇杆移动 · 右手点击冲刺\n自动攻击，收集回响强化构筑。' : '左键点击 / 按住移动，或使用 WASD。\n空格冲刺 · E 装备。', pad, footer - 52, inner, 11, C.muted);
             pair('开始探索 →', () => this.game.start(this.selected), 'start', '试装与练习', () => {
                 this.game.start(this.selected, true);
                 this.game.toggleInventory();
@@ -238,7 +238,7 @@ export class GameDialogs {
         if (dialog.type === 'drop') {
             const item = dialog.item, g = gear(item), old = this.game.loadout[g.slot], next = { ...this.game.loadout, [g.slot]: item }, cw = (inner - gap) / 2, ch = Math.min(325, footer - body - (short ? 42 : 65));
             [this.game.loadout, next].forEach((loadout, i) => {
-                const current = i ? item : old, card = this.panel(p, pad + i * (cw + gap), body, cw, ch, '#10252e', i ? '#81b499' : C.border);
+                const current = i ? item : old, card = this.panel(p, pad + i * (cw + gap), body, cw, ch, '#20262e', i ? '#8fbeb0' : C.border);
                 this.text(card, i ? `${QUALITY[item.quality]} · 候选` : '当前穿戴', 8, 8, cw - 16, 11, i ? QUALITY_COLOR[item.quality] : C.gold, 'center');
                 if (short) {
                     this.text(card, current ? gear(current).name : '空槽位', 8, 29, cw - 16, 14, C.text, 'center');
@@ -311,7 +311,7 @@ export class GameDialogs {
         }
     }
     private startDialog(p: any): void {
-        this.heading(p, 'EXPEDITION 001 / PURE LAYAAIR', '唤醒遗迹中的回响', '选择初始武器，在六分钟的怪潮中构筑力量。发现装备，穿在身上，挑战遗迹核心。');
+        this.heading(p, 'RELIC ECHO / EXPEDITION 001', '唤醒遗迹中的回响', '选择初始武器，在六分钟的怪潮中构筑力量。发现装备，穿在身上，挑战遗迹核心。');
         (['storm', 'flame', 'blade'] as Weapon[]).forEach((weapon, i) => {
             const card = this.button(p, '', 32 + i * 249, 151, 237, 255, () => {
                 this.selected = weapon;
@@ -354,7 +354,7 @@ export class GameDialogs {
         const g = gear(item), old = this.game.loadout[g.slot], next = { ...this.game.loadout, [g.slot]: item };
         this.heading(p, `RELIC DISCOVERED / ${SLOT_NAME[g.slot]}`, '发现新的装备', '穿戴会立即改变角色外观。替换后，旧装备分解为经验。');
         [this.game.loadout, next].forEach((loadout, i) => {
-            const candidate = i === 1, current = candidate ? item : old, card = this.panel(p, 32 + i * 377, 151, 359, 325, '#10252e', candidate ? '#81b499' : C.border);
+            const candidate = i === 1, current = candidate ? item : old, card = this.panel(p, 32 + i * 377, 151, 359, 325, '#20262e', candidate ? '#8fbeb0' : C.border);
             this.text(card, candidate ? `${QUALITY[item.quality]} · 候选装备` : '当前穿戴', 17, 17, 325, 11, candidate ? QUALITY_COLOR[item.quality] : C.gold, 'center');
             this.avatar(card, loadout, 179, 205, 1.9);
             this.text(card, current ? gear(current).name : '空槽位', 17, 229, 325, 18, C.text, 'center');
@@ -368,7 +368,7 @@ export class GameDialogs {
         const s = this.game.snapshot();
         this.heading(p, 'EXPLORER / VISIBLE LOADOUT', '探索者装备', '武器、头饰、护甲与背饰，直接显示在角色身上。');
         this.button(p, '×', 737, 19, 40, 32, () => this.game.close(), false, 'close');
-        const portrait = this.panel(p, 32, 149, 180, 270, '#10252c');
+        const portrait = this.panel(p, 32, 149, 180, 270, '#20262e');
         this.avatar(portrait, s.loadout, 90, 198, 2, this.game.previewBack);
         this.button(p, `查看${this.game.previewBack ? '正面' : '背面'} ↻`, 16, 223, 148, 32, () => {
             this.game.previewBack = !this.game.previewBack;
@@ -419,7 +419,7 @@ export class GameDialogs {
     private resultDialog(p: any, win: boolean, reason: string): void {
         this.heading(p, `EXPEDITION ${win ? 'COMPLETE' : 'ENDED'}`, win ? '回响归来' : '探索终止', reason);
         this.statRow(p, 153, [['探索时间', clock(this.game.time)], ['击败敌人', String(this.game.kills)], ['最终等级', String(this.game.level)], ['总伤害', String(Math.round(this.game.damage))]]);
-        const portrait = this.panel(p, 32, 254, 180, 250, '#10252c');
+        const portrait = this.panel(p, 32, 254, 180, 250, '#20262e');
         this.avatar(portrait, this.game.loadout, 90, 205, 2);
         this.equipment(p, this.game.loadout, 231, 254, 537, 2);
         this.text(p, this.game.training ? '练习结果不计入战绩' : '战绩保存在本机浏览器。局内强化和装备在新一局重置。', 231, 433, 537, 11, C.muted);

@@ -56,7 +56,7 @@ export class BattleHUD {
         if (!node)
             return;
         node.graphics.clear();
-        node.graphics.drawRect(0, 0, node.width, node.height, '#2a4048');
+        node.graphics.drawRect(0, 0, node.width, node.height, '#303842');
         node.graphics.drawRect(0, 0, node.width * clamp(amount, 0, 1), node.height, color);
     }
     private label(id: string, value: string, parent: any, x: number, y: number, w: number, size = 12, color = C.text, align = 'left'): void { this.labels[id] = this.text(parent, value, x, y, w, size, color, align); }
@@ -183,7 +183,7 @@ export class BattleHUD {
         if (w < 350) {
             this.labels.time.x = m + 54;
         }
-        const status = this.panel(this.root, p.statusX, p.statusY, p.statusWidth, p.statusHeight, '#1a302a');
+        const status = this.panel(this.root, p.statusX, p.statusY, p.statusWidth, p.statusHeight, '#1c2229');
         status.name = 'player-hud';
         this.label('hp', '', status, 10, 6, p.statusWidth - 66, 13, C.mint);
         this.label('level', '', status, p.statusWidth - 58, 6, 48, 13, C.gold, 'right');
@@ -203,7 +203,7 @@ export class BattleHUD {
         this.label('buffs', '', buff, 4, 13, TOUCH_UI.buffWidth - 8, 13, C.gold, 'center');
         const dash = this.button(this.root, '冲刺', p.dashX, p.dashY, TOUCH_UI.dashWidth, TOUCH_UI.dashHeight, () => { }, true, 'dash');
         // 冲刺主文字扩大；冷却放按钮下方，不覆盖文字和命中区域。
-        dash.children[0].fontSize = 18;
+        dash.getChildAt(0).fontSize = 18;
         dash.on(Laya.Event.MOUSE_DOWN, this, (e: any) => {
             e.stopPropagation();
             this.game.enableAudio();
@@ -221,7 +221,7 @@ export class BattleHUD {
                     this.game.toggleInventory();
             }, false, `gear-${slot}`);
             const color = item ? gear(item).color : C.muted;
-            card.graphics.drawRect(10, 11, 40, 42, '#203b44', item ? QUALITY_COLOR[item.quality] : C.border, 1);
+            card.graphics.drawRect(10, 11, 40, 42, '#20262e', item ? QUALITY_COLOR[item.quality] : C.border, 1);
             this.text(card, item ? SYMBOLS[item.id] : '◇', 12, 16, 36, 25, color, 'center');
             this.text(card, `${SLOT_NAME[slot]}${item ? ' / ' + QUALITY[item.quality] : ''}`, 62, 12, w - 70, 9, C.muted);
             this.text(card, item ? gear(item).name : '尚未装备', 62, 34, w - 70, 12);

@@ -1,6 +1,6 @@
 {
   "name": "relic-echo",
-  "version": "0.10.5",
+  "version": "0.10.6",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,6 +11,7 @@
     "format:check": "node scripts/format.mjs --check",
     "perf": "npm run build && node --expose-gc scripts/benchmark.mjs",
     "perf:browser": "npm run build && node scripts/benchmark-browser.mjs",
+    "check:mobile": "npm run build && node scripts/check-mobile-browser.mjs",
     "start": "node scripts/serve.mjs",
     "dev": "npm run build && npm start",
     "test": "npm run build && node --test --test-isolation=none tests/*.test.mjs"

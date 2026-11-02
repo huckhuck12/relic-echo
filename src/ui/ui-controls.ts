@@ -3,8 +3,11 @@ import { UIEffects } from './ui-effects.js';
 import { avatarShapes, drawShapes } from '../rendering/appearance.js';
 declare const Laya: any;
 export const C = {
-    panel: '#26372b', border: '#67765a', text: '#ede9d1', muted: '#acb99b', mint: '#a6dc80', gold: '#e8c975'
+    panel: '#1c2229', border: '#39414a', text: '#f1ede5', muted: '#a8adb3', mint: '#8fbeb0', gold: '#d8b77b',
+    surface: '#242c35', ink: '#191d24'
 };
+/** 原生字体无需下载；iPhone 使用苹方，Android/桌面由系统选择中文黑体。 */
+export const UI_FONT = typeof navigator !== 'undefined' && /iPhone|iPad|iPod/.test(navigator.userAgent || '') ? 'PingFang SC' : 'system-ui';
 /**
  * 原生 Laya 控件工厂，仅负责显示节点与事件隔离，不读取 Game 或布局状态。
  * 所有尺寸为 UI 局部坐标，外层 GameUI 负责响应式重排。
@@ -44,12 +47,13 @@ export class UIControls {
     text(parent: any, value: string, x: number, y: number, w: number, size = 12, color = C.text, align = 'left'): any {
         const label = new Laya.Text();
         label.text = value;
-        label.font = 'Microsoft YaHei';
+        label.font = UI_FONT;
         label.fontSize = size;
         label.color = color;
         label.width = w;
         label.wordWrap = true;
-        label.leading = 6;
+        label.leading = 5;
+        label.bold = size >= 20;
         label.align = align;
         label.mouseEnabled = false;
         label.pos(x, y);
@@ -58,10 +62,11 @@ export class UIControls {
     }
     /** 点击先阻止冒泡、解锁用户手势音频，再执行动作；name 保持稳定供 UI 检查定位。 */
     button(parent: any, label: string, x: number, y: number, w: number, h: number, action: () => void, primary = false, name = label): any {
-        const node = this.panel(parent, x, y, w, h, primary ? C.mint : '#1b333c', primary ? '#c5efcf' : C.border);
+        const node = this.panel(parent, x, y, w, h, primary ? C.gold : C.surface, primary ? C.gold : C.border);
         node.name = name;
-        this.text(node, label, 8, (h - 18) / 2, w - 16, 12, primary ? '#18352c' : C.text, 'center');
-        node.on(Laya.Event.MOUSE_DOWN, this, () => this.effects.flash(node, C.gold, 220));
+        const caption = this.text(node, label, 8, (h - 20) / 2, w - 16, 13, primary ? C.ink : C.text, 'center');
+        caption.bold = primary;
+        node.on(Laya.Event.MOUSE_DOWN, this, () => this.effects.flash(node, C.text, 160));
         node.on(Laya.Event.CLICK, this, (event: any) => {
             event.stopPropagation();
             this.enableAudio();

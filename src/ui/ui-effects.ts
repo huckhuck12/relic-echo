@@ -57,10 +57,9 @@ export class UIEffects {
     }
     private paint(f: Flash, t: number): void {
         const w = f.target.width, h = Math.max(6, f.target.height);
-        f.node.alpha = (1 - t) * .65;
+        f.node.alpha = (1 - t) * .18;
         f.node.graphics.clear();
-        f.node.graphics.drawRect(1, 1, Math.max(1, w - 2), Math.max(2, h - 2), null, f.color, 2);
-        f.node.graphics.drawRect(Math.min(w - 10, w * t), 1, Math.min(10, w * .08), Math.max(2, h - 2), f.color);
+        f.node.graphics.drawRect(1, 1, Math.max(1, w - 2), Math.max(2, h - 2), f.color);
     }
     private remove(flash: Flash): void {
         flash.node.destroy();

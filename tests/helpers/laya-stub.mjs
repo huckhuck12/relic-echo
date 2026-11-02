@@ -4,6 +4,7 @@ class Graphics {clear(){}drawPoly(){}drawCircle(){}drawRect(){}drawLine(){}drawL
 class Sprite {
   constructor(){this.graphics=new Graphics();this.children=[];this.handlers={};this.x=0;this.y=0;this.alpha=1;this.width=1280;this.height=720;this.scaleX=1;this.scaleY=1;}
   addChild(node){node.removeSelf();node.parent=this;this.children.push(node);return node;}
+  getChildAt(index){return this.children[index]||null;}
   removeSelf(){if(this.parent)this.parent.children=this.parent.children.filter(n=>n!==this);this.parent=null;return this;}
   pos(x,y){this.x=x;this.y=y;return this;}
   size(w,h){this.width=w;this.height=h;return this;}

@@ -1,6 +1,6 @@
 import type { Game } from '../game/game.js';
 import type { ScreenLayout } from './layout.js';
-import { UIControls } from './ui-controls.js';
+import { UIControls, C } from './ui-controls.js';
 import { mobileHUDLayout, TOUCH_UI } from './hud-layout.js';
 declare const Laya: any;
 /** 只拥有摇杆节点和首指身份。实例仅绑定一次舞台事件，重排先释放旧触点。 */
@@ -25,12 +25,12 @@ export class TouchStick {
         this.joystick.name = 'touch-stick';
         this.joystick.size(112, 112);
         this.joystick.pivot(56, 56);
-        this.joystick.graphics.drawCircle(56, 56, 55, '#17362f', '#5e9a89', 1);
+        this.joystick.graphics.drawCircle(56, 56, 55, C.panel, C.border, 1);
         this.joystick.alpha = .7;
         this.joystick.visible = mobile;
         this.controls.block(this.joystick);
         this.knob = this.controls.layer(this.joystick);
-        this.knob.graphics.drawCircle(0, 0, 20, '#8dc9ae', '#d7f1d7', 1);
+        this.knob.graphics.drawCircle(0, 0, 20, C.muted, C.text, 1);
         this.knob.pos(56, 56);
         this.joystick.on(Laya.Event.MOUSE_DOWN, this, (e: any) => {
             e.stopPropagation();
