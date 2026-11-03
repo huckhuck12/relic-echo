@@ -115,6 +115,7 @@ export class GameUI {
         this.update();
     }
     private update(): void {
+        this.root.visible = this.game.drawCallProbe.excluded !== 'ui';
         this.hudView.stick.sync();
         const s = this.game.snapshot();
         this.hudView.update(s);
@@ -132,6 +133,7 @@ export class GameUI {
             this.modalRevision = this.game.flow.revision;
             this.dialogRenderer.render(this.game.dialog, this.layout, this.mobile);
         }
+        this.dialogs.visible = !this.game.drawCallProbe.active;
     }
     private toast(message: string): void {
         this.toastLabel.text = message;

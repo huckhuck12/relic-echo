@@ -17,10 +17,12 @@ test('WeChat breadcrumbs survive relaunch, preserve errors through sampling and 
  assert.ok(first.report().current.events.some(e=>e.type==='error'&&e.detail==='native bridge exception'));
  const last=JSON.parse(f.storage.get(DIAGNOSTICS_KEY));first.stop();
  f.storage.set('relic-auto-play-report',JSON.stringify({round:3,results:[{win:false}]}));
+ f.storage.set('relic-drawcall-report',JSON.stringify({baseline:388,rows:[{group:'shots',saved:120}]}));
  const next=createWechatDiagnostics(f.api,'0.11.2',f.timers);next.copy();
  const copied=JSON.parse(f.clipboard());assert.deepEqual(copied.previous,last.current);assert.equal(copied.current.events[0].type,'startup');
  assert.ok(copied.previous.events.some(e=>e.type==='memory-warning'));assert.equal(copied.previous.device.model,'iPhone Air');
  assert.equal(copied.autoPlay.round,3);
+ assert.equal(copied.drawCalls.baseline,388);assert.equal(copied.drawCalls.rows[0].saved,120);
  f.storage.set('relic-auto-play-report','{');next.copy();assert.ok(JSON.parse(f.clipboard()).previous,'Corrupt test report never blocks crash diagnostics');
 });
 test('diagnostics remain bounded and never interrupt play when SDK, storage or snapshot fails',()=>{

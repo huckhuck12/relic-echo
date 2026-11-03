@@ -1,0 +1,82 @@
+{
+    "environment":  "Browser with bundled Laya and mock WeChat SDK; frozen scene, not iPhone",
+    "report":  {
+                   "capturedAt":  1793692497352,
+                   "context":  {
+                                   "version":  "0.11.7",
+                                   "seconds":  271.49999999999864,
+                                   "quality":  "精细",
+                                   "enemies":  235,
+                                   "shots":  208,
+                                   "drops":  150,
+                                   "width":  393,
+                                   "height":  760
+                               },
+                   "baseline":  243,
+                   "finalBaseline":  243,
+                   "stable":  true,
+                   "rows":  [
+                                {
+                                    "group":  "enemies",
+                                    "label":  "怪物本体",
+                                    "without":  165,
+                                    "saved":  78
+                                },
+                                {
+                                    "group":  "shots",
+                                    "label":  "弹道",
+                                    "without":  167,
+                                    "saved":  76
+                                },
+                                {
+                                    "group":  "buffs",
+                                    "label":  "Buff 特效",
+                                    "without":  241,
+                                    "saved":  2
+                                },
+                                {
+                                    "group":  "effects",
+                                    "label":  "其他特效",
+                                    "without":  243,
+                                    "saved":  0
+                                },
+                                {
+                                    "group":  "warnings",
+                                    "label":  "血条/预警",
+                                    "without":  227,
+                                    "saved":  16
+                                },
+                                {
+                                    "group":  "drops",
+                                    "label":  "掉落/光柱",
+                                    "without":  243,
+                                    "saved":  0
+                                },
+                                {
+                                    "group":  "labels",
+                                    "label":  "飘字",
+                                    "without":  242,
+                                    "saved":  1
+                                },
+                                {
+                                    "group":  "environment",
+                                    "label":  "地图/柱子",
+                                    "without":  134,
+                                    "saved":  109
+                                },
+                                {
+                                    "group":  "player",
+                                    "label":  "玩家本体",
+                                    "without":  211,
+                                    "saved":  32
+                                },
+                                {
+                                    "group":  "ui",
+                                    "label":  "界面",
+                                    "without":  239,
+                                    "saved":  4
+                                }
+                            ]
+               },
+    "method":  "60 actual frames, 2 warm-up + median of 3 per variant, baseline before and after; marginal deltas are not additive"
+}

@@ -19,6 +19,7 @@ import { lightningStroke, bladePulse, flameBurst, burningGround, drawBladeOrbit,
 import type { Player, Enemy, Shot, Drop, Field, Effect, DamageLabel, Point } from '../shared/entities.js';
 import type { VisualSettings } from './quality.js';
 import type { RunMode } from '../game/run-flow.js';
+import type { DrawGroup } from '../game/draw-call-probe.js';
 /**
  * 单帧输入契约。实体数组只读且不复制，避免怪群战斗时每帧分配数组。
  * 允许修改 node 与 flashPaint/icePaint 绘图缓存，禁止推进坐标、血量或冷却。
@@ -124,26 +125,49 @@ export class SceneRenderer {
         e.actionPaint = art.key;
     }
     /** 每帧更新相机与显示；屏幕外只隐藏节点，不移除实体或停止 AI。 */
-    render(state: SceneFrame): void {
+    render(state: SceneFrame, excluded: DrawGroup | null = null): void {
         const { w, h, zoom } = this.updateCamera(state);
         const inView = (x: number, y: number, margin = 100) => x >= -margin && x <= w + margin && y >= -margin && y <= h + margin;
         this.syncActors(state, zoom, inView);
         const g = this.effects.graphics;
         g.clear();
-        this.drawIndicators(state, g);
+        if (excluded !== 'drops')
+            this.drawIndicators(state, g);
         const floor = this.groundEffects.graphics;
         floor.clear();
-        this.drawGroundEffects(state, floor);
-        this.drawCombatEffects(state, g);
-        state.buffs.render(g, project, floor, (x, y) => {
-            const q = project(x, y);
-            return inView(q.x * zoom + this.world.x, q.y * zoom + this.world.y, 160);
-        });
-        this.drawEquipmentEffects(state, g);
-        for (const e of state.enemies)
-            if (e.node.visible)
-                drawEnemyRelease(g, floor, e, state.time, state.visuals.detail);
-        this.drawWarnings(state, g, floor);
+        if (excluded !== 'effects') {
+            this.drawGroundEffects(state, floor);
+            this.drawCombatEffects(state, g);
+        }
+        if (excluded !== 'buffs')
+            state.buffs.render(g, project, floor, (x, y) => {
+                const q = project(x, y);
+                return inView(q.x * zoom + this.world.x, q.y * zoom + this.world.y, 160);
+            });
+        if (excluded !== 'effects')
+            this.drawEquipmentEffects(state, g);
+        if (excluded !== 'warnings') {
+            for (const e of state.enemies)
+                if (e.node.visible)
+                    drawEnemyRelease(g, floor, e, state.time, state.visuals.detail);
+            this.drawWarnings(state, g, floor);
+        }
+        // Apply body exclusions after warning generation so one category does not hide another.
+        if (excluded === 'enemies')
+            for (const e of state.enemies)
+                e.node.visible = false;
+        if (excluded === 'shots')
+            for (const s of state.shots)
+                s.node.visible = false;
+        if (excluded === 'drops')
+            for (const d of state.drops)
+                d.node.visible = false;
+        for (const label of state.labels)
+            label.node.visible = excluded !== 'labels';
+        this.playerNode.visible = excluded !== 'player';
+        this.ground.visible = excluded !== 'environment';
+        for (const pillar of this.pillarNodes)
+            pillar.visible = excluded !== 'environment';
     }
     /** 相机跟随、震屏和玩家姿态统一在此更新，输入通过 screenToWorld 读取相同变换。 */
     private updateCamera(state: SceneFrame): {

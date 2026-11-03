@@ -139,6 +139,12 @@ export function createWechatDiagnostics(api: DiagnosticsAPI, version: string, ti
                         extra = { autoPlay: JSON.parse(autoPlay) };
                 }
                 catch { }
+                try {
+                    const drawCalls = api.getStorageSync('relic-drawcall-report');
+                    if (typeof drawCalls === 'string' && drawCalls.length <= 8192)
+                        extra = { ...extra, drawCalls: JSON.parse(drawCalls) };
+                }
+                catch { }
                 api.setClipboardData?.({ data: JSON.stringify({ ...report(), ...extra }) });
             }
             catch { }

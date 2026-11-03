@@ -103,6 +103,17 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  assert.deepEqual(protectedRun,{stress:true,hp:1,mode:'battle',training:false},'Real engine stress entry keeps lethal-hit protection separate from training');
  await screenshot('autoplay-stress');
  await evaluate(`wechatTest.app.game.returnToTitle()`);
+ const probeContext=await evaluate(`(async()=>{const t=wechatTest,g=t.app.game,{scenario,seeded,enableBuffs}=await import('/bench/scenario.js');const random=Math.random;Math.random=seeded(20261103);try{g.quality='high';scenario(g,235,'storm');enableBuffs(g);for(let i=0;i<90;i++)g.update(1/60);g.render();g.openPerformance();t.app.ui.update();t.tap('drawcall-measure');return{time:g.time,hp:g.player.hp,enemies:g.enemies.length,shots:g.shots.length,drops:g.drops.length};}finally{Math.random=random;}})()`);
+ for(let i=0;i<150&&await evaluate(`wechatTest.app.game.drawCallProbe.active`);i++)await new Promise(r=>setTimeout(r,100));
+ const drawCallProbe=await evaluate(`(()=>{const g=wechatTest.app.game;return{active:g.drawCallProbe.active,error:g.drawCallProbe.error,report:g.drawCallProbe.report,time:g.time,hp:g.player.hp,dialog:g.dialog?.type};})()`);
+ assert.equal(drawCallProbe.active,false);assert.equal(drawCallProbe.error,'');assert.ok(drawCallProbe.report?.baseline>0);assert.equal(drawCallProbe.report.rows.length,10);
+ assert.equal(drawCallProbe.time,probeContext.time);assert.equal(drawCallProbe.hp,probeContext.hp);assert.equal(drawCallProbe.dialog,'performance');
+ await screenshot('drawcall-probe');
+ await evaluate(`wechatTest.tap('performance-summary')`);
+ assert.equal(await evaluate(`wechatTest.app.game.drawCallProbe.showReport`),false,'Frame statistics remain accessible after a split');
+ await evaluate(`(()=>{const t=wechatTest,g=t.app.game;g.close();g.togglePause();t.tap('copy-diagnostics');})()`);
+ assert.equal(await evaluate(`JSON.parse(wechatTest.clipboard()).drawCalls.rows.length`),10,'Copied diagnostics contain the complete split report');
+ await evaluate(`wechatTest.app.game.returnToTitle()`);
  const stress=process.argv.includes('--stress')?await checkWechatStress({evaluate,directory,send}):undefined;
- return {kind:'wechat-package-in-browser',initial,battle,dual,paused,death,performance,stress};
+ return {kind:'wechat-package-in-browser',initial,battle,dual,paused,death,performance,drawCallProbe,probeContext,stress};
 }

@@ -35,6 +35,8 @@ import { difficultyAt } from './difficulty.js';
 import { QUALITY_PRESETS, VisualQuality } from '../rendering/quality.js';
 import { profileEngine } from './engine-profiler.js';
 import { AutoPlay } from './auto-play.js';
+import { DrawCallProbe, DRAW_CALL_KEY } from './draw-call-probe.js';
+import { GAME_VERSION } from '../shared/version.js';
 export interface Snapshot {
     time: number;
     hp: number;
@@ -135,6 +137,17 @@ export class Game {
     /** 性能开关为本地设置；关闭后不采样，避免常驻诊断开销。 */
     showPerformance = false;
     private readonly performanceMonitor = new PerformanceMonitor();
+    readonly drawCallProbe = new DrawCallProbe(() => {
+        if (!this.drawCallProbe.active)
+            this.render();
+        if (!this.drawCallProbe.active && this.drawCallProbe.report) {
+            try {
+                platform().writeStorage(DRAW_CALL_KEY, JSON.stringify(this.drawCallProbe.report));
+            }
+            catch { /* Diagnostics must not interrupt the game. */ }
+        }
+        this.flow.refresh();
+    });
     readonly autoPlay = new AutoPlay(this, () => ({ enemies: this.enemies, shots: this.shots, drops: this.drops, pillars: this.pillars }));
     private readonly loop: GameLoop = new GameLoop({
         beforeFrame: now => this.autoPlay.frame(now),
@@ -184,12 +197,13 @@ export class Game {
         bindViewport(Laya.stage);
         Laya.stage.bgColor = '#18291f';
         this.scene = new SceneRenderer(this.pillars);
-        profileEngine(Laya.stage, this.performanceMonitor, () => this.showPerformance && this.mode === 'battle' && !this.gate.paused && !host.hidden(), () => host.now(), Laya.Stat);
+        profileEngine(Laya.stage, this.performanceMonitor, () => this.showPerformance && this.mode === 'battle' && !this.gate.paused && !host.hidden(), () => host.now(), Laya.Stat, this.drawCallProbe);
         this.nodes = new NodePool(this.scene.actors);
         this.drawAvatar();
         Object.assign(this, readSettings());
         this.input.bind();
         host.onHide(() => {
+            this.drawCallProbe.cancel('切入后台，拆分测量已取消。');
             this.audio.suspend();
             this.lostFocus();
         });
@@ -200,6 +214,7 @@ export class Game {
             this.onChange();
         });
         Laya.stage.on(Laya.Event.RESIZE, this, () => {
+            this.drawCallProbe.cancel('屏幕尺寸变化，请重新测量。');
             this.performanceMonitor.reset();
             this.render();
         });
@@ -254,6 +269,7 @@ export class Game {
      * Buff 恢复基础配方；所有字段初始化完后才通知 UI，不能展示旧局奖励。
      */
     start(weapon: Weapon, training = false): void {
+        this.drawCallProbe.cancel();
         this.testRun = this.autoPlay.enabled;
         this.revival.cancel();
         this.runGeneration++;
@@ -329,9 +345,13 @@ export class Game {
     }
     private prepareDialog(dialog: NonNullable<Dialog>): NonNullable<Dialog> { return this.progression.prepareDialog(dialog); }
     private show(dialog: NonNullable<Dialog>): void { this.flow.open(dialog); }
-    close(): void { this.flow.close(); }
+    close(): void {
+        this.drawCallProbe.cancel();
+        this.flow.close();
+    }
     /** UI 使用语义入口切换标题，不再分别写 dialog/mode 导致状态不同步。 */
     returnToTitle(): void {
+        this.drawCallProbe.cancel();
         if (this.autoPlay.enabled)
             this.autoPlay.stop();
         this.revival.cancel();
@@ -342,6 +362,25 @@ export class Game {
     openPerformance(): void {
         if (this.mode === 'battle' && !this.dialog)
             this.show({ type: 'performance' });
+    }
+    measureDrawCalls(): void {
+        if (this.mode !== 'battle' || this.dialog?.type !== 'performance' || this.drawCallProbe.active)
+            return;
+        if (!Laya.stage.render || !Laya.Stat) {
+            this.drawCallProbe.error = '当前引擎不支持 DrawCall 拆分测量。';
+            this.flow.refresh();
+            return;
+        }
+        this.input.reset();
+        this.drawCallProbe.start({
+            version: GAME_VERSION, seconds: this.time, quality: this.visuals.name,
+            enemies: this.enemies.length, shots: this.shots.length, drops: this.drops.length,
+            width: Laya.stage.width, height: Laya.stage.height
+        });
+    }
+    showFrameStatistics(): void {
+        this.drawCallProbe.showReport = false;
+        this.flow.refresh();
     }
     /** 只允许真实倒下触发；主动退出、超时和胜利不会提供复活。 */
     private onPlayerDown(): void {
@@ -528,6 +567,7 @@ export class Game {
             autoPlayEnabled: this.autoPlay.enabled, autoPlayRound: this.autoPlay.rounds,
             autoPlayStress: this.autoPlay.enabled && this.autoPlay.stress,
             autoPlayDecisions: this.autoPlay.decisions, autoPlayLastAction: this.autoPlay.lastAction,
+            drawCallReport: this.drawCallProbe.report,
             paused: this.gate.paused || this.mode !== 'battle', quality: this.visuals.name
         };
     }
@@ -909,8 +949,8 @@ export class Game {
             fields: this.fields, fx: this.fx, labels: this.labels,
             buffs: this.buffs, visuals: this.visuals,
             time: this.time, walkPhase: this.walkPhase, mode: this.mode, paused: this.gate.paused,
-            mouseTarget: this.input.mouseTarget, shake: this.shake, shakeTime: this.feedback.shakeTime,
+            mouseTarget: this.input.mouseTarget, shake: this.shake && !this.drawCallProbe.active, shakeTime: this.feedback.shakeTime,
             shakeStrength: this.feedback.shakeStrength, recoil: this.recoil,
-        });
+        }, this.drawCallProbe.excluded);
     }
 }
