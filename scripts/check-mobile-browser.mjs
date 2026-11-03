@@ -149,6 +149,16 @@ try{
   assert.equal(errors.length,0,JSON.stringify(errors));
   reports.push({width,height,dpr,touch,initial,battle});
  }
+ if(process.argv.includes('--art-board')){
+  await send('Emulation.setDeviceMetricsOverride',{width:960,height:640,deviceScaleFactor:1,mobile:false});
+  await send('Page.navigate',{url:origin+'/bench/art-board.html'});
+  let ready=false;
+  for(let i=0;i<100;i++){ready=await evaluate('!!window.artBoardReady');if(ready)break;await new Promise(r=>setTimeout(r,100));}
+  assert.ok(ready,'Production art board renders');
+  await new Promise(r=>setTimeout(r,150));
+  const shot=await send('Page.captureScreenshot',{format:'png'});
+  await writeFile(resolve(directory,'art-board.png'),Buffer.from(shot.data,'base64'));
+ }
  assert.equal(errors.length,0,JSON.stringify(errors));
  await writeFile(resolve(directory,'report.json'),JSON.stringify(reports,null,2));
  console.log(JSON.stringify({passed:true,directory,reports},null,2));

@@ -1,0 +1,534 @@
+{
+  "environment": "Bundled Laya in browser with mock WeChat SDK; not iPhone",
+  "previous": {
+    "environment": "Browser with bundled Laya and mock WeChat SDK; frozen scene, not iPhone",
+    "report": {
+      "capturedAt": 1793692497352,
+      "context": {
+        "version": "0.11.7",
+        "seconds": 271.49999999999864,
+        "quality": "精细",
+        "enemies": 235,
+        "shots": 208,
+        "drops": 150,
+        "width": 393,
+        "height": 760
+      },
+      "baseline": 243,
+      "finalBaseline": 243,
+      "stable": true,
+      "rows": [
+        {
+          "group": "enemies",
+          "label": "怪物本体",
+          "without": 165,
+          "saved": 78
+        },
+        {
+          "group": "shots",
+          "label": "弹道",
+          "without": 167,
+          "saved": 76
+        },
+        {
+          "group": "buffs",
+          "label": "Buff 特效",
+          "without": 241,
+          "saved": 2
+        },
+        {
+          "group": "effects",
+          "label": "其他特效",
+          "without": 243,
+          "saved": 0
+        },
+        {
+          "group": "warnings",
+          "label": "血条/预警",
+          "without": 227,
+          "saved": 16
+        },
+        {
+          "group": "drops",
+          "label": "掉落/光柱",
+          "without": 243,
+          "saved": 0
+        },
+        {
+          "group": "labels",
+          "label": "飘字",
+          "without": 242,
+          "saved": 1
+        },
+        {
+          "group": "environment",
+          "label": "地图/柱子",
+          "without": 134,
+          "saved": 109
+        },
+        {
+          "group": "player",
+          "label": "玩家本体",
+          "without": 211,
+          "saved": 32
+        },
+        {
+          "group": "ui",
+          "label": "界面",
+          "without": 239,
+          "saved": 4
+        }
+      ]
+    },
+    "method": "60 actual frames, 2 warm-up + median of 3 per variant, baseline before and after; marginal deltas are not additive"
+  },
+  "current": {
+    "capturedAt": 1793696947503,
+    "context": {
+      "version": "0.12.0",
+      "seconds": 271.49999999999864,
+      "quality": "精细",
+      "enemies": 235,
+      "shots": 208,
+      "drops": 150,
+      "width": 393,
+      "height": 760
+    },
+    "baseline": 26,
+    "finalBaseline": 26,
+    "stable": true,
+    "rows": [
+      {
+        "group": "enemies",
+        "label": "怪物本体",
+        "without": 26,
+        "saved": 0
+      },
+      {
+        "group": "shots",
+        "label": "弹道",
+        "without": 26,
+        "saved": 0
+      },
+      {
+        "group": "buffs",
+        "label": "Buff 特效",
+        "without": 24,
+        "saved": 2
+      },
+      {
+        "group": "effects",
+        "label": "其他特效",
+        "without": 26,
+        "saved": 0
+      },
+      {
+        "group": "warnings",
+        "label": "血条/预警",
+        "without": 22,
+        "saved": 4
+      },
+      {
+        "group": "drops",
+        "label": "掉落/光柱",
+        "without": 26,
+        "saved": 0
+      },
+      {
+        "group": "labels",
+        "label": "飘字",
+        "without": 25,
+        "saved": 1
+      },
+      {
+        "group": "environment",
+        "label": "地图/柱子",
+        "without": 24,
+        "saved": 2
+      },
+      {
+        "group": "player",
+        "label": "玩家本体",
+        "without": 24,
+        "saved": 2
+      },
+      {
+        "group": "ui",
+        "label": "界面",
+        "without": 12,
+        "saved": 14
+      }
+    ]
+  },
+  "stress": {
+    "kind": "202 enemies, 206 initial projectiles, 103 drops; repeated vector/atlas comparison in browser mock SDK, not iPhone GPU",
+    "rows": [
+      {
+        "cache": "ground",
+        "textures": false,
+        "quality": "standard",
+        "atlasBytes": 8388608,
+        "enemies": 202,
+        "visible": 169,
+        "fps": 44.99640028797696,
+        "intervalMs": {
+          "mean": 22.224,
+          "p50": 16.7,
+          "p95": 16.8,
+          "max": 266.7
+        },
+        "updateMs": {
+          "mean": 0.624,
+          "p50": 0.6,
+          "p95": 0.9,
+          "max": 1.2
+        },
+        "commandsMs": {
+          "mean": 0.484,
+          "p50": 0.5,
+          "p95": 0.8,
+          "max": 1.2
+        },
+        "engineMs": {
+          "mean": 14.247,
+          "p50": 7.9,
+          "p95": 12.1,
+          "max": 271.3
+        },
+        "drawCalls": {
+          "mean": 34.622,
+          "p50": 32,
+          "p95": 46,
+          "max": 46
+        },
+        "triangles": {
+          "mean": 57216.2,
+          "p50": 58166,
+          "p95": 60274,
+          "max": 60640
+        }
+      },
+      {
+        "cache": "ground",
+        "textures": true,
+        "quality": "standard",
+        "atlasBytes": 8388608,
+        "enemies": 202,
+        "visible": 169,
+        "fps": 60.009601536245796,
+        "intervalMs": {
+          "mean": 16.664,
+          "p50": 16.7,
+          "p95": 16.8,
+          "max": 16.9
+        },
+        "updateMs": {
+          "mean": 0.738,
+          "p50": 0.6,
+          "p95": 2.2,
+          "max": 3.1
+        },
+        "commandsMs": {
+          "mean": 0.536,
+          "p50": 0.4,
+          "p95": 1.2,
+          "max": 1.8
+        },
+        "engineMs": {
+          "mean": 1.909,
+          "p50": 1.6,
+          "p95": 3.6,
+          "max": 5.5
+        },
+        "drawCalls": {
+          "mean": 34.356,
+          "p50": 31,
+          "p95": 45,
+          "max": 45
+        },
+        "triangles": {
+          "mean": 3160.822,
+          "p50": 3195,
+          "p95": 3779,
+          "max": 3805
+        }
+      },
+      {
+        "cache": "ground",
+        "textures": false,
+        "quality": "standard",
+        "atlasBytes": 8388608,
+        "enemies": 202,
+        "visible": 169,
+        "fps": 58.69233478107759,
+        "intervalMs": {
+          "mean": 17.038,
+          "p50": 16.7,
+          "p95": 16.8,
+          "max": 33.4
+        },
+        "updateMs": {
+          "mean": 0.591,
+          "p50": 0.5,
+          "p95": 0.8,
+          "max": 1.4
+        },
+        "commandsMs": {
+          "mean": 0.442,
+          "p50": 0.4,
+          "p95": 0.7,
+          "max": 0.9
+        },
+        "engineMs": {
+          "mean": 9.187,
+          "p50": 7.9,
+          "p95": 13,
+          "max": 33.8
+        },
+        "drawCalls": {
+          "mean": 34.622,
+          "p50": 32,
+          "p95": 46,
+          "max": 46
+        },
+        "triangles": {
+          "mean": 57216.2,
+          "p50": 58166,
+          "p95": 60274,
+          "max": 60640
+        }
+      },
+      {
+        "cache": "ground",
+        "textures": true,
+        "quality": "standard",
+        "atlasBytes": 8388608,
+        "enemies": 202,
+        "visible": 169,
+        "fps": 59.991601175835385,
+        "intervalMs": {
+          "mean": 16.669,
+          "p50": 16.7,
+          "p95": 16.8,
+          "max": 16.9
+        },
+        "updateMs": {
+          "mean": 0.673,
+          "p50": 0.6,
+          "p95": 1.4,
+          "max": 2.5
+        },
+        "commandsMs": {
+          "mean": 0.56,
+          "p50": 0.5,
+          "p95": 0.7,
+          "max": 4.9
+        },
+        "engineMs": {
+          "mean": 1.944,
+          "p50": 1.6,
+          "p95": 3.1,
+          "max": 10.2
+        },
+        "drawCalls": {
+          "mean": 34.356,
+          "p50": 31,
+          "p95": 45,
+          "max": 45
+        },
+        "triangles": {
+          "mean": 3160.822,
+          "p50": 3195,
+          "p95": 3779,
+          "max": 3805
+        }
+      },
+      {
+        "cache": "ground",
+        "textures": false,
+        "quality": "high",
+        "atlasBytes": 8388608,
+        "enemies": 202,
+        "visible": 169,
+        "fps": 35.52524068350563,
+        "intervalMs": {
+          "mean": 28.149,
+          "p50": 16.7,
+          "p95": 16.8,
+          "max": 283.4
+        },
+        "updateMs": {
+          "mean": 0.556,
+          "p50": 0.5,
+          "p95": 0.7,
+          "max": 1
+        },
+        "commandsMs": {
+          "mean": 0.511,
+          "p50": 0.5,
+          "p95": 0.7,
+          "max": 1.2
+        },
+        "engineMs": {
+          "mean": 22.827,
+          "p50": 9.9,
+          "p95": 16.9,
+          "max": 289.3
+        },
+        "drawCalls": {
+          "mean": 35.267,
+          "p50": 32,
+          "p95": 46,
+          "max": 46
+        },
+        "triangles": {
+          "mean": 67887.489,
+          "p50": 68950,
+          "p95": 71644,
+          "max": 72046
+        }
+      },
+      {
+        "cache": "ground",
+        "textures": true,
+        "quality": "high",
+        "atlasBytes": 8388608,
+        "enemies": 202,
+        "visible": 169,
+        "fps": 59.991601175835385,
+        "intervalMs": {
+          "mean": 16.669,
+          "p50": 16.7,
+          "p95": 16.8,
+          "max": 16.8
+        },
+        "updateMs": {
+          "mean": 0.569,
+          "p50": 0.5,
+          "p95": 0.9,
+          "max": 1.4
+        },
+        "commandsMs": {
+          "mean": 0.471,
+          "p50": 0.5,
+          "p95": 0.6,
+          "max": 0.8
+        },
+        "engineMs": {
+          "mean": 1.622,
+          "p50": 1.6,
+          "p95": 2.4,
+          "max": 2.7
+        },
+        "drawCalls": {
+          "mean": 27.556,
+          "p50": 25,
+          "p95": 39,
+          "max": 39
+        },
+        "triangles": {
+          "mean": 3256.822,
+          "p50": 3291,
+          "p95": 3875,
+          "max": 3901
+        }
+      },
+      {
+        "cache": "ground",
+        "textures": false,
+        "quality": "high",
+        "atlasBytes": 8388608,
+        "enemies": 202,
+        "visible": 169,
+        "fps": 37.496719037084254,
+        "intervalMs": {
+          "mean": 26.669,
+          "p50": 16.7,
+          "p95": 16.8,
+          "max": 250
+        },
+        "updateMs": {
+          "mean": 0.507,
+          "p50": 0.5,
+          "p95": 0.7,
+          "max": 0.9
+        },
+        "commandsMs": {
+          "mean": 0.409,
+          "p50": 0.4,
+          "p95": 0.6,
+          "max": 0.7
+        },
+        "engineMs": {
+          "mean": 20.182,
+          "p50": 9.1,
+          "p95": 15,
+          "max": 264
+        },
+        "drawCalls": {
+          "mean": 35.267,
+          "p50": 32,
+          "p95": 46,
+          "max": 46
+        },
+        "triangles": {
+          "mean": 67887.489,
+          "p50": 68950,
+          "p95": 71644,
+          "max": 72046
+        }
+      },
+      {
+        "cache": "ground",
+        "textures": true,
+        "quality": "high",
+        "atlasBytes": 8388608,
+        "enemies": 202,
+        "visible": 169,
+        "fps": 59.998800023999515,
+        "intervalMs": {
+          "mean": 16.667,
+          "p50": 16.7,
+          "p95": 16.8,
+          "max": 16.9
+        },
+        "updateMs": {
+          "mean": 0.56,
+          "p50": 0.5,
+          "p95": 0.9,
+          "max": 1.7
+        },
+        "commandsMs": {
+          "mean": 0.436,
+          "p50": 0.4,
+          "p95": 0.6,
+          "max": 0.6
+        },
+        "engineMs": {
+          "mean": 1.613,
+          "p50": 1.6,
+          "p95": 2.4,
+          "max": 3.2
+        },
+        "drawCalls": {
+          "mean": 27.556,
+          "p50": 25,
+          "p95": 39,
+          "max": 39
+        },
+        "triangles": {
+          "mean": 3256.822,
+          "p50": 3291,
+          "p95": 3875,
+          "max": 3901
+        }
+      }
+    ]
+  },
+  "memory": {
+    "standardDefaultMiB": 10,
+    "bothQualitiesDefaultMiB": 14,
+    "maxBudgetMiB": 18,
+    "excludes": "engine, glyph textures, canvas backing stores, process memory"
+  }
+}

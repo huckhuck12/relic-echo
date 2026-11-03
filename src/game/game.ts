@@ -562,6 +562,7 @@ export class Game {
             ...this.performanceMonitor.snapshot(), enemies: this.enemies.length, shots: this.shots.length,
             drops: this.drops.length, effects: this.fx.length + this.fields.length + this.buffs.effects.length,
             enemyAtlasBytes: this.scene.enemyAtlas.bytes,
+            sceneTextureBytes: this.scene.textureBytes,
             enemyAtlasReady: this.scene.enemyAtlas.snapshot(this.visuals.detail).ready,
             enemyAtlasError: this.scene.enemyAtlas.snapshot(this.visuals.detail).error,
             autoPlayEnabled: this.autoPlay.enabled, autoPlayRound: this.autoPlay.rounds,

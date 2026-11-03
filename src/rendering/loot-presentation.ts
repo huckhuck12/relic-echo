@@ -1,4 +1,5 @@
-import { block, pixel, Shape } from './voxel.js';
+import { paintedBlock as block } from './painted-art.js';
+import { pixel, Shape } from './voxel.js';
 import type { Drop } from '../shared/entities.js';
 /**
  * 掉落生成时一次绘制，不用滤镜或额外节点。经验是低矮横向菱片，避免和飞行尖头混淆；

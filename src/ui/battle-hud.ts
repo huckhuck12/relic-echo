@@ -56,7 +56,7 @@ export class BattleHUD {
         if (!node)
             return;
         node.graphics.clear();
-        node.graphics.drawRect(0, 0, node.width, node.height, '#303842');
+        node.graphics.drawRect(0, 0, node.width, node.height, '#c2c5a9');
         node.graphics.drawRect(0, 0, node.width * clamp(amount, 0, 1), node.height, color);
     }
     private label(id: string, value: string, parent: LayaSprite, x: number, y: number, w: number, size = 12, color = C.text, align = 'left'): void { this.labels[id] = this.text(parent, value, x, y, w, size, color, align); }
@@ -163,7 +163,7 @@ export class BattleHUD {
             }
         });
         this.bar(this.root, 'dash', dashX, dashY + 54, dashW, 3);
-        this.label('dash', '', this.root, dashX, dashY + 61, dashW, 11, C.muted, 'center');
+        this.label('dash', '', this.root, dashX, dashY + 61, dashW, 11, C.ink, 'center');
         const comboW = Math.min(240, w - 2 * m), comboY = portrait || h < 450 ? h * .56 + 34 : h * .56 - 105;
         this.label('combo', '', this.root, (w - comboW) / 2, comboY, comboW, 14, C.gold, 'center');
         this.bar(this.root, 'combo', (w - comboW) / 2, comboY + 27, comboW, 3);
@@ -183,7 +183,7 @@ export class BattleHUD {
         if (w < 350) {
             this.labels.time.x = m + 54;
         }
-        const status = this.panel(this.root, p.statusX, p.statusY, p.statusWidth, p.statusHeight, '#1c2229');
+        const status = this.panel(this.root, p.statusX, p.statusY, p.statusWidth, p.statusHeight, C.panel);
         status.name = 'player-hud';
         this.label('hp', '', status, 10, 6, p.statusWidth - 66, 13, C.mint);
         this.label('level', '', status, p.statusWidth - 58, 6, 48, 13, C.gold, 'right');
@@ -210,7 +210,7 @@ export class BattleHUD {
             this.game.dash();
         });
         this.bar(this.root, 'dash', p.dashX, p.dashY + TOUCH_UI.dashHeight - 4, TOUCH_UI.dashWidth, 4);
-        this.label('dash', '', this.root, p.dashX, p.dashY + TOUCH_UI.dashHeight + 4, TOUCH_UI.dashWidth, 11, C.muted, 'center');
+        this.label('dash', '', this.root, p.dashX, p.dashY + TOUCH_UI.dashHeight + 4, TOUCH_UI.dashWidth, 11, C.ink, 'center');
         this.stick.build(this.root, this.layout, true);
     }
     equipment(parent: LayaSprite, loadout: Loadout, x: number, y: number, width: number, columns = 1): void {
@@ -221,7 +221,7 @@ export class BattleHUD {
                     this.game.toggleInventory();
             }, false, `gear-${slot}`);
             const color = item ? gear(item).color : C.muted;
-            card.graphics.drawRect(10, 11, 40, 42, '#20262e', item ? QUALITY_COLOR[item.quality] : C.border, 1);
+            card.graphics.drawRect(10, 11, 40, 42, C.surface, item ? QUALITY_COLOR[item.quality] : C.border, 1);
             this.text(card, item ? SYMBOLS[item.id] : '◇', 12, 16, 36, 25, color, 'center');
             this.text(card, `${SLOT_NAME[slot]}${item ? ' / ' + QUALITY[item.quality] : ''}`, 62, 12, w - 70, 9, C.muted);
             this.text(card, item ? gear(item).name : '尚未装备', 62, 34, w - 70, 12);

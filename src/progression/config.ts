@@ -21,13 +21,13 @@ export const QUALITY = ['普通', '精良', '稀有'];
 export const QUALITY_COLOR = ['#a1b4be', '#5fe1c5', '#e9be70'];
 export const GEARS: Gear[] = [
     {
-        id: 'storm', slot: 'weapon', name: '雷杖', note: '高速连锁 · 成片击碎', color: '#76dbea', bonus: {}, weapon: 'storm'
+        id: 'storm', slot: 'weapon', name: '雷杖', note: '高速连锁 · 成片击碎', color: '#91c9bd', bonus: {}, weapon: 'storm'
     },
     {
-        id: 'flame', slot: 'weapon', name: '炎炮', note: '爆炸轰击 · 灼烧清群', color: '#ff9863', bonus: {}, weapon: 'flame'
+        id: 'flame', slot: 'weapon', name: '炎炮', note: '爆炸轰击 · 灼烧清群', color: '#eab176', bonus: {}, weapon: 'flame'
     },
     {
-        id: 'blade', slot: 'weapon', name: '环刃', note: '抬手御刃 · 环绕切割', color: '#b6a1ff', bonus: {}, weapon: 'blade'
+        id: 'blade', slot: 'weapon', name: '环刃', note: '抬手御刃 · 环绕切割', color: '#b5a8cd', bonus: {}, weapon: 'blade'
     },
     {
         id: 'visor', slot: 'head', name: '战术目镜', note: '暴击率 +8%', color: '#f4ce77', bonus: { crit: .08 }
@@ -66,13 +66,13 @@ export const gear = (item: Item | string): Gear => {
 export const multiplier = (q: Quality): number => 1 + q * .2;
 export const WEAPONS = {
     storm: {
-        damage: 25, interval: .32, range: 490, name: '雷电', color: '#76dbea'
+        damage: 25, interval: .32, range: 490, name: '雷电', color: '#91c9bd'
     },
     flame: {
-        damage: 30, interval: .5, range: 460, name: '火焰', color: '#ff9863'
+        damage: 30, interval: .5, range: 460, name: '火焰', color: '#eab176'
     },
     blade: {
-        damage: 20, interval: .23, range: 150, name: '飞刃', color: '#b6a1ff'
+        damage: 20, interval: .23, range: 150, name: '飞刃', color: '#b5a8cd'
     }
 };
 export const ELITE_TIMES = [45, 105, 165, 225];

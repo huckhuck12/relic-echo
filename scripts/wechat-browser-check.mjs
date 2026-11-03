@@ -49,8 +49,8 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  const performance=await evaluate(`wechatTest.app.game.performanceSnapshot()`);
  assert.ok(performance.samples>0,'Collect actual battle frame intervals rather than treating requested FPS as measured FPS');
  assert.ok(performance.engineSamples>0&&performance.drawCalls>0&&performance.simulationSteps>0,'Real Stage.render records engine CPU, draw calls and simulation steps');
- const atlas=await evaluate(`(()=>{const t=wechatTest,g=t.app.game;return{bytes:g.scene.enemyAtlas.bytes,tiles:g.scene.enemyAtlas.tiles.size};})()`);
- assert.equal(atlas.tiles,57,'One shared atlas covers all ordinary enemy palette and caster phases');assert.equal(atlas.bytes,4194304,'GPU atlas has a fixed 4 MiB budget');
+ const atlas=await evaluate(`(()=>{const t=wechatTest,g=t.app.game;return{bytes:g.scene.enemyAtlas.bytes,tiles:g.scene.enemyAtlas.sheet.tiles.size};})()`);
+ assert.ok(atlas.tiles>=57+65,'Enemies, projectiles and pillars share one page');assert.equal(atlas.bytes,4194304,'GPU atlas has a fixed 4 MiB budget');
  const highAtlas=await evaluate(`(()=>{const g=wechatTest.app.game;g.spawnEnemy(1);g.cycleVisualQuality();for(const e of g.enemies)g.paintEnemy(e);return {quality:g.quality,...g.scene.enemyAtlas.snapshot(true),total:g.scene.enemyAtlas.bytes};})()`);
  assert.equal(highAtlas.quality,'high');assert.equal(highAtlas.ready,true,'Detailed enemies use a shared atlas too');assert.equal(highAtlas.bytes,4194304);assert.equal(highAtlas.total,8388608);
  await evaluate(`wechatTest.app.game.cycleVisualQuality();wechatTest.app.game.cycleVisualQuality()`);

@@ -7,8 +7,8 @@ import type { Loadout } from '../shared/model.js';
 import { UIEffects } from './ui-effects.js';
 import { avatarShapes, drawShapes } from '../rendering/appearance.js';
 export const C = {
-    panel: '#1c2229', border: '#39414a', text: '#f1ede5', muted: '#a8adb3', mint: '#8fbeb0', gold: '#d8b77b',
-    surface: '#242c35', ink: '#191d24'
+    panel: '#eee5cd', border: '#8d927a', text: '#30443d', muted: '#64705e', mint: '#38624f', gold: '#86602d',
+    surface: '#ded9bf', ink: '#fff4d7'
 };
 /** 原生字体无需下载；iPhone 使用苹方，Android/桌面由系统选择中文黑体。 */
 export const UI_FONT = platform().font();
@@ -42,7 +42,12 @@ export class UIControls {
         const node = new Laya.Sprite();
         node.pos(x, y);
         node.size(w, h);
-        node.graphics.drawRect(0, 0, w, h, fill, line, 1);
+        const cut = Math.min(5, w / 8, h / 8);
+        node.graphics.drawPoly(0, 0, [cut, 0, w - cut, 0, w, cut, w, h - cut, w - cut, h, cut, h, 0, h - cut, 0, cut], fill, line, 1);
+        if (w > 140 && h > 70 && (fill === C.panel || fill === C.surface)) {
+            node.graphics.drawLine(10, 5, w - 10, 5, '#fff7df', 1);
+            node.graphics.drawLine(10, h - 5, w - 10, h - 5, '#c3b99a', 1);
+        }
         parent.addChild(node);
         this.block(node);
         return node;
@@ -51,7 +56,7 @@ export class UIControls {
     text(parent: LayaSprite, value: string, x: number, y: number, w: number, size = 12, color = C.text, align = 'left'): LayaText {
         const label = new Laya.Text();
         label.text = value;
-        label.font = UI_FONT;
+        label.font = size >= 20 ? 'serif' : UI_FONT;
         label.fontSize = size;
         label.color = color;
         label.width = w;

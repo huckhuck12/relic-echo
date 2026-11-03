@@ -1,6 +1,8 @@
+import { paintedBlock as block } from './painted-art.js';
+import { oval, polygon } from './painted-art.js';
 import { QUALITY_COLOR, Weapon, gear } from '../progression/config.js';
 import { Loadout } from '../shared/model.js';
-import { Shape, block, pixel } from './voxel.js';
+import { Shape, pixel } from './voxel.js';
 import { Facing8, weaponPoint } from './player-pose.js';
 export type { Shape } from './voxel.js';
 export function avatarShapes(loadout: Loadout, back = false, facing = 1, phase = 0, direction?: Facing8, castTime = 0): Shape[] {
@@ -8,15 +10,28 @@ export function avatarShapes(loadout: Loadout, back = false, facing = 1, phase =
     const angle = dir * Math.PI / 4, lookX = Math.cos(angle), lookY = Math.sin(angle);
     back = dir >= 5;
     facing = lookX < -.01 ? -1 : 1;
-    const s: Shape[] = [{ type: 'poly', p: [-20, 0, 0, -9, 22, 0, 0, 9], fill: '#14291f' }];
+    const s: Shape[] = [oval(0, 2, 21, 6, '#3d5848', '#3d5848')];
     const head = loadout.head?.id, armor = loadout.armor?.id, rear = loadout.back?.id, weapon = loadout.weapon?.id || 'storm';
     const step = Math.round(Math.sin(phase) * 3), swing = Math.round(Math.sin(phase) * 2);
     const posedArms = new Set<Shape>();
-    const box = (x: number, y: number, w: number, h: number, d: number, c: string) => s.push(...block(x, y, w, h, d, c));
+    const box = (x: number, y: number, w: number, h: number, d: number, c: string) => {
+        if (w === 26 && h === 23) {
+            s.push(oval(x + w / 2 + 1, y - h / 2, 14, 14, c));
+        }
+        else if (w === 27 && h === 7) {
+            s.push(polygon([-15, -59, -16, -67, -11, -73, 0, -75, 13, -71, 17, -64, 11, -60, 5, -65, -2, -62, -8, -65, -11, -57], c));
+        }
+        else if (w === 27 && h === 27) {
+            s.push(polygon([x + 4, y - h, x + w - 4, y - h, x + w + 3, y - h + 8, x + w - 1, y, x + 1, y, x - 2, y - h + 9], c));
+            s.push(polygon([x + 6, y - h + 5, x + 8, y - 3, x + 12, y - 4, x + 10, y - h + 4], '#80a38a'));
+        }
+        else
+            s.push(...block(x, y, w, h, d, c));
+    };
     const rearParts = () => {
         if (rear === 'cape') {
-            box(-17, -12, 30, 34, 3, '#278d68');
-            s.push(pixel(-13, -43, 5, 26, '#53b58c'), pixel(1, -43, 5, 26, '#53b58c'));
+            box(-17, -12, 30, 34, 3, '#557d65');
+            s.push(pixel(-13, -43, 5, 26, '#88a67c'), pixel(1, -43, 5, 26, '#88a67c'));
         }
         if (rear === 'pack') {
             box(-17, -21, 29, 28, 9, '#476b83');
@@ -33,11 +48,11 @@ export function avatarShapes(loadout: Loadout, back = false, facing = 1, phase =
     };
     if (!back)
         rearParts();
-    box(-12, -1 + step, 9, 17, 5, '#405f75');
-    box(3, -1 - step, 9, 17, 5, '#405f75');
+    box(-12, -1 + step, 9, 17, 5, '#596d70');
+    box(3, -1 - step, 9, 17, 5, '#596d70');
     box(-13, 1 + step, 11, 6, 5, '#483e34');
     box(2, 1 - step, 11, 6, 5, '#483e34');
-    const torso = armor === 'light' ? '#3eac8d' : armor === 'heavy' ? '#8b9eab' : armor === 'energy' ? '#8062aa' : '#3f8ba3';
+    const torso = armor === 'light' ? '#3eac8d' : armor === 'heavy' ? '#8b9eab' : armor === 'energy' ? '#8062aa' : '#548878';
     box(-14, -18, 27, 27, 7, torso);
     s.push(pixel(-12, -43, 5, 20, armor === 'heavy' ? '#b8c8c6' : '#69bcb0'), pixel(-13, -22, 26, 4, '#604a32'));
     if (armor === 'heavy') {
@@ -81,14 +96,14 @@ export function avatarShapes(loadout: Loadout, back = false, facing = 1, phase =
             posedArms.add(s[i]);
     }
     box(-14, -46, 26, 23, 7, back ? '#755139' : '#d6ad7d');
-    box(-15, -64, 27, 7, 7, '#674632');
-    s.push(pixel(-14, -61, 6, 9, '#674632'));
+    box(-15, -64, 27, 7, 7, '#64503e');
+    s.push(polygon([-14, -63, -16, -55, -11, -51, -10, -62], '#64503e'));
     // 正面双眼、斜面偏移五官、纯侧面单眼；背面不画五官，避免八向只是武器在转。
     if (!back) {
         const shift = Math.round(lookX * 6);
         if (dir !== 0 && dir !== 4)
-            s.push(pixel(-9 + shift, -59, 4, 4, '#243b39'));
-        s.push(pixel(4 + shift, -59, 4, 4, '#243b39'), pixel(-3 + shift, -50, 8, 3, '#87583b'));
+            s.push(oval(-7 + shift, -56, 1.8, 2.7, '#243b39'));
+        s.push(oval(6 + shift, -56, 1.8, 2.7, '#243b39'), polygon([-3 + shift, -49, 1 + shift, -47, 5 + shift, -49], '#87583b'));
     }
     if (head === 'helmet') {
         box(-17, -61, 31, 12, 8, '#9eafba');

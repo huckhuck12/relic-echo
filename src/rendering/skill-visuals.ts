@@ -13,13 +13,13 @@ export function lightningStroke(g: any, ax: number, ay: number, bx: number, by: 
     const dx = bx - ax, dy = by - ay, distance = Math.hypot(dx, dy) || 1;
     const steps = Math.max(3, Math.min(10, Math.ceil(distance / 28))), points: number[] = [];
     for (let i = 0; i <= steps; i++) {
-        const t = i / steps, jitter = i === 0 || i === steps ? 0 : Math.sin(i * 8.17 + Math.floor(phase * 30)) * Math.min(15, distance * .1);
+        const t = i / steps, jitter = i === 0 || i === steps ? 0 : Math.sin(i * 8.17 + Math.floor(phase * 30)) * Math.min(11, distance * .08);
         points.push(ax + dx * t - dy / distance * jitter, ay + dy * t + dx / distance * jitter);
     }
     const power = clamp(strength, .08, 1);
-    g.drawLines(0, 0, points, '#25466c', 8 * power + 1);
-    g.drawLines(0, 0, points, color, 4 * power + 1);
-    g.drawLines(0, 0, points, '#f0fdff', 1.6 * power + .5);
+    g.drawLines(0, 0, points, '#3d5b54', 5 * power + 1);
+    g.drawLines(0, 0, points, color, 2.8 * power + 1);
+    g.drawLines(0, 0, points, '#fff4d9', 1.2 * power + .5);
     // 次级分叉只保留一条，避免连锁数量上升后线条数成倍扩张。
     if (power > .45) {
         const mid = Math.floor(steps / 2) * 2;
@@ -37,9 +37,9 @@ export function directionalShape(g: any, x: number, y: number, dx: number, dy: n
 /** 火球在发射时画一次，后续仅平移节点。尾焰长度固定，不增加逐帧重绘或子节点。 */
 export function paintFlameShot(g: any, vx: number, vy: number): void {
     const d = project(vx, vy);
-    directionalShape(g, 0, -18, d.x, d.y, [-44, 0, -23, -8, -10, -13, 8, -10, 15, 0, 8, 10, -10, 13, -23, 8], '#75394a');
-    directionalShape(g, 0, -18, d.x, d.y, [-37, 0, -17, -6, -5, -10, 9, -7, 13, 0, 9, 7, -5, 10, -17, 6], '#ff813f');
-    directionalShape(g, 0, -18, d.x, d.y, [-24, 0, -7, -5, 5, -6, 10, 0, 5, 6, -7, 5], '#ffd66e');
+    directionalShape(g, 0, -18, d.x, d.y, [-44, 0, -23, -8, -10, -13, 8, -10, 15, 0, 8, 10, -10, 13, -23, 8], '#795753');
+    directionalShape(g, 0, -18, d.x, d.y, [-37, 0, -17, -6, -5, -10, 9, -7, 13, 0, 9, 7, -5, 10, -17, 6], '#e79961');
+    directionalShape(g, 0, -18, d.x, d.y, [-24, 0, -7, -5, 5, -6, 10, 0, 5, 6, -7, 5], '#f2d493');
     directionalShape(g, 0, -18, d.x, d.y, [-9, 0, 2, -3, 7, 0, 2, 3], '#fff7d4');
 }
 /** 短促的施放亮芯先于尾迹消失；不延迟命中、不扩大真实攻击范围。 */

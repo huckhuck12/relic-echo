@@ -88,7 +88,7 @@ export class GameUI {
         this.performancePanel.size(perf.width, perf.height);
         this.performancePanel.alpha = .85;
         this.performancePanel.graphics.clear();
-        this.performancePanel.graphics.drawRect(0, 0, perf.width, perf.height, '#182028', C.border, 1);
+        this.performancePanel.graphics.drawRect(0, 0, perf.width, perf.height, C.panel, C.border, 1);
         this.performanceLabel.pos(6, 6);
         this.performanceLabel.width = perf.width - 12;
         this.performanceLabel.height = perf.height - 12;
@@ -122,7 +122,7 @@ export class GameUI {
         this.performancePanel.visible = this.game.showPerformance && this.game.mode === 'battle' && !this.game.dialog;
         if (this.performancePanel.visible) {
             const p = this.game.performanceSnapshot();
-            const value = `v${GAME_VERSION} ${p.quality}${this.game.autoPlay.enabled ? (this.game.autoPlay.stress ? ' 压' : ' AI') + this.game.autoPlay.rounds : ''}\n${p.samples ? p.fps.toFixed(0) + ' FPS' : '采样中'} P95 ${p.p95Ms.toFixed(0)}ms\n更新${p.updateMs.toFixed(1)} 指令${p.renderMs.toFixed(1)}\n引擎${p.engineSamples ? p.engineMs.toFixed(1) : '—'}ms DC${p.drawCalls.toFixed(0)}\n怪${p.enemies} 弹${p.shots} 掉${p.drops} 效${p.effects}\n${p.simulationSteps.toFixed(1)}步 图集${p.enemyAtlasReady ? '就绪' : '回退'} ${(p.enemyAtlasBytes / 1048576).toFixed(0)}M`;
+            const value = `v${GAME_VERSION} ${p.quality}${this.game.autoPlay.enabled ? (this.game.autoPlay.stress ? ' 压' : ' AI') + this.game.autoPlay.rounds : ''}\n${p.samples ? p.fps.toFixed(0) + ' FPS' : '采样中'} P95 ${p.p95Ms.toFixed(0)}ms\n更新${p.updateMs.toFixed(1)} 指令${p.renderMs.toFixed(1)}\n引擎${p.engineSamples ? p.engineMs.toFixed(1) : '—'}ms DC${p.drawCalls.toFixed(0)}\n怪${p.enemies} 弹${p.shots} 掉${p.drops} 效${p.effects}\n${p.simulationSteps.toFixed(1)}步 场景纹理 ${(p.sceneTextureBytes / 1048576).toFixed(1)}M`;
             if (this.performanceLabel.text !== value)
                 this.performanceLabel.text = value;
         }

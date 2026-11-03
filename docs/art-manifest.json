@@ -1,0 +1,15 @@
+{
+  "version": "0.12.0",
+  "direction": "handdrawn-fantasy",
+  "production": "Original code-authored vector silhouettes, rasterized at startup; no image-generation service or sourced raster art",
+  "view": "2.5D isometric, screen-space artwork with foot origin",
+  "rights": "Project-authored code and artwork; no new third-party art/font dependency",
+  "assets": [
+    {"family":"player-equipment","source":"src/rendering/appearance.ts","frames":128,"pivot":"feet (0,0)","collision":"unchanged world player","maxGpuBytes":8388608,"cache":"one current loadout, destroys previous sheet","status":"engine-preview-verified; native-device-pending"},
+    {"family":"ordinary-enemies-actors","source":"src/rendering/enemy-atlas.ts","frames":128,"variants":["standard","high"],"pivot":"existing entity origins; projectile center (0,-18)","collision":"unchanged world entities","maxGpuBytes":8388608,"cache":"shared pages across rounds","status":"engine-preview-verified; native-device-pending"},
+    {"family":"meadow-path","source":"src/rendering/painted-world.ts","frames":6,"pivot":"world tile corner","collision":"unchanged world boundaries","maxGpuBytes":2097152,"cache":"repeating shared tiles","status":"engine-preview-verified; native-device-pending"},
+    {"family":"elite-boss-warnings","source":"src/rendering/enemy-presentation.ts","artSource":"src/rendering/painted-art.ts","pivot":"existing foot/staff socket","collision":"boss slam radius remains 145","cache":"bounded vector shapes","status":"automated-layer-and-range-tests-passed; native-device-pending"},
+    {"family":"ui","source":"src/ui/ui-controls.ts","font":"system serif headings; platform system sans body","collision":"existing safe-area layouts and touch targets","status":"phone-portrait-landscape-desktop-verified; native-font-pending"}
+  ],
+  "preview":"docs/art/handdrawn-fantasy.png"
+}

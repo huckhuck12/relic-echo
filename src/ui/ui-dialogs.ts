@@ -76,7 +76,7 @@ export class GameDialogs {
         shade.alpha = .88;
         this.dialogs.size(width, height);
         this.block(this.dialogs);
-        const p = this.panel(this.dialogs, (width - w) / 2, (height - h) / 2, w, h, '#181e25', '#39414a');
+        const p = this.panel(this.dialogs, (width - w) / 2, (height - h) / 2, w, h, C.panel, C.border);
         p.name = 'dialog-panel';
         p.graphics.drawRect(0, 0, 3, Math.min(48, h), C.gold);
         if (dialog.type === 'revive' || dialog.type === 'performance') {
@@ -226,7 +226,7 @@ export class GameDialogs {
         if (dialog.type === 'drop') {
             const item = dialog.item, g = gear(item), old = this.game.loadout[g.slot], next = { ...this.game.loadout, [g.slot]: item }, cw = (inner - gap) / 2, ch = Math.min(325, footer - body - (short ? 42 : 65));
             [this.game.loadout, next].forEach((loadout, i) => {
-                const current = i ? item : old, card = this.panel(p, pad + i * (cw + gap), body, cw, ch, '#20262e', i ? '#8fbeb0' : C.border);
+                const current = i ? item : old, card = this.panel(p, pad + i * (cw + gap), body, cw, ch, C.surface, i ? C.mint : C.border);
                 this.text(card, i ? `${QUALITY[item.quality]} · 候选` : '当前穿戴', 8, 8, cw - 16, 11, i ? QUALITY_COLOR[item.quality] : C.gold, 'center');
                 if (short) {
                     this.text(card, current ? gear(current).name : '空槽位', 8, 29, cw - 16, 14, C.text, 'center');

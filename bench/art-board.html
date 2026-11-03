@@ -1,0 +1,46 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Relic Echo · Art board</title>
+<style>body{margin:0;background:#eee5cd}canvas{display:block}</style>
+<script src="/vendor/laya.core.js"></script>
+<script src="/vendor/laya.webgl.js"></script>
+<script type="module">
+import {avatarShapes,drawShapes} from '/dist/rendering/appearance.js';
+import {enemyShapes} from '/dist/rendering/voxel.js';
+import {emptyLoadout} from '/dist/shared/model.js';
+import {pillarShapes,terrainShapes} from '/dist/rendering/painted-world.js';
+import {lightningStroke,paintFlameShot,orbitBlade} from '/dist/rendering/skill-visuals.js';
+import {UIControls,C} from '/dist/ui/ui-controls.js';
+Laya.init(960,640,Laya.WebGL);Laya.stage.bgColor=C.panel;
+const ui=new UIControls(()=>{}),root=Laya.stage;
+ui.text(root,'遗迹回响 · 手绘幻想',24,18,900,26);
+ui.text(root,'1× 原生尺寸 / 放大轮廓检查 · 同一绘图源用于正式游戏与图集',24,55,900,13,C.muted);
+const sprite=(shapes,x,y,scale=1)=>{const n=new Laya.Sprite();drawShapes(n.graphics,shapes);n.pos(x,y);n.scale(scale,scale);root.addChild(n);};
+['storm','flame','blade'].forEach((w,i)=>{
+ sprite(avatarShapes(emptyLoadout(w)),55+i*140,207);
+ sprite(avatarShapes(emptyLoadout(w)),115+i*140,210,1.7);
+});
+ui.text(root,'冒险者 / 雷杖 · 炎炮 · 环刃',24,225,430,14);
+sprite(pillarShapes(),530,215,1.3);
+sprite(terrainShapes(4),730,140,1.1);
+sprite(terrainShapes(1),730,220,1.1);
+ui.text(root,'风化石材 / 苔原与旧路',490,265,440,14);
+for(let kind=0;kind<5;kind++) {
+ const x=65+kind*180;
+ sprite(enemyShapes(kind),x,425);
+ sprite(enemyShapes(kind),x+70,425,kind===4?1:1.6);
+}
+ui.text(root,'苔藓史莱姆 / 遗迹法师 / 荒野野猪 / 守卫石像 / 王冠核心',24,446,910,14);
+const fx=new Laya.Sprite();root.addChild(fx);
+lightningStroke(fx.graphics,40,515,250,530,.03,1);
+const fire=new Laya.Sprite();paintFlameShot(fire.graphics,500,-500);fire.pos(355,550);root.addChild(fire);
+orbitBlade(fx.graphics,445,528,1.5);
+ui.text(root,'薄荷电弧 / 琥珀火焰 / 薰衣草飞刃',24,566,470,13,C.muted);
+const paper=ui.panel(root,535,485,395,126);
+ui.text(paper,'古老回响',18,14,350,24,C.text);
+ui.text(paper,'暖纸色 · 墨线边缘 · 系统衬线标题',18,51,350,12,C.muted);
+ui.button(paper,'选择祝福',18,76,170,36,()=>{},true);
+ui.button(paper,'查看装备',205,76,170,36,()=>{});
+window.artBoardReady=true;
+</script>

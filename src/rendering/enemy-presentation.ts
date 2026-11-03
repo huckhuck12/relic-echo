@@ -156,7 +156,8 @@ export function drawRangedWarning(g: any, floor: any, e: Enemy, time: number, de
 }
 /** 与法杖局部动作、敌人整体节点共用的结晶挂载点，返回未叠加相机的投影坐标。 */
 export function enemyStaffSocket(e: Enemy, time: number, detail: boolean) {
-    const q = project(e.x, e.y), part = enemyPartPoint(detail ? 22 : 21.5, detail ? -48 : -46, 'staff', e.kind, enemyArtPose(e));
+    void detail;
+    const q = project(e.x, e.y), part = enemyPartPoint(22, -50, 'staff', e.kind, enemyArtPose(e));
     const pose = enemyPose(e, time, e.icePaint === true), a = pose.rotation * Math.PI / 180, x = part.x * pose.sx, y = part.y * pose.sy;
     return { x: q.x + x * Math.cos(a) - y * Math.sin(a), y: q.y - pose.lift + x * Math.sin(a) + y * Math.cos(a) };
 }

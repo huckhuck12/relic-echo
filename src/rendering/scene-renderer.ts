@@ -1,3 +1,5 @@
+import { PlayerAtlas } from './player-atlas.js';
+import { shotTile } from './painted-world.js';
 import { platform } from '../platform/runtime.js';
 import { ELEMENTS } from '../buffs/buffs.js';
 import type { BuffRuntime } from '../buffs/buffs.js';
@@ -64,6 +66,12 @@ export class SceneRenderer {
     readonly effects: any;
     readonly playerNode: any;
     private readonly pillarNodes: any[];
+    private readonly terrainBytes: number;
+    get textureBytes(): number { return this.terrainBytes + this.enemyAtlas.bytes + this.playerAtlas.bytes; }
+    private readonly playerAtlas = new PlayerAtlas();
+    private readonly shotPaint = new WeakMap<Shot, boolean>();
+    private readonly dropPaint = new WeakMap<Drop, boolean>();
+    private pillarDetail = false;
     private lastAvatar = '';
     private readonly enemyShapeCache = new Map<string, Shape[]>();
     readonly enemyAtlas = new EnemyAtlas();
@@ -83,7 +91,9 @@ export class SceneRenderer {
         this.world.addChild(this.actors);
         this.world.addChild(this.effects);
         this.actors.addChild(this.playerNode);
-        this.pillarNodes = buildWorldMap(this.ground, this.actors, pillars);
+        const map = buildWorldMap(this.ground, this.actors, pillars, this.enemyAtlas);
+        this.pillarNodes = map.nodes;
+        this.terrainBytes = map.bytes;
         // Static vector commands can be reused without a giant bitmap texture.
         this.ground.cacheAs = 'normal';
     }
@@ -104,6 +114,8 @@ export class SceneRenderer {
         if (!force && key === this.lastAvatar)
             return;
         this.lastAvatar = key;
+        if (this.playerAtlas.paint(this.playerNode.graphics, loadout, p, walkPhase))
+            return;
         drawShapes(this.playerNode.graphics, avatarShapes(loadout, p.back, p.face, walkPhase, p.direction, castTime));
     }
     /** 受击、减速状态或画质变化才重建形状，避免每帧重画方块面片。 */
@@ -215,6 +227,8 @@ export class SceneRenderer {
             s.node.visible = inView(q.x * zoom + this.world.x, q.y * zoom + this.world.y, 40);
             if (!s.node.visible)
                 continue;
+            if (this.shotPaint.get(s) !== state.visuals.detail && this.enemyAtlas.paintKey(s.node.graphics, shotTile(s.hostile, s.flame, s.vx, s.vy, s.color), state.visuals.detail))
+                this.shotPaint.set(s, state.visuals.detail);
             const launch = Math.max(0, 1 - ((s.launchLife ?? 1.2) - s.life) / .12);
             s.node.pos(q.x + (s.launchX || 0) * launch, q.y + (s.launchY || 0) * launch);
             this.depth(s.node, s.x + s.y + 5);
@@ -225,6 +239,8 @@ export class SceneRenderer {
             if (!d.node.visible)
                 continue;
             // 时间来自局内时钟，暂停时自然停住；只改节点变换，不逐帧重画 170 个掉落。
+            if (this.dropPaint.get(d) !== state.visuals.detail && this.enemyAtlas.paintKey(d.node.graphics, d.item ? `chest:${d.item.quality}` : d.fragment ? 'fragment' : d.xp < 0 ? 'heal' : 'xp', state.visuals.detail))
+                this.dropPaint.set(d, state.visuals.detail);
             const pose = lootPose(d, state.time);
             d.node.pos(q.x, q.y - pose.lift);
             d.node.scale(pose.sx, pose.sy);
@@ -235,6 +251,11 @@ export class SceneRenderer {
             label.node.pos(q.x, q.y - label.rise);
             label.node.zOrder = 100000;
             label.node.alpha = Math.min(1, label.life * 3);
+        }
+        if (this.pillarDetail !== state.visuals.detail) {
+            for (const pillar of this.pillarNodes)
+                this.enemyAtlas.paintKey(pillar.graphics, 'pillar', state.visuals.detail);
+            this.pillarDetail = state.visuals.detail;
         }
         for (let i = 0; i < this.pillars.length; i++) {
             const q = project(this.pillars[i].x, this.pillars[i].y);
@@ -334,15 +355,10 @@ export class SceneRenderer {
     }
     /** 普通血条有数量预算，精英独立保留；蓄力预警不受装饰预算限制。 */
     private drawWarnings(state: SceneFrame, g: any, floor: any): void {
-        let healthBars = 0;
+        this.drawHealthBars(state, g);
         for (const e of state.enemies) {
             if (!e.node.visible && e.wind <= 0)
                 continue;
-            const q = project(e.x, e.y);
-            if (e.node.visible && e.kind < 4 && e.hp < e.max && (e.kind >= 3 || healthBars++ < state.visuals.bars)) {
-                g.drawRect(q.x - 17, q.y - 65 - (e.kind === 3 ? 25 : 0), 34, 3, '#17292d');
-                g.drawRect(q.x - 17, q.y - 65 - (e.kind === 3 ? 25 : 0), 34 * clamp(e.hp / e.max, 0, 1), 3, '#d5b08a');
-            }
             if (e.wind > 0 && e.kind === 1) {
                 drawRangedWarning(g, floor, e, state.time, state.visuals.detail);
             }
@@ -363,6 +379,20 @@ export class SceneRenderer {
         }
     }
     /** 地面圆环复用单位圆采样点，保持显示半径与战斗世界半径一致。 */
+    private drawHealthBars(state: SceneFrame, g: any): void {
+        // Separate background/fill passes avoid interleaving rects with warning paths.
+        for (const fill of [false, true]) {
+            let count = 0;
+            for (const e of state.enemies) {
+                if (!e.node.visible || e.kind >= 4 || e.hp >= e.max)
+                    continue;
+                if (e.kind < 3 && count++ >= state.visuals.bars)
+                    continue;
+                const q = project(e.x, e.y);
+                g.drawRect(q.x - 17, q.y - 65 - (e.kind === 3 ? 25 : 0), 34 * (fill ? clamp(e.hp / e.max, 0, 1) : 1), 3, fill ? '#d7bb89' : '#293e36');
+            }
+        }
+    }
     private ellipse(g: any, x: number, y: number, r: number, fill: string | null, line: string): void {
         const q = project(x, y), points: number[] = [];
         for (const offset of RING_POINTS)
