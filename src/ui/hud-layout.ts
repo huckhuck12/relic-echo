@@ -29,3 +29,18 @@ export function mobileHUDLayout(layout: ScreenLayout) {
         toastWidth: portrait ? Math.min(340, w - 2 * m) : Math.min(280, w * .45),
     };
 }
+/** Keep diagnostics at an edge, outside the floating joystick region and action buttons. */
+export function performanceHUDLayout(layout: ScreenLayout, mobile: boolean) {
+    const { width: w, height: h, margin: m, portrait, sidebar } = layout;
+    const height = 88;
+    if (mobile) {
+        const controls = mobileHUDLayout(layout);
+        const width = Math.min(184, portrait ? Math.min(160, w * .5 - m - 28) : controls.dashX - 8 - (w * .48 + 8));
+        return {
+            width, height, x: portrait ? w - m - width : controls.dashX - 8 - width,
+            y: portrait ? controls.buffY - 12 - height : h - m - height,
+        };
+    }
+    const width = 184, inset = sidebar ? 220 : 150;
+    return { width, height, x: w - m - inset - width, y: h - m - height };
+}

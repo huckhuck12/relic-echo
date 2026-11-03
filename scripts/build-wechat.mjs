@@ -7,6 +7,7 @@ const root=fileURLToPath(new URL('../',import.meta.url));
 export const wechatRoot=resolve(root,'_wechat');
 const pinnedHashes={'laya.core.js':'6c7a67c7b29671d339919ba62ed346783c78cc0c6b06832e1615da43dd5027db','laya.webgl.js':'5cb72db51ea2283346d347b0858d567bed915cdb7f1693abe8eb7c3419bc540c','laya.wxmini.js':'ea58de6c73718401b3c606189afe1c3e76741422b32a1e8b2171c99fbd078c64'};
 export async function buildWechat({appid=process.env.WECHAT_APPID || 'touristappid'}={}) {
+  const version=JSON.parse(await readFile(join(root,'package.json'),'utf8')).version;
   if(appid!=='touristappid'&&!/^wx[0-9a-f]{16}$/i.test(appid))throw Error('WECHAT_APPID must be a WeChat AppID (wx + 16 hex digits).');
   const libs={};
   for(const [name,hash] of Object.entries(pinnedHashes)){
@@ -30,7 +31,7 @@ export async function buildWechat({appid=process.env.WECHAT_APPID || 'touristapp
   }
   const emitted=program.emit(undefined,(filename,source)=>{
     // TS emitter is synchronous; collect files and write them below.
-    output.set(filename,'var Laya = GameGlobal.Laya;\n'+source);
+    output.set(filename,'var Laya = GameGlobal.Laya;\n'+source.replaceAll('__RELIC_VERSION__',version));
   });
   if(emitted.emitSkipped)throw Error('WeChat TypeScript emit failed.');
   for(const [filename,source]of output){await mkdir(resolve(filename,'..'),{recursive:true});await writeFile(filename,source);}

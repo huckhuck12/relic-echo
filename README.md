@@ -1,6 +1,6 @@
 # 遗迹回响 · Relic Echo
 
-LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.11.4`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
+LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.11.5`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
 
 当前优化计划、优先级和真机验收状态见[优化清单](docs/优化清单.md)。
 
@@ -11,6 +11,10 @@ LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.11.4`�
 项目已包含 [GitHub Pages 工作流](.github/workflows/pages.yml)。上传到自己的 GitHub 仓库，在 **Settings → Pages → Source** 选择 **GitHub Actions**；向 main/master 推送或手动运行工作流，构建和测试通过后自动发布。所有资源使用相对路径，支持 `https://用户名.github.io/仓库名/` 和账号主页站点。
 
 本地生成发布包：`npm run build:pages`。模拟仓库子路径：`npm run preview:pages -- --port 8081`，访问 `http://localhost:8081/relic-echo/`。详见[开发与发布说明](docs/开发与发布.md)。仓库为 `huckhuck12/relic-echo`，本地修改需推送后等待 GitHub Actions 部署成功才会更新线上站点。
+
+## 0.11.5 主界面边角性能监控与版本标识
+
+开启性能监控后，在战斗主界面边角直接显示版本、画质、FPS、P95、更新/指令/引擎耗时、DrawCall、实体数量和图集状态，沿用低频刷新。竖屏靠右边，横屏靠下边，避开安全区、浮动摇杆和操作按钮；点击可暂停查看完整详情。暂停菜单可关闭监控。版本从 package.json 注入 H5 与微信构建，详情标题下也会显示，便于核对真机截图对应的体验版。
 
 ## 0.11.4 真机自动试玩与精细画质图集
 

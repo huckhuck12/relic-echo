@@ -21,13 +21,14 @@ test('performance sampling freezes in dialogs/background and resets on restart/r
  const p=g.performanceSnapshot();assert.equal(p.enemies,g.enemies.length);assert.equal(p.shots,g.shots.length);assert.equal(p.drops,g.drops.length);
 });
 
-test('compact performance strip fits viewports and opens paused details without covering touch actions',()=>{
+test('corner performance monitor shows live metrics and version without covering touch actions',()=>{
  for(const [w,h]of [[320,568],[390,844],[844,390],[568,320],[1280,720],[1920,1080]]){
   const g=create();g.showPerformance=true;const ui=new GameUI(g);ui.mobile=w<1000;Laya.stage.width=w;Laya.stage.height=h;Laya.stage.emit('resize');
   const panel=find(ui.root,'performance-panel'),r=bounds(panel);
-  assert.ok(panel.visible);assert.equal(panel.mouseEnabled,true);assert.ok(panel.width<=104&&panel.height===44);
+  assert.ok(panel.visible);assert.equal(panel.mouseEnabled,true);assert.ok(panel.width<=184&&panel.height===88);
+  assert.match(ui.performanceLabel.text,/v\d+\.\d+\.\d+/);assert.match(ui.performanceLabel.text,/P95/);assert.match(ui.performanceLabel.text,/DC/);
   assert.ok(r.x>=0&&r.y>=0&&r.x+r.w<=w+.01&&r.y+r.h<=h+.01);
-  if(ui.mobile){for(const name of ['dash','buffs','touch-stick']){const other=find(ui.root,name);if(other){const b=bounds(other);assert.ok(r.x+r.w<=b.x||b.x+b.w<=r.x||r.y+r.h<=b.y||b.y+b.h<=r.y);}}}
+  if(ui.mobile){for(const name of ['dash','buffs','touch-stick','touch-stick-area','player-hud','pause','inventory']){const other=find(ui.root,name);if(other){const b=bounds(other);assert.ok(r.x+r.w<=b.x||b.x+b.w<=r.x||r.y+r.h<=b.y||b.y+b.h<=r.y,name+' overlaps monitor');}}}
   panel.emit('click');assert.equal(g.dialog.type,'performance');assert.equal(g.gate.paused,true);assert.equal(panel.visible,false);
   assertControls(find(ui.root,'dialog-panel'),w,h,ui.mobile);find(ui.root,'performance-resume').emit('click');
   g.togglePause();assertControls(find(ui.root,'dialog-panel'),w,h,ui.mobile);

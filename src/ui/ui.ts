@@ -6,7 +6,8 @@ import { GameDialogs } from './ui-dialogs.js';
 import type { BuffEditorState } from './buff-panel.js';
 import { Game } from '../game/game.js';
 import { ScreenLayout, screenLayout } from './layout.js';
-import { mobileHUDLayout, TOUCH_UI } from './hud-layout.js';
+import { mobileHUDLayout, performanceHUDLayout, TOUCH_UI } from './hud-layout.js';
+import { GAME_VERSION } from '../shared/version.js';
 import { readSafeArea } from '../platform/safe-area.js';
 /**
  * UI 编排层：组装 HUD/弹窗，控制模态缓存、诊断与短提示的层序。
@@ -82,15 +83,20 @@ export class GameUI {
         this.game.gate.remove('orientation');
         this.game.cancelMouseMovement();
         this.hudView.resize(this.layout, this.mobile);
-        // 底部中央位于摇杆和冲刺之间，详细指标不再常驻遮挡战斗。
-        const perfWidth = this.mobile ? Math.min(104, Math.max(44, width - 2 * margin - TOUCH_UI.stickSize - TOUCH_UI.dashWidth - 8)) : 104;
-        const perfX = this.mobile ? margin + TOUCH_UI.stickSize + (width - 2 * margin - TOUCH_UI.stickSize - TOUCH_UI.dashWidth - perfWidth) / 2 : (width - perfWidth) / 2;
-        this.performancePanel.pos(perfX, height - margin - 44);
-        this.performancePanel.size(perfWidth, 44);
+        const perf = performanceHUDLayout(this.layout, this.mobile);
+        this.performancePanel.pos(perf.x, perf.y);
+        this.performancePanel.size(perf.width, perf.height);
+        this.performancePanel.alpha = .85;
         this.performancePanel.graphics.clear();
-        this.performancePanel.graphics.drawRect(0, 0, perfWidth, 44, '#242c35', C.border, 1);
-        this.performanceLabel.width = perfWidth - 8;
-        this.performanceLabel.y = perfWidth < 90 ? 5 : 14;
+        this.performancePanel.graphics.drawRect(0, 0, perf.width, perf.height, '#182028', C.border, 1);
+        this.performanceLabel.pos(6, 6);
+        this.performanceLabel.width = perf.width - 12;
+        this.performanceLabel.height = perf.height - 12;
+        this.performanceLabel.fontSize = perf.width < 140 ? 9 : 10;
+        this.performanceLabel.leading = 2;
+        this.performanceLabel.align = 'left';
+        this.performanceLabel.wordWrap = false;
+        this.performanceLabel.overflow = 'hidden';
         const mobileLayout = mobileHUDLayout(this.layout);
         const toastWidth = this.mobile ? mobileLayout.toastWidth : Math.min(480, width - 2 * margin);
         // 手机提示条放在整组触控按钮上方，不覆盖 Buff 按钮和摇杆。
@@ -115,8 +121,7 @@ export class GameUI {
         this.performancePanel.visible = this.game.showPerformance && this.game.mode === 'battle' && !this.game.dialog;
         if (this.performancePanel.visible) {
             const p = this.game.performanceSnapshot();
-            const separator = this.performancePanel.width < 90 ? '\n' : ' · ';
-            const value = `${p.samples ? `${p.fps.toFixed(0)} FPS` : '采样中'}${separator}${this.game.autoPlay.enabled ? '自动 ' + this.game.autoPlay.rounds : '详情'}`;
+            const value = `v${GAME_VERSION} ${p.quality}${this.game.autoPlay.enabled ? ' AI' + this.game.autoPlay.rounds : ''}\n${p.samples ? p.fps.toFixed(0) + ' FPS' : '采样中'} P95 ${p.p95Ms.toFixed(0)}ms\n更新${p.updateMs.toFixed(1)} 指令${p.renderMs.toFixed(1)}\n引擎${p.engineSamples ? p.engineMs.toFixed(1) : '—'}ms DC${p.drawCalls.toFixed(0)}\n怪${p.enemies} 弹${p.shots} 掉${p.drops} 效${p.effects}\n${p.simulationSteps.toFixed(1)}步 图集${p.enemyAtlasReady ? '就绪' : '回退'} ${(p.enemyAtlasBytes / 1048576).toFixed(0)}M`;
             if (this.performanceLabel.text !== value)
                 this.performanceLabel.text = value;
         }

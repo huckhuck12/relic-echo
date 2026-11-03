@@ -1,4 +1,4 @@
-import { rm } from 'node:fs/promises';
+import { rm, readFile, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -10,4 +10,9 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 await rm(new URL('../dist/', import.meta.url), { recursive: true, force: true });
 const result = spawnSync(process.execPath, [compiler, '-p', 'tsconfig.json'], { cwd: root, stdio: 'inherit' });
 if (result.error) throw result.error;
+if (result.status === 0) {
+    const version = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8')).version;
+    const target = new URL('../dist/shared/version.js', import.meta.url);
+    await writeFile(target, (await readFile(target, 'utf8')).replaceAll('__RELIC_VERSION__', version));
+}
 process.exitCode = result.status ?? 1;
