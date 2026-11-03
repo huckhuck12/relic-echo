@@ -1,0 +1,35 @@
+﻿[
+    {
+        "comparisonCrop":  {
+                               "y":  36,
+                               "width":  813,
+                               "height":  1200,
+                               "x":  219
+                           },
+        "width":  1254,
+        "file":  "hero-a-forest-ranger-v2.png",
+        "height":  1254
+    },
+    {
+        "comparisonCrop":  {
+                               "y":  18,
+                               "width":  666,
+                               "height":  1218,
+                               "x":  294
+                           },
+        "width":  1254,
+        "file":  "hero-b-ruin-apprentice-v2.png",
+        "height":  1254
+    },
+    {
+        "comparisonCrop":  {
+                               "y":  21,
+                               "width":  597,
+                               "height":  1221,
+                               "x":  303
+                           },
+        "width":  1254,
+        "file":  "hero-c-wild-treasure-hunter-v2.png",
+        "height":  1254
+    }
+]
