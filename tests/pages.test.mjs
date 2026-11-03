@@ -18,7 +18,7 @@ test('Pages package is standalone and all entry/module URLs resolve at root and 
  const result=await buildPages(),files=new Set(await listFiles(pagesRoot));
  assert.ok(result.modules>0);assert.ok(files.has('.nojekyll'));assert.ok(files.has('index.html'));
  assert.ok(files.has('vendor/laya.core.js'));assert.ok(files.has('vendor/laya.webgl.js'));
- assert.ok([...files].every(p=>p==='index.html'||p==='.nojekyll'||p.startsWith('vendor/')||/^dist\/(?:[\w-]+\/)*[\w-]+\.js$/.test(p)));
+ assert.ok([...files].every(p=>p==='index.html'||p==='.nojekyll'||p.startsWith('vendor/')||p.startsWith('assets/')||/^dist\/(?:[\w-]+\/)*[\w-]+\.js$/.test(p)));
  for(const base of ['', '/a-repository-name']){
   const server=createStaticServer({root:pagesRoot,base});server.listen(0,'127.0.0.1');await once(server,'listening');
   try{
@@ -38,6 +38,9 @@ test('Pages package is standalone and all entry/module URLs resolve at root and 
     }
    }
    assert.ok(seen.size>35,'entry should reach the real game, UI and Buff modules');
+   const hero=await fetch(origin+base+'/assets/hero/ruin-apprentice.png');
+   assert.equal(hero.status,200);assert.match(hero.headers.get('content-type'),/image\/png/);
+   const bytes=Buffer.from(await hero.arrayBuffer());assert.equal(bytes.readUInt32BE(16),1024);assert.equal(bytes.readUInt32BE(20),1024);
    assert.equal((await fetch(origin+base+'/missing.js')).status,404);
    if(base){const redirect=await fetch(origin+base,{redirect:'manual'});assert.equal(redirect.headers.get('location'),base+'/');assert.equal((await fetch(origin+'/dist/main.js')).status,404);}
   }finally{await new Promise(resolve=>server.close(resolve));}

@@ -42,6 +42,7 @@ export async function buildWechat({appid=process.env.WECHAT_APPID || 'touristapp
     await writeFile(join(wechatRoot,name),result.outputText);
   }
   await cp(join(root,'wechat/game.json'),join(wechatRoot,'game.json'));
+  await cp(join(root,'assets'),join(wechatRoot,'assets'),{recursive:true});
   const project=JSON.parse(await readFile(join(root,'wechat/project.config.json'),'utf8'));project.appid=appid;
   await writeFile(join(wechatRoot,'project.config.json'),JSON.stringify(project,null,2)+'\n');
   const webgl=libs['laya.webgl.js'],adapter=libs['laya.wxmini.js'];

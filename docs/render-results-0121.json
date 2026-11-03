@@ -1,0 +1,671 @@
+{
+  "version": "0.12.1",
+  "scope": "Real Laya WebGL in desktop browser; emulated phone metrics and mock WeChat SDK, not native iPhone validation",
+  "tests": 219,
+  "mobile": [
+    {
+      "width": 393,
+      "height": 852,
+      "dpr": 3,
+      "touch": true,
+      "initial": {
+        "dialog": "start",
+        "stickVisible": true,
+        "font": "PingFang SC",
+        "point": {
+          "x": 114.4175,
+          "y": 696.315
+        },
+        "stage": [
+          393,
+          852
+        ]
+      },
+      "battle": {
+        "mode": "battle",
+        "time": 2.083333333333331,
+        "hp": 100,
+        "enemies": 2,
+        "hero": {
+          "ready": true,
+          "error": ""
+        },
+        "textureBytes": 14680064
+      }
+    },
+    {
+      "width": 852,
+      "height": 393,
+      "dpr": 3,
+      "touch": true,
+      "initial": {
+        "dialog": "start",
+        "stickVisible": true,
+        "font": "PingFang SC",
+        "point": {
+          "x": 233.5,
+          "y": 331.35
+        },
+        "stage": [
+          852,
+          393
+        ]
+      },
+      "battle": {
+        "mode": "battle",
+        "time": 1.866666666666665,
+        "hp": 100,
+        "enemies": 5,
+        "hero": {
+          "ready": true,
+          "error": ""
+        },
+        "textureBytes": 14680064
+      }
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "dpr": 1,
+      "touch": false,
+      "initial": {
+        "dialog": "start",
+        "stickVisible": false,
+        "font": "system-ui",
+        "point": {
+          "x": 447.5,
+          "y": 628
+        },
+        "stage": [
+          1280,
+          720
+        ]
+      },
+      "battle": {
+        "mode": "battle",
+        "time": 1.8333333333333317,
+        "hp": 100,
+        "enemies": 5,
+        "hero": {
+          "ready": true,
+          "error": ""
+        },
+        "textureBytes": 14680064
+      }
+    }
+  ],
+  "wechat": [
+    {
+      "kind": "wechat-package-in-browser",
+      "initial": {
+        "dialog": "start",
+        "stage": [
+          393,
+          852
+        ],
+        "mobile": true,
+        "top": 88,
+        "adapter": true,
+        "canvas": [
+          786,
+          1704
+        ]
+      },
+      "battle": {
+        "mode": "battle",
+        "time": 0.9333333333333346
+      },
+      "dual": {
+        "owner": 7,
+        "dash": 2.2
+      },
+      "paused": {
+        "dialog": "pause",
+        "owner": null,
+        "stick": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "death": {
+        "dialog": "result",
+        "revival": false
+      },
+      "performance": {
+        "samples": 138,
+        "fps": 59.99999999999999,
+        "frameMs": 16.666666666666668,
+        "p95Ms": 19,
+        "maxMs": 44,
+        "updateMs": 0.07971014492753623,
+        "renderMs": 0.11594202898550725,
+        "simulationSteps": 0.9927536231884058,
+        "maxSimulationSteps": 3,
+        "stepMs": 0.0802919708029197,
+        "engineSamples": 138,
+        "engineMs": 1.4492753623188406,
+        "drawCalls": 23.652173913043477,
+        "enemies": 0,
+        "shots": 0,
+        "drops": 15,
+        "effects": 4,
+        "enemyAtlasBytes": 4194304,
+        "sceneTextureBytes": 14680064,
+        "enemyAtlasReady": true,
+        "enemyAtlasError": "",
+        "autoPlayEnabled": false,
+        "autoPlayRound": 0,
+        "autoPlayStress": false,
+        "autoPlayDecisions": 0,
+        "autoPlayLastAction": "",
+        "drawCallReport": null,
+        "paused": false,
+        "quality": "标准"
+      },
+      "drawCallProbe": {
+        "active": false,
+        "error": "",
+        "report": {
+          "capturedAt": 1793701792940,
+          "context": {
+            "version": "0.12.1",
+            "seconds": 271.49999999999864,
+            "quality": "精细",
+            "enemies": 235,
+            "shots": 208,
+            "drops": 150,
+            "width": 393,
+            "height": 760
+          },
+          "baseline": 26,
+          "finalBaseline": 26,
+          "stable": true,
+          "rows": [
+            {
+              "group": "enemies",
+              "label": "怪物本体",
+              "without": 26,
+              "saved": 0
+            },
+            {
+              "group": "shots",
+              "label": "弹道",
+              "without": 26,
+              "saved": 0
+            },
+            {
+              "group": "buffs",
+              "label": "Buff 特效",
+              "without": 24,
+              "saved": 2
+            },
+            {
+              "group": "effects",
+              "label": "其他特效",
+              "without": 26,
+              "saved": 0
+            },
+            {
+              "group": "warnings",
+              "label": "血条/预警",
+              "without": 22,
+              "saved": 4
+            },
+            {
+              "group": "drops",
+              "label": "掉落/光柱",
+              "without": 26,
+              "saved": 0
+            },
+            {
+              "group": "labels",
+              "label": "飘字",
+              "without": 25,
+              "saved": 1
+            },
+            {
+              "group": "environment",
+              "label": "地图/柱子",
+              "without": 24,
+              "saved": 2
+            },
+            {
+              "group": "player",
+              "label": "玩家本体",
+              "without": 24,
+              "saved": 2
+            },
+            {
+              "group": "ui",
+              "label": "界面",
+              "without": 12,
+              "saved": 14
+            }
+          ]
+        },
+        "time": 271.49999999999864,
+        "hp": 100,
+        "dialog": "performance"
+      },
+      "probeContext": {
+        "time": 271.49999999999864,
+        "hp": 100,
+        "enemies": 235,
+        "shots": 208,
+        "drops": 150
+      }
+    }
+  ],
+  "asset": {
+    "width": 1024,
+    "height": 1024,
+    "cell": [
+      96,
+      128
+    ],
+    "pivot": [
+      48,
+      124
+    ],
+    "scale": 1.5,
+    "frames": [
+      {
+        "direction": 0,
+        "pose": 0,
+        "x": 0,
+        "y": 0,
+        "mirrored": false
+      },
+      {
+        "direction": 0,
+        "pose": 1,
+        "x": 96,
+        "y": 0,
+        "mirrored": false
+      },
+      {
+        "direction": 0,
+        "pose": 2,
+        "x": 192,
+        "y": 0,
+        "mirrored": false
+      },
+      {
+        "direction": 0,
+        "pose": 3,
+        "x": 288,
+        "y": 0,
+        "mirrored": false
+      },
+      {
+        "direction": 0,
+        "pose": 4,
+        "x": 384,
+        "y": 0,
+        "mirrored": false
+      },
+      {
+        "direction": 0,
+        "pose": 5,
+        "x": 480,
+        "y": 0,
+        "mirrored": false
+      },
+      {
+        "direction": 0,
+        "pose": 6,
+        "x": 576,
+        "y": 0,
+        "mirrored": false
+      },
+      {
+        "direction": 1,
+        "pose": 0,
+        "x": 672,
+        "y": 0,
+        "mirrored": false
+      },
+      {
+        "direction": 1,
+        "pose": 1,
+        "x": 768,
+        "y": 0,
+        "mirrored": false
+      },
+      {
+        "direction": 1,
+        "pose": 2,
+        "x": 864,
+        "y": 0,
+        "mirrored": false
+      },
+      {
+        "direction": 1,
+        "pose": 3,
+        "x": 0,
+        "y": 128,
+        "mirrored": false
+      },
+      {
+        "direction": 1,
+        "pose": 4,
+        "x": 96,
+        "y": 128,
+        "mirrored": false
+      },
+      {
+        "direction": 1,
+        "pose": 5,
+        "x": 192,
+        "y": 128,
+        "mirrored": false
+      },
+      {
+        "direction": 1,
+        "pose": 6,
+        "x": 288,
+        "y": 128,
+        "mirrored": false
+      },
+      {
+        "direction": 2,
+        "pose": 0,
+        "x": 384,
+        "y": 128,
+        "mirrored": false
+      },
+      {
+        "direction": 2,
+        "pose": 1,
+        "x": 480,
+        "y": 128,
+        "mirrored": false
+      },
+      {
+        "direction": 2,
+        "pose": 2,
+        "x": 576,
+        "y": 128,
+        "mirrored": false
+      },
+      {
+        "direction": 2,
+        "pose": 3,
+        "x": 672,
+        "y": 128,
+        "mirrored": false
+      },
+      {
+        "direction": 2,
+        "pose": 4,
+        "x": 768,
+        "y": 128,
+        "mirrored": false
+      },
+      {
+        "direction": 2,
+        "pose": 5,
+        "x": 864,
+        "y": 128,
+        "mirrored": false
+      },
+      {
+        "direction": 2,
+        "pose": 6,
+        "x": 0,
+        "y": 256,
+        "mirrored": false
+      },
+      {
+        "direction": 3,
+        "pose": 0,
+        "x": 96,
+        "y": 256,
+        "mirrored": true
+      },
+      {
+        "direction": 3,
+        "pose": 1,
+        "x": 192,
+        "y": 256,
+        "mirrored": true
+      },
+      {
+        "direction": 3,
+        "pose": 2,
+        "x": 288,
+        "y": 256,
+        "mirrored": true
+      },
+      {
+        "direction": 3,
+        "pose": 3,
+        "x": 384,
+        "y": 256,
+        "mirrored": true
+      },
+      {
+        "direction": 3,
+        "pose": 4,
+        "x": 480,
+        "y": 256,
+        "mirrored": true
+      },
+      {
+        "direction": 3,
+        "pose": 5,
+        "x": 576,
+        "y": 256,
+        "mirrored": true
+      },
+      {
+        "direction": 3,
+        "pose": 6,
+        "x": 672,
+        "y": 256,
+        "mirrored": true
+      },
+      {
+        "direction": 4,
+        "pose": 0,
+        "x": 768,
+        "y": 256,
+        "mirrored": true
+      },
+      {
+        "direction": 4,
+        "pose": 1,
+        "x": 864,
+        "y": 256,
+        "mirrored": true
+      },
+      {
+        "direction": 4,
+        "pose": 2,
+        "x": 0,
+        "y": 384,
+        "mirrored": true
+      },
+      {
+        "direction": 4,
+        "pose": 3,
+        "x": 96,
+        "y": 384,
+        "mirrored": true
+      },
+      {
+        "direction": 4,
+        "pose": 4,
+        "x": 192,
+        "y": 384,
+        "mirrored": true
+      },
+      {
+        "direction": 4,
+        "pose": 5,
+        "x": 288,
+        "y": 384,
+        "mirrored": true
+      },
+      {
+        "direction": 4,
+        "pose": 6,
+        "x": 384,
+        "y": 384,
+        "mirrored": true
+      },
+      {
+        "direction": 5,
+        "pose": 0,
+        "x": 480,
+        "y": 384,
+        "mirrored": true
+      },
+      {
+        "direction": 5,
+        "pose": 1,
+        "x": 576,
+        "y": 384,
+        "mirrored": true
+      },
+      {
+        "direction": 5,
+        "pose": 2,
+        "x": 672,
+        "y": 384,
+        "mirrored": true
+      },
+      {
+        "direction": 5,
+        "pose": 3,
+        "x": 768,
+        "y": 384,
+        "mirrored": true
+      },
+      {
+        "direction": 5,
+        "pose": 4,
+        "x": 864,
+        "y": 384,
+        "mirrored": true
+      },
+      {
+        "direction": 5,
+        "pose": 5,
+        "x": 0,
+        "y": 512,
+        "mirrored": true
+      },
+      {
+        "direction": 5,
+        "pose": 6,
+        "x": 96,
+        "y": 512,
+        "mirrored": true
+      },
+      {
+        "direction": 6,
+        "pose": 0,
+        "x": 192,
+        "y": 512,
+        "mirrored": false
+      },
+      {
+        "direction": 6,
+        "pose": 1,
+        "x": 288,
+        "y": 512,
+        "mirrored": false
+      },
+      {
+        "direction": 6,
+        "pose": 2,
+        "x": 384,
+        "y": 512,
+        "mirrored": false
+      },
+      {
+        "direction": 6,
+        "pose": 3,
+        "x": 480,
+        "y": 512,
+        "mirrored": false
+      },
+      {
+        "direction": 6,
+        "pose": 4,
+        "x": 576,
+        "y": 512,
+        "mirrored": false
+      },
+      {
+        "direction": 6,
+        "pose": 5,
+        "x": 672,
+        "y": 512,
+        "mirrored": false
+      },
+      {
+        "direction": 6,
+        "pose": 6,
+        "x": 768,
+        "y": 512,
+        "mirrored": false
+      },
+      {
+        "direction": 7,
+        "pose": 0,
+        "x": 864,
+        "y": 512,
+        "mirrored": false
+      },
+      {
+        "direction": 7,
+        "pose": 1,
+        "x": 0,
+        "y": 640,
+        "mirrored": false
+      },
+      {
+        "direction": 7,
+        "pose": 2,
+        "x": 96,
+        "y": 640,
+        "mirrored": false
+      },
+      {
+        "direction": 7,
+        "pose": 3,
+        "x": 192,
+        "y": 640,
+        "mirrored": false
+      },
+      {
+        "direction": 7,
+        "pose": 4,
+        "x": 288,
+        "y": 640,
+        "mirrored": false
+      },
+      {
+        "direction": 7,
+        "pose": 5,
+        "x": 384,
+        "y": 640,
+        "mirrored": false
+      },
+      {
+        "direction": 7,
+        "pose": 6,
+        "x": 480,
+        "y": 640,
+        "mirrored": false
+      }
+    ],
+    "qa": {
+      "transparentPixels": 810498,
+      "opaquePixels": 203220,
+      "keyPixels": 0
+    }
+  }
+}

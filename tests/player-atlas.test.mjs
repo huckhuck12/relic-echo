@@ -9,7 +9,7 @@ test('player poses use one bounded upload per equipment set and release replaced
  setupLayaStub();
  const bitmaps=[],textures=[],canvases=[];
  const context={setTransform(){},fillRect(){},beginPath(){},moveTo(){},lineTo(){},closePath(){},fill(){},stroke(){}};
- Laya.Browser={createElement:()=>{const c={width:0,height:0,getContext:()=>context};canvases.push(c);return c;}};
+ Laya.Browser={createElement:type=>{if(type==='img')return {};const c={width:0,height:0,getContext:()=>context};canvases.push(c);return c;}};
  Laya.Texture2D=class{constructor(w,h){this.width=w;this.height=h;bitmaps.push(this);}loadImageSource(){}destroy(){this.destroyed=true;}};
  Laya.Texture=class{constructor(bitmap){this.bitmap=bitmap;textures.push(this);}destroy(){this.destroyed=true;}static createFromTexture(t){return new this(t.bitmap);}};
  const atlas=new PlayerAtlas(),draws=[],g={clear(){},drawTexture:(...a)=>draws.push(a)};

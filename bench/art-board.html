@@ -1,5 +1,6 @@
 <!doctype html>
 <meta charset="utf-8">
+<base href="/">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Relic Echo · Art board</title>
 <style>body{margin:0;background:#eee5cd}canvas{display:block}</style>
@@ -12,14 +13,16 @@ import {emptyLoadout} from '/dist/shared/model.js';
 import {pillarShapes,terrainShapes} from '/dist/rendering/painted-world.js';
 import {lightningStroke,paintFlameShot,orbitBlade} from '/dist/rendering/skill-visuals.js';
 import {UIControls,C} from '/dist/ui/ui-controls.js';
+import {heroArt} from '/dist/rendering/hero-art.js';
 Laya.init(960,640,Laya.WebGL);Laya.stage.bgColor=C.panel;
+await new Promise(resolve=>heroArt().whenReady(resolve));
 const ui=new UIControls(()=>{}),root=Laya.stage;
 ui.text(root,'遗迹回响 · 手绘幻想',24,18,900,26);
 ui.text(root,'1× 原生尺寸 / 放大轮廓检查 · 同一绘图源用于正式游戏与图集',24,55,900,13,C.muted);
 const sprite=(shapes,x,y,scale=1)=>{const n=new Laya.Sprite();drawShapes(n.graphics,shapes);n.pos(x,y);n.scale(scale,scale);root.addChild(n);};
 ['storm','flame','blade'].forEach((w,i)=>{
- sprite(avatarShapes(emptyLoadout(w)),55+i*140,207);
- sprite(avatarShapes(emptyLoadout(w)),115+i*140,210,1.7);
+ ui.avatar(root,emptyLoadout(w),55+i*140,207);
+ ui.avatar(root,emptyLoadout(w),115+i*140,210,1.7);
 });
 ui.text(root,'冒险者 / 雷杖 · 炎炮 · 环刃',24,225,430,14);
 sprite(pillarShapes(),530,215,1.3);

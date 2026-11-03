@@ -7,6 +7,7 @@ export interface Shape {
     line?: string;
     width?: number;
     part?: 'staff' | 'leftArm' | 'rightArm';
+    avatarLayer?: 'head' | 'armor' | 'back' | 'weapon' | 'badge';
 }
 import type { enemyArtPose } from '../enemies/enemy-actions.js';
 const shades = new Map<string, string>();

@@ -13,7 +13,7 @@ const wx={
  getSystemInfoSync:()=>({...info}),getWindowInfo:()=>({...info}),
  getMenuButtonBoundingClientRect:()=>({top:48,bottom:80,left:297,right:384}),
  createCanvas(){const c=document.createElement('canvas');if(!document.querySelector('canvas')){c.className='wx-screen';document.body.appendChild(c);}return c;},
- createImage:()=>new Image(),createInnerAudioContext:()=>({}),
+ createImage:()=>{const image=new Image(),descriptor=Object.getOwnPropertyDescriptor(HTMLImageElement.prototype,'src');Object.defineProperty(image,'src',{get(){return descriptor.get.call(image);},set(value){descriptor.set.call(image,value.startsWith('assets/')?'/_wechat/'+value:value);}});return image;},createInnerAudioContext:()=>({}),
  getFileSystemManager:()=>({mkdir:options=>options.success({})}),env:{USER_DATA_PATH:'mock-user-data'},
  getStorageSync:key=>storage.get(key)||'',setStorageSync:(key,value)=>storage.set(key,value),removeStorageSync:key=>storage.delete(key),clearStorageSync:()=>storage.clear(),
  downloadFile(){throw Error('Unexpected remote resource download in offline game');},

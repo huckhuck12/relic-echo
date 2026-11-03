@@ -76,6 +76,7 @@ export class SceneRenderer {
     private readonly enemyShapeCache = new Map<string, Shape[]>();
     readonly enemyAtlas = new EnemyAtlas();
     get avatarKey(): string { return this.lastAvatar; }
+    get playerArtStatus() { return this.playerAtlas.artStatus; }
     /** 调用前必须完成 Laya.init；这里只构建节点与静态地图。 */
     constructor(private readonly pillars: readonly Point[]) {
         this.world = new Laya.Sprite();
@@ -110,7 +111,7 @@ export class SceneRenderer {
     /** 装备、朝向或离散走路姿态变化才重画，force 用于开局和主动换装。 */
     drawAvatar(loadout: Loadout, p: Readonly<Player>, walkPhase: number, force = false): void {
         const weapon = weaponOf(loadout), castTime = p.castWeapon === weapon ? (p.castTime || 0) : 0;
-        const key = JSON.stringify(loadout) + p.face + p.back + ':' + p.direction + ':' + Math.floor((walkPhase % (Math.PI * 2)) * 3) + ':cast' + castFrame(weapon, castTime);
+        const key = JSON.stringify(loadout) + p.face + p.back + ':' + p.direction + ':' + Math.floor((walkPhase % (Math.PI * 2)) * 3) + ':art' + this.playerAtlas.revision + ':cast' + castFrame(weapon, castTime);
         if (!force && key === this.lastAvatar)
             return;
         this.lastAvatar = key;

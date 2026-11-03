@@ -82,8 +82,9 @@ try{
    await send('Input.dispatchMouseEvent',{type:'mouseReleased',...initial.point,button:'left',clickCount:1});
   }
   await new Promise(r=>setTimeout(r,1800));
-  const battle=await evaluate(`import('/dist/main.js').then(({game})=>({mode:game.mode,time:game.time,hp:game.player.hp,enemies:game.snapshot().enemies}))`);
+  const battle=await evaluate(`import('/dist/main.js').then(({game})=>({mode:game.mode,time:game.time,hp:game.player.hp,enemies:game.snapshot().enemies,hero:game.scene.playerArtStatus,textureBytes:game.scene.textureBytes}))`);
   assert.equal(battle.mode,'battle');assert.ok(battle.time>.2,'Simulation advances after start');
+  assert.equal(battle.hero.ready,true,'Painted hero source loads in the production browser entry');
   if(touch){
    const stick=await evaluate(`import('/dist/main.js').then(({ui,game})=>{
     const s=ui.hudView.stick.activation,p=s.localToGlobal(new Laya.Point(s.width*.6,s.height*.35));
@@ -153,7 +154,7 @@ try{
   await send('Emulation.setDeviceMetricsOverride',{width:960,height:640,deviceScaleFactor:1,mobile:false});
   await send('Page.navigate',{url:origin+'/bench/art-board.html'});
   let ready=false;
-  for(let i=0;i<100;i++){ready=await evaluate('!!window.artBoardReady');if(ready)break;await new Promise(r=>setTimeout(r,100));}
+  for(let i=0;i<100;i++){if(errors.length)throw Error(JSON.stringify(errors));ready=await evaluate('!!window.artBoardReady');if(ready)break;await new Promise(r=>setTimeout(r,100));}
   assert.ok(ready,'Production art board renders');
   await new Promise(r=>setTimeout(r,150));
   const shot=await send('Page.captureScreenshot',{format:'png'});

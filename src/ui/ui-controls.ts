@@ -6,6 +6,8 @@ export type LayaButton = LayaSprite & {
 import type { Loadout } from '../shared/model.js';
 import { UIEffects } from './ui-effects.js';
 import { avatarShapes, drawShapes } from '../rendering/appearance.js';
+import { PlayerAtlas } from '../rendering/player-atlas.js';
+import { heroArt } from '../rendering/hero-art.js';
 export const C = {
     panel: '#eee5cd', border: '#8d927a', text: '#30443d', muted: '#64705e', mint: '#38624f', gold: '#86602d',
     surface: '#ded9bf', ink: '#fff4d7'
@@ -85,7 +87,22 @@ export class UIControls {
     }
     avatar(parent: LayaSprite, loadout: Loadout, x: number, y: number, scale = 1, back = false): LayaSprite {
         const node = new Laya.Sprite();
-        drawShapes(node.graphics, avatarShapes(loadout, back));
+        const atlas = new PlayerAtlas(true);
+        const paint = () => {
+            if (node.destroyed)
+                return;
+            if (!atlas.paint(node.graphics, loadout, { face: 1, back }, 0))
+                drawShapes(node.graphics, avatarShapes(loadout, back));
+        };
+        // Previews own their generated equipment atlas; release it with the preview node.
+        const destroy = node.destroy.bind(node);
+        node.destroy = () => {
+            atlas.destroy();
+            destroy();
+        };
+        paint();
+        if (!heroArt().image && !heroArt().error)
+            heroArt().whenReady(paint);
         node.pos(x, y);
         node.scale(scale, scale);
         node.mouseEnabled = false;

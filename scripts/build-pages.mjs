@@ -26,6 +26,7 @@ export async function buildPages() {
     await rm(pagesRoot, { recursive: true, force: true });
     await mkdir(join(pagesRoot, 'dist'), { recursive: true });
     await cp(join(projectRoot, 'vendor'), join(pagesRoot, 'vendor'), { recursive: true });
+    await cp(join(projectRoot, 'assets'), join(pagesRoot, 'assets'), { recursive: true });
     await writeFile(join(pagesRoot, 'index.html'), entry);
     await writeFile(join(pagesRoot, '.nojekyll'), '');
     for (const name of scripts) {

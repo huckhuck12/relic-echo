@@ -29,6 +29,7 @@ export function avatarShapes(loadout: Loadout, back = false, facing = 1, phase =
             s.push(...block(x, y, w, h, d, c));
     };
     const rearParts = () => {
+        const start = s.length;
         if (rear === 'cape') {
             box(-17, -12, 30, 34, 3, '#557d65');
             s.push(pixel(-13, -43, 5, 26, '#88a67c'), pixel(1, -43, 5, 26, '#88a67c'));
@@ -45,6 +46,8 @@ export function avatarShapes(loadout: Loadout, back = false, facing = 1, phase =
                 box(x, -20, 7, 6, 3, '#e0c28d');
             }
         }
+        for (let i = start; i < s.length; i++)
+            s[i].avatarLayer = 'back';
     };
     if (!back)
         rearParts();
@@ -55,6 +58,7 @@ export function avatarShapes(loadout: Loadout, back = false, facing = 1, phase =
     const torso = armor === 'light' ? '#3eac8d' : armor === 'heavy' ? '#8b9eab' : armor === 'energy' ? '#8062aa' : '#548878';
     box(-14, -18, 27, 27, 7, torso);
     s.push(pixel(-12, -43, 5, 20, armor === 'heavy' ? '#b8c8c6' : '#69bcb0'), pixel(-13, -22, 26, 4, '#604a32'));
+    const armorStart = s.length;
     if (armor === 'heavy') {
         box(-21, -34, 9, 14, 6, '#a5b5bc');
         box(13, -34, 9, 14, 6, '#a5b5bc');
@@ -66,6 +70,8 @@ export function avatarShapes(loadout: Loadout, back = false, facing = 1, phase =
     }
     if (armor === 'light')
         s.push(pixel(-3, -42, 6, 13, '#d7e8b8'));
+    for (let i = armorStart; i < s.length; i++)
+        s[i].avatarLayer = 'armor';
     // 施放时手臂连接肩膀与真实握把，避免只有武器旋转、手仍垂在身体两侧。
     // 火炮双手托持，雷杖/御刃器只驱动主手；非施放状态保留原有走路摆臂。
     for (const side of [-1, 1]) {
@@ -105,6 +111,7 @@ export function avatarShapes(loadout: Loadout, back = false, facing = 1, phase =
             s.push(oval(-7 + shift, -56, 1.8, 2.7, '#243b39'));
         s.push(oval(6 + shift, -56, 1.8, 2.7, '#243b39'), polygon([-3 + shift, -49, 1 + shift, -47, 5 + shift, -49], '#87583b'));
     }
+    const headStart = s.length;
     if (head === 'helmet') {
         box(-17, -61, 31, 12, 8, '#9eafba');
         box(-18, -49, 5, 13, 5, '#8097a7');
@@ -123,6 +130,8 @@ export function avatarShapes(loadout: Loadout, back = false, facing = 1, phase =
         if (!back)
             s.push(pixel(-12, -60, 24, 3, '#fff1b0'));
     }
+    for (let i = headStart; i < s.length; i++)
+        s[i].avatarLayer = 'head';
     if (back)
         rearParts();
     // 侧面收窄身体、斜向保留部分侧面。只改横坐标，不压扁头身的竖直高度。
@@ -168,7 +177,7 @@ export function avatarShapes(loadout: Loadout, back = false, facing = 1, phase =
             const q = weaponPoint({ x: p[i], y: p[i + 1] }, weapon as Weapon, dir, castTime);
             out.push(q.x, q.y);
         }
-        return { ...shape, type: 'poly' as const, p: out };
+        return { ...shape, type: 'poly' as const, p: out, avatarLayer: 'weapon' as const };
     });
     // 向上瞄准时武器位于身体后方；背包、披风仍由上方的前后绘制顺序控制。
     if (back)
@@ -177,11 +186,14 @@ export function avatarShapes(loadout: Loadout, back = false, facing = 1, phase =
         s.push(...held);
     for (const item of Object.values(loadout))
         if (item && item.quality > 0) {
+            const start = s.length;
             const slot = gear(item).slot, y = slot === 'head' ? -67 : slot === 'armor' ? -30 : slot === 'back' ? -42 : weapon === 'blade' ? -30 : -50;
             const q = slot === 'weapon' ? weaponPoint({ x: hand, y }, weapon as Weapon, dir, castTime) : { x: slot === 'back' ? -18 : 0, y };
             s.push(pixel(q.x - 2, q.y, 4 + item.quality, 4 + item.quality, QUALITY_COLOR[item.quality]));
             if (item.quality === 2)
                 s.push(pixel(q.x - 2, q.y + 7, 5, 2, '#fff0b3'));
+            for (let i = start; i < s.length; i++)
+                s[i].avatarLayer = 'badge';
         }
     return s;
 }

@@ -11,6 +11,8 @@ test('WeChat output contains a standalone CommonJS graph, pinned engine and game
  const project=JSON.parse(await read('project.config.json'));assert.equal(project.compileType,'game');assert.equal(project.appid,'wx0123456789abcdef');
  assert.equal(JSON.parse(await read('game.json')).deviceOrientation,'portrait');assert.match(await read('LICENSE-LayaAir.txt'),/MIT License/);
  const scripts=new Set(result.scripts);
+ const hero=await readFile(join(result.root,'assets/hero/ruin-apprentice.png'));
+ assert.equal(hero.readUInt32BE(16),1024);assert.equal(hero.readUInt32BE(20),1024);
  for(const name of scripts){
   const source=await read(name),ast=ts.createSourceFile(name,source,ts.ScriptTarget.Latest,true,ts.ScriptKind.JS);
   assert.equal(ast.parseDiagnostics.length,0,name);

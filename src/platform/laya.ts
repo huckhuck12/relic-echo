@@ -83,6 +83,7 @@ export interface LayaTextureBitmap {
 export interface LayaRuntime {
     Browser?: {
         createElement(type: 'canvas'): HTMLCanvasElement;
+        createElement(type: 'img'): HTMLImageElement;
     };
     Texture2D?: new (width: number, height: number, format: number, mipmap: boolean) => LayaTextureBitmap;
     Texture?: {

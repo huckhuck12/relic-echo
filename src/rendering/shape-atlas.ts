@@ -7,6 +7,18 @@ interface Tile {
     width: number;
     height: number;
 }
+export interface AtlasRaster {
+    source: HTMLImageElement;
+    sx: number;
+    sy: number;
+    sw: number;
+    sh: number;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    behind: Shape[];
+}
 /** Shared, bounded GPU atlases for ordinary enemies, including all caster action phases.
  * High detail is created only on demand. No per-enemy textures or per-frame uploads.
  */
@@ -22,7 +34,8 @@ export class ShapeAtlas {
     constructor(entries: {
         key: string;
         shapes: Shape[];
-    }[], scale = 1.5) {
+        raster?: AtlasRaster;
+    }[], scale = 1.5, width = 1024) {
         const { Browser, Texture, Texture2D } = Laya;
         if (!Browser || !Texture || !Texture2D) {
             this.error = 'unsupported-engine';
@@ -32,13 +45,13 @@ export class ShapeAtlas {
         try {
             // Tall frames first keep both quality sheets within 1024x1024.
             entries = entries.slice().sort((a, b) => {
-                const ah = shapeBounds(a.shapes), bh = shapeBounds(b.shapes);
+                const ah = entryBounds(a), bh = entryBounds(b);
                 return (bh.bottom - bh.top) - (ah.bottom - ah.top);
             });
-            const width = 1024, padding = 2;
+            const padding = 2;
             let x = 0, y = 0, row = 0;
             const packed = entries.map(entry => {
-                const bounds = shapeBounds(entry.shapes), w = Math.ceil((bounds.right - bounds.left) * scale) + padding * 2, h = Math.ceil((bounds.bottom - bounds.top) * scale) + padding * 2;
+                const bounds = entryBounds(entry), w = Math.ceil((bounds.right - bounds.left) * scale) + padding * 2, h = Math.ceil((bounds.bottom - bounds.top) * scale) + padding * 2;
                 if (x + w > width) {
                     x = 0;
                     y += row;
@@ -66,6 +79,11 @@ export class ShapeAtlas {
             }
             for (const tile of packed) {
                 context.setTransform(scale, 0, 0, scale, tile.x + padding - tile.left * scale, tile.y + padding - tile.top * scale);
+                if (tile.raster) {
+                    const r = tile.raster;
+                    drawCanvasShapes(context, r.behind);
+                    context.drawImage(r.source, r.sx, r.sy, r.sw, r.sh, r.x, r.y, r.width, r.height);
+                }
                 drawCanvasShapes(context, tile.shapes);
             }
             this.bitmap = new Texture2D(width, height, 1, false);
@@ -116,6 +134,15 @@ export class ShapeAtlas {
         this.bitmap?.destroy();
         this.textureBytes = 0;
     }
+}
+function entryBounds(entry: {
+    shapes: Shape[];
+    raster?: AtlasRaster;
+}) {
+    if (!entry.raster)
+        return shapeBounds(entry.shapes);
+    const r = entry.raster;
+    return shapeBounds([...entry.shapes, ...r.behind, { type: 'rect', p: [r.x, r.y, r.width, r.height], fill: '#000000' }]);
 }
 function shapeBounds(shapes: Shape[]) {
     let left = Infinity, top = Infinity, right = -Infinity, bottom = -Infinity;

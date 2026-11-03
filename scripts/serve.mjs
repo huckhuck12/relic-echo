@@ -3,7 +3,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { resolve, extname, sep, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
-const mime = { '.html':'text/html; charset=utf-8', '.js':'text/javascript; charset=utf-8', '.css':'text/css; charset=utf-8', '.json':'application/json', '.map':'application/json' };
+const mime = { '.html':'text/html; charset=utf-8', '.js':'text/javascript; charset=utf-8', '.css':'text/css; charset=utf-8', '.json':'application/json', '.map':'application/json', '.png':'image/png' };
 /** 可挂载仓库子路径的开发/发布预览服务器；导出工厂供 HTTP 集成验证使用。 */
 export function createStaticServer({ root = projectRoot, base = '' } = {}) {
   root = resolve(root);
@@ -20,7 +20,7 @@ export function createStaticServer({ root = projectRoot, base = '' } = {}) {
       if ((await stat(path)).isDirectory()) path = join(path, 'index.html');
     }
     if (!path.startsWith(root + sep)) { res.writeHead(403); res.end(); return; }
-    if (!['.html','.js','.css','.map','.json'].includes(extname(path))) { res.writeHead(404); res.end(); return; }
+    if (!Object.hasOwn(mime,extname(path))) { res.writeHead(404); res.end(); return; }
     const body = await readFile(path);
     res.writeHead(200, { 'Content-Type': mime[extname(path)] || 'text/plain', 'Cache-Control':'no-store' });
     res.end(body);

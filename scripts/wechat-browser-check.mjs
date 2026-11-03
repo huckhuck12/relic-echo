@@ -29,6 +29,7 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  await evaluate(`wechatTest.tap('start');wechatTest.app.game.showPerformance=true`);await new Promise(r=>setTimeout(r,900));
  const battle=await evaluate(`({mode:wechatTest.app.game.mode,time:wechatTest.app.game.time})`);
  assert.equal(battle.mode,'battle');assert.ok(battle.time>.1);
+ assert.equal(await evaluate(`wechatTest.app.game.scene.playerArtStatus.ready`),true,'Packaged painted hero loads through native image creation');
  const stick=await evaluate(`(()=>{const t=wechatTest,s=t.app.ui.hudView.stick.activation,p=s.localToGlobal(new t.root.Laya.Point(s.width*.6,s.height*.35));const touch={identifier:7,clientX:p.x,clientY:p.y};t.touch('Start',[touch]);t.touch('Move',[{...touch,clientX:p.x+44}]);return{x:p.x,y:p.y,playerX:t.app.game.player.x,playerY:t.app.game.player.y};})()`);
  await new Promise(r=>setTimeout(r,200));
  const moved=await evaluate(`(()=>{const t=wechatTest;const p=t.app.game.player;return {x:p.x,y:p.y,owner:t.app.ui.hudView.stick.stickTouch};})()`);
