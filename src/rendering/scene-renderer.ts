@@ -6,7 +6,8 @@ import type { Loadout } from '../shared/model.js';
 import { project, unproject, clamp } from '../shared/model.js';
 import { avatarShapes, drawShapes, weaponOf } from './appearance.js';
 import type { Shape } from './appearance.js';
-import { enemyShapes, shade } from './voxel.js';
+import { enemyVisualShapes } from './voxel.js';
+import { EnemyAtlas } from './enemy-atlas.js';
 import { castFrame } from './player-pose.js';
 import { enemyArtPose } from '../enemies/enemy-actions.js';
 import { drawHitFeedback } from './hit-feedback.js';
@@ -64,6 +65,7 @@ export class SceneRenderer {
     private readonly pillarNodes: any[];
     private lastAvatar = '';
     private readonly enemyShapeCache = new Map<string, Shape[]>();
+    readonly enemyAtlas = new EnemyAtlas();
     get avatarKey(): string { return this.lastAvatar; }
     /** 调用前必须完成 Laya.init；这里只构建节点与静态地图。 */
     constructor(private readonly pillars: readonly Point[]) {
@@ -107,20 +109,16 @@ export class SceneRenderer {
     paintEnemy(e: Enemy, buffs: Pick<BuffRuntime<Enemy>, 'speedMultiplier'>, visuals: VisualSettings): void {
         const art = enemyArtPose(e), frozen = buffs.speedMultiplier(e) < 1;
         const key = `${e.kind}:${e.flash > 0}:${frozen}:${visuals.detail}:${art.key}`;
-        let shapes = this.enemyShapeCache.get(key);
-        if (!shapes) {
-            shapes = enemyShapes(e.kind, e.flash > 0, visuals.detail, art);
-            if (frozen && e.flash <= 0)
-                for (let i = 1; i < shapes.length; i++) {
-                    const shape = shapes[i];
-                    if (shape.type === 'poly' || shape.p[2] > 10)
-                        shape.fill = shade('#8bcedf', shape.type === 'poly' ? .8 : 1);
-                }
-            if (this.enemyShapeCache.size >= 256)
-                this.enemyShapeCache.delete(this.enemyShapeCache.keys().next().value!);
-            this.enemyShapeCache.set(key, shapes);
+        if (!this.enemyAtlas.paint(e.node.graphics, e.kind, e.flash > 0, frozen, art, visuals.detail)) {
+            let shapes = this.enemyShapeCache.get(key);
+            if (!shapes) {
+                shapes = enemyVisualShapes(e.kind, e.flash > 0, frozen, visuals.detail, art);
+                if (this.enemyShapeCache.size >= 256)
+                    this.enemyShapeCache.delete(this.enemyShapeCache.keys().next().value!);
+                this.enemyShapeCache.set(key, shapes);
+            }
+            drawShapes(e.node.graphics, shapes);
         }
-        drawShapes(e.node.graphics, shapes);
         e.flashPaint = e.flash > 0;
         e.icePaint = frozen;
         e.actionPaint = art.key;

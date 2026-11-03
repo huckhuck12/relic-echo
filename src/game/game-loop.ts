@@ -37,11 +37,12 @@ export class GameLoop {
             this.frameCount = 0;
         }
         const measure = this.host.measuring() && !platform().hidden() && this.host.active();
+        let steps = 0;
         if (this.host.active()) {
             const stopped = this.host.consumeHitStop(dt);
             this.accumulator += dt - stopped;
-            let count = 0;
-            while (this.accumulator >= SIMULATION.fixedStep && count++ < SIMULATION.maxSteps && this.host.active()) {
+            while (this.accumulator >= SIMULATION.fixedStep && steps < SIMULATION.maxSteps && this.host.active()) {
+                steps++;
                 this.host.update(SIMULATION.fixedStep);
                 this.accumulator -= SIMULATION.fixedStep;
             }
@@ -53,7 +54,7 @@ export class GameLoop {
         const updatedAt = this.host.measuring() ? platform().now() : now;
         this.host.render();
         if (measure && this.host.active())
-            this.host.monitor.record(now, updatedAt - now, platform().now() - updatedAt);
+            this.host.monitor.record(now, updatedAt - now, platform().now() - updatedAt, steps);
         else
             this.host.monitor.suspend();
         this.uiTime += dt;

@@ -132,3 +132,14 @@ export function enemyShapes(kind: number, flash = false, detail = true, pose?: R
     }
     return shapes;
 }
+/** Shared palette rules for vector fallback and the ordinary-enemy atlas. */
+export function enemyVisualShapes(kind: number, flash: boolean, frozen: boolean, detail: boolean, pose: ReturnType<typeof enemyArtPose>): Shape[] {
+    const shapes = enemyShapes(kind, flash, detail, pose);
+    if (frozen && !flash)
+        for (let i = 1; i < shapes.length; i++) {
+            const shape = shapes[i];
+            if (shape.type === 'poly' || shape.p[2] > 10)
+                shape.fill = shade('#8bcedf', shape.type === 'poly' ? .8 : 1);
+        }
+    return shapes;
+}

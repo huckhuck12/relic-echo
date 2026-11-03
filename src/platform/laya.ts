@@ -11,6 +11,7 @@ export interface LayaEvent {
 }
 export interface LayaGraphics {
     clear(): void;
+    drawTexture?(texture: LayaTexture, x: number, y: number, width: number, height: number): void;
     drawRect(x: number, y: number, width: number, height: number, fill: string | null, line?: string | null, lineWidth?: number): void;
     drawCircle(x: number, y: number, radius: number, fill: string | null, line?: string | null, lineWidth?: number): void;
     drawPoly(x: number, y: number, points: number[], fill: string | null, line?: string | null, lineWidth?: number): void;
@@ -69,8 +70,29 @@ export interface LayaStage extends LayaSprite {
     useRetinalCanvas: boolean;
     readonly mouseX: number;
     readonly mouseY: number;
+    render?(context: unknown, x: number, y: number): void;
+}
+export interface LayaTexture {
+    destroy(destroyBitmap?: boolean): void;
+}
+export interface LayaTextureBitmap {
+    lock: boolean;
+    loadImageSource(source: HTMLCanvasElement, premultiplyAlpha?: boolean): void;
+    destroy(): void;
 }
 export interface LayaRuntime {
+    Browser?: {
+        createElement(type: 'canvas'): HTMLCanvasElement;
+    };
+    Texture2D?: new (width: number, height: number, format: number, mipmap: boolean) => LayaTextureBitmap;
+    Texture?: {
+        new (bitmap: LayaTextureBitmap): LayaTexture;
+        createFromTexture(texture: LayaTexture, x: number, y: number, width: number, height: number): LayaTexture;
+    };
+    Stat?: {
+        renderBatches: number;
+        trianglesFaces: number;
+    };
     Sprite: new () => LayaSprite;
     Text: new () => LayaText;
     Point: new (x: number, y: number) => LayaPoint;

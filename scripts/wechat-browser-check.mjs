@@ -48,6 +48,9 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  await new Promise(r=>setTimeout(r,2000));
  const performance=await evaluate(`wechatTest.app.game.performanceSnapshot()`);
  assert.ok(performance.samples>0,'Collect actual battle frame intervals rather than treating requested FPS as measured FPS');
+ assert.ok(performance.engineSamples>0&&performance.drawCalls>0&&performance.simulationSteps>0,'Real Stage.render records engine CPU, draw calls and simulation steps');
+ const atlas=await evaluate(`(()=>{const t=wechatTest,g=t.app.game;return{bytes:g.scene.enemyAtlas.bytes,tiles:g.scene.enemyAtlas.tiles.size};})()`);
+ assert.equal(atlas.tiles,57,'One shared atlas covers all ordinary enemy palette and caster phases');assert.equal(atlas.bytes,4194304,'GPU atlas has a fixed 4 MiB budget');
  // Isolate input checks from random combat rewards on slower CI machines.
  await evaluate(`(()=>{const t=wechatTest,g=t.app.game;g.start('storm',true);t.root.Laya.timer.clear(g.loop,g.loop.frame);t.app.ui.update();})()`);
  const beforeReward=await evaluate(`(()=>{const t=wechatTest,s=t.app.ui.hudView.stick,a=s.activation,p=a.localToGlobal(new t.root.Laya.Point(a.width*.8,a.height*.15));t.heldStick={identifier:7,clientX:p.x+44,clientY:p.y};t.touch('Start',[{...t.heldStick,clientX:p.x}]);t.touch('Move',[t.heldStick]);const g=t.app.game;g.onToast('怪潮涌入');const n=g.acquire(true);n.text='999';g.labels.push({node:n,x:g.player.x,y:g.player.y,rise:48,life:.65});g.render();g.onChange();return{owner:s.stickTouch,direction:g.input.stick,decorative:n.mouseEnabled};})()`);
@@ -73,6 +76,6 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  await evaluate(`wechatTest.tap('copy-diagnostics');wechatTest.app.game.close();wechatTest.resize(393,760)`);
  const death=await evaluate(`(()=>{const g=wechatTest.app.game;g.training=false;g.player.inv=0;g.hurt(999999);return{dialog:g.dialog?.type,revival:g.revival.provider.available};})()`);
  assert.equal(death.dialog,'result');assert.equal(death.revival,false);
- const stress=process.argv.includes('--stress')?await checkWechatStress({evaluate,directory}):undefined;
+ const stress=process.argv.includes('--stress')?await checkWechatStress({evaluate,directory,send}):undefined;
  return {kind:'wechat-package-in-browser',initial,battle,dual,paused,death,performance,stress};
 }

@@ -33,6 +33,7 @@ export type { Dialog } from './run-flow.js';
 import { RUN } from './pace.js';
 import { difficultyAt } from './difficulty.js';
 import { QUALITY_PRESETS, VisualQuality } from '../rendering/quality.js';
+import { profileEngine } from './engine-profiler.js';
 export interface Snapshot {
     time: number;
     hp: number;
@@ -179,6 +180,7 @@ export class Game {
         bindViewport(Laya.stage);
         Laya.stage.bgColor = '#18291f';
         this.scene = new SceneRenderer(this.pillars);
+        profileEngine(Laya.stage, this.performanceMonitor, () => this.showPerformance && this.mode === 'battle' && !this.gate.paused && !host.hidden(), () => host.now(), Laya.Stat);
         this.nodes = new NodePool(this.scene.actors);
         this.drawAvatar();
         Object.assign(this, readSettings());
@@ -505,6 +507,7 @@ export class Game {
         return {
             ...this.performanceMonitor.snapshot(), enemies: this.enemies.length, shots: this.shots.length,
             drops: this.drops.length, effects: this.fx.length + this.fields.length + this.buffs.effects.length,
+            enemyAtlasBytes: this.scene.enemyAtlas.bytes,
             paused: this.gate.paused || this.mode !== 'battle', quality: this.visuals.name
         };
     }

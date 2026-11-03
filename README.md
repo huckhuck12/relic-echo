@@ -1,6 +1,6 @@
 # 遗迹回响 · Relic Echo
 
-LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.11.2`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
+LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.11.3`。场景、角色、装备、怪物、特效和所有游戏界面均由 LayaAir 显示节点绘制，不需要下载美术资源。
 
 当前优化计划、优先级和真机验收状态见[优化清单](docs/优化清单.md)。
 
@@ -11,6 +11,12 @@ LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 `0.11.2`�
 项目已包含 [GitHub Pages 工作流](.github/workflows/pages.yml)。上传到自己的 GitHub 仓库，在 **Settings → Pages → Source** 选择 **GitHub Actions**；向 main/master 推送或手动运行工作流，构建和测试通过后自动发布。所有资源使用相对路径，支持 `https://用户名.github.io/仓库名/` 和账号主页站点。
 
 本地生成发布包：`npm run build:pages`。模拟仓库子路径：`npm run preview:pages -- --port 8081`，访问 `http://localhost:8081/relic-echo/`。详见[开发与发布说明](docs/开发与发布.md)。仓库为 `huckhuck12/relic-echo`，本地修改需推送后等待 GitHub Actions 部署成功才会更新线上站点。
+
+## 0.11.3 共享怪物图集与完整帧采样
+
+- 流畅/标准画质下，三类普通怪的正常、冰冻、受击及远程动作共用一张 1024×1024 图集，固定 4 MiB GPU 资源；启动生成并上传一次，释放临时画布，不逐怪创建纹理。精细画质、精英/Boss 及不支持图集的平台继续使用原矢量方案。
+- 相同种子下 202 怪物、206 初始弹道、103 掉落的浏览器模拟对照中，DrawCall 约 746 → 202，两次矢量/图集对照的引擎均值分别为 6.36 → 3.57 ms、6.11 → 3.33 ms。数字不代表 iPhone 真机收益。
+- 性能面板新增平均模拟步数、单步耗时、引擎等 CPU 耗时及 DrawCall；通过固定版本 Laya 的公开 Stage.render 采样并扣除当帧游戏更新/绘图指令，包含其他计时任务，不冒充 GPU 时间。关闭监控时绕过计时，固定步、刷怪数量和伤害规则保持原样。
 
 ## 0.11.2 微信闪退排查与音频资源回收
 

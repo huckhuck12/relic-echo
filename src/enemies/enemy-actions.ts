@@ -9,7 +9,7 @@ export function startEnemyAction(e: Enemy, action: EnemyAction): void {
     e.actionTime = ENEMY_ACTION_SECONDS[action];
 }
 /** 八段动作用于局部几何缓存；普通追击与冲锋仍只改变整体节点变换。 */
-export function enemyArtPose(e: Enemy) {
+export function enemyArtPose(e: Pick<Enemy, 'kind' | 'wind' | 'action' | 'actionTime'>) {
     const wind = e.wind > 0 ? Math.min(7, Math.floor(Math.max(0, 1 - e.wind / (e.kind === 1 ? .45 : e.kind === 2 ? .75 : .85)) * 8)) : -1;
     const action = e.action && (e.actionTime || 0) > 0 ? e.action : undefined;
     const frame = action ? Math.min(7, Math.floor(Math.max(0, 1 - (e.actionTime || 0) / ENEMY_ACTION_SECONDS[action]) * 8)) : 8;
