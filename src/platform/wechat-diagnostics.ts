@@ -132,7 +132,14 @@ export function createWechatDiagnostics(api: DiagnosticsAPI, version: string, ti
         },
         copy(): void {
             try {
-                api.setClipboardData?.({ data: JSON.stringify(report()) });
+                let extra = {};
+                try {
+                    const autoPlay = api.getStorageSync('relic-auto-play-report');
+                    if (typeof autoPlay === 'string' && autoPlay.length <= 16384)
+                        extra = { autoPlay: JSON.parse(autoPlay) };
+                }
+                catch { }
+                api.setClipboardData?.({ data: JSON.stringify({ ...report(), ...extra }) });
             }
             catch { }
         },

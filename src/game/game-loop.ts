@@ -3,6 +3,7 @@ import { SIMULATION } from './game-config.js';
 import type { PerformanceMonitor } from './performance-monitor.js';
 /** 回调均读取当前局；循环不保存实体，不结算奖励或修改暂停原因。 */
 export interface LoopHost {
+    beforeFrame?(now: number): void;
     active(): boolean;
     paused(): boolean;
     measuring(): boolean;
@@ -31,6 +32,7 @@ export class GameLoop {
         this.last = now;
         this.fpsTime += rawDt;
         this.frameCount++;
+        this.host.beforeFrame?.(now);
         if (this.fpsTime >= SIMULATION.fpsInterval) {
             this.fps = Math.round(this.frameCount / this.fpsTime);
             this.fpsTime = 0;

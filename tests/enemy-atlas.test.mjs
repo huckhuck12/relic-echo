@@ -23,7 +23,15 @@ test('ordinary atlas covers every real caster phase and palette with one bounded
  assert.ok(draws.every(([t,x,y,w,h])=>t.bitmap===f.bitmaps[0]&&[x,y,w,h].every(Number.isFinite)));
  assert.equal(f.bitmaps.length,1);assert.equal(f.textures.length,58);
  assert.equal(atlas.paint(graphics,3,false,false,enemyArtPose({kind:3,wind:0}),false),false);
- assert.equal(atlas.paint(graphics,0,false,false,enemyArtPose({kind:0,wind:0}),true),false);
+ assert.equal(atlas.paint(graphics,0,false,false,enemyArtPose({kind:0,wind:0}),true),true);
+ assert.equal(f.bitmaps.length,2,'Detailed atlas is uploaded only when that quality is first used');
+ assert.equal(atlas.bytes,8*1024*1024,'Both quality atlases remain bounded across quality changes');
+ assert.ok(ordinaryAtlasFrames(true)[0].shapes.length>ordinaryAtlasFrames(false)[0].shapes.length,'Detailed art retains its extra shapes');
+ for(const detail of [true,false,true,false])for(const frame of ordinaryAtlasFrames(detail)){
+  const [kind,color,...pose]=frame.key.split(':'),key=pose.join(':');
+  assert.equal(atlas.paint(graphics,Number(kind),color==='flash',color==='ice',{key},detail),true);
+ }
+ assert.equal(f.bitmaps.length,2,'Quality switching reuses the existing atlases');
 });
 test('atlas unavailable or failed upload safely leaves existing vector renderer available',()=>{
  setupLayaStub();assert.equal(new EnemyAtlas().bytes,0);

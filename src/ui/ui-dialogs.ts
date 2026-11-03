@@ -175,7 +175,7 @@ export class GameDialogs {
                 this.button(p, second, pad + bw + gap, footer, bw, 44, other, false, otherName);
         };
         if (dialog.type === 'start') {
-            const bottom = footer - (short ? 12 : 65), rowH = Math.max(44, Math.min(112, (bottom - body - 2 * gap) / 3)), cardW = narrow ? inner : (inner - 2 * gap) / 3, cardH = narrow ? rowH : Math.min(255, bottom - body);
+            const bottom = footer - 60, rowH = Math.max(44, Math.min(112, (bottom - body - 2 * gap) / 3)), cardW = narrow ? inner : (inner - 2 * gap) / 3, cardH = narrow ? rowH : Math.min(255, bottom - body);
             (['storm', 'flame', 'blade'] as Weapon[]).forEach((weapon, i) => {
                 const card = this.button(p, '', pad + (narrow ? 0 : i * (cardW + gap)), body + (narrow ? i * (rowH + gap) : 0), cardW, cardH, () => {
                     this.selected = weapon;
@@ -195,8 +195,7 @@ export class GameDialogs {
                     this.text(card, gear(weapon).note, 12, cardH - 28, cardW - 24, 11, C.muted);
                 }
             });
-            if (!short)
-                this.text(p, mobile ? '左手摇杆移动 · 右手点击冲刺\n自动攻击，收集回响强化构筑。' : '左键点击 / 按住移动，或使用 WASD。\n空格冲刺 · E 装备。', pad, footer - 52, inner, 11, C.muted);
+            this.button(p, mobile ? '自动试玩 · 连续测试' : '自动试玩 · 连续测试（非触控模拟）', pad, footer - 50, inner, 44, () => this.game.toggleAutoPlay(this.selected), false, 'autoplay-start');
             pair('开始探索 →', () => this.game.start(this.selected), 'start', '试装与练习', () => {
                 this.game.start(this.selected, true);
                 this.game.toggleInventory();
@@ -270,7 +269,7 @@ export class GameDialogs {
         }
         if (dialog.type === 'pause') {
             const copyDiagnostics = platform().copyDiagnostics;
-            const columns = copyDiagnostics && footer - body < 154 ? 3 : 2;
+            const columns = footer - body < 154 ? 3 : 2;
             const settingW = (inner - gap * (columns - 1)) / columns;
             this.button(p, `${this.game.sound ? '■' : '□'} 程序音效`, pad, body, settingW, 44, () => {
                 this.game.sound = !this.game.sound;
@@ -284,10 +283,11 @@ export class GameDialogs {
             }, false, 'shake');
             this.visualQualityButton(p, columns === 3 ? pad + 2 * (settingW + gap) : pad, columns === 3 ? body : body + 50, settingW);
             this.performanceButton(p, columns === 3 ? pad : pad + settingW + gap, body + 50, settingW);
+            this.button(p, this.game.autoPlay.enabled ? '停止自动试玩' : '自动试玩新局', columns === 3 ? pad + settingW + gap : pad, columns === 3 ? body + 50 : body + 100, settingW, 44, () => this.game.toggleAutoPlay(), false, 'autoplay-toggle');
             if (copyDiagnostics)
-                this.button(p, '复制运行诊断', columns === 3 ? pad + settingW + gap : pad, columns === 3 ? body + 50 : body + 100, columns === 3 ? 2 * settingW + gap : inner, 44, copyDiagnostics, false, 'copy-diagnostics');
+                this.button(p, '复制运行诊断', pad + (columns === 3 ? 2 : 1) * (settingW + gap), columns === 3 ? body + 50 : body + 100, settingW, 44, copyDiagnostics, false, 'copy-diagnostics');
             if (footer - body > 225)
-                this.text(p, '鼠标点击 / 按住移动 · WASD 移动\n空格冲刺 · E 装备 · Esc 暂停\n窗口大小与横竖屏切换会保留本局进度。', pad, body + 156, inner, 12, C.muted);
+                this.text(p, this.game.autoPlay.enabled ? `自动试玩第 ${this.game.autoPlay.rounds} 局 · 已决策 ${this.game.autoPlay.decisions} 次\n自动移动、选卡并轮换武器重开；测试局不计战绩。\n继续探索后恢复；切后台保持暂停。` : '自动试玩会连续重开，测试局不计战绩。\n启用后自动移动、冲刺与选卡。\n实际触摸操作仍需手动测试。', pad, body + 156, inner, 12, C.muted);
             pair('继续探索 →', () => this.game.close(), 'resume', '结束本局', () => this.game.finish(false, '本次探索已主动结束。'), 'quit');
         }
         if (dialog.type === 'result') {

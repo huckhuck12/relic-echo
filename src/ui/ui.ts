@@ -116,7 +116,7 @@ export class GameUI {
         if (this.performancePanel.visible) {
             const p = this.game.performanceSnapshot();
             const separator = this.performancePanel.width < 90 ? '\n' : ' · ';
-            const value = `${p.samples ? `${p.fps.toFixed(0)} FPS` : '采样中'}${separator}详情`;
+            const value = `${p.samples ? `${p.fps.toFixed(0)} FPS` : '采样中'}${separator}${this.game.autoPlay.enabled ? '自动 ' + this.game.autoPlay.rounds : '详情'}`;
             if (this.performanceLabel.text !== value)
                 this.performanceLabel.text = value;
         }

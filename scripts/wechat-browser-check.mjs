@@ -51,6 +51,9 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  assert.ok(performance.engineSamples>0&&performance.drawCalls>0&&performance.simulationSteps>0,'Real Stage.render records engine CPU, draw calls and simulation steps');
  const atlas=await evaluate(`(()=>{const t=wechatTest,g=t.app.game;return{bytes:g.scene.enemyAtlas.bytes,tiles:g.scene.enemyAtlas.tiles.size};})()`);
  assert.equal(atlas.tiles,57,'One shared atlas covers all ordinary enemy palette and caster phases');assert.equal(atlas.bytes,4194304,'GPU atlas has a fixed 4 MiB budget');
+ const highAtlas=await evaluate(`(()=>{const g=wechatTest.app.game;g.spawnEnemy(1);g.cycleVisualQuality();for(const e of g.enemies)g.paintEnemy(e);return {quality:g.quality,...g.scene.enemyAtlas.snapshot(true),total:g.scene.enemyAtlas.bytes};})()`);
+ assert.equal(highAtlas.quality,'high');assert.equal(highAtlas.ready,true,'Detailed enemies use a shared atlas too');assert.equal(highAtlas.bytes,4194304);assert.equal(highAtlas.total,8388608);
+ await evaluate(`wechatTest.app.game.cycleVisualQuality();wechatTest.app.game.cycleVisualQuality()`);
  // Isolate input checks from random combat rewards on slower CI machines.
  await evaluate(`(()=>{const t=wechatTest,g=t.app.game;g.start('storm',true);t.root.Laya.timer.clear(g.loop,g.loop.frame);t.app.ui.update();})()`);
  const beforeReward=await evaluate(`(()=>{const t=wechatTest,s=t.app.ui.hudView.stick,a=s.activation,p=a.localToGlobal(new t.root.Laya.Point(a.width*.8,a.height*.15));t.heldStick={identifier:7,clientX:p.x+44,clientY:p.y};t.touch('Start',[{...t.heldStick,clientX:p.x}]);t.touch('Move',[t.heldStick]);const g=t.app.game;g.onToast('怪潮涌入');const n=g.acquire(true);n.text='999';g.labels.push({node:n,x:g.player.x,y:g.player.y,rise:48,life:.65});g.render();g.onChange();return{owner:s.stickTouch,direction:g.input.stick,decorative:n.mouseEnabled};})()`);
@@ -76,6 +79,24 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  await evaluate(`wechatTest.tap('copy-diagnostics');wechatTest.app.game.close();wechatTest.resize(393,760)`);
  const death=await evaluate(`(()=>{const g=wechatTest.app.game;g.training=false;g.player.inv=0;g.hurt(999999);return{dialog:g.dialog?.type,revival:g.revival.provider.available};})()`);
  assert.equal(death.dialog,'result');assert.equal(death.revival,false);
+ await evaluate(`(()=>{const t=wechatTest,g=t.app.game;g.flow.title();t.app.ui.update();t.tap('autoplay-start');t.root.Laya.timer.frameLoop(1,g.loop,g.loop.frame);})()`);
+ await new Promise(r=>setTimeout(r,2200));
+ const auto=await evaluate(`(()=>{const g=wechatTest.app.game;return{enabled:g.autoPlay.enabled,decisions:g.autoPlay.decisions,time:g.time,training:g.training};})()`);
+ assert.equal(auto.enabled,true);assert.equal(auto.training,false);assert.ok(auto.decisions>5&&auto.time>.5,'Automatic play advances on the real engine loop');
+ await screenshot('autoplay');
+ let autoPaused=false;
+ for(let i=0;i<40&&!autoPaused;i++){
+  autoPaused=await evaluate(`(()=>{const t=wechatTest,g=t.app.game;if(!g.dialog)t.tap('pause');return g.dialog?.type==='pause';})()`);
+  if(!autoPaused)await new Promise(r=>setTimeout(r,150));
+ }
+ assert.equal(autoPaused,true,'Pause via real touch after any automatic reward finishes');
+ const decisions=await evaluate(`wechatTest.app.game.autoPlay.decisions`);await new Promise(r=>setTimeout(r,350));
+ assert.equal(await evaluate(`wechatTest.app.game.autoPlay.decisions`),decisions,'Manual pause stops automatic input');
+ await evaluate(`wechatTest.tap('copy-diagnostics')`);
+ assert.equal(await evaluate(`JSON.parse(wechatTest.clipboard()).autoPlay.round`),1,'Copied diagnostics contain the persistent automatic test report');
+ await evaluate(`wechatTest.tap('autoplay-toggle')`);
+ assert.equal(await evaluate(`wechatTest.app.game.autoPlay.enabled`),false);
+ await evaluate(`wechatTest.app.game.close()`);
  const stress=process.argv.includes('--stress')?await checkWechatStress({evaluate,directory,send}):undefined;
  return {kind:'wechat-package-in-browser',initial,battle,dual,paused,death,performance,stress};
 }

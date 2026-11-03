@@ -34,6 +34,7 @@ import { RUN } from './pace.js';
 import { difficultyAt } from './difficulty.js';
 import { QUALITY_PRESETS, VisualQuality } from '../rendering/quality.js';
 import { profileEngine } from './engine-profiler.js';
+import { AutoPlay } from './auto-play.js';
 export interface Snapshot {
     time: number;
     hp: number;
@@ -134,13 +135,16 @@ export class Game {
     /** 性能开关为本地设置；关闭后不采样，避免常驻诊断开销。 */
     showPerformance = false;
     private readonly performanceMonitor = new PerformanceMonitor();
+    readonly autoPlay = new AutoPlay(this, () => ({ enemies: this.enemies, shots: this.shots, drops: this.drops, pillars: this.pillars }));
     private readonly loop: GameLoop = new GameLoop({
+        beforeFrame: now => this.autoPlay.frame(now),
         active: () => this.mode === 'battle' && !this.gate.paused, paused: () => this.gate.paused,
         measuring: () => this.showPerformance, consumeHitStop: dt => this.feedback.consumeHitStop(dt),
         update: dt => this.update(dt), render: () => this.render(), changed: () => this.onChange(),
         monitor: this.performanceMonitor,
     });
     training = false;
+    private testRun = false;
     readonly revival = new ReviveService(platform().kind === 'wechat' ? unavailableReviveProvider : undefined);
     reviveUsed = false;
     private runGeneration = 0;
@@ -213,6 +217,14 @@ export class Game {
         this.onChange();
     }
     setStick(x: number, y: number): void { this.input.setStick(x, y); }
+    toggleAutoPlay(weapon: Weapon = weaponOf(this.loadout)): void {
+        this.input.reset();
+        if (this.autoPlay.enabled)
+            this.autoPlay.stop();
+        else
+            this.autoPlay.start(weapon);
+        this.flow.refresh();
+    }
     /** 只在用户交互入口尝试恢复音频，浏览器拒绝或小游戏尚未适配时静默降级。 */
     enableAudio(): void {
         this.audio.enable();
@@ -242,6 +254,7 @@ export class Game {
      * Buff 恢复基础配方；所有字段初始化完后才通知 UI，不能展示旧局奖励。
      */
     start(weapon: Weapon, training = false): void {
+        this.testRun = this.autoPlay.enabled;
         this.revival.cancel();
         this.runGeneration++;
         this.reviveUsed = false;
@@ -319,6 +332,8 @@ export class Game {
     close(): void { this.flow.close(); }
     /** UI 使用语义入口切换标题，不再分别写 dialog/mode 导致状态不同步。 */
     returnToTitle(): void {
+        if (this.autoPlay.enabled)
+            this.autoPlay.stop();
         this.revival.cancel();
         this.runGeneration++;
         this.flow.title();
@@ -485,7 +500,7 @@ export class Game {
         this.runGeneration++;
         this.flow.finish(win, reason);
         this.beep(win ? 880 : 130, .35, .05);
-        if (!this.training)
+        if (!this.training && !this.testRun)
             saveRunRecord({
                 win, time: Math.floor(this.time), kills: this.kills, level: this.level, date: new Date().toLocaleDateString()
             });
@@ -508,6 +523,10 @@ export class Game {
             ...this.performanceMonitor.snapshot(), enemies: this.enemies.length, shots: this.shots.length,
             drops: this.drops.length, effects: this.fx.length + this.fields.length + this.buffs.effects.length,
             enemyAtlasBytes: this.scene.enemyAtlas.bytes,
+            enemyAtlasReady: this.scene.enemyAtlas.snapshot(this.visuals.detail).ready,
+            enemyAtlasError: this.scene.enemyAtlas.snapshot(this.visuals.detail).error,
+            autoPlayEnabled: this.autoPlay.enabled, autoPlayRound: this.autoPlay.rounds,
+            autoPlayDecisions: this.autoPlay.decisions, autoPlayLastAction: this.autoPlay.lastAction,
             paused: this.gate.paused || this.mode !== 'battle', quality: this.visuals.name
         };
     }

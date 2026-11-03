@@ -17,7 +17,7 @@ export function renderSystemDialog(type: 'revive' | 'performance', parent: LayaS
     else {
         // 打开时冻结的一份采样，不在暂停期间反复重建节点。
         const p = game.performanceSnapshot();
-        const text = p.samples ? `${p.fps.toFixed(0)} FPS · 平均 ${p.frameMs.toFixed(1)} ms\nP95 ${p.p95Ms.toFixed(1)} / 最慢 ${p.maxMs.toFixed(1)} ms\n更新 ${p.updateMs.toFixed(1)} / 指令 ${p.renderMs.toFixed(1)} ms\n模拟 ${p.simulationSteps.toFixed(1)} 步/帧 · 单步 ${p.stepMs.toFixed(1)} ms\n引擎等 CPU ${p.engineSamples ? p.engineMs.toFixed(1) + ' ms' : '待采样'} · DrawCall ${p.drawCalls.toFixed(0)}\n怪 ${p.enemies} · 弹 ${p.shots} · 掉落 ${p.drops} · 效果 ${p.effects}` : '尚无战斗采样，继续探索后再查看。';
+        const text = p.samples ? `${p.fps.toFixed(0)} FPS · 平均 ${p.frameMs.toFixed(1)} ms\nP95 ${p.p95Ms.toFixed(1)} / 最慢 ${p.maxMs.toFixed(1)} ms\n更新 ${p.updateMs.toFixed(1)} / 指令 ${p.renderMs.toFixed(1)} ms\n模拟 ${p.simulationSteps.toFixed(1)} 步/帧 · 单步 ${p.stepMs.toFixed(1)} ms\n引擎等 CPU ${p.engineSamples ? p.engineMs.toFixed(1) + ' ms' : '待采样'} · DrawCall ${p.drawCalls.toFixed(0)}\n怪 ${p.enemies} · 弹 ${p.shots} · 掉落 ${p.drops} · 效果 ${p.effects}\n${p.quality} · 怪物图集 ${p.enemyAtlasReady ? '就绪' : '回退'} (${(p.enemyAtlasBytes / 1048576).toFixed(0)} MiB)` : '尚无战斗采样，继续探索后再查看。';
         ui.text(parent, text, pad, body, inner, short ? 12 : 15);
         if (!short)
             ui.text(parent, '最近 300 个前台战斗帧；不包含 GPU 耗时。\n引擎等 CPU 包含绘制提交及其他定时任务。', pad, body + 190, inner, 12, C.muted);
