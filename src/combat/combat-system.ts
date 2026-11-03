@@ -72,6 +72,8 @@ export interface PlayerDamageState {
     player: Player;
     battle: boolean;
     training: boolean;
+    /** Explicit automated stress runs keep damage/feedback active but cannot die. */
+    preventDeath?: boolean;
     reduction: number;
     /** 未装备反伤或冷却中为 undefined；数值由当前装备与属性计算。 */
     thornDamage?: number;
@@ -92,7 +94,7 @@ export function damagePlayer(state: PlayerDamageState, hooks: PlayerDamageHooks,
         player.inv = .5;
         return;
     }
-    player.hp = Math.max(0, player.hp - Math.max(1, Math.round(damage * (1 - state.reduction))));
+    player.hp = Math.max(state.preventDeath ? 1 : 0, player.hp - Math.max(1, Math.round(damage * (1 - state.reduction))));
     player.inv = .5;
     hooks.present();
     if (state.thornDamage !== undefined)

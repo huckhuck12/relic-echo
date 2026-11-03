@@ -61,8 +61,35 @@ test('autoplay controls fit start and pause dialogs on portrait and landscape ph
   const button=find(ui.root,'autoplay-start'),start=find(ui.root,'start');assert.ok(button&&button.y+button.height<=start.y);
   const card=find(ui.root,'select-blade');assert.ok(card.y+card.height<=button.y,'Weapon card must not overlap autoplay at '+w+'x'+h);
   button.emit('click');assert.equal(g.autoPlay.enabled,true);assert.equal(g.mode,'battle');
+  assert.equal(g.autoPlay.stress,false);
   g.togglePause();const toggle=find(ui.root,'autoplay-toggle'),resume=find(ui.root,'resume');assert.ok(toggle.y+toggle.height<=resume.y);
   toggle.emit('click');assert.equal(g.autoPlay.enabled,false);assert.equal(g.dialog.type,'pause');
   g.toggleAutoPlay();g.returnToTitle();assert.equal(g.autoPlay.enabled,false);assert.equal(g.dialog.type,'start');
+  const stress=find(ui.root,'autoplay-stress');assert.ok(stress.x>=button.x+button.width&&stress.y+stress.height<=start.y);
+  stress.emit('click');assert.equal(g.autoPlay.stress,true);assert.equal(g.training,false);
+  g.player.inv=0;g.player.hp=1;g.hurt(99999);assert.equal(g.player.hp,1);assert.equal(g.mode,'battle');
+  g.toggleAutoPlay();g.player.inv=0;g.hurt(99999);assert.notEqual(g.mode,'battle','Stopping stress disables protection immediately');
  }
+});
+
+test('protected automatic runs survive the normal timeline through Boss and restart without scores',()=>{
+ setupLayaStub();const storage=new Map();localStorage.getItem=k=>storage.get(k)||null;localStorage.setItem=(k,v)=>storage.set(k,v);
+ const g=new Game();g.sound=false;g.toggleAutoPlay('storm',true);
+ let reached=false,now=0;
+ // Advance the actual gameplay systems and automatic reward choices, not a time jump or training scene.
+ for(let step=0;step<50000&&g.dialog?.type!=='result';step++){
+  now+=1000/60;g.autoPlay.frame(now);
+  if(g.mode==='battle'&&!g.gate.paused){
+   g.update(1/60);
+   if(step%30===0){g.player.inv=0;g.hurt(99999);}
+   if(g.snapshot().boss)reached=true;
+  }
+ }
+ assert.equal(reached,true);assert.equal(g.dialog?.type,'result');assert.ok(g.time>=300);
+ g.autoPlay.frame(now+200);
+ const report=JSON.parse(storage.get(AUTO_PLAY_KEY)),result=report.results.at(-1);
+ assert.equal(report.stress,true);assert.equal(result.stress,true);assert.equal(result.reachedBoss,true);assert.ok(result.bossSeconds>0);
+ assert.equal(storage.has(STORAGE.records),false);
+ g.autoPlay.frame(now+2200);assert.equal(g.autoPlay.rounds,2);assert.equal(g.autoPlay.stress,true);assert.equal(g.loadout.weapon.id,'flame');
+ g.returnToTitle();g.start('storm');g.player.inv=0;g.hurt(99999);assert.notEqual(g.mode,'battle','Normal runs never inherit stress protection');
 });

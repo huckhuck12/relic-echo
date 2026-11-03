@@ -70,6 +70,15 @@ test('invulnerability, nonbattle and training guard all damage callbacks',()=>{
  assert.equal(f.player.hp,49);assert.deepEqual(f.events,['present',['hurt',12,23]]);
 });
 
+test('stress protection preserves lethal hit feedback, retaliation and hurt Buffs at one HP',()=>{
+ const f=playerFixture({hp:5});f.state.preventDeath=true;
+ damagePlayer(f.state,f.hooks,999);
+ assert.equal(f.player.hp,1);assert.equal(f.player.inv,.5);
+ assert.deepEqual(f.events,['present',['thorns',20],['hurt',12,23]]);
+ f.player.inv=0;f.state.preventDeath=false;f.events.length=0;
+ damagePlayer(f.state,f.hooks,999);assert.equal(f.player.hp,0);assert.ok(f.events.includes('finish'));
+});
+
 test('presentation preserves combat fields, respects label caps and does not consume RNG',()=>{
  const f=fixture(),labels=[],events=[];
  const hooks={acquireLabel:()=>({}),effect:(...a)=>events.push(a),kick:()=>events.push('kick'),freeze:()=>events.push('freeze')};

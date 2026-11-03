@@ -217,12 +217,12 @@ export class Game {
         this.onChange();
     }
     setStick(x: number, y: number): void { this.input.setStick(x, y); }
-    toggleAutoPlay(weapon: Weapon = weaponOf(this.loadout)): void {
+    toggleAutoPlay(weapon: Weapon = weaponOf(this.loadout), stress = false): void {
         this.input.reset();
         if (this.autoPlay.enabled)
             this.autoPlay.stop();
         else
-            this.autoPlay.start(weapon);
+            this.autoPlay.start(weapon, stress);
         this.flow.refresh();
     }
     /** 只在用户交互入口尝试恢复音频，浏览器拒绝或小游戏尚未适配时静默降级。 */
@@ -526,6 +526,7 @@ export class Game {
             enemyAtlasReady: this.scene.enemyAtlas.snapshot(this.visuals.detail).ready,
             enemyAtlasError: this.scene.enemyAtlas.snapshot(this.visuals.detail).error,
             autoPlayEnabled: this.autoPlay.enabled, autoPlayRound: this.autoPlay.rounds,
+            autoPlayStress: this.autoPlay.enabled && this.autoPlay.stress,
             autoPlayDecisions: this.autoPlay.decisions, autoPlayLastAction: this.autoPlay.lastAction,
             paused: this.gate.paused || this.mode !== 'battle', quality: this.visuals.name
         };
@@ -656,6 +657,8 @@ export class Game {
     }
     /** 接回容量替换/Boss 清场的新数组，以及波次计时和精英进度，再进入攻击阶段。 */
     private applySpawnState(state: EnemySpawner.SpawnState): void {
+        if (state.bossSpawned && !this.bossSpawned && this.autoPlay.enabled)
+            this.performanceMonitor.reset();
         this.enemies = state.enemies;
         this.shots = state.shots;
         this.fields = state.fields;
@@ -846,6 +849,7 @@ export class Game {
             ? 20 * multiplier(back.quality) * (1 + this.stats.damage) : undefined;
         damagePlayer({
             player: this.player, battle: this.mode === 'battle', training: this.training,
+            preventDeath: this.autoPlay.enabled && this.autoPlay.stress,
             reduction: this.stats.reduction, thornDamage,
         }, this.playerDamageHooks, damage);
     }

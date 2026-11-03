@@ -4,6 +4,7 @@ import { gear, Weapon } from '../progression/config.js';
 import { project } from '../shared/model.js';
 import { WORLD_RULES } from './game-config.js';
 import { platform } from '../platform/runtime.js';
+import { RUN } from './pace.js';
 export interface AutoPlayWorld {
     enemies: readonly Enemy[];
     shots: readonly Shot[];
@@ -11,9 +12,10 @@ export interface AutoPlayWorld {
     pillars: readonly Point[];
 }
 export const AUTO_PLAY_KEY = 'relic-auto-play-report';
-/** Test driver uses normal input/reward actions, never changes combat state or calls native touch APIs. */
+/** Uses normal input/reward actions; explicit stress mode alone enables lethal-damage protection. */
 export class AutoPlay {
     enabled = false;
+    stress = false;
     rounds = 0;
     decisions = 0;
     lastAction = '';
@@ -26,7 +28,8 @@ export class AutoPlay {
     private startedAt = 0;
     private weapon: Weapon = 'storm';
     private run = {
-        minFps: 0, maxP95: 0, peakEnemies: 0, peakShots: 0, decisions: 0
+        minFps: 0, maxP95: 0, peakEnemies: 0, peakShots: 0, decisions: 0,
+        reachedBoss: false, bossSeconds: 0, bossMinFps: 0, bossMaxP95: 0
     };
     private readonly results: object[] = [];
     private readonly actions: {
@@ -34,8 +37,9 @@ export class AutoPlay {
         action: string;
     }[] = [];
     constructor(private readonly game: Game, private readonly world: () => AutoPlayWorld) { }
-    start(weapon: Weapon): void {
+    start(weapon: Weapon, stress = false): void {
         this.enabled = true;
+        this.stress = stress;
         this.rounds = 0;
         this.decisions = 0;
         this.results.length = this.actions.length = 0;
@@ -54,11 +58,12 @@ export class AutoPlay {
         this.weapon = weapon;
         this.rounds++;
         this.run = {
-            minFps: 0, maxP95: 0, peakEnemies: 0, peakShots: 0, decisions: 0
+            minFps: 0, maxP95: 0, peakEnemies: 0, peakShots: 0, decisions: 0,
+            reachedBoss: false, bossSeconds: 0, bossMinFps: 0, bossMaxP95: 0
         };
         this.dialogId = this.recordedResult = -1;
         this.game.start(weapon);
-        this.note('start:' + weapon);
+        this.note((this.stress ? 'stress:' : 'start:') + weapon);
         this.save();
     }
     /** Called by the existing frame loop; no extra timer, catch-up or background work. */
@@ -76,9 +81,10 @@ export class AutoPlay {
                 this.dialogSince = now;
             }
             if (dialog.type === 'result' && this.recordedResult !== this.dialogId) {
+                this.trackBoss();
                 this.recordedResult = this.dialogId;
                 this.results.push({
-                    round: this.rounds, weapon: this.weapon, win: dialog.win, reason: dialog.reason, seconds: Math.round(g.time), kills: g.kills, ...this.run
+                    round: this.rounds, weapon: this.weapon, stress: this.stress, win: dialog.win, reason: dialog.reason, seconds: Math.round(g.time), kills: g.kills, ...this.run
                 });
                 if (this.results.length > 6)
                     this.results.shift();
@@ -111,6 +117,7 @@ export class AutoPlay {
         this.dialogId = -1;
         if (g.mode !== 'battle' || g.gate.paused)
             return;
+        this.trackBoss();
         const world = this.world(), intent = autoPlayIntent(g.player, world, g.time);
         const screen = project(intent.x, intent.y), length = Math.hypot(screen.x, screen.y) || 1;
         g.setStick(screen.x / length, screen.y / length);
@@ -126,6 +133,11 @@ export class AutoPlay {
             if (p.samples >= 30) {
                 this.run.minFps = this.run.minFps ? Math.min(this.run.minFps, p.fps) : p.fps;
                 this.run.maxP95 = Math.max(this.run.maxP95, p.p95Ms);
+                // Game resets the sampling window at Boss entry for automated runs.
+                if (this.run.reachedBoss) {
+                    this.run.bossMinFps = this.run.bossMinFps ? Math.min(this.run.bossMinFps, p.fps) : p.fps;
+                    this.run.bossMaxP95 = Math.max(this.run.bossMaxP95, p.p95Ms);
+                }
             }
             this.run.peakEnemies = Math.max(this.run.peakEnemies, p.enemies);
             this.run.peakShots = Math.max(this.run.peakShots, p.shots);
@@ -141,10 +153,19 @@ export class AutoPlay {
         if (this.actions.length > 24)
             this.actions.shift();
     }
+    private trackBoss(): void {
+        if (this.game.time < RUN.bossAt)
+            return;
+        if (!this.run.reachedBoss) {
+            this.run.reachedBoss = true;
+            this.note('boss:entered');
+        }
+        this.run.bossSeconds = Math.max(0, this.game.time - RUN.bossAt);
+    }
     private save(): void {
         try {
             platform().writeStorage(AUTO_PLAY_KEY, JSON.stringify({
-                schema: 1, startedAt: this.startedAt, savedAt: Date.now(), enabled: this.enabled, round: this.rounds, seconds: this.game.time, weapon: this.weapon, decisions: this.decisions, current: this.run, results: this.results, actions: this.actions
+                schema: 2, startedAt: this.startedAt, savedAt: Date.now(), enabled: this.enabled, stress: this.stress, round: this.rounds, seconds: this.game.time, weapon: this.weapon, decisions: this.decisions, current: this.run, results: this.results, actions: this.actions
             }));
         }
         catch { /* Test reporting must never interrupt combat. */ }

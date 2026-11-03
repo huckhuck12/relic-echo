@@ -65,7 +65,7 @@ export class GameDialogs {
         }).join('  /  ') || '特殊效果与攻击形态请查看上方说明';
     }
     /** 共用遮罩与暂停容器，再按窗口大小分派；面板不自行启动/结束模拟。 */
-    render(dialog: Dialog, layout: ScreenLayout, mobile: boolean): void {
+    render(dialog: Dialog, layout: ScreenLayout, _mobile: boolean): void {
         this.clear(this.dialogs);
         this.dialogs.mouseEnabled = !!dialog;
         if (!dialog)
@@ -91,7 +91,7 @@ export class GameDialogs {
             this.buffDialog(p, w, h);
             return;
         }
-        this.standardDialog(p, dialog, w, h, mobile);
+        this.standardDialog(p, dialog, w, h);
     }
     /** 手机竖屏按行排列，短横屏改为列；共用正式弹窗遮罩与暂停，不额外开启计时器。 */
     private fragmentDialog(p: LayaSprite, choices: string[], w: number, h: number): void {
@@ -151,7 +151,7 @@ export class GameDialogs {
     }
     private standardDialog(p: LayaSprite, dialog: Exclude<NonNullable<Dialog>, {
         type: 'revive' | 'performance';
-    }>, w: number, h: number, mobile: boolean): void {
+    }>, w: number, h: number): void {
         const dialogId = this.game.flow.dialogId;
         if (dialog.type === 'fragment') {
             this.fragmentDialog(p, dialog.choices, w, h);
@@ -195,7 +195,9 @@ export class GameDialogs {
                     this.text(card, gear(weapon).note, 12, cardH - 28, cardW - 24, 11, C.muted);
                 }
             });
-            this.button(p, mobile ? '自动试玩 · 连续测试' : '自动试玩 · 连续测试（非触控模拟）', pad, footer - 50, inner, 44, () => this.game.toggleAutoPlay(this.selected), false, 'autoplay-start');
+            const autoW = (inner - gap) / 2;
+            this.button(p, '自动试玩', pad, footer - 50, autoW, 44, () => this.game.toggleAutoPlay(this.selected), false, 'autoplay-start');
+            this.button(p, '自动压测·保命', pad + autoW + gap, footer - 50, autoW, 44, () => this.game.toggleAutoPlay(this.selected, true), false, 'autoplay-stress');
             pair('开始探索 →', () => this.game.start(this.selected), 'start', '试装与练习', () => {
                 this.game.start(this.selected, true);
                 this.game.toggleInventory();
@@ -283,11 +285,11 @@ export class GameDialogs {
             }, false, 'shake');
             this.visualQualityButton(p, columns === 3 ? pad + 2 * (settingW + gap) : pad, columns === 3 ? body : body + 50, settingW);
             this.performanceButton(p, columns === 3 ? pad : pad + settingW + gap, body + 50, settingW);
-            this.button(p, this.game.autoPlay.enabled ? '停止自动试玩' : '自动试玩新局', columns === 3 ? pad + settingW + gap : pad, columns === 3 ? body + 50 : body + 100, settingW, 44, () => this.game.toggleAutoPlay(), false, 'autoplay-toggle');
+            this.button(p, this.game.autoPlay.enabled ? '停止自动测试' : '自动压测新局', columns === 3 ? pad + settingW + gap : pad, columns === 3 ? body + 50 : body + 100, settingW, 44, () => this.game.toggleAutoPlay(undefined, true), false, 'autoplay-toggle');
             if (copyDiagnostics)
                 this.button(p, '复制运行诊断', pad + (columns === 3 ? 2 : 1) * (settingW + gap), columns === 3 ? body + 50 : body + 100, settingW, 44, copyDiagnostics, false, 'copy-diagnostics');
             if (footer - body > 225)
-                this.text(p, this.game.autoPlay.enabled ? `自动试玩第 ${this.game.autoPlay.rounds} 局 · 已决策 ${this.game.autoPlay.decisions} 次\n自动移动、选卡并轮换武器重开；测试局不计战绩。\n继续探索后恢复；切后台保持暂停。` : '自动试玩会连续重开，测试局不计战绩。\n启用后自动移动、冲刺与选卡。\n实际触摸操作仍需手动测试。', pad, body + 156, inner, 12, C.muted);
+                this.text(p, this.game.autoPlay.enabled ? `${this.game.autoPlay.stress ? '保命压测' : '正常试玩'}第 ${this.game.autoPlay.rounds} 局 · 已决策 ${this.game.autoPlay.decisions} 次\n${this.game.autoPlay.stress ? '致命伤保留 1 血，覆盖五分钟 Boss 与结算重开。' : '正常扣血与死亡重开，不保证到达 Boss。'}\n测试局不计战绩；继续探索后恢复，后台暂停。` : '自动压测保留 1 血，走完整局怪潮和 Boss。\n自动移动、冲刺、选卡与轮换武器重开。\n测试局不计战绩；触摸操作仍需手动测试。', pad, body + 156, inner, 12, C.muted);
             pair('继续探索 →', () => this.game.close(), 'resume', '结束本局', () => this.game.finish(false, '本次探索已主动结束。'), 'quit');
         }
         if (dialog.type === 'result') {
