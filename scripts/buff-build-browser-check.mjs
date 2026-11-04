@@ -42,5 +42,16 @@ export async function checkBuffBuildBrowser({send,evaluate,directory,wechat=fals
  await run(`g.toggleBuffs();ui.update();const find=n=>{if(n.name==='buff-description')return n;for(let i=0;i<n.numChildren;i++){const f=find(n.getChildAt(i));if(f)return f;}};if(!find(ui.root)?.text.includes('寒牢'))throw Error('Missing prison editor description');`);
  const editorShot=await send('Page.captureScreenshot',{format:'png'});
  await writeFile(resolve(directory,`buff-ice-editor-${touch?'touch':'mouse'}.png`),Buffer.from(editorShot.data,'base64'));
+ // Third family: the actual starter, branch and compact editor description.
+ await run(`g.start('storm',true);g.addXP(10);ui.update();`);
+ await tapCard('build-thunder');
+ await run(`g.buffs.receiveFragment('lightning');g.buffs.receiveFragment('lightning');g.show(g.buffs.takeBranchReward());ui.update();`);
+ const thunderShot=await send('Page.captureScreenshot',{format:'png'});
+ await writeFile(resolve(directory,`buff-thunder-branch-${touch?'touch':'mouse'}.png`),Buffer.from(thunderShot.data,'base64'));
+ await tapCard('branch-charge');
+ assert.equal(await run(`return g.buffs.branchOf(g.buffs.recipes[0]);`),'charge');
+ await run(`g.toggleBuffs();ui.update();const find=n=>{if(n.name==='buff-description')return n;for(let i=0;i<n.numChildren;i++){const f=find(n.getChildAt(i));if(f)return f;}};if(!find(ui.root)?.text.includes('蓄雷'))throw Error('Missing charge editor description');`);
+ const thunderEditor=await send('Page.captureScreenshot',{format:'png'});
+ await writeFile(resolve(directory,`buff-thunder-editor-${touch?'touch':'mouse'}.png`),Buffer.from(thunderEditor.data,'base64'));
  await run(`g.start('storm',true);ui.update();`);
 }

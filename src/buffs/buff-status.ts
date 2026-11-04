@@ -43,8 +43,13 @@ export function applyBuffElement<T extends BuffTarget>(host: BuffHost<T>, status
         const status = ensureStatus(statuses, target);
         if (!status)
             return false;
-        if (effect.element === 'ice')
+        if (effect.element === 'ice') {
             status.slow = BUFF_RULES.slow.duration;
+            if (effect.slot === 0)
+                status.iceSlow0 = BUFF_RULES.slow.duration;
+            if (effect.slot === 1)
+                status.iceSlow1 = BUFF_RULES.slow.duration;
+        }
         else {
             status.burn = BUFF_RULES.burn.duration;
             status.burnSlot = effect.slot;
@@ -63,6 +68,8 @@ export function updateBuffStatuses<T extends BuffTarget>(statuses: Map<T, BuffSt
         status.reforgeLock = Math.max(0, (status.reforgeLock || 0) - dt);
         status.heatLock = Math.max(0, (status.heatLock || 0) - dt);
         status.slow = Math.max(0, status.slow - dt);
+        status.iceSlow0 = Math.max(0, (status.iceSlow0 || 0) - dt);
+        status.iceSlow1 = Math.max(0, (status.iceSlow1 || 0) - dt);
         if (status.burn > 0) {
             const elapsed = Math.min(dt, status.burn);
             status.burn = Math.max(0, status.burn - dt);

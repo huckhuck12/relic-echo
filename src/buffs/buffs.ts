@@ -238,7 +238,7 @@ export class BuffRuntime<T extends BuffTarget> {
             }
         }
         if (applyBuffElement(this.host, this.statuses, target, effect, this.feedbackAt))
-            this.evolutions.hit(target, effect);
+            this.evolutions.hit(target, effect, effect.slot === 0 ? (this.statuses.get(target)?.iceSlow1 || 0) > 0 : effect.slot === 1 && (this.statuses.get(target)?.iceSlow0 || 0) > 0);
     };
     /** 固定步顺序：反馈寿命→冷却→元素状态→进化→主效果。 */
     update(dt: number): void {

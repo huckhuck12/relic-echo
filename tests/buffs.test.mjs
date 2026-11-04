@@ -42,7 +42,8 @@ test('upgraded real lightning bolts feed their captured damage into thunder evol
 
 test('effect visuals snapshot their release level and evolution bursts inherit the actual hit source',()=>{
  const {runtime:r}=fixture();install(r,'dash','bolt','lightning');
- r.trigger('dash',0,0,1);const old=r.effects[0];for(let i=0;i<4;i++)r.receiveFragment('bolt');
+ r.trigger('dash',0,0,1);const old=r.effects[0];for(let i=0;i<2;i++)r.receiveFragment('bolt');
+ assert.ok(r.takeBranchRequest('bolt/lightning'));assert.ok(r.chooseBranch('spread','bolt/lightning'));for(let i=0;i<2;i++)r.receiveFragment('bolt');
  assert.equal(old.level,1);r.cooldowns[0]=0;r.trigger('dash',0,0,1);assert.equal(r.effects.at(-1).level,5);
  const target={x:0,y:0,dead:false};for(let i=0;i<3;i++)r.evolutions.hit(target,{kind:'bolt',element:'lightning',damage:47,level:5});
  assert.equal(r.feedback.find(f=>f.kind==='detonate').level,5);

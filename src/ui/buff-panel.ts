@@ -87,7 +87,7 @@ export function renderBuffPanel(p: LayaSprite, w: number, h: number, editor: Buf
         }
         const noteY = descriptionY + height + 8;
         if (noteY + 62 < contentBottom)
-            controls.text(p, '行为＋元素共享成长；Lv.2/4 伤害 +10%，最高 +20%。\n火场/冰环 Lv.3 选分支，Lv.5 强化；另一槽冲击回炉/碎冰。', pad, noteY, inner, 11, C.muted);
+            controls.text(p, '行为＋元素共享成长；Lv.2/4 伤害 +10%，最高 +20%。\n火场/冰环/雷丸 Lv.3 选分支，Lv.5 强化；跨槽回炉/碎冰/导冷。', pad, noteY, inner, 11, C.muted);
         if (unlock)
             controls.button(p, '练习：解锁全部碎片', pad, footer - 56, Math.min(inner, 240), 44, () => hooks.unlockFragments(), false, 'buff-unlock');
         controls.button(p, '清空当前配方', pad, footer, (inner - gap) / 2, 44, () => {

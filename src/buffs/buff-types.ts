@@ -61,7 +61,7 @@ export interface BuffEffect {
     radius?: number;
 }
 export type FireBranch = 'trail' | 'furnace';
-export type BuffBranch = FireBranch | 'shards' | 'prison';
+export type BuffBranch = FireBranch | 'shards' | 'prison' | 'spread' | 'charge';
 export interface BuffFeedback {
     x: number;
     y: number;
@@ -82,5 +82,8 @@ export interface BuffStatus {
     reforgeLock?: number;
     heatLock?: number;
     slow: number;
+    /** Direct ice Buff provenance expires independently of secondary slow. */
+    iceSlow0?: number;
+    iceSlow1?: number;
 }
 export type BuffFeedbackSink = (kind: BuffFeedback['kind'], element: Element, x: number, y: number, tx?: number, ty?: number, level?: number) => void;

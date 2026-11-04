@@ -2,7 +2,7 @@ import type { Action, Element, Recipe, BuffHost, BuffTarget, BuffBranch } from '
 /** 行为与元素共同决定进化，触发碎片继续决定释放时机/冷却，不增加第四种槽位。 */
 export const EVOLUTIONS = [
     {
-        id: 'thunderMark', action: 'bolt', element: 'lightning', name: '雷印引爆', note: '雷电弹丸对同一敌人 9 秒内叠满 3 印：引爆 160%，传导附近 3 敌各 80%。'
+        id: 'thunderMark', action: 'bolt', element: 'lightning', name: '雷印引爆', note: '9 秒内三印引爆 160%，附近 3 敌各 80%；跨槽冰霜导冷额外一印，每敌 1 秒一次。引爆后锁定 1 秒。'
     },
     {
         id: 'fireLinks', action: 'field', element: 'fire', name: '火种连线', note: '火种持续 6 秒，连接 260 范围内火种；燃烧带每 0.5 秒伤害 65%，交叉不叠加。'
@@ -16,7 +16,7 @@ export function evolutionOf(recipe: Pick<Recipe, 'action' | 'element'>) {
     return EVOLUTIONS.find(e => e.action === recipe.action && e.element === recipe.element);
 }
 export const EVOLUTION_LIMITS = {
-    targets: 200, seeds: 6, links: 8, shatterTargets: 8, frostBurstsPerStep: 16
+    targets: 200, seeds: 6, links: 8, shatterTargets: 8, frostBurstsPerStep: 16, thunderBurstsPerStep: 16
 };
 export interface EvolutionSource {
     kind: Action;
@@ -32,6 +32,7 @@ export interface EvolutionMark {
     life: number;
     lock: number;
     source?: EvolutionSource;
+    conductiveLock?: number;
 }
 export interface FireSeed {
     x: number;
@@ -67,6 +68,8 @@ export class BuffEvolutions<T extends BuffTarget> {
     detonations = 0;
     shatters = 0;
     frostRejected = 0;
+    thunderRejected = 0;
+    private thunderBudget: number = EVOLUTION_LIMITS.thunderBurstsPerStep;
     private frostBudget: number = EVOLUTION_LIMITS.frostBurstsPerStep;
     private linkTick = 0;
     constructor(private readonly host: BuffHost<T>, private readonly hooks: EvolutionHooks<T>) { }
@@ -79,34 +82,20 @@ export class BuffEvolutions<T extends BuffTarget> {
         this.detonations = 0;
         this.shatters = 0;
         this.frostRejected = 0;
+        this.thunderRejected = 0;
+        this.thunderBudget = EVOLUTION_LIMITS.thunderBurstsPerStep;
         this.frostBudget = EVOLUTION_LIMITS.frostBurstsPerStep;
     }
     /** 两配方共享同类叠层；来源伤害在 Buff 生成时快照，本次命中决定爆发伤害。 */
-    hit(target: T, source: EvolutionSource): void {
+    hit(target: T, source: EvolutionSource, conductive = false): void {
         if (target.dead)
             return;
         if (source.element === 'force') {
             this.breakFrost(target, source);
             return;
         }
-        if (source.kind === 'bolt' && source.element === 'lightning') {
-            // 9 秒覆盖受击触发的 4 秒冷却，所有触发碎片都有机会完成三次命中。
-            if (!this.stack(this.thunder, target, 9, 1))
-                return;
-            this.detonations++;
-            this.hooks.burst('detonate', target.x, target.y, source.level || 1);
-            // 先重置标记再回调，防止外部死亡逻辑重入时重复引爆。
-            this.host.damage(target, source.damage * 1.6, true, true);
-            let count = 0;
-            for (const other of this.host.query(target.x, target.y, 180)) {
-                if (other === target || other.dead)
-                    continue;
-                this.host.damage(other, source.damage * .8, true, true);
-                this.hooks.arc(target.x, target.y, other.x, other.y);
-                if (++count === 3)
-                    break;
-            }
-        }
+        if (source.kind === 'bolt' && source.element === 'lightning')
+            this.stackThunder(target, source, conductive);
         else if (source.kind === 'orbit' && source.element === 'ice')
             this.stackFrost(target, source);
     }
@@ -184,23 +173,63 @@ export class BuffEvolutions<T extends BuffTarget> {
             }
         }
     }
-    private stack(map: Map<T, EvolutionMark>, target: T, seconds: number, lock: number): boolean {
-        let mark = map.get(target);
+    /** Propagation may prepare a target, but only a direct bolt can detonate it. */
+    private stackThunder(target: T, source: EvolutionSource, conductive: boolean): void {
+        let mark = this.thunder.get(target);
         if (!mark) {
-            if (map.size >= EVOLUTION_LIMITS.targets)
-                return false;
-            mark = { stacks: 0, life: seconds, lock: 0 };
-            map.set(target, mark);
+            if (this.thunder.size >= EVOLUTION_LIMITS.targets)
+                return;
+            mark = { stacks: 0, life: 9, lock: 0 };
+            this.thunder.set(target, mark);
         }
         if (mark.lock > 0)
-            return false;
-        // 时限从第一层开始，不在后续接触时刷新，保证确实需要在窗口内连续叠满。
-        if (++mark.stacks < 3)
-            return false;
+            return;
+        const extra = conductive && (mark.conductiveLock || 0) <= 0;
+        const threshold = source.branch === 'charge' ? 5 : 3;
+        const stacks = Math.min(threshold, mark.stacks + (extra ? 2 : 1));
+        // Budget rejection leaves marks and both locks untouched; no deferred queue.
+        if (stacks >= threshold && this.thunderBudget <= 0) {
+            this.thunderRejected++;
+            return;
+        }
+        mark.source = { ...source };
+        mark.stacks = stacks;
+        if (extra)
+            mark.conductiveLock = 1;
+        if (stacks < threshold)
+            return;
+        this.thunderBudget--;
         mark.stacks = 0;
-        mark.lock = lock;
-        mark.life = lock;
-        return true;
+        mark.lock = 1;
+        mark.life = 1;
+        this.detonations++;
+        this.hooks.burst('detonate', target.x, target.y, source.level || 1);
+        const multiplier = source.branch === 'charge' ? ((source.level || 1) >= 5 ? 3.5 : 3) : source.branch === 'spread' ? 1.2 : 1.6;
+        this.host.damage(target, source.damage * multiplier, true, true);
+        if (source.branch === 'charge')
+            return;
+        let count = 0;
+        const cap = source.branch === 'spread' && (source.level || 1) >= 5 ? 5 : 3;
+        for (const other of this.host.query(target.x, target.y, 180)) {
+            if (other === target || other.dead)
+                continue;
+            if (source.branch === 'spread') {
+                let next = this.thunder.get(other);
+                if (next?.lock || !next && this.thunder.size >= EVOLUTION_LIMITS.targets)
+                    continue;
+                if (!next) {
+                    next = { stacks: 0, life: 9, lock: 0, source: { ...source } };
+                    this.thunder.set(other, next);
+                }
+                const limit = next.source?.branch === 'charge' ? 5 : 3;
+                next.stacks = Math.min(limit - 1, next.stacks + 1);
+            }
+            else
+                this.host.damage(other, source.damage * .8, true, true);
+            this.hooks.arc(target.x, target.y, other.x, other.y);
+            if (++count === cap)
+                break;
+        }
     }
     /** 火种保留 6 秒，允许慢触发配方连接；重复近点只刷新火种，不制造零长连线。 */
     seed(x: number, y: number, damage: number, level = 1): void {
@@ -234,9 +263,11 @@ export class BuffEvolutions<T extends BuffTarget> {
     }
     update(dt: number): void {
         this.frostBudget = EVOLUTION_LIMITS.frostBurstsPerStep;
+        this.thunderBudget = EVOLUTION_LIMITS.thunderBurstsPerStep;
         for (const map of [this.thunder, this.frost])
             for (const [target, mark] of map) {
                 mark.life -= dt;
+                mark.conductiveLock = Math.max(0, (mark.conductiveLock || 0) - dt);
                 mark.lock = Math.max(0, mark.lock - dt);
                 if (target.dead || mark.life <= 0)
                     map.delete(target);

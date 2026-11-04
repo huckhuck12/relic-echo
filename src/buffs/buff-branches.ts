@@ -7,6 +7,9 @@ export const BUFF_BRANCHES = [
     {
         pair: 'orbit/ice', action: 'orbit', element: 'ice', name: '冰霜环绕', choices: ['shards', 'prison']
     },
+    {
+        pair: 'bolt/lightning', action: 'bolt', element: 'lightning', name: '雷电弹丸', choices: ['spread', 'charge']
+    },
 ] as const;
 export const BRANCH_TEXT: Record<BuffBranch, {
     name: string;
@@ -16,12 +19,16 @@ export const BRANCH_TEXT: Record<BuffBranch, {
     furnace: { name: '炉心', note: '火场缩至半径 70，伤害 ×1.35；同处刷新。Lv.5 回炉追加 60% 火场伤害，每目标 2 秒一次。' },
     shards: { name: '碎冰', note: '三层自动碎裂改为向附近 3 敌射出冰片，各 70% 伤害；不伤主目标。Lv.5 最多 5 敌。跨槽冲击仍可提前碎裂。' },
     prison: { name: '寒牢', note: '储存最多 5 层、窗口 4 秒，不再自动碎裂；环绕直伤 ×0.8。需另一槽冲击引爆。Lv.5 消费至少 4 层时主目标爆发 ×1.25。' },
+    spread: { name: '传印', note: '三印引爆主目标 120% 伤害，向附近 3 敌传一印，替代引爆溅射；传播不能引爆。Lv.5 最多 5 敌。跨槽冰霜导冷加一印，每敌 1 秒一次。' },
+    charge: { name: '蓄雷', note: '改为五印引爆，主目标 300% 伤害，取消引爆溅射；窗口仍为 9 秒。Lv.5 提高至 350%。跨槽冰霜导冷额外一印，每目标 1 秒一次。' },
 };
 export const BRANCH_COMPACT: Record<BuffBranch, string> = {
     trail: '冲刺铺 3 场，各 45% 伤害，持续 3 秒；Lv.5 持续 4 秒。',
     furnace: '半径 70、伤害 ×1.35；Lv.5 回炉追加 60% 火场伤害。',
     shards: '三层向 3 敌射冰片，各 70%，不伤主目标；Lv.5 最多 5 敌。',
     prison: '5 层/4 秒，直伤 ×0.8；跨槽冲击消耗 ≥2 层。Lv.5 消耗 ≥4 层爆发 ×1.25。',
+    spread: '三印爆发 120%，向 3 敌传一印，替代溅射且不引爆；Lv.5 最多 5 敌。',
+    charge: '五印/9 秒，爆发 300%，取消引爆溅射；Lv.5 为 350%。跨槽冰霜可加印。',
 };
 export function branchPair(recipe: Pick<Recipe, 'action' | 'element'>) {
     return BUFF_BRANCHES.find(b => b.action === recipe.action && b.element === recipe.element);

@@ -42,13 +42,15 @@ export function drawEvolutionState<T extends BuffTarget>(overlay: any, floor: an
     let count = 0;
     for (const [element, map] of [['lightning', state.thunder], ['ice', state.frost]] as const)
         for (const [target, mark] of map) {
-            if (target.dead || mark.stacks === 0 || !visible(target.x, target.y))
+            if (target.dead || mark.stacks === 0 && mark.lock <= 0 || !visible(target.x, target.y))
                 continue;
             if (count++ >= detail * 2)
                 return;
             const q = project(target.x, target.y), color = element === 'ice' ? '#91dcf3' : '#d2adf3';
             glyph(overlay, q.x - 14, q.y - 48, element, 5);
-            const slots = element === 'ice' && mark.source?.branch === 'prison' ? 5 : 3;
+            const slots = mark.source?.branch === 'prison' || mark.source?.branch === 'charge' ? 5 : 3;
+            if (mark.lock > 0)
+                overlay.drawLine(q.x - 14, q.y - 59, q.x - 14 + 36 * Math.min(1, mark.lock), q.y - 59, color, 1);
             for (let i = 0; i < slots; i++) {
                 const x = q.x - (slots === 5 ? 14 : 5) + i * 9;
                 if (i >= mark.stacks || !paintVfx(overlay, 'focus', element, x, q.y - 53, 9))
