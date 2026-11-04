@@ -620,13 +620,19 @@ export class Game {
         let velocity = dashing ? COMBAT.dashDistance / COMBAT.dashDuration * dashStep / dt : 240 * (1 + this.stats.speed) * (this.overdrive > 0 ? 1.12 : 1);
         if (this.input.mouseTarget && !dashing)
             velocity = Math.min(velocity, Math.hypot(this.input.mouseTarget.x - p.x, this.input.mouseTarget.y - p.y) / dt);
+        const previousX = p.x, previousY = p.y;
         this.movePlayer(dx * velocity * dt, dy * velocity * dt);
         if (dashing && p.dashTime === 0)
             this.triggerBuff('dash', p.x, p.y);
-        if (dx || dy) {
-            this.walkPhase += dt * 13;
+        const traveled = Math.hypot(p.x - previousX, p.y - previousY);
+        p.moving = traveled > .001;
+        if (p.moving) {
+            this.walkPhase += traveled * 13 / 240;
             faceToward(p, dx, dy);
         }
+        else
+            this.walkPhase = 0;
+        p.gaitPhase = this.walkPhase;
         // 波次先写回：Boss 可能清场换数组，精英序号也参与随后击杀的装备奖励。
         this.updateSpawns(dt);
         if (this.time >= RUN.duration) {
@@ -759,7 +765,7 @@ export class Game {
         return {
             player: this.player, loadout: this.loadout, levels: this.levels, stats: this.stats,
             grid: this.grid, shots: this.shots, fields: this.fields, pillars: this.pillars,
-            time: this.time, overdrive: this.overdrive, recoil: this.recoil
+            time: this.time, overdrive: this.overdrive, recoil: this.recoil, paintedHero: this.scene.playerArtStatus.ready
         };
     }
     /** 回调在执行时访问本局状态；伤害仍统一进入 hit/hurt，避免两套结算规则。 */

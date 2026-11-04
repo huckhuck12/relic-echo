@@ -11,12 +11,20 @@ export interface LayaEvent {
 }
 export interface LayaGraphics {
     clear(): void;
-    drawTexture?(texture: LayaTexture, x: number, y: number, width: number, height: number): void;
+    drawTexture?(texture: LayaTexture, x: number, y: number, width: number, height: number, matrix?: LayaMatrix): void;
     drawRect(x: number, y: number, width: number, height: number, fill: string | null, line?: string | null, lineWidth?: number): void;
     drawCircle(x: number, y: number, radius: number, fill: string | null, line?: string | null, lineWidth?: number): void;
     drawPoly(x: number, y: number, points: number[], fill: string | null, line?: string | null, lineWidth?: number): void;
     drawLine(x: number, y: number, tx: number, ty: number, color: string, width?: number): void;
     drawLines(x: number, y: number, points: number[], color: string, width?: number): void;
+}
+export interface LayaMatrix {
+    a: number;
+    b: number;
+    c: number;
+    d: number;
+    tx: number;
+    ty: number;
 }
 export interface LayaSprite {
     name: string;
@@ -86,6 +94,7 @@ export interface LayaRuntime {
         createElement(type: 'img'): HTMLImageElement;
     };
     Texture2D?: new (width: number, height: number, format: number, mipmap: boolean) => LayaTextureBitmap;
+    Matrix?: new (a: number, b: number, c: number, d: number, tx: number, ty: number) => LayaMatrix;
     Texture?: {
         new (bitmap: LayaTextureBitmap): LayaTexture;
         createFromTexture(texture: LayaTexture, x: number, y: number, width: number, height: number): LayaTexture;

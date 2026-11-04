@@ -1,4 +1,4 @@
-import type { LayaGraphics, LayaTexture, LayaTextureBitmap } from '../platform/laya.js';
+import type { LayaGraphics, LayaTexture, LayaTextureBitmap, LayaMatrix } from '../platform/laya.js';
 import type { Shape } from './voxel.js';
 interface Tile {
     texture: LayaTexture;
@@ -18,6 +18,26 @@ export interface AtlasRaster {
     width: number;
     height: number;
     behind: Shape[];
+    layers?: RasterLayer[];
+    attachments?: RasterLayer[];
+    fingers?: Shape[];
+    attachmentsBehind?: boolean;
+}
+export interface RasterLayer {
+    sx: number;
+    sy: number;
+    sw: number;
+    sh: number;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    alpha?: number;
+    add?: boolean;
+    angle?: number;
+    flip?: boolean;
+    offsetX?: number;
+    offsetY?: number;
 }
 /** Shared, bounded GPU atlases for ordinary enemies, including all caster action phases.
  * High detail is created only on demand. No per-enemy textures or per-frame uploads.
@@ -82,7 +102,13 @@ export class ShapeAtlas {
                 if (tile.raster) {
                     const r = tile.raster;
                     drawCanvasShapes(context, r.behind);
-                    context.drawImage(r.source, r.sx, r.sy, r.sw, r.sh, r.x, r.y, r.width, r.height);
+                    if (r.attachmentsBehind)
+                        drawRasterLayers(context, r.source, r.attachments || []);
+                    drawRasterLayers(context, r.source, r.layers || [r]);
+                    if (!r.attachmentsBehind)
+                        drawRasterLayers(context, r.source, r.attachments || []);
+                    if (r.fingers)
+                        drawCanvasShapes(context, r.fingers);
                 }
                 drawCanvasShapes(context, tile.shapes);
             }
@@ -115,7 +141,7 @@ export class ShapeAtlas {
             }
         }
     }
-    paint(graphics: LayaGraphics, key: string, x = 0, y = 0, clear = true): boolean {
+    paint(graphics: LayaGraphics, key: string, x = 0, y = 0, clear = true, matrix?: LayaMatrix): boolean {
         if (!this.enabled || !graphics.drawTexture)
             return false;
         const tile = this.tiles.get(key);
@@ -123,7 +149,7 @@ export class ShapeAtlas {
             return false;
         if (clear)
             graphics.clear();
-        graphics.drawTexture(tile.texture, x + tile.x, y + tile.y, tile.width, tile.height);
+        graphics.drawTexture(tile.texture, x + tile.x, y + tile.y, tile.width, tile.height, matrix);
         return true;
     }
     destroy(): void {
@@ -142,7 +168,39 @@ function entryBounds(entry: {
     if (!entry.raster)
         return shapeBounds(entry.shapes);
     const r = entry.raster;
-    return shapeBounds([...entry.shapes, ...r.behind, { type: 'rect', p: [r.x, r.y, r.width, r.height], fill: '#000000' }]);
+    const bounds: Shape[] = [...entry.shapes, ...r.behind, ...(r.fingers || [])];
+    const layers: RasterLayer[] = [...(r.layers || [r]), ...(r.attachments || [])];
+    for (const layer of layers) {
+        const transformed = layer.angle !== undefined || layer.flip;
+        const x = transformed ? (layer.offsetX || 0) : 0;
+        const y = transformed ? (layer.offsetY || 0) : 0;
+        const a = layer.angle || 0, side = layer.flip ? -1 : 1;
+        const p: number[] = [];
+        for (const [dx, dy] of [[x, y], [x + layer.width, y], [x + layer.width, y + layer.height], [x, y + layer.height]])
+            p.push(layer.x + dx * side * Math.cos(a) - dy * Math.sin(a), layer.y + dx * side * Math.sin(a) + dy * Math.cos(a));
+        bounds.push({ type: 'poly', p, fill: '#000000' });
+    }
+    return shapeBounds(bounds);
+}
+function drawRasterLayers(context: CanvasRenderingContext2D, source: HTMLImageElement, layers: RasterLayer[]) {
+    for (const r of layers) {
+        const transformed = r.angle !== undefined || r.flip;
+        if (transformed) {
+            context.save();
+            context.translate(r.x, r.y);
+            context.rotate(r.angle || 0);
+            context.scale(r.flip ? -1 : 1, 1);
+        }
+        context.globalAlpha = r.alpha ?? 1;
+        if (r.add)
+            context.globalCompositeOperation = 'lighter';
+        context.drawImage(source, r.sx, r.sy, r.sw, r.sh, transformed ? (r.offsetX || 0) : r.x, transformed ? (r.offsetY || 0) : r.y, r.width, r.height);
+        context.globalAlpha = 1;
+        if (r.add)
+            context.globalCompositeOperation = 'source-over';
+        if (transformed)
+            context.restore();
+    }
 }
 function shapeBounds(shapes: Shape[]) {
     let left = Infinity, top = Infinity, right = -Infinity, bottom = -Infinity;

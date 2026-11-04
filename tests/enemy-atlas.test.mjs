@@ -2,7 +2,8 @@ import {actorAtlasFrames} from '../dist/rendering/painted-world.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {setupLayaStub} from './helpers/laya-stub.mjs';
-import {EnemyAtlas,ordinaryAtlasFrames} from '../dist/rendering/enemy-atlas.js';
+import {EnemyAtlas,ordinaryAtlasFrames,guardianAtlasFrames} from '../dist/rendering/enemy-atlas.js';
+import {enemyPartPoint} from '../dist/rendering/voxel.js';
 import {enemyArtPose,ENEMY_ACTION_SECONDS} from '../dist/enemies/enemy-actions.js';
 function engine(){
  setupLayaStub();const canvases=[],bitmaps=[],textures=[];
@@ -10,6 +11,7 @@ function engine(){
  Laya.Browser={createElement:()=>{const c={width:0,height:0,getContext:()=>context};canvases.push(c);return c;}};
  Laya.Texture2D=class{constructor(w,h){this.width=w;this.height=h;this.destroyed=false;bitmaps.push(this);}loadImageSource(){}destroy(){this.destroyed=true;}};
  Laya.Texture=class{constructor(bitmap){this.bitmap=bitmap;textures.push(this);}destroy(){this.destroyed=true;}static createFromTexture(texture,x,y,w,h){return Object.assign(new this(texture.bitmap),{x,y,w,h});}};
+ Laya.Matrix=class{constructor(a,b,c,d,tx,ty){Object.assign(this,{a,b,c,d,tx,ty});}};
  return {canvases,bitmaps,textures};
 }
 test('ordinary atlas covers every real caster phase and palette with one bounded texture and no per-paint allocation',()=>{
@@ -23,8 +25,8 @@ test('ordinary atlas covers every real caster phase and palette with one bounded
   assert.equal(atlas.paint(graphics,kind,flash,ice,pose,false),true,`${kind}:${pose.key}`);
  }
  assert.ok(draws.every(([t,x,y,w,h])=>t.bitmap===f.bitmaps[0]&&[x,y,w,h].every(Number.isFinite)));
- assert.equal(f.bitmaps.length,1);assert.equal(f.textures.length,1+ordinaryAtlasFrames().length+actorAtlasFrames().length);
- assert.equal(atlas.paint(graphics,3,false,false,enemyArtPose({kind:3,wind:0}),false),false);
+ assert.equal(f.bitmaps.length,1);assert.equal(f.textures.length,1+ordinaryAtlasFrames().length+guardianAtlasFrames().length+actorAtlasFrames().length);
+ assert.equal(atlas.paint(graphics,3,false,false,enemyArtPose({kind:3,wind:0}),false),true);
  assert.equal(atlas.paint(graphics,0,false,false,enemyArtPose({kind:0,wind:0}),true),true);
  assert.equal(f.bitmaps.length,2,'Detailed atlas is uploaded only when that quality is first used');
  assert.equal(atlas.bytes,8*1024*1024,'Both quality atlases remain bounded across quality changes');
@@ -34,6 +36,24 @@ test('ordinary atlas covers every real caster phase and palette with one bounded
   assert.equal(atlas.paint(graphics,Number(kind),color==='flash',color==='ice',{key},detail),true);
  }
  assert.equal(f.bitmaps.length,2,'Quality switching reuses the existing atlases');
+});
+
+test('elite and boss body/arms stay on the shared page through all wind, release and palette states',()=>{
+ const f=engine(),atlas=new EnemyAtlas(),draws=[],g={clear(){draws.length=0;},drawTexture:(...a)=>draws.push(a)};
+ for(const kind of [3,4])for(const action of [undefined,'burst','slam'])for(let i=0;i<8;i++)for(const [flash,ice]of [[false,false],[false,true],[true,false]]){
+  const pose=enemyArtPose({kind,wind:action?0:.85*(1-(i+.5)/8),action,actionTime:action?ENEMY_ACTION_SECONDS[action]*(1-(i+.5)/8):0});
+  assert.equal(atlas.paint(g,kind,flash,ice,pose,false),true);assert.equal(draws.length,3);
+  assert.ok(draws.every(([t])=>t.bitmap===f.bitmaps[0]));
+  for(const [j,part]of ['leftArm','rightArm'].entries()){
+   const m=draws[j+1][5];
+   for(const p of [{x:0,y:0},{x:33,y:-50},{x:-41,y:-49}]){
+    const q=enemyPartPoint(p.x,p.y,part,kind,pose);
+    assert.ok(Math.abs(m.a*p.x+m.c*p.y+m.tx-q.x)<1e-8);
+    assert.ok(Math.abs(m.b*p.x+m.d*p.y+m.ty-q.y)<1e-8);
+   }
+  }
+ }
+ assert.equal(f.bitmaps.length,1,'Action changes do not upload new textures');
 });
 test('atlas unavailable or failed upload safely leaves existing vector renderer available',()=>{
  setupLayaStub();assert.equal(new EnemyAtlas().bytes,0);

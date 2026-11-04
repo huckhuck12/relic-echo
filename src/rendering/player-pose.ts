@@ -59,11 +59,9 @@ export function weaponPoint(point: Point, weapon: Weapon, direction: Facing8, ca
     return { x: dx * 22 + pose.x + Math.cos(angle) * x * side - Math.sin(angle) * y,
         y: -25 + dy * 7 - Math.max(0, -dy) * 18 + pose.y + Math.sin(angle) * x * side + Math.cos(angle) * y };
 }
-/** 与 SceneRenderer 的角色整体后坐力一致。返回投影平面的局部点，不包含镜头缩放。 */
+/** 程序造型回退路径的挂点。角色保持脚底稳定；后坐力不再变换整个身体。 */
 export function weaponSocket(weapon: Weapon, direction: Facing8, recoil = 0, castTime = 0): Point {
     const source = weapon === 'storm' ? { x: 25, y: -63 } : weapon === 'flame' ? { x: 53, y: -31 } : { x: 23, y: -34 };
-    const q = weaponPoint(source, weapon, direction, castTime);
-    const face = Math.cos(direction * Math.PI / 4) < -.01 ? -1 : 1;
-    const a = recoil * 18 * face * Math.PI / 180, x = q.x * (1 + recoil * .7), y = q.y * (1 - recoil * .6);
-    return { x: x * Math.cos(a) - y * Math.sin(a), y: x * Math.sin(a) + y * Math.cos(a) };
+    void recoil;
+    return weaponPoint(source, weapon, direction, castTime);
 }

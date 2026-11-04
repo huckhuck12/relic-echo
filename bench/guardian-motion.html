@@ -1,0 +1,22 @@
+<!doctype html>
+<meta charset="utf-8"><base href="/">
+<title>Shared guardian atlas and vector comparison</title>
+<style>body{margin:0;background:#526b50}canvas{display:block}</style>
+<script src="/vendor/laya.core.js"></script><script src="/vendor/laya.webgl.js"></script>
+<script type="module">
+import {EnemyAtlas} from '/dist/rendering/enemy-atlas.js';
+import {enemyArtPose,ENEMY_ACTION_SECONDS} from '/dist/enemies/enemy-actions.js';
+import {enemyVisualShapes} from '/dist/rendering/voxel.js';
+import {drawShapes} from '/dist/rendering/appearance.js';
+Laya.init(1024,720,Laya.WebGL);Laya.stage.bgColor='#526b50';
+const atlas=new EnemyAtlas(true),cases=[{}, {wind:.04}, {action:'burst',actionTime:ENEMY_ACTION_SECONDS.burst*.8}, {action:'slam',actionTime:ENEMY_ACTION_SECONDS.slam*.8}, {ice:true,wind:.3}, {flash:true,wind:.3}];
+for(const [row,[kind,raster]]of [[3,false],[3,true],[4,false],[4,true]].entries()){
+ for(const [col,state]of cases.entries()){
+  const p=enemyArtPose({kind,wind:0,...state}),n=new Laya.Sprite();n.pos(85+col*170,155+row*178);Laya.stage.addChild(n);
+  if(raster)atlas.paint(n.graphics,kind,!!state.flash,!!state.ice,p,true);
+  else drawShapes(n.graphics,enemyVisualShapes(kind,!!state.flash,!!state.ice,true,p));
+  const label=new Laya.Text();label.text=(kind===3?'elite':'boss')+' '+(raster?'atlas':'vector')+' / '+col;label.color='#f7edce';label.fontSize=12;label.pos(n.x-60,n.y+12);Laya.stage.addChild(label);
+ }
+}
+window.guardianReady=atlas.snapshot(true);
+</script>

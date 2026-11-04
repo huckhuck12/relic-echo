@@ -1,15 +1,67 @@
 {
-  "version": "0.12.1",
+  "version": "0.12.2",
   "direction": "handdrawn-fantasy",
-  "production": "Selected B ruin-apprentice raster body, generated through user-authorized imagegen CLI and normalized offline; original code-authored equipment, enemies, terrain and UI",
+  "production": "Selected B painted hero body and weapons; shared articulated elite/boss atlas; other code-authored assets await visual redesign",
   "view": "2.5D isometric, screen-space artwork with foot origin",
   "rights": "Original project code art plus user-authorized generated hero raster; generation prompts and edits recorded in docs/art/hero-b-production.md; no sourced art or new font dependency",
   "assets": [
-    {"family":"player-equipment","source":"src/rendering/player-atlas.ts","body":"assets/hero/ruin-apprentice.png","bodyMetadata":"assets/hero/ruin-apprentice.json","attachments":"src/rendering/appearance.ts","bodyFrames":56,"frames":128,"pivot":"feet (0,0); source pivot (48,124) at 1.5 px per logical pixel","collision":"unchanged world player","maxGpuBytes":8388608,"decodedSourceBytes":4194304,"staticPreviewMaxGpuBytes":65536,"cache":"one current loadout; decoded source shared; replaced and preview sheets destroyed","status":"browser-entry-and-equipment-preview-verified; native-device-pending"},
-    {"family":"ordinary-enemies-actors","source":"src/rendering/enemy-atlas.ts","frames":128,"variants":["standard","high"],"pivot":"existing entity origins; projectile center (0,-18)","collision":"unchanged world entities","maxGpuBytes":8388608,"cache":"shared pages across rounds","status":"engine-preview-verified; native-device-pending"},
-    {"family":"meadow-path","source":"src/rendering/painted-world.ts","frames":6,"pivot":"world tile corner","collision":"unchanged world boundaries","maxGpuBytes":2097152,"cache":"repeating shared tiles","status":"engine-preview-verified; native-device-pending"},
-    {"family":"elite-boss-warnings","source":"src/rendering/enemy-presentation.ts","artSource":"src/rendering/painted-art.ts","pivot":"existing foot/staff socket","collision":"boss slam radius remains 145","cache":"bounded vector shapes","status":"automated-layer-and-range-tests-passed; native-device-pending"},
-    {"family":"ui","source":"src/ui/ui-controls.ts","font":"system serif headings; platform system sans body","collision":"existing safe-area layouts and touch targets","status":"phone-portrait-landscape-desktop-verified; native-font-pending"}
+    {
+      "family": "player-equipment",
+      "source": "src/rendering/player-atlas.ts",
+      "body": "assets/hero/ruin-apprentice.png",
+      "bodyMetadata": "assets/hero/ruin-apprentice.json",
+      "attachments": "src/rendering/hero-motion.ts; src/rendering/appearance.ts",
+      "bodyFrames": 56,
+      "frames": 128,
+      "pivot": "feet (0,0); source pivot (48,124) at 1.5 px per logical pixel",
+      "collision": "unchanged world player",
+      "maxGpuBytes": 8388608,
+      "decodedSourceBytes": 4194304,
+      "staticPreviewMaxGpuBytes": 65536,
+      "cache": "one current loadout; decoded source shared; replaced and preview sheets destroyed",
+      "status": "browser-entry-and-equipment-preview-verified; native-device-pending",
+      "weaponMetadata": "assets/hero/weapons.json"
+    },
+    {
+      "family": "all-enemies-actors",
+      "source": "src/rendering/enemy-atlas.ts",
+      "frames": 146,
+      "variants": [
+        "standard",
+        "high"
+      ],
+      "pivot": "existing entity origins; projectile center (0,-18)",
+      "collision": "unchanged world entities",
+      "maxGpuBytes": 8388608,
+      "cache": "shared pages across rounds",
+      "status": "engine-preview-verified; native-device-pending"
+    },
+    {
+      "family": "meadow-path",
+      "source": "src/rendering/painted-world.ts",
+      "frames": 6,
+      "pivot": "world tile corner",
+      "collision": "unchanged world boundaries",
+      "maxGpuBytes": 2097152,
+      "cache": "repeating shared tiles",
+      "status": "engine-preview-verified; native-device-pending"
+    },
+    {
+      "family": "elite-boss-warnings",
+      "source": "src/rendering/enemy-presentation.ts",
+      "artSource": "src/rendering/painted-art.ts",
+      "pivot": "existing foot/staff socket",
+      "collision": "boss slam radius remains 145",
+      "cache": "body and arms on shared enemy page; ground warnings remain vector",
+      "status": "automated-layer-and-range-tests-passed; native-device-pending"
+    },
+    {
+      "family": "ui",
+      "source": "src/ui/ui-controls.ts",
+      "font": "system serif headings; platform system sans body",
+      "collision": "existing safe-area layouts and touch targets",
+      "status": "phone-portrait-landscape-desktop-verified; native-font-pending"
+    }
   ],
-  "preview":"docs/art/hero-b-ingame.png"
+  "preview": "docs/art/hero-b-ingame.png"
 }

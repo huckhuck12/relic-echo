@@ -6,6 +6,7 @@ import {emptyLoadout,unproject,project,SpatialGrid,resolveStats} from '../dist/s
 import {attack} from '../dist/combat/weapon-combat.js';
 import {experienceShapes,chestShapes} from '../dist/rendering/loot-presentation.js';
 import {setupLayaStub} from './helpers/laya-stub.mjs';
+import {heroSocket,castHand,handPoint,walkFrame} from '../dist/rendering/hero-motion.js';
 setupLayaStub();
 const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-8,`${a} != ${b}`);
 
@@ -36,26 +37,31 @@ test('every weapon retains eight distinct finite equipped poses within the graph
  }
 });
 
-test('socket follows held geometry and renderer nonuniform recoil in every direction',()=>{
+test('fallback socket follows held geometry without moving the grounded body for recoil',()=>{
  for(const weapon of ['storm','flame','blade'])for(let d=0;d<8;d++)for(const recoil of [0,.1]){
   const source=weapon==='storm'?{x:25,y:-63}:weapon==='flame'?{x:53,y:-31}:{x:23,y:-34};
   const q=weaponPoint(source,weapon,d),socket=weaponSocket(weapon,d,recoil);
-  const a=recoil*18*(Math.cos(d*Math.PI/4)<-.01?-1:1)*Math.PI/180;
-  near(socket.x,q.x*(1+recoil*.7)*Math.cos(a)-q.y*(1-recoil*.6)*Math.sin(a));
-  near(socket.y,q.x*(1+recoil*.7)*Math.sin(a)+q.y*(1-recoil*.6)*Math.cos(a));
+  near(socket.x,q.x);near(socket.y,q.y);
  }
 });
 
 test('attacks mount flashes and first lightning at the held weapon while flame collision stays on ground',()=>{
- for(const weapon of ['storm','flame'])for(let d=0;d<8;d++){
+ for(const weapon of ['storm','flame'])for(let d=0;d<8;d++)for(const paintedHero of [false,true])for(const moving of [false,true]){
   const target={...unproject(Math.cos(d*Math.PI/4)*100,Math.sin(d*Math.PI/4)*100),dead:false,hp:100};
-  const player={x:0,y:0,face:1,back:false,dx:0,dy:1};const loadout=emptyLoadout(weapon),grid=new SpatialGrid();grid.rebuild([target]);
-  const state={player,loadout,stats:resolveStats(loadout,{}),levels:{},grid,shots:[],fields:[],pillars:[],time:0,overdrive:0,recoil:0};
+  const player={x:0,y:0,face:1,back:false,dx:0,dy:1,moving,gaitPhase:Math.PI/2};const loadout=emptyLoadout(weapon),grid=new SpatialGrid();grid.rebuild([target]);
+  const state={player,loadout,stats:resolveStats(loadout,{}),levels:{},grid,shots:[],fields:[],pillars:[],time:0,overdrive:0,recoil:0,paintedHero};
   const lines=[],fx=[];attack(state,{hit(){},line:(...a)=>lines.push(a),effect:(...a)=>fx.push(a),acquire:()=>new Laya.Sprite(),beep(){}});
-  assert.equal(player.direction,d);const socket=weaponSocket(weapon,d,.1,player.castTime),q=project(fx[0][1],fx[0][2]);near(q.x,socket.x);near(q.y,socket.y);
+  assert.equal(player.direction,d);const socket=paintedHero?heroSocket(weapon,d,player.castTime,moving,player.gaitPhase):weaponSocket(weapon,d,.1,player.castTime),q=project(fx[0][1],fx[0][2]);near(q.x,socket.x);near(q.y,socket.y);
   if(weapon==='storm'){near(lines[0][0],fx[0][1]);near(lines[0][1],fx[0][2]);assert.equal(lines[0][5],0);}
   else{const shot=state.shots[0];assert.equal(shot.x,0);assert.equal(shot.y,0);near(shot.launchX,socket.x);near(shot.launchY-18,socket.y);}
  }
+});
+test('cast grip recovers exactly to idle and eight-way mirrored hands stay consistent',()=>{
+ for(let d=0;d<8;d++)assert.deepEqual(castHand(d,11),handPoint(d,0));
+ for(const [a,b]of [[0,4],[1,3],[7,5]])for(let pose=0;pose<7;pose++){
+  const x=handPoint(a,pose),y=handPoint(b,pose);near(x.x,-y.x);near(x.y,y.y);
+ }
+ assert.equal(walkFrame(0),0);assert.equal(walkFrame(Math.PI/2-.001),0);assert.equal(walkFrame(Math.PI/2),1);assert.equal(walkFrame(2*Math.PI),0);
 });
 
 test('loot silhouettes stay small and distinguish healing, XP and chest quality',()=>{

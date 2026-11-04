@@ -1,0 +1,934 @@
+{
+  "version": "0.12.2",
+  "tests": 223,
+  "scope": "Real Laya WebGL desktop browser, phone metrics emulation, and bundled WeChat engine with mock SDK; not native iPhone.",
+  "densityBefore": [
+    {
+      "count": 25,
+      "kind": 0,
+      "wind": 0,
+      "flash": false,
+      "visible": 25,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 25,
+      "kind": 0,
+      "wind": 0,
+      "flash": true,
+      "visible": 25,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 25,
+      "kind": 1,
+      "wind": 0,
+      "flash": false,
+      "visible": 25,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 25,
+      "kind": 1,
+      "wind": 0.12,
+      "flash": false,
+      "visible": 25,
+      "dc": 18,
+      "min": 18,
+      "max": 18
+    },
+    {
+      "count": 25,
+      "kind": 2,
+      "wind": 0.2,
+      "flash": false,
+      "visible": 25,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 25,
+      "kind": -1,
+      "wind": 0,
+      "flash": false,
+      "visible": 25,
+      "dc": 25,
+      "min": 25,
+      "max": 25
+    },
+    {
+      "count": 25,
+      "kind": -2,
+      "wind": 0.2,
+      "flash": false,
+      "visible": 25,
+      "dc": 18,
+      "min": 18,
+      "max": 18
+    },
+    {
+      "count": 100,
+      "kind": 0,
+      "wind": 0,
+      "flash": false,
+      "visible": 100,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 100,
+      "kind": 0,
+      "wind": 0,
+      "flash": true,
+      "visible": 100,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 100,
+      "kind": 1,
+      "wind": 0,
+      "flash": false,
+      "visible": 100,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 100,
+      "kind": 1,
+      "wind": 0.12,
+      "flash": false,
+      "visible": 100,
+      "dc": 18,
+      "min": 18,
+      "max": 18
+    },
+    {
+      "count": 100,
+      "kind": 2,
+      "wind": 0.2,
+      "flash": false,
+      "visible": 100,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 100,
+      "kind": -1,
+      "wind": 0,
+      "flash": false,
+      "visible": 100,
+      "dc": 57,
+      "min": 57,
+      "max": 57
+    },
+    {
+      "count": 100,
+      "kind": -2,
+      "wind": 0.2,
+      "flash": false,
+      "visible": 100,
+      "dc": 18,
+      "min": 18,
+      "max": 18
+    },
+    {
+      "count": 200,
+      "kind": 0,
+      "wind": 0,
+      "flash": false,
+      "visible": 200,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 200,
+      "kind": 0,
+      "wind": 0,
+      "flash": true,
+      "visible": 200,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 200,
+      "kind": 1,
+      "wind": 0,
+      "flash": false,
+      "visible": 200,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 200,
+      "kind": 1,
+      "wind": 0.12,
+      "flash": false,
+      "visible": 200,
+      "dc": 18,
+      "min": 18,
+      "max": 18
+    },
+    {
+      "count": 200,
+      "kind": 2,
+      "wind": 0.2,
+      "flash": false,
+      "visible": 200,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 200,
+      "kind": -1,
+      "wind": 0,
+      "flash": false,
+      "visible": 200,
+      "dc": 94,
+      "min": 94,
+      "max": 94
+    },
+    {
+      "count": 200,
+      "kind": -2,
+      "wind": 0.2,
+      "flash": false,
+      "visible": 200,
+      "dc": 18,
+      "min": 18,
+      "max": 18
+    },
+    {
+      "count": 400,
+      "kind": 0,
+      "wind": 0,
+      "flash": false,
+      "visible": 400,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 400,
+      "kind": 0,
+      "wind": 0,
+      "flash": true,
+      "visible": 400,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 400,
+      "kind": 1,
+      "wind": 0,
+      "flash": false,
+      "visible": 400,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 400,
+      "kind": 1,
+      "wind": 0.12,
+      "flash": false,
+      "visible": 400,
+      "dc": 18,
+      "min": 18,
+      "max": 18
+    },
+    {
+      "count": 400,
+      "kind": 2,
+      "wind": 0.2,
+      "flash": false,
+      "visible": 400,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 400,
+      "kind": -1,
+      "wind": 0,
+      "flash": false,
+      "visible": 400,
+      "dc": 167,
+      "min": 167,
+      "max": 167
+    },
+    {
+      "count": 400,
+      "kind": -2,
+      "wind": 0.2,
+      "flash": false,
+      "visible": 400,
+      "dc": 18,
+      "min": 18,
+      "max": 18
+    },
+    {
+      "count": 5,
+      "kind": 3,
+      "wind": 0,
+      "flash": false,
+      "visible": 5,
+      "dc": 22,
+      "min": 22,
+      "max": 22
+    },
+    {
+      "count": 20,
+      "kind": 3,
+      "wind": 0,
+      "flash": false,
+      "visible": 20,
+      "dc": 23,
+      "min": 23,
+      "max": 23
+    },
+    {
+      "count": 50,
+      "kind": 3,
+      "wind": 0,
+      "flash": false,
+      "visible": 50,
+      "dc": 23,
+      "min": 23,
+      "max": 23
+    }
+  ],
+  "densityAfter": [
+    {
+      "count": 25,
+      "kind": 0,
+      "wind": 0,
+      "flash": false,
+      "visible": 25,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 25,
+      "kind": 0,
+      "wind": 0,
+      "flash": true,
+      "visible": 25,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 25,
+      "kind": 1,
+      "wind": 0,
+      "flash": false,
+      "visible": 25,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 25,
+      "kind": 1,
+      "wind": 0.12,
+      "flash": false,
+      "visible": 25,
+      "dc": 18,
+      "min": 18,
+      "max": 18
+    },
+    {
+      "count": 25,
+      "kind": 2,
+      "wind": 0.2,
+      "flash": false,
+      "visible": 25,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 25,
+      "kind": -1,
+      "wind": 0,
+      "flash": false,
+      "visible": 25,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 25,
+      "kind": -2,
+      "wind": 0.2,
+      "flash": false,
+      "visible": 25,
+      "dc": 18,
+      "min": 18,
+      "max": 18
+    },
+    {
+      "count": 100,
+      "kind": 0,
+      "wind": 0,
+      "flash": false,
+      "visible": 100,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 100,
+      "kind": 0,
+      "wind": 0,
+      "flash": true,
+      "visible": 100,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 100,
+      "kind": 1,
+      "wind": 0,
+      "flash": false,
+      "visible": 100,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 100,
+      "kind": 1,
+      "wind": 0.12,
+      "flash": false,
+      "visible": 100,
+      "dc": 18,
+      "min": 18,
+      "max": 18
+    },
+    {
+      "count": 100,
+      "kind": 2,
+      "wind": 0.2,
+      "flash": false,
+      "visible": 100,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 100,
+      "kind": -1,
+      "wind": 0,
+      "flash": false,
+      "visible": 100,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 100,
+      "kind": -2,
+      "wind": 0.2,
+      "flash": false,
+      "visible": 100,
+      "dc": 18,
+      "min": 18,
+      "max": 18
+    },
+    {
+      "count": 200,
+      "kind": 0,
+      "wind": 0,
+      "flash": false,
+      "visible": 200,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 200,
+      "kind": 0,
+      "wind": 0,
+      "flash": true,
+      "visible": 200,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 200,
+      "kind": 1,
+      "wind": 0,
+      "flash": false,
+      "visible": 200,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 200,
+      "kind": 1,
+      "wind": 0.12,
+      "flash": false,
+      "visible": 200,
+      "dc": 18,
+      "min": 18,
+      "max": 18
+    },
+    {
+      "count": 200,
+      "kind": 2,
+      "wind": 0.2,
+      "flash": false,
+      "visible": 200,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 200,
+      "kind": -1,
+      "wind": 0,
+      "flash": false,
+      "visible": 200,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 200,
+      "kind": -2,
+      "wind": 0.2,
+      "flash": false,
+      "visible": 200,
+      "dc": 18,
+      "min": 18,
+      "max": 18
+    },
+    {
+      "count": 400,
+      "kind": 0,
+      "wind": 0,
+      "flash": false,
+      "visible": 400,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 400,
+      "kind": 0,
+      "wind": 0,
+      "flash": true,
+      "visible": 400,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 400,
+      "kind": 1,
+      "wind": 0,
+      "flash": false,
+      "visible": 400,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 400,
+      "kind": 1,
+      "wind": 0.12,
+      "flash": false,
+      "visible": 400,
+      "dc": 18,
+      "min": 18,
+      "max": 18
+    },
+    {
+      "count": 400,
+      "kind": 2,
+      "wind": 0.2,
+      "flash": false,
+      "visible": 400,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 400,
+      "kind": -1,
+      "wind": 0,
+      "flash": false,
+      "visible": 400,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 400,
+      "kind": -2,
+      "wind": 0.2,
+      "flash": false,
+      "visible": 400,
+      "dc": 18,
+      "min": 18,
+      "max": 18
+    },
+    {
+      "count": 5,
+      "kind": 3,
+      "wind": 0,
+      "flash": false,
+      "visible": 5,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 20,
+      "kind": 3,
+      "wind": 0,
+      "flash": false,
+      "visible": 20,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    },
+    {
+      "count": 50,
+      "kind": 3,
+      "wind": 0,
+      "flash": false,
+      "visible": 50,
+      "dc": 17,
+      "min": 17,
+      "max": 17
+    }
+  ],
+  "guardianAtlas": {
+    "ready": true,
+    "bytes": 4194304,
+    "error": ""
+  },
+  "heroModes": [
+    {
+      "mode": "idle",
+      "frame": 0,
+      "ready": true,
+      "maxEquipmentBytes": 4194304
+    },
+    {
+      "mode": "walk",
+      "frame": 1,
+      "ready": true,
+      "maxEquipmentBytes": 4194304
+    },
+    {
+      "mode": "cast",
+      "frame": 0,
+      "ready": true,
+      "maxEquipmentBytes": 4194304
+    },
+    {
+      "mode": "cast",
+      "frame": 5,
+      "ready": true,
+      "maxEquipmentBytes": 4194304
+    },
+    {
+      "mode": "cast",
+      "frame": 11,
+      "ready": true,
+      "maxEquipmentBytes": 4194304
+    },
+    {
+      "mode": "walk-cast",
+      "frame": 2,
+      "ready": true,
+      "maxEquipmentBytes": 4194304
+    }
+  ],
+  "mobile": [
+    {
+      "width": 393,
+      "height": 852,
+      "dpr": 3,
+      "touch": true,
+      "initial": {
+        "dialog": "start",
+        "stickVisible": true,
+        "font": "PingFang SC",
+        "point": {
+          "x": 114.4175,
+          "y": 696.315
+        },
+        "stage": [
+          393,
+          852
+        ]
+      },
+      "battle": {
+        "mode": "battle",
+        "time": 1.8499999999999983,
+        "hp": 100,
+        "enemies": 5,
+        "hero": {
+          "ready": true,
+          "error": ""
+        },
+        "textureBytes": 10485760
+      }
+    },
+    {
+      "width": 852,
+      "height": 393,
+      "dpr": 3,
+      "touch": true,
+      "initial": {
+        "dialog": "start",
+        "stickVisible": true,
+        "font": "PingFang SC",
+        "point": {
+          "x": 233.5,
+          "y": 331.35
+        },
+        "stage": [
+          852,
+          393
+        ]
+      },
+      "battle": {
+        "mode": "battle",
+        "time": 1.7666666666666653,
+        "hp": 100,
+        "enemies": 2,
+        "hero": {
+          "ready": true,
+          "error": ""
+        },
+        "textureBytes": 10485760
+      }
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "dpr": 1,
+      "touch": false,
+      "initial": {
+        "dialog": "start",
+        "stickVisible": false,
+        "font": "system-ui",
+        "point": {
+          "x": 447.5,
+          "y": 628
+        },
+        "stage": [
+          1280,
+          720
+        ]
+      },
+      "battle": {
+        "mode": "battle",
+        "time": 1.7999999999999985,
+        "hp": 100,
+        "enemies": 4,
+        "hero": {
+          "ready": true,
+          "error": ""
+        },
+        "textureBytes": 10485760
+      }
+    }
+  ],
+  "wechat": [
+    {
+      "kind": "wechat-package-in-browser",
+      "initial": {
+        "dialog": "start",
+        "stage": [
+          393,
+          852
+        ],
+        "mobile": true,
+        "top": 88,
+        "adapter": true,
+        "canvas": [
+          786,
+          1704
+        ]
+      },
+      "battle": {
+        "mode": "battle",
+        "time": 0.8833333333333344
+      },
+      "dual": {
+        "owner": 7,
+        "dash": 2.2
+      },
+      "paused": {
+        "dialog": "pause",
+        "owner": null,
+        "stick": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "death": {
+        "dialog": "result",
+        "revival": false
+      },
+      "performance": {
+        "samples": 123,
+        "fps": 60.11730205278593,
+        "frameMs": 16.634146341463413,
+        "p95Ms": 19,
+        "maxMs": 22,
+        "updateMs": 0.13008130081300814,
+        "renderMs": 0.17073170731707318,
+        "simulationSteps": 0.967479674796748,
+        "maxSimulationSteps": 2,
+        "stepMs": 0.13445378151260504,
+        "engineSamples": 123,
+        "engineMs": 1.3821138211382114,
+        "drawCalls": 25.471544715447155,
+        "enemies": 0,
+        "shots": 0,
+        "drops": 14,
+        "effects": 4,
+        "enemyAtlasBytes": 4194304,
+        "sceneTextureBytes": 10485760,
+        "enemyAtlasReady": true,
+        "enemyAtlasError": "",
+        "autoPlayEnabled": false,
+        "autoPlayRound": 0,
+        "autoPlayStress": false,
+        "autoPlayDecisions": 0,
+        "autoPlayLastAction": "",
+        "drawCallReport": null,
+        "paused": false,
+        "quality": "标准"
+      },
+      "drawCallProbe": {
+        "active": false,
+        "error": "",
+        "report": {
+          "capturedAt": 1793759965389,
+          "context": {
+            "version": "0.12.2",
+            "seconds": 271.49999999999864,
+            "quality": "精细",
+            "enemies": 235,
+            "shots": 208,
+            "drops": 150,
+            "width": 393,
+            "height": 760
+          },
+          "baseline": 26,
+          "finalBaseline": 26,
+          "stable": true,
+          "rows": [
+            {
+              "group": "enemies",
+              "label": "怪物本体",
+              "without": 26,
+              "saved": 0
+            },
+            {
+              "group": "shots",
+              "label": "弹道",
+              "without": 26,
+              "saved": 0
+            },
+            {
+              "group": "buffs",
+              "label": "Buff 特效",
+              "without": 24,
+              "saved": 2
+            },
+            {
+              "group": "effects",
+              "label": "其他特效",
+              "without": 26,
+              "saved": 0
+            },
+            {
+              "group": "warnings",
+              "label": "血条/预警",
+              "without": 22,
+              "saved": 4
+            },
+            {
+              "group": "drops",
+              "label": "掉落/光柱",
+              "without": 26,
+              "saved": 0
+            },
+            {
+              "group": "labels",
+              "label": "飘字",
+              "without": 25,
+              "saved": 1
+            },
+            {
+              "group": "environment",
+              "label": "地图/柱子",
+              "without": 24,
+              "saved": 2
+            },
+            {
+              "group": "player",
+              "label": "玩家本体",
+              "without": 24,
+              "saved": 2
+            },
+            {
+              "group": "ui",
+              "label": "界面",
+              "without": 12,
+              "saved": 14
+            }
+          ]
+        },
+        "time": 271.49999999999864,
+        "hp": 100,
+        "dialog": "performance"
+      },
+      "probeContext": {
+        "time": 271.49999999999864,
+        "hp": 100,
+        "enemies": 235,
+        "shots": 208,
+        "drops": 150
+      }
+    }
+  ],
+  "densityLegend": {
+    "0": "slime",
+    "1": "caster",
+    "2": "boar",
+    "3": "elite",
+    "-1": "equal mix slime/caster/boar/elite",
+    "-2": "equal mix caster/boar"
+  }
+}

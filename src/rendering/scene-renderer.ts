@@ -11,6 +11,7 @@ import type { Shape } from './appearance.js';
 import { enemyVisualShapes } from './voxel.js';
 import { EnemyAtlas } from './enemy-atlas.js';
 import { castFrame } from './player-pose.js';
+import { walkFrame } from './hero-motion.js';
 import { enemyArtPose } from '../enemies/enemy-actions.js';
 import { drawHitFeedback } from './hit-feedback.js';
 import { lootPose } from './loot-presentation.js';
@@ -111,7 +112,7 @@ export class SceneRenderer {
     /** 装备、朝向或离散走路姿态变化才重画，force 用于开局和主动换装。 */
     drawAvatar(loadout: Loadout, p: Readonly<Player>, walkPhase: number, force = false): void {
         const weapon = weaponOf(loadout), castTime = p.castWeapon === weapon ? (p.castTime || 0) : 0;
-        const key = JSON.stringify(loadout) + p.face + p.back + ':' + p.direction + ':' + Math.floor((walkPhase % (Math.PI * 2)) * 3) + ':art' + this.playerAtlas.revision + ':cast' + castFrame(weapon, castTime);
+        const key = JSON.stringify(loadout) + p.face + p.back + ':' + p.direction + ':' + walkFrame(walkPhase) + ':move' + !!p.moving + ':art' + this.playerAtlas.revision + ':cast' + castFrame(weapon, castTime);
         if (!force && key === this.lastAvatar)
             return;
         this.lastAvatar = key;
@@ -202,8 +203,8 @@ export class SceneRenderer {
         this.playerNode.pos(pp.x, pp.y);
         this.depth(this.playerNode, p.x + p.y);
         this.playerNode.alpha = p.inv > 0 ? .55 + .35 * Math.sin(platform().now() * .04) : 1;
-        this.playerNode.scale(1 + state.recoil * .7, 1 - state.recoil * .6);
-        this.playerNode.rotation = state.recoil * 18 * p.face;
+        this.playerNode.scale(1, 1);
+        this.playerNode.rotation = 0;
         return { w, h, zoom };
     }
     /** 只同步显示属性和绘图缓存；屏幕外节点保留，返回视野时直接重新显示。 */

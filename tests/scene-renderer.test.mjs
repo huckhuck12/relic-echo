@@ -27,6 +27,16 @@ test('standalone renderer updates display nodes without changing frozen world st
   assert.deepEqual(childrenOf(scene.world),[scene.ground,scene.groundEffects,scene.actors,scene.effects]);
 });
 
+test('routine attack recoil leaves the player foot origin and scale grounded',()=>{
+ const {scene,state}=fixture();
+ scene.render(state);const origin=[scene.playerNode.x,scene.playerNode.y];
+ for(const recoil of [.1,.05,0]){
+  scene.render({...state,recoil});
+  assert.deepEqual([scene.playerNode.x,scene.playerNode.y],origin);
+  assert.equal(scene.playerNode.scaleX,1);assert.equal(scene.playerNode.scaleY,1);assert.equal(scene.playerNode.rotation,0);
+ }
+});
+
 test('cached enemy shapes keep normal, frozen, flash and quality appearances isolated',()=>{
  const {scene,enemy}=fixture();const commands=[];
  for(const name of ['drawPoly','drawRect','drawCircle'])enemy.node.graphics[name]=(...args)=>commands.push({name,args});

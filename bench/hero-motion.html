@@ -1,0 +1,34 @@
+<!doctype html>
+<meta charset="utf-8">
+<base href="/">
+<title>Hero attachment and grounded motion review</title>
+<style>body{margin:0;background:#526b50}canvas{display:block}</style>
+<script src="/vendor/laya.core.js"></script>
+<script src="/vendor/laya.webgl.js"></script>
+<script type="module">
+import {PlayerAtlas} from '/dist/rendering/player-atlas.js';
+import {heroArt} from '/dist/rendering/hero-art.js';
+import {CAST_DURATION} from '/dist/rendering/player-pose.js';
+import {emptyLoadout} from '/dist/shared/model.js';
+Laya.init(1024,640,Laya.WebGL);Laya.stage.bgColor='#526b50';
+await new Promise(resolve=>heroArt().whenReady(resolve));
+const sprites=[];
+for(const [row,weapon]of ['storm','flame','blade'].entries()){
+ const atlas=new PlayerAtlas();
+ for(let direction=0;direction<8;direction++){
+  const sprite=new Laya.Sprite();
+  sprite.pos(64+direction*128,180+row*195);sprite.scale(1.7,1.7);Laya.stage.addChild(sprite);
+  const cross=new Laya.Sprite();cross.graphics.drawLine(sprite.x-32,sprite.y,sprite.x+32,sprite.y,'#a4b592',1);Laya.stage.addChild(cross);
+  const text=new Laya.Text();text.text=weapon+' / '+direction;text.color='#f7edce';text.fontSize=13;text.pos(sprite.x-40,sprite.y+12);Laya.stage.addChild(text);
+  sprites.push({sprite,atlas,weapon,direction});
+ }
+}
+window.heroMotion={paint(mode='idle',frame=0){
+ for(const {sprite,atlas,weapon,direction}of sprites){
+  const moving=mode==='walk'||mode==='walk-cast';
+  atlas.paint(sprite.graphics,emptyLoadout(weapon),{direction,face:1,back:false,moving,castWeapon:weapon,castTime:mode.includes('cast')?CAST_DURATION[weapon]*(1-(frame+.5)/12):0},moving?frame*Math.PI/2:0);
+ }
+ return {ready:heroArt().image!==undefined,bytes:sprites.map(s=>s.atlas.bytes)};
+}};
+window.heroMotion.paint();
+</script>

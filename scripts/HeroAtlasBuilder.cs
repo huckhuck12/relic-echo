@@ -13,16 +13,16 @@ public static class HeroAtlasBuilder {
             || (p.R > 210 && p.G > 210 && p.B < 65)
             || (p.R > 180 && p.B > 170 && p.G < 100);
     }
-    static Frame Extract(Bitmap source, int col, int row, int cols) {
-        int x0 = col * source.Width / cols, y0 = row * source.Height / 5;
-        int w = (col + 1) * source.Width / cols - x0, h = (row + 1) * source.Height / 5 - y0;
+    static Frame Extract(Bitmap source, int col, int row, int cols, int rows = 5) {
+        int x0 = col * source.Width / cols, y0 = row * source.Height / rows;
+        int w = (col + 1) * source.Width / cols - x0, h = (row + 1) * source.Height / rows - y0;
         var pixels = new Color[w * h]; var seen = new bool[w * h];
         for (int y = 0; y < h; y++) for (int x = 0; x < w; x++) {
             var p = source.GetPixel(x0 + x, y0 + y);
             pixels[y * w + x] = p.A < 24 || Key(p) ? Color.Transparent : p;
         }
-        // Keep the character component, discarding detached chroma-key fragments.
-        var best = new List<int>();
+        // Keep the subject component, discarding detached chroma-key fragments.
+        var best = new List<int>(); var pieces = new List<int>();
         for (int i = 0; i < pixels.Length; i++) {
             if (seen[i] || pixels[i].A == 0) continue;
             var component = new List<int>(); var queue = new Queue<int>();
@@ -37,7 +37,9 @@ public static class HeroAtlasBuilder {
                 }
             }
             if (component.Count > best.Count) best = component;
+            if (rows == 1 && component.Count > 100) pieces.AddRange(component);
         }
+        if (rows == 1) best = pieces;
         if (best.Count < 1000) throw new Exception("Missing character: " + row + ":" + col);
         var image = new Bitmap(w, h, PixelFormat.Format32bppArgb);
         int left = w, top = h, right = 0, bottom = 0;
@@ -94,6 +96,7 @@ public static class HeroAtlasBuilder {
                     report.Add("{\"direction\":" + dir + ",\"pose\":" + pose + ",\"x\":" + tx + ",\"y\":" + ty + ",\"mirrored\":" + mirror.ToString().ToLowerInvariant() + "}");
                 }
             }
+            PackWeapons(input, output, atlas);
             atlas.Save(Path.Combine(output,"ruin-apprentice.png"),ImageFormat.Png);
             // Inspect both dark grass and pale backgrounds; final runtime does not use this board.
             using (var preview = new Bitmap(1024,1024)) using (var g = Graphics.FromImage(preview)) {
@@ -109,5 +112,26 @@ public static class HeroAtlasBuilder {
                 "{\"width\":1024,\"height\":1024,\"cell\":[96,128],\"pivot\":[48,124],\"scale\":1.5,\"frames\":["+string.Join(",",report)+"],\"qa\":{\"transparentPixels\":"+transparent+",\"opaquePixels\":"+opaque+",\"keyPixels\":"+bad+"}}\n");
         }
         foreach(var f in frames)f.Image.Dispose();
+    }
+    static void PackWeapons(string input, string output, Bitmap atlas) {
+        // Weapons share the otherwise empty bottom of the decoded body source.
+        // They are composited into the equipment sheet; no additional runtime texture.
+        string weapons = Path.Combine(input,"hero-b-weapons-source.png");
+        if (File.Exists(weapons)) {
+            var weaponReport=new List<string>();
+            using(var src=new Bitmap(weapons)) {
+                using(var g=Graphics.FromImage(atlas)) {
+                    g.InterpolationMode=InterpolationMode.HighQualityBicubic;
+                    for(int i=0;i<3;i++) {
+                        var f=Extract(src,i,0,3,1);
+                        float h=i==0?96:i==1?48:42, scale=h/f.Bounds.Height;
+                        weaponReport.Add("{\"sx\":"+(640+i*128)+",\"sy\":800,\"sw\":"+(int)Math.Ceiling(f.Bounds.Width*scale)+",\"sh\":"+(int)h+"}");
+                        g.DrawImage(f.Image,new RectangleF(640+i*128,800,f.Bounds.Width*scale,h),f.Bounds,GraphicsUnit.Pixel);
+                        f.Image.Dispose();
+                    }
+                }
+            }
+            File.WriteAllText(Path.Combine(output,"weapons.json"),"["+string.Join(",",weaponReport)+"]\n");
+        }
     }
 }

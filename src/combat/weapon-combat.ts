@@ -1,6 +1,7 @@
 import { WEAPONS, multiplier } from '../progression/config.js';
 import { project, unproject, clamp } from '../shared/model.js';
 import { CAST_DURATION, faceToward, playerDirection, weaponSocket } from '../rendering/player-pose.js';
+import { heroSocket } from '../rendering/hero-motion.js';
 import type { Loadout, Stats, SpatialGrid } from '../shared/model.js';
 import { weaponOf } from '../rendering/appearance.js';
 import { SHOT_LIMIT } from '../game/difficulty.js';
@@ -25,6 +26,7 @@ export interface WeaponState {
     time: number;
     overdrive: number;
     recoil: number;
+    paintedHero?: boolean;
 }
 /** 伤害通过回调进入 combat-system；DamageOptions 显式表达暴击、持续伤害与表现来源。 */
 export interface WeaponHooks {
@@ -51,7 +53,9 @@ export function attack(state: WeaponState, hooks: WeaponHooks): void {
     p.castWeapon = weapon;
     p.castTime = CAST_DURATION[weapon];
     // 高度只参与画面投影。挂载点快照不写回玩家或弹道的地面碰撞坐标。
-    const socket = weaponSocket(weapon, playerDirection(p), state.recoil, p.castTime);
+    const socket = state.paintedHero
+        ? heroSocket(weapon, playerDirection(p), p.castTime, !!p.moving, p.gaitPhase || 0)
+        : weaponSocket(weapon, playerDirection(p), state.recoil, p.castTime);
     const offset = unproject(socket.x, socket.y);
     // 短促施放反馈与伤害分离；tx 保存世界瞄准角，ty 标记武器材质，不增加伤害延迟。
     hooks.effect('cast', p.x + offset.x, p.y + offset.y, config.color, .12, Math.atan2(target.y - p.y, target.x - p.x), weapon === 'storm' ? 0 : weapon === 'flame' ? 1 : 2);

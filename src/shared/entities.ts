@@ -21,6 +21,9 @@ export interface Player extends Point {
     back: boolean;
     /** 屏幕八向；dx/dy 仍是世界移动/冲刺向量。 */
     direction?: import('../rendering/player-pose.js').Facing8;
+    /** Presentation of grounded locomotion, advanced by actual traveled distance. */
+    moving?: boolean;
+    gaitPhase?: number;
     /** 施放动作剩余秒数和对应武器；仅用于表现，暂停不推进，换武器时不沿用旧动作。 */
     castTime?: number;
     castWeapon?: import('../progression/config.js').Weapon;

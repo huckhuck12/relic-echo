@@ -1,6 +1,6 @@
 import type { LayaGraphics } from '../platform/laya.js';
 import { enemyArtPose, ENEMY_ACTION_SECONDS } from '../enemies/enemy-actions.js';
-import { enemyVisualShapes } from './voxel.js';
+import { enemyVisualShapes, enemyPartPoint } from './voxel.js';
 import type { Shape } from './voxel.js';
 import { ShapeAtlas } from './shape-atlas.js';
 import { actorAtlasFrames } from './painted-world.js';
@@ -10,7 +10,7 @@ export class EnemyAtlas {
     private readonly sheet: ShapeAtlas;
     private high?: EnemyAtlas;
     constructor(private readonly detail = false) {
-        this.sheet = new ShapeAtlas([...ordinaryAtlasFrames(detail), ...actorAtlasFrames()], 1.25);
+        this.sheet = new ShapeAtlas([...ordinaryAtlasFrames(detail), ...guardianAtlasFrames(detail), ...actorAtlasFrames()], 1.25);
     }
     get bytes(): number { return this.sheet.bytes + (this.high?.bytes || 0); }
     snapshot(detail = false): {
@@ -34,10 +34,44 @@ export class EnemyAtlas {
         return this.sheet.paint(graphics, key);
     }
     paint(graphics: LayaGraphics, kind: number, flash: boolean, frozen: boolean, pose: ReturnType<typeof enemyArtPose>, detail: boolean): boolean {
-        if (kind < 0 || kind >= 3)
+        if (kind < 0 || kind > 4)
             return false;
+        if (kind >= 3) {
+            if (!this.enabled || !Laya.Matrix)
+                return false;
+            if (detail !== this.detail) {
+                if (!detail)
+                    return false;
+                this.high ??= new EnemyAtlas(true);
+                return this.high.paint(graphics, kind, flash, frozen, pose, detail);
+            }
+            const key = `${kind}:${flash ? 'flash' : frozen ? 'ice' : 'normal'}`;
+            if (!this.sheet.paint(graphics, `${key}:body`))
+                return false;
+            for (const part of ['leftArm', 'rightArm'] as const) {
+                const origin = enemyPartPoint(0, 0, part, kind, pose);
+                const x = enemyPartPoint(1, 0, part, kind, pose), y = enemyPartPoint(0, 1, part, kind, pose);
+                const matrix = new Laya.Matrix(x.x - origin.x, x.y - origin.y, y.x - origin.x, y.y - origin.y, origin.x, origin.y);
+                this.sheet.paint(graphics, `${key}:${part}`, 0, 0, false, matrix);
+            }
+            return true;
+        }
         return this.paintKey(graphics, `${kind}:${flash ? 'flash' : frozen ? 'ice' : 'normal'}:${pose.key}`, detail);
     }
+}
+/** Body and articulated arms share the ordinary actors' page; no pose/instance textures. */
+export function guardianAtlasFrames(detail = false) {
+    const frames: {
+        key: string;
+        shapes: Shape[];
+    }[] = [];
+    for (const kind of [3, 4])
+        for (const color of ['normal', 'ice', 'flash']) {
+            const shapes = enemyVisualShapes(kind, color === 'flash', color === 'ice', detail, enemyArtPose({ kind, wind: 0 }));
+            for (const part of ['body', 'leftArm', 'rightArm'])
+                frames.push({ key: `${kind}:${color}:${part}`, shapes: shapes.filter(s => part === 'body' ? !s.part : s.part === part) });
+        }
+    return frames;
 }
 export function ordinaryAtlasFrames(detail = false) {
     const frames: {
