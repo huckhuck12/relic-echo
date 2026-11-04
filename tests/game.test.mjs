@@ -5,7 +5,7 @@ setupLayaStub();
 const {Game}=await import('../dist/game/game.js');
 const {GameUI}=await import('../dist/ui/ui.js');
 // Isolate weapon and input checks from the starter Buff's random procs.
-const create=()=>{const g=new Game();g.start('storm',true);for(let i=0;i<2;i++)for(const part of ['trigger','action','element'])g.buffs.install(i,part,null);return g;};
+const create=()=>{const g=new Game();g.start('storm',true);g.buffs.starterChosen=true;for(let i=0;i<2;i++)for(const part of ['trigger','action','element'])g.buffs.install(i,part,null);return g;};
 const tick=(g,seconds)=>{for(let i=0;i<Math.ceil(seconds*60);i++){if(g.gate.paused||g.mode!=='battle')break;g.update(1/60);g.render();}};
 const find=(root,name)=>root.name===name?root:childrenOf(root).map(child=>find(child,name)).find(Boolean);
 
@@ -66,7 +66,7 @@ test('fragment reward refreshes on activation and chains upgrade/equipment witho
 function FRAGMENTS_FOR_REWARD(){return ['hit','dash','kill','hurt','bolt','blast','field','orbit','fire','lightning','force'];}
 
 test('ground and elite duplicate fragments use the same upgrade settlement and preserve reward flow',()=>{
- const g=new Game();g.start('storm',true);g.sound=false;
+ const g=new Game();g.start('storm',true);g.sound=false;g.buffs.starterChosen=true;
  const r=g.buffs.recipes[0];g.drops.push({x:0,y:0,xp:0,fragment:'fire',collecting:false,node:g.acquire()});
  g.updateDrops(.01);assert.equal(g.buffs.levelOf(r),2);assert.equal(g.xp,0);assert.equal(g.drops.length,0);
  for(const id of FRAGMENTS_FOR_REWARD())g.buffs.grant(id);g.buffs.grant('ice');
@@ -83,10 +83,10 @@ test('Buff panel shows upgraded level/benefit on phone and refreshes without res
  const g=new Game(),ui=new GameUI(g);g.start('storm',true);g.buffs.receiveFragment('fire');g.buffs.cooldowns[0]=1.5;g.toggleBuffs();
  for(const [w,h]of [[320,568],[390,844],[568,320],[844,390]]){
   Laya.stage.width=w;Laya.stage.height=h;Laya.stage.emit('resize');
-  assert.match(find(ui.root,'buff-description').text,/伤害 \+20%/);
+  assert.match(find(ui.root,'buff-description').text,/伤害 \+10%/);
   assert.ok(childrenOf(find(ui.root,'buff-slot-0')).some(c=>c.text?.includes('Lv.2')));assertControls(find(ui.root,'dialog-panel'),w,h,true);
  }
- assert.equal(g.buffs.cooldowns[0],1.5);g.buffs.receiveFragment('fire');g.flow.refresh();assert.match(find(ui.root,'buff-description').text,/伤害 \+40%/);
+ assert.equal(g.buffs.cooldowns[0],1.5);g.buffs.receiveFragment('fire');g.flow.refresh();assert.match(find(ui.root,'buff-description').text,/伤害 \+10%/);
 });
 
 test('fragment cards remain clickable and inside desktop/phone dialogs across rotation',()=>{
@@ -380,6 +380,7 @@ test('timeout ends battle and restart clears entities, upgrades, timers and dial
 test('fixed budgets survive a full six-minute training simulation and five restarts',()=>{
   const g=new Game();g.start('storm',true);
   for(let i=0;i<21610&&g.mode==='battle';i++){
+    if(g.dialog?.type==='build'||g.dialog?.type==='branch')g.claimReward(g.flow.dialogId,{type:g.dialog.type,id:g.dialog.choices[0]});
     if(g.dialog?.type==='upgrade')g.claimReward(g.flow.dialogId,{type:'upgrade',id:g.dialog.choices[0]});
     if(g.dialog?.type==='drop')g.claimReward(g.flow.dialogId,{type:'drop',accept:true});
     if(g.dialog?.type==='fragment')g.claimReward(g.flow.dialogId,{type:'fragment',id:g.dialog.choices[0]});
@@ -476,7 +477,7 @@ test('late healing drops have a cooldown, and enemy bullets leave room for playe
 test('a fully upgraded stationary player remains vulnerable to the late horde',t=>{
   const random=Math.random;
   try {for(const weapon of ['storm','flame','blade']){
-    Math.random=seeded(627);const g=create();g.start(weapon,false);clearArena(g);g.time=270;g.level=30;g.attackTimer=0;g.spawnTimer=0;g.nextSurge=270;g.eliteIndex=4;
+    Math.random=seeded(627);const g=create();g.start(weapon,false);g.buffs.starterChosen=true;clearArena(g);g.time=270;g.level=30;g.attackTimer=0;g.spawnTimer=0;g.nextSurge=270;g.eliteIndex=4;
     g.levels=Object.fromEntries(UPGRADES.map(u=>[u.id,u.max]));g.loadout={weapon:{id:weapon,quality:2},head:{id:'helmet',quality:2},armor:{id:'heavy',quality:2},back:{id:'thorn',quality:2}};g.stats=resolveStats(g.loadout,g.levels);g.player.hp=g.stats.hp;
     for(let i=0;i<40*60&&g.mode==='battle';i++){if(g.dialog?.type==='upgrade')g.claimReward(g.flow.dialogId,{type:'upgrade',id:g.dialog.choices[0]});if(g.dialog?.type==='drop')g.claimReward(g.flow.dialogId,{type:'drop',accept:false});if(g.dialog?.type==='fragment')g.claimReward(g.flow.dialogId,{type:'fragment',id:g.dialog.choices[0]});if(!g.gate.paused)g.update(1/60);}
     t.diagnostic(`${weapon}: hp=${g.player.hp}, survived=${(g.time-270).toFixed(1)}s, kills=${g.kills}`);assert.equal(g.mode,'downed',`${weapon} should need movement despite full defensive gear`);assert.equal(g.player.hp,0);
@@ -570,6 +571,7 @@ test('every weapon starts with an editable working Buff and deals opening damage
     assert.deepEqual(g.buffs.recipes[0],{trigger:'hit',action:'blast',element:'fire'});
     assert.equal(g.buffs.recipes[1].trigger,null);assert.equal(g.buffs.owned.size,3);
     tick(g,3);assert.ok(g.damage>0);assert.ok(g.buffs.procs>0,weapon);
+    if(g.dialog?.type==='build')g.claimReward(g.flow.dialogId,{type:'build',id:'free'});
     while(g.dialog?.type==='upgrade')g.claimReward(g.flow.dialogId,{type:'upgrade',id:g.dialog.choices[0]});
     g.toggleBuffs();g.installBuff(0,'trigger',null);assert.equal(g.buffs.recipes[0].trigger,null);
   }}finally{Math.random=random;}

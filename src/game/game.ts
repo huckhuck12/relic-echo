@@ -523,6 +523,7 @@ export class Game {
         const direction = Math.hypot(move.x, move.y) > .01 ? move : { x: p.dx, y: p.dy };
         p.dx = direction.x;
         p.dy = direction.y;
+        this.buffs.beginDash(p.x, p.y);
         p.dashTime = COMBAT.dashDuration;
         p.dash = this.dashCooldown();
         p.inv = Math.max(p.inv, COMBAT.dashDuration);
@@ -660,6 +661,8 @@ export class Game {
         if (this.mode !== 'battle')
             return;
         this.buffs.update(dt);
+        if (this.buffs.takeBranchRequest())
+            this.show({ type: 'branch', choices: ['trail', 'furnace'] });
         if (this.mode !== 'battle')
             return;
         this.updateDrops(dt);

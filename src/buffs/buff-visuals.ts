@@ -79,6 +79,7 @@ export interface BuffVisualEffect {
     vy: number;
     age: number;
     level?: number;
+    radius?: number;
 }
 /**
  * 让行为决定运动方式、元素决定材质轮廓；复用现有运行时与装饰预算。
@@ -127,12 +128,12 @@ export function drawBuffEffect(overlay: any, floor: any, project: Project, e: Bu
         }
     }
     else if (e.kind === 'field') {
-        ring(floor, project, e.x, e.y, 90, c, 2);
+        ring(floor, project, e.x, e.y, e.radius || 90, c, 2);
         // 内部纹路低亮、边界高亮，保留可读范围而不糊成整块高亮色。
         const dim = { fire: '#81503b', ice: '#3d6c86', lightning: '#65547d', force: '#77664a' }[e.element];
-        ring(floor, project, e.x, e.y, 76, dim, 1);
+        ring(floor, project, e.x, e.y, (e.radius || 90) * .844, dim, 1);
         for (let i = 0; i < detail; i++) {
-            const a = i * Math.PI * 2 / detail, v = project(e.x + Math.cos(a) * 66, e.y + Math.sin(a) * 66);
+            const a = i * Math.PI * 2 / detail, v = project(e.x + Math.cos(a) * (e.radius || 90) * .733, e.y + Math.sin(a) * (e.radius || 90) * .733);
             const pulse = .5 + .5 * Math.sin(e.age * 7 + i * 2);
             if (e.element === 'lightning') {
                 const end = project(e.x + Math.cos(a + .25) * 35, e.y + Math.sin(a + .25) * 35);
@@ -146,7 +147,7 @@ export function drawBuffEffect(overlay: any, floor: any, project: Project, e: Bu
                 glyph(floor, v.x, v.y - 2, e.element, e.element === 'ice' ? 9 : 5 + pulse * 5, e.age * 8);
         }
         if (e.element === 'force')
-            ring(floor, project, e.x, e.y, 90 * ((e.age * 1.5) % 1), c, 2);
+            ring(floor, project, e.x, e.y, (e.radius || 90) * ((e.age * 1.5) % 1), c, 2);
         buffRankSeal(floor, project, e.x, e.y, e.element, e.level || 1, e.age, 32, detail);
     }
     else {
@@ -189,8 +190,8 @@ function drawPaintedBuffEffect(g: any, floor: any, project: Project, e: BuffVisu
     }
     if (e.kind === 'field') {
         // Full-resolution boundary is independent of the painted interior and quality tier.
-        paintVfx(floor, 'field', e.element, q.x, q.y, 146, 146, 0, .62 + tier * .1);
-        ring(floor, project, e.x, e.y, 90, color, 1.2);
+        paintVfx(floor, 'field', e.element, q.x, q.y, 146 * (e.radius || 90) / 90, 146 * (e.radius || 90) / 90, 0, .62 + tier * .1);
+        ring(floor, project, e.x, e.y, e.radius || 90, color, 1.2);
         const count = Math.min(3, detail);
         for (let i = 0; i < count; i++) {
             const a = i / count * Math.PI * 2 + .6, v = project(e.x + Math.cos(a) * 53, e.y + Math.sin(a) * 53);

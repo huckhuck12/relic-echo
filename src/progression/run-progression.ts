@@ -38,6 +38,9 @@ export type RewardChoice = {
     type: 'fragment';
     id: string;
 } | {
+    type: 'build' | 'branch';
+    id: string;
+} | {
     type: 'drop';
     accept: boolean;
 };
@@ -87,6 +90,18 @@ export class RunProgression {
         const dialog = state.dialog;
         if (!dialog || dialog.type !== choice.type)
             return null;
+        if (choice.type === 'build' && dialog.type === 'build') {
+            if (!dialog.choices.includes(choice.id) || !state.buffs.chooseStarter(choice.id))
+                return null;
+            if (choice.id === 'free')
+                this.hooks.show({ type: 'upgrade', choices: [] });
+            return { message: choice.id === 'free' ? '保留自由组合' : '两槽配方已装入 · 可随时在 Buff 面板修改' };
+        }
+        if (choice.type === 'branch' && dialog.type === 'branch') {
+            if (!dialog.choices.includes(choice.id) || (choice.id !== 'trail' && choice.id !== 'furnace') || !state.buffs.chooseBranch(choice.id))
+                return null;
+            return { message: choice.id === 'trail' ? '已选择火径 · 冲刺沿途铺火' : '已选择炉心 · 小范围高伤火场' };
+        }
         if (choice.type === 'fragment' && dialog.type === 'fragment') {
             if (!dialog.choices.includes(choice.id) || !FRAGMENTS.some(f => f.id === choice.id))
                 return null;
@@ -153,7 +168,7 @@ export class RunProgression {
         while (state.xp >= nextXP(state.level)) {
             state.xp -= nextXP(state.level);
             state.level++;
-            this.hooks.show({ type: 'upgrade', choices: candidates(state.levels, weaponOf(state.loadout)) });
+            this.hooks.show(state.buffs.requestStarter() ? { type: 'build', choices: ['fire', 'ice', 'thunder', 'free'] } : { type: 'upgrade', choices: candidates(state.levels, weaponOf(state.loadout)) });
             this.hooks.beep(930, .13);
         }
     }

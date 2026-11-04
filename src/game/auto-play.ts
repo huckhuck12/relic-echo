@@ -97,7 +97,7 @@ export class AutoPlay {
                 this.begin(weapons[(weapons.indexOf(this.weapon) + 1) % weapons.length]);
             }
             else if (delay >= 650) {
-                if (dialog.type === 'upgrade' || dialog.type === 'fragment') {
+                if (dialog.type === 'upgrade' || dialog.type === 'fragment' || dialog.type === 'build' || dialog.type === 'branch') {
                     const id = dialog.type === 'upgrade' && g.player.hp < g.stats.hp * .65 && dialog.choices.includes('heal') ? 'heal' : dialog.choices[this.rounds % dialog.choices.length];
                     if (id && g.claimReward(this.dialogId, { type: dialog.type, id }))
                         this.note(dialog.type + ':' + id);

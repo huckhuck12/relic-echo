@@ -4,7 +4,7 @@ import {setupLayaStub} from './helpers/laya-stub.mjs';
 setupLayaStub();
 const {Game}=await import('../dist/game/game.js');
 const {UPGRADES}=await import('../dist/progression/config.js');
-const create=()=>{const g=new Game();g.start('storm',true);g.sound=false;return g;};
+const create=()=>{const g=new Game();g.start('storm',true);g.buffs.starterChosen=true;g.sound=false;return g;};
 const open=(g,dialog)=>{g.show(dialog);return g.flow.dialogId;};
 
 test('settlement rejects wrong type, non-candidates, stale IDs and callbacks from a previous run',()=>{

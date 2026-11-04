@@ -21,6 +21,8 @@ export function applyBuffSlow<T extends BuffTarget>(statuses: Map<T, BuffStatus>
 }
 /** 基础伤害先由调用方扣除；此处附加元素，返回 false 时不再派发进化。 */
 export function applyBuffElement<T extends BuffTarget>(host: BuffHost<T>, statuses: Map<T, BuffStatus>, target: T, effect: BuffEffect, feedback: BuffFeedbackSink): boolean {
+    if (target.dead)
+        return false;
     feedback('impact', effect.element, target.x, target.y, effect.x, effect.y);
     if (effect.element === 'fire')
         feedback('scorch', effect.element, target.x, target.y);
@@ -45,6 +47,7 @@ export function applyBuffElement<T extends BuffTarget>(host: BuffHost<T>, status
             status.slow = BUFF_RULES.slow.duration;
         else {
             status.burn = BUFF_RULES.burn.duration;
+            status.burnSlot = effect.slot;
             status.burnDamage = Math.max(status.burnDamage, effect.damage * BUFF_RULES.burn.damage);
         }
     }
@@ -57,6 +60,8 @@ export function updateBuffStatuses<T extends BuffTarget>(statuses: Map<T, BuffSt
             statuses.delete(target);
             continue;
         }
+        status.reforgeLock = Math.max(0, (status.reforgeLock || 0) - dt);
+        status.heatLock = Math.max(0, (status.heatLock || 0) - dt);
         status.slow = Math.max(0, status.slow - dt);
         if (status.burn > 0) {
             const elapsed = Math.min(dt, status.burn);

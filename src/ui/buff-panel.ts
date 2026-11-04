@@ -12,7 +12,7 @@ export interface BuffEditorState {
 }
 /** 当前渲染所需的最小视图。面板不保存 Game，也不接触暂停/奖励队列。 */
 export interface BuffPanelState {
-    buffs: Pick<BuffRuntime<Enemy>, 'recipes' | 'owned' | 'levelOf'>;
+    buffs: Pick<BuffRuntime<Enemy>, 'recipes' | 'owned' | 'levelOf' | 'branchOf'>;
     stats: Pick<Stats, 'damage' | 'element'>;
     training: boolean;
 }
@@ -71,7 +71,7 @@ export function renderBuffPanel(p: LayaSprite, w: number, h: number, editor: Buf
                 refresh();
             }, false, `buff-part-${part}`);
         });
-        const descriptionY = narrow ? 263 : 158, description = recipeDescription(recipe, 1 + state.stats.damage + state.stats.element, state.buffs.levelOf(recipe));
+        const descriptionY = narrow ? 263 : 158, description = recipeDescription(recipe, 1 + state.stats.damage + state.stats.element, state.buffs.levelOf(recipe)) + (state.buffs.branchOf(recipe) ? `\n分支：${state.buffs.branchOf(recipe) === 'trail' ? '火径 · 冲刺沿途铺火' : '炉心 · 小范围高伤'}` : '');
         const unlock = state.training && descriptionY + 184 < footer, contentBottom = footer - (unlock ? 64 : 8);
         // 进化说明增加行数后，按保守字符宽度预留高度，不能仍用固定的 +78 放次级说明。
         let fontSize = short ? 11 : 13;
@@ -87,7 +87,7 @@ export function renderBuffPanel(p: LayaSprite, w: number, h: number, editor: Buf
         }
         const noteY = descriptionY + height + 8;
         if (noteY + 62 < contentBottom)
-            controls.text(p, '重复碎片匹配完整配方时升级，每级伤害 +20%，最高 Lv.5。\n进化同享加成，等级随具体组合保留，重开清零。', pad, noteY, inner, 11, C.muted);
+            controls.text(p, '行为＋元素共享成长；Lv.2/4 伤害 +10%，最高 +20%。\n火焰区域 Lv.3 选分支，Lv.5 强化；跨槽冲击回拉燃烧目标。', pad, noteY, inner, 11, C.muted);
         if (unlock)
             controls.button(p, '练习：解锁全部碎片', pad, footer - 56, Math.min(inner, 240), 44, () => hooks.unlockFragments(), false, 'buff-unlock');
         controls.button(p, '清空当前配方', pad, footer, (inner - gap) / 2, 44, () => {

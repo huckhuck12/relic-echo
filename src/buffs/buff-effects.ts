@@ -26,6 +26,7 @@ export function segmentDistance(x: number, y: number, ax: number, ay: number, bx
 }
 /** 反向遍历并在命中后回收，保持同帧命中/击杀/奖励顺序；apply 是唯一结算入口。 */
 export function updateBuffEffects<T extends BuffTarget>(effects: BuffEffect[], host: BuffHost<T>, dt: number, apply: (target: T, effect: BuffEffect) => void): void {
+    const contacts = new Map<number, Set<T>>();
     for (let index = effects.length - 1; index >= 0; index--) {
         const effect = effects[index], elapsed = Math.min(dt, effect.life);
         effect.life -= dt;
@@ -64,9 +65,19 @@ export function updateBuffEffects<T extends BuffTarget>(effects: BuffEffect[], h
                     }
                 }
             }
-            else
-                for (const target of host.query(effect.x, effect.y, BUFF_RULES[effect.kind].radius))
+            else {
+                let hit = effect.branch === 'trail' && effect.cast !== undefined ? contacts.get(effect.cast) : undefined;
+                if (!hit && effect.branch === 'trail' && effect.cast !== undefined) {
+                    hit = new Set<T>();
+                    contacts.set(effect.cast, hit);
+                }
+                for (const target of host.query(effect.x, effect.y, effect.radius || BUFF_RULES[effect.kind].radius)) {
+                    if (target.dead || hit?.has(target))
+                        continue;
+                    hit?.add(target);
                     apply(target, effect);
+                }
+            }
         }
         if (effect.life <= 0)
             effects.splice(index, 1);

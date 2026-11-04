@@ -85,7 +85,7 @@ export class TouchStick {
         this.game.setStick(this.game.gate.paused ? 0 : this.direction.x, this.game.gate.paused ? 0 : this.direction.y);
     }
     private rewardOpen(): boolean {
-        return this.game.gate.pausedOnlyBy('dialog') && !!this.game.dialog && ['upgrade', 'fragment', 'drop'].includes(this.game.dialog.type);
+        return this.game.gate.pausedOnlyBy('dialog') && !!this.game.dialog && ['upgrade', 'fragment', 'drop', 'build', 'branch'].includes(this.game.dialog.type);
     }
     /** 奖励只暂停移动，仍按住的左指在最后一张卡领取后继续；失焦/菜单必须释放。 */
     sync(): void {

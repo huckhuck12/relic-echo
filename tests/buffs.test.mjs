@@ -26,18 +26,18 @@ test('one fragment selects the lowest matching recipe; identical recipes share o
 test('upgrades snapshot new damage for every action and fire seeds without changing existing effects',()=>{
  for(const action of ACTIONS){const {runtime:r,player}=fixture();install(r,'dash',action.id,'fire');
   r.trigger('dash',0,0,1);const old=r.effects[0],before=old.damage;
-  r.receiveFragment('fire');assert.equal(old.damage,before);assert.equal(r.cooldowns[0],3);
+  r.receiveFragment('fire');assert.equal(old.damage,before);assert.equal(r.cooldowns[0],1);
   r.cooldowns[0]=0;player.x=100;r.trigger('dash',100,0,1);const next=r.effects.at(-1);
-  assert.equal(next.damage,Math.round(({bolt:26,blast:22,field:10,orbit:12}[action.id])*1.2));
-  if(action.id==='field'){assert.equal(r.evolutions.seeds[0].damage,10);assert.equal(r.evolutions.seeds[1].damage,12);assert.equal(r.evolutions.links[0].damage,6.5);}
-  assert.match(recipeDescription(r.recipes[0],1,r.levelOf(r.recipes[0])),/Lv\.2\/5 · 伤害 \+20%/);
+  assert.equal(next.damage,Math.round(({bolt:26,blast:22,field:10,orbit:12}[action.id])*1.1));
+  if(action.id==='field'){assert.equal(r.evolutions.seeds[0].damage,10);assert.equal(r.evolutions.seeds[1].damage,11);assert.equal(r.evolutions.links[0].damage,6.5);}
+  assert.match(recipeDescription(r.recipes[0],1,r.levelOf(r.recipes[0])),/Lv\.2\/5 · 伤害 \+10%/);
  }
 });
 
 test('upgraded real lightning bolts feed their captured damage into thunder evolution',()=>{
  const {runtime:r,hits}=fixture();install(r,'dash','bolt','lightning');r.receiveFragment('bolt');
  for(let i=0;i<3;i++){r.cooldowns[0]=0;r.trigger('dash',0,0,1);r.update(.1);}
- assert.equal(r.evolutions.detonations,1);assert.ok(hits.some(h=>h.value===31*1.6));assert.ok(hits.some(h=>h.value===31*.8));
+ assert.equal(r.evolutions.detonations,1);assert.ok(hits.some(h=>h.value===29*1.6));assert.ok(hits.some(h=>h.value===29*.8));
 });
 
 test('effect visuals snapshot their release level and evolution bursts inherit the actual hit source',()=>{

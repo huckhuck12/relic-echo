@@ -27,6 +27,7 @@ export interface BuffTarget {
     x: number;
     y: number;
     dead: boolean;
+    kind?: number;
 }
 /** 与战斗编排层的唯一连接；damage 回调必须阻止 Buff 递归触发 Buff。 */
 export interface BuffHost<T extends BuffTarget> {
@@ -53,7 +54,12 @@ export interface BuffEffect {
     damage: number;
     element: Element;
     level: number;
+    slot?: number;
+    cast?: number;
+    branch?: FireBranch;
+    radius?: number;
 }
+export type FireBranch = 'trail' | 'furnace';
 export interface BuffFeedback {
     x: number;
     y: number;
@@ -70,6 +76,9 @@ export interface BuffStatus {
     burn: number;
     burnDamage: number;
     burnTick: number;
+    burnSlot?: number;
+    reforgeLock?: number;
+    heatLock?: number;
     slow: number;
 }
 export type BuffFeedbackSink = (kind: BuffFeedback['kind'], element: Element, x: number, y: number, tx?: number, ty?: number, level?: number) => void;

@@ -14,6 +14,12 @@ export type Dialog = {
     type: 'fragment';
     choices: string[];
 } | {
+    type: 'build';
+    choices: string[];
+} | {
+    type: 'branch';
+    choices: string[];
+} | {
     type: 'drop';
     item: Item;
 } | {
@@ -94,7 +100,7 @@ export class RunFlow {
     /** 领取令牌只对应当前奖励；提交期间拒绝重入，结束后只公布一次最终队列状态。 */
     settleReward(dialogId: number, commit: () => boolean): boolean {
         if (this.settlingReward || this.state !== 'battle' || this.activeId !== dialogId ||
-            !this.current || !['upgrade', 'fragment', 'drop'].includes(this.current.type))
+            !this.current || !['upgrade', 'fragment', 'drop', 'build', 'branch'].includes(this.current.type))
             return false;
         this.settlingReward = true;
         try {

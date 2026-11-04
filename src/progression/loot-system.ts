@@ -19,7 +19,7 @@ export interface LootState {
     player: Player;
     loadout: Loadout;
     stats: Stats;
-    buffs: Pick<BuffRuntime<Enemy>, 'owned' | 'receiveFragment'>;
+    buffs: Pick<BuffRuntime<Enemy>, 'owned' | 'receiveFragment' | 'upgradePreview'>;
 }
 /** 经验与奖励由编排层即时结算，弹窗进入 RunFlow 队列；音效节流仍归 Game。 */
 export interface LootHooks {
@@ -71,7 +71,12 @@ export function makeDropRoom(state: LootState, hooks: LootHooks): boolean {
 export function dropFragment(state: LootState, hooks: LootHooks, x: number, y: number): void {
     if (!makeDropRoom(state, hooks))
         return;
-    const missing = FRAGMENTS.filter(f => !state.buffs.owned.has(f.id) && !state.drops.some(d => d.fragment === f.id)), pool = missing.length ? missing : FRAGMENTS, id = pool[Math.floor(Math.random() * pool.length)].id;
+    const available = FRAGMENTS.filter(f => !state.drops.some(d => d.fragment === f.id));
+    const missing = available.filter(f => !state.buffs.owned.has(f.id));
+    const upgrades = available.filter(f => state.buffs.upgradePreview?.(f.id));
+    // Equip-based growth and discovery each retain space in the pool; consume one RNG sample.
+    const pool = missing.length || upgrades.length ? [...missing, ...upgrades, ...upgrades] : FRAGMENTS;
+    const id = pool[Math.floor(Math.random() * pool.length)].id;
     const node = hooks.acquire();
     drawShapes(node.graphics, fragmentShapes());
     state.drops.push({

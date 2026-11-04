@@ -9,6 +9,7 @@ import {checkRenderAudit} from './render-audit.mjs';
 import {checkVfxAudit} from './vfx-audit.mjs';
 import {checkEnemyAudit} from './enemy-audit.mjs';
 import {checkEquipmentAudit} from './equipment-audit.mjs';
+import {checkBuffBuildBrowser} from './buff-build-browser-check.mjs';
 
 // Real bundled Laya + WebGL. Emulates touch/DPR, not an iOS GPU or Safari.
 const directory=resolve('artifacts','mobile-check-'+Date.now());
@@ -160,7 +161,8 @@ try{
   const inventoryShot=await send('Page.captureScreenshot',{format:'png'});
   await writeFile(resolve(directory,`${width}x${height}-inventory.png`),Buffer.from(inventoryShot.data,'base64'));
   assert.equal(errors.length,0,JSON.stringify(errors));
-  reports.push({width,height,dpr,touch,initial,battle});
+  await checkBuffBuildBrowser({send,evaluate,directory,touch});
+  reports.push({width,height,dpr,touch,initial,battle,buffBuilds:true});
  }
  if(process.argv.includes('--art-board')){
   await send('Emulation.setDeviceMetricsOverride',{width:960,height:640,deviceScaleFactor:1,mobile:false});

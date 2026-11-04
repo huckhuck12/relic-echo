@@ -6,7 +6,7 @@ import { createBuffEffect, updateBuffEffects } from './buff-effects.js';
 import { applyBuffElement, applyBuffSlow, updateBuffStatuses } from './buff-status.js';
 import { enqueueBuffFeedback, updateBuffFeedback } from './buff-feedback.js';
 import { renderBuffs } from './buff-renderer.js';
-import type { BuffEffect, BuffFeedback, BuffFeedbackSink, BuffHost, BuffStatus, BuffTarget, FragmentReward, Part, Recipe, Trigger } from './buff-types.js';
+import type { BuffEffect, BuffFeedback, BuffFeedbackSink, BuffHost, BuffStatus, BuffTarget, FragmentReward, FireBranch, Part, Recipe, Trigger } from './buff-types.js';
 // 公共导出兼容既有场景、测试和预览；内部模块应直接依赖 config/types，避免循环依赖。
 export * from './buff-config.js';
 export * from './buff-types.js';
@@ -27,6 +27,52 @@ export class BuffRuntime<T extends BuffTarget> {
     private statuses = new Map<T, BuffStatus>();
     private dispatching = false;
     procs = 0;
+    starterChosen = false;
+    private starterRequested = false;
+    requestStarter(): boolean {
+        if (this.starterChosen || this.starterRequested)
+            return false;
+        this.starterRequested = true;
+        return true;
+    }
+    private branchRequested = false;
+    private castSequence = 0;
+    private dashStart: {
+        x: number;
+        y: number;
+    } | null = null;
+    reforges = 0;
+    beginDash(x: number, y: number): void { this.dashStart = { x, y }; }
+    branchOf(recipe: Recipe): FireBranch | undefined { return recipe.action === 'field' && recipe.element === 'fire' ? this.upgrades.branches.get('field/fire') : undefined; }
+    takeBranchRequest(): boolean {
+        if (this.branchRequested || this.upgrades.level({ trigger: 'dash', action: 'field', element: 'fire' }) < 3 || this.upgrades.branches.has('field/fire'))
+            return false;
+        this.branchRequested = true;
+        return true;
+    }
+    chooseBranch(branch: FireBranch): boolean {
+        if (!this.branchRequested || this.upgrades.branches.has('field/fire') || !['trail', 'furnace'].includes(branch))
+            return false;
+        this.upgrades.branches.set('field/fire', branch);
+        return true;
+    }
+    chooseStarter(id: string): boolean {
+        if (this.starterChosen || !['fire', 'ice', 'thunder', 'free'].includes(id))
+            return false;
+        this.starterChosen = true;
+        if (id === 'free')
+            return true;
+        const recipes: Recipe[] = id === 'fire' ? [{ trigger: 'dash', action: 'field', element: 'fire' }, { trigger: 'hit', action: 'blast', element: 'force' }]
+            : id === 'ice' ? [{ trigger: 'hit', action: 'orbit', element: 'ice' }, { trigger: 'dash', action: 'blast', element: 'force' }]
+                : [{ trigger: 'hit', action: 'bolt', element: 'lightning' }, { trigger: 'dash', action: 'field', element: 'ice' }];
+        recipes.forEach((r, slot) => {
+            for (const part of PARTS) {
+                this.grant(r[part]!);
+                this.install(slot, part, r[part]);
+            }
+        });
+        return true;
+    }
     constructor(private readonly host: BuffHost<T>) {
         this.evolutions = new BuffEvolutions(host, {
             slow: (target, seconds) => applyBuffSlow(this.statuses, target, seconds),
@@ -62,9 +108,18 @@ export class BuffRuntime<T extends BuffTarget> {
         this.cooldowns.fill(0);
         this.clearTransient();
         this.procs = 0;
+        this.starterChosen = false;
+        this.starterRequested = false;
+        this.branchRequested = false;
+        this.castSequence = 0;
+        this.reforges = 0;
     }
     clearTransient(): void {
         this.effects.length = 0;
+        this.dashStart = null;
+        this.branchRequested = false;
+        if (!this.starterChosen)
+            this.starterRequested = false;
         this.statuses.clear();
         this.feedback.length = 0;
         this.visualTime = 0;
@@ -91,11 +146,29 @@ export class BuffRuntime<T extends BuffTarget> {
                     continue;
                 if (event === 'hit' && random() >= BUFF_RULES.hitChance)
                     continue;
-                if (this.effects.filter(effect => effect.kind === recipe.action).length >= BUFF_LIMITS[recipe.action])
-                    continue;
-                this.cooldowns[slot] = TRIGGERS.find(trigger => trigger.id === event)!.cooldown;
                 const level = this.levelOf(recipe);
                 const effect = createBuffEffect(this.host, recipe, event, x, y, recipeDamage(recipe, scale, level), level);
+                const branch = this.branchOf(recipe);
+                const refresh = branch === 'furnace' ? this.effects.find(e => e.slot === slot && e.branch === branch && Math.hypot(e.x - effect.x, e.y - effect.y) < 32) : undefined;
+                if (!refresh && this.effects.filter(e => e.kind === recipe.action).length >= BUFF_LIMITS[recipe.action])
+                    continue;
+                this.cooldowns[slot] = TRIGGERS.find(trigger => trigger.id === event)!.cooldown;
+                effect.slot = slot;
+                effect.cast = ++this.castSequence;
+                effect.branch = this.branchOf(recipe);
+                if (effect.kind === 'field' && effect.element === 'fire' && effect.branch === 'furnace') {
+                    effect.radius = 70;
+                    effect.damage *= 1.35;
+                    if (refresh)
+                        this.effects.splice(this.effects.indexOf(refresh), 1);
+                }
+                const room = BUFF_LIMITS.field - this.effects.filter(e => e.kind === 'field').length;
+                if (event === 'dash' && effect.kind === 'field' && effect.element === 'fire' && effect.branch === 'trail' && this.dashStart && room >= 3) {
+                    effect.damage *= .45;
+                    effect.life = level >= 5 ? 4 : 3;
+                    for (const t of [0, .5])
+                        this.effects.push({ ...effect, x: this.dashStart.x + (effect.x - this.dashStart.x) * t, y: this.dashStart.y + (effect.y - this.dashStart.y) * t });
+                }
                 this.effects.push(effect);
                 this.procs++;
                 if (recipe.action === 'field' && recipe.element === 'fire')
@@ -103,6 +176,8 @@ export class BuffRuntime<T extends BuffTarget> {
             }
         }
         finally {
+            if (event === 'dash')
+                this.dashStart = null;
             this.dispatching = false;
         }
     }
@@ -120,6 +195,27 @@ export class BuffRuntime<T extends BuffTarget> {
         if (target.dead)
             return;
         this.host.damage(target, effect.damage, true, effect.kind === 'field' || effect.kind === 'orbit');
+        if (target.dead)
+            return;
+        const status = this.statuses.get(target);
+        if (effect.element === 'force' && effect.slot !== undefined && status && status.burn > 0 && status.burnSlot !== undefined && status.burnSlot !== effect.slot) {
+            const field = this.effects.filter(e => e.life > 0 && e.kind === 'field' && e.element === 'fire' && e.slot === status.burnSlot && Math.hypot(e.x - target.x, e.y - target.y) <= (e.radius || BUFF_RULES.field.radius))
+                .sort((a, b) => Math.hypot(a.x - target.x, a.y - target.y) - Math.hypot(b.x - target.x, b.y - target.y))[0];
+            if (field) {
+                if (!(status.reforgeLock! > 0)) {
+                    status.reforgeLock = 1;
+                    this.reforges++;
+                    if (target.kind !== 4)
+                        this.host.knock(target, -BUFF_RULES.knockback, field.x, field.y);
+                    this.feedbackAt('impact', 'force', target.x, target.y, field.x, field.y);
+                    if (field.branch === 'furnace' && field.level >= 5 && !(status.heatLock! > 0)) {
+                        status.heatLock = 2;
+                        this.host.damage(target, field.damage * .6, true, true);
+                    }
+                }
+                return;
+            }
+        }
         if (applyBuffElement(this.host, this.statuses, target, effect, this.feedbackAt))
             this.evolutions.hit(target, effect);
     };

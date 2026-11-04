@@ -3,7 +3,7 @@
  */
 export const TRIGGERS = [
     { id: 'hit', name: '命中', note: '武器命中 30% 触发', cooldown: 2 },
-    { id: 'dash', name: '冲刺', note: '冲刺结束触发', cooldown: 3 },
+    { id: 'dash', name: '冲刺', note: '冲刺结束触发', cooldown: 1 },
     { id: 'kill', name: '击杀', note: '击杀敌人触发', cooldown: 2.5 },
     { id: 'hurt', name: '受击', note: '实际受伤且存活时触发', cooldown: 4 },
 ] as const;

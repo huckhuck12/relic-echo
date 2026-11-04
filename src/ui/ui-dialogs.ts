@@ -83,6 +83,10 @@ export class GameDialogs {
             renderSystemDialog(dialog.type, p, w, h, this.game, this.controls);
             return;
         }
+        if (dialog.type === 'build' || dialog.type === 'branch') {
+            this.buildDialog(p, dialog, w, h);
+            return;
+        }
         if (dialog.type === 'fragment') {
             this.fragmentDialog(p, dialog.choices, w, h);
             return;
@@ -109,6 +113,35 @@ export class GameDialogs {
             this.text(card, fragmentRouteHint(id, this.game.buffs.owned, this.game.buffs.upgradePreview(id)), 12, 38, cardW - 24, 11, C.text);
         });
         this.text(p, '领取后按 B / Buff 组合装入配方，不自动替换。', pad, h - pad - 23, inner, 11, C.muted);
+    }
+    private buildDialog(p: LayaSprite, dialog: Extract<NonNullable<Dialog>, {
+        type: 'build' | 'branch';
+    }>, w: number, h: number): void {
+        const pad = 16, gap = 10, inner = w - pad * 2, short = h < 360;
+        const columns = w >= 480 ? 2 : 1, rows = Math.ceil(dialog.choices.length / columns);
+        const top = short ? 66 : 88, cardW = (inner - gap * (columns - 1)) / columns;
+        const cardH = Math.min(140, (h - top - pad - 26 - gap * (rows - 1)) / rows);
+        this.text(p, dialog.type === 'build' ? '选择起始组合' : '火焰区域 · 选择成长分支', pad, 14, inner, short ? 19 : 23, C.gold);
+        this.text(p, dialog.type === 'build' ? '一次装好两槽，之后可自由换碎片。' : '本局二选一；换触发方式保留分支。', pad, short ? 40 : 49, inner, 11, C.muted);
+        const entries: Record<string, [
+            string,
+            string
+        ]> = {
+            fire: ['冲刺布场', '冲刺留火＋命中冲击。\n燃烧目标在火场内被另一槽冲击命中，回拉至火场；每目标 1 秒一次。'],
+            ice: ['冰冻碎裂', '命中生成冰环＋冲刺冲击。\n冰环连续接触叠层碎裂，冲刺推开敌人。'],
+            thunder: ['雷印引爆', '命中雷丸＋冲刺冰场。\n雷丸叠印引爆，冰场减速；可自由调整触发。'],
+            free: ['自由组合', '保留当前两槽，不替换。\n额外获得一次常规强化选择。'],
+            trail: ['火径', '冲刺沿途铺 3 个火场，各 45% 伤害，持续 3 秒；重叠不叠伤。Lv.5 延长至 4 秒。'],
+            furnace: ['炉心', '火场缩至半径 70，伤害 ×1.35；同处刷新。Lv.5 回炉追加 60% 火场伤害，每目标 2 秒一次。'],
+        };
+        const dialogId = this.game.flow.dialogId;
+        dialog.choices.forEach((id, i) => {
+            const card = this.button(p, '', pad + (i % columns) * (cardW + gap), top + Math.floor(i / columns) * (cardH + gap), cardW, cardH, () => this.game.claimReward(dialogId, { type: dialog.type, id }), false, dialog.type + '-' + id);
+            this.text(card, entries[id][0], 10, 8, cardW - 20, 15, C.gold);
+            const label = this.text(card, entries[id][1], 10, 33, cardW - 20, short ? 10 : 11, C.text);
+            label.leading = short ? 2 : 4;
+        });
+        this.text(p, '战斗已暂停 · 点击整张卡片领取', pad, h - pad - 13, inner, 10, C.muted);
     }
     private buffDialog(p: LayaSprite, w: number, h: number): void {
         renderBuffPanel(p, w, h, this.buffEditor, { buffs: this.game.buffs, stats: this.game.stats, training: this.game.training }, this.controls, {
@@ -150,7 +183,7 @@ export class GameDialogs {
         return `${this.game.upgradeFeedback ? this.game.upgradeFeedback + ' · ' : ''}待领取 ${remaining} 份奖励`;
     }
     private standardDialog(p: LayaSprite, dialog: Exclude<NonNullable<Dialog>, {
-        type: 'revive' | 'performance';
+        type: 'revive' | 'performance' | 'build' | 'branch';
     }>, w: number, h: number): void {
         const dialogId = this.game.flow.dialogId;
         if (dialog.type === 'fragment') {

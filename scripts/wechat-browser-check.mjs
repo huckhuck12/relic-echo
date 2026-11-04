@@ -70,6 +70,15 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  assert.equal(displayedVersion.text,'当前版本 v'+displayedVersion.version,'Performance panel matches the generated package version');
  const beforeReward=await evaluate(`(()=>{const t=wechatTest,s=t.app.ui.hudView.stick,a=s.activation,p=a.localToGlobal(new t.root.Laya.Point(a.width*.8,a.height*.15));t.heldStick={identifier:7,clientX:p.x+44,clientY:p.y};t.touch('Start',[{...t.heldStick,clientX:p.x}]);t.touch('Move',[t.heldStick]);const g=t.app.game;g.onToast('怪潮涌入');const n=g.acquire(true);n.text='999';g.labels.push({node:n,x:g.player.x,y:g.player.y,rise:48,life:.65});g.render();g.onChange();return{owner:s.stickTouch,direction:g.input.stick,decorative:n.mouseEnabled};})()`);
  assert.equal(beforeReward.owner,7);assert.ok(beforeReward.direction.x>.9);assert.equal(beforeReward.decorative,false);
+ // New rewards preserve the held floating joystick, using actual SDK touch dispatch.
+ await evaluate(`(()=>{const g=wechatTest.app.game;g.addXP(10);})()`);
+ await evaluate(`wechatTest.tap('build-fire',[wechatTest.heldStick])`);
+ assert.equal(await evaluate(`wechatTest.app.ui.hudView.stick.stickTouch`),7);
+ await evaluate(`(()=>{const g=wechatTest.app.game;g.buffs.receiveFragment('fire');g.buffs.receiveFragment('fire');g.buffs.takeBranchRequest();g.show({type:'branch',choices:['trail','furnace']});})()`);
+ await screenshot('buff-branch');
+ await evaluate(`wechatTest.tap('branch-furnace',[wechatTest.heldStick])`);
+ assert.equal(await evaluate(`wechatTest.app.ui.hudView.stick.stickTouch`),7);
+ assert.ok(await evaluate(`wechatTest.app.game.input.stick.x>.9`));
  await evaluate(`(()=>{const t=wechatTest,{UPGRADES}=t.load('/app/progression/config.js'),g=t.app.game;g.levels=Object.fromEntries(UPGRADES.map(u=>[u.id,u.max]));for(let i=0;i<3;i++)g.show({type:'upgrade',choices:[]});t.app.ui.update();})()`);
  for(let i=0;i<3;i++){
   const result=await evaluate(`(()=>{const t=wechatTest,g=t.app.game,id=g.flow.dialogId;t.tap('upgrade-heal',[t.heldStick]);return{pending:g.flow.pendingCount,dialog:g.dialog?.type,owner:t.app.ui.hudView.stick.stickTouch,stick:g.input.stick,stale:g.claimReward(id,{type:'upgrade',id:'heal'})};})()`);
