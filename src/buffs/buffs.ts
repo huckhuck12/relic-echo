@@ -164,7 +164,12 @@ export class BuffRuntime<T extends BuffTarget> {
                 if (event === 'hit' && random() >= BUFF_RULES.hitChance)
                     continue;
                 const level = this.levelOf(recipe);
-                const effect = createBuffEffect(this.host, recipe, event, x, y, recipeDamage(recipe, scale, level), level);
+                const effect = createBuffEffect(this.host, recipe, event, x, y, recipeDamage(recipe, scale, level), level, target => {
+                    if (recipe.element !== 'lightning')
+                        return 0;
+                    const mark = this.evolutions.thunder.get(target);
+                    return mark && mark.life > 0 && mark.lock <= 0 && mark.stacks > 0 ? mark.stacks : 0;
+                });
                 const branch = this.branchOf(recipe);
                 const refresh = branch === 'furnace' ? this.effects.find(e => e.slot === slot && e.branch === branch && Math.hypot(e.x - effect.x, e.y - effect.y) < 32) : undefined;
                 if (!refresh && this.effects.filter(e => e.kind === recipe.action).length >= BUFF_LIMITS[recipe.action])
