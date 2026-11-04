@@ -1,0 +1,55 @@
+<!doctype html><meta charset="utf-8"><base href="/">
+<title>Weapon and elemental VFX production review</title>
+<style>body{margin:0;background:#526b50}canvas{display:block}</style>
+<script src="/vendor/laya.core.js"></script><script src="/vendor/laya.webgl.js"></script>
+<script type="module">
+import {drawBuffEffect} from '/dist/buffs/buff-visuals.js';
+import {drawEvolutionState,drawEvolutionBurst} from '/dist/buffs/buff-evolution-visuals.js';
+import {renderBuffs} from '/dist/buffs/buff-renderer.js';
+import {lightningStroke,paintFlameShot,flameBurst,burningGround,castFlash,drawBladeOrbit,bladePulse} from '/dist/rendering/skill-visuals.js';
+import {project,emptyLoadout} from '/dist/shared/model.js';
+import {heroArt} from '/dist/rendering/hero-art.js';
+import {PlayerAtlas} from '/dist/rendering/player-atlas.js';
+import {routeVfx,vfxAtlas} from '/dist/rendering/vfx-atlas.js';
+Laya.init(1024,960,Laya.WebGL);Laya.stage.bgColor='#526b50';
+await new Promise(resolve=>heroArt().whenReady(resolve));
+const floorArt=new Laya.Sprite(),floor=new Laya.Sprite(),actors=new Laya.Sprite(),overlayArt=new Laya.Sprite(),overlay=new Laya.Sprite(),labels=new Laya.Sprite();
+for(const n of [floorArt,floor,actors,overlayArt,overlay,labels])Laya.stage.addChild(n);
+routeVfx(floor.graphics,floorArt.graphics);routeVfx(overlay.graphics,overlayArt.graphics);vfxAtlas();
+const label=(text,x,y)=>{const n=new Laya.Text();n.text=text;n.fontSize=16;n.color='#f7edce';n.pos(x,y);labels.addChild(n);};
+const hero=new PlayerAtlas(true);
+const person=(x,y)=>{const n=new Laya.Sprite();hero.paint(n.graphics,emptyLoadout('storm'),{direction:1,face:1,back:false,moving:false},0);n.pos(x,y);actors.addChild(n);};
+window.vfxReview={paint(mode='buffs',age=.08,level=3,detail=5){
+ floorArt.graphics.clear();overlayArt.graphics.clear();floor.graphics.clear();overlay.graphics.clear();floorArt.destroyChildren();overlayArt.destroyChildren();floor.destroyChildren();overlay.destroyChildren();actors.destroyChildren();labels.destroyChildren();
+ label(mode+' / level '+level+' / detail '+detail+' / age '+age,20,16);
+ const elements=['fire','ice','lightning','force'],kinds=['bolt','blast','field','orbit'];
+ if(mode==='buffs')for(const [row,kind]of kinds.entries())for(const [col,element]of elements.entries()){
+  const x=128+col*256,y=165+row*220,pr=(a,b)=>{const q=project(a,b);return{x:q.x+x,y:q.y+y};};
+  const e={kind,element,x:0,y:0,vx:480,vy:0,age,level};
+  drawBuffEffect(overlay.graphics,floor.graphics,pr,e,detail);
+  if(kind==='field')person(x,y+7);
+  label(kind+' / '+element,x-75,y+65);
+ }
+ else if(mode==='weapons'){
+  const place=(fn,x,y,parent=overlay)=>{const n=new Laya.Sprite();n.pos(x,y);parent.addChild(n);const raster=new Laya.Sprite();raster.pos(x,y);(parent===floor?floorArt:overlayArt).addChild(raster);routeVfx(n.graphics,raster.graphics);fn(n.graphics);};
+  person(150,230);place(g=>castFlash(g,0,0,0,0,age/.3,'#d6b0ff',true),150,175);
+  lightningStroke(overlay.graphics,165,180,430,180,age,.9,'#d6b0ff');label('storm / chain and impact',70,290);
+  const shot=new Laya.Sprite();paintFlameShot(shot.graphics,680,0);shot.pos(650,180);actors.addChild(shot);
+  place(g=>flameBurst(g,0,0,105,Math.min(1,age/.25),detail),800,220);label('flame / shot and burst',570,290);
+  place(g=>burningGround(g,0,0,85,age,detail),220,600,floor);label('flame / ground',150,680);
+  place(g=>{drawBladeOrbit(g,0,0,age,.22*(1-Math.min(1,age/.22)),150,5,0);bladePulse(g,0,0,150,0,Math.min(1,age/.22));},700,650);person(700,650);label('blade / orbit and release',590,770);
+ }
+ else {
+  const target={x:0,y:0,dead:false},state={links:[{a:{x:-80,y:0},b:{x:80,y:0},level}],seeds:[{x:-80,y:0,level},{x:80,y:0,level}],thunder:new Map([[target,{stacks:2,life:2}]]),frost:new Map([[{x:240,y:-240,dead:false},{stacks:3,life:2}]])};
+  const pr=(a,b)=>{const q=project(a,b);return{x:q.x+320,y:q.y+300};};
+  drawEvolutionState(overlay.graphics,floor.graphics,pr,state,()=>true,detail);
+  for(const [i,kind]of ['detonate','shatter'].entries()){
+   const pr=(a,b)=>{const q=project(a,b);return{x:q.x+256+i*512,y:q.y+520};};
+   drawEvolutionBurst(overlay.graphics,floor.graphics,pr,kind,0,0,Math.min(1,age/.3),level,detail);label(kind,206+i*512,600);
+  }
+  renderBuffs({effects:[],feedback:[],statuses:new Map([[{x:0,y:0,dead:false},{burn:2,slow:2}]]),evolutions:{links:[],seeds:[],thunder:new Map(),frost:new Map()},visualBudget:20,visualTime:age},overlay.graphics,(a,b)=>{const q=project(a,b);return{x:q.x+512,y:q.y+800};},floor.graphics,()=>true);person(512,800);label('burn + frost status',430,865);
+ }
+ return {mode,age,level,detail,atlas:vfxAtlas().status};
+}};
+window.vfxReview.paint();
+</script>

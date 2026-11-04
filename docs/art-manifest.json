@@ -1,9 +1,9 @@
 {
   "version": "0.12.2",
   "direction": "handdrawn-fantasy",
-  "production": "Selected B painted hero body and weapons; shared articulated elite/boss atlas; other code-authored assets await visual redesign",
+  "production": "Selected B painted hero; shared articulated enemy atlas; painted elemental weapon and Buff VFX; full enemy redraw pending",
   "view": "2.5D isometric, screen-space artwork with foot origin",
-  "rights": "Original project code art plus user-authorized generated hero raster; generation prompts and edits recorded in docs/art/hero-b-production.md; no sourced art or new font dependency",
+  "rights": "Original project code art plus user-authorized generated hero raster; generation prompts and edits recorded in docs/art/hero-b-production.md; no sourced art or new font dependency; generated elemental VFX provenance in docs/art/element-vfx-production.md",
   "assets": [
     {
       "family": "player-equipment",
@@ -61,6 +61,17 @@
       "font": "system serif headings; platform system sans body",
       "collision": "existing safe-area layouts and touch targets",
       "status": "phone-portrait-landscape-desktop-verified; native-font-pending"
+    },
+    {
+      "family": "elemental-weapon-buff-vfx",
+      "source": "src/rendering/vfx-atlas.ts",
+      "texture": "assets/vfx/elements.png",
+      "metadata": "assets/vfx/elements.json",
+      "frames": 16,
+      "maxGpuBytes": 1048576,
+      "cache": "one shared page; two scene raster passes; procedural fallback",
+      "coverage": "three weapons; 16 Buff combinations; burn/slow; three evolutions",
+      "status": "real-WebGL-verified; native-device-pending"
     }
   ],
   "preview": "docs/art/hero-b-ingame.png"

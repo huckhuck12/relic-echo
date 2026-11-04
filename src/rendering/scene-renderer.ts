@@ -1,4 +1,5 @@
 import { PlayerAtlas } from './player-atlas.js';
+import { routeVfx, vfxAtlas, paintVfx } from './vfx-atlas.js';
 import { shotTile } from './painted-world.js';
 import { platform } from '../platform/runtime.js';
 import { ELEMENTS } from '../buffs/buffs.js';
@@ -63,12 +64,14 @@ export class SceneRenderer {
     readonly world: any;
     readonly ground: any;
     readonly groundEffects: any;
+    readonly groundArt: any;
     readonly actors: any;
     readonly effects: any;
+    readonly effectArt: any;
     readonly playerNode: any;
     private readonly pillarNodes: any[];
     private readonly terrainBytes: number;
-    get textureBytes(): number { return this.terrainBytes + this.enemyAtlas.bytes + this.playerAtlas.bytes; }
+    get textureBytes(): number { return this.terrainBytes + this.enemyAtlas.bytes + this.playerAtlas.bytes + (vfxAtlas()?.status.bytes || 0); }
     private readonly playerAtlas = new PlayerAtlas();
     private readonly shotPaint = new WeakMap<Shot, boolean>();
     private readonly dropPaint = new WeakMap<Drop, boolean>();
@@ -84,14 +87,21 @@ export class SceneRenderer {
         this.world.mouseEnabled = false;
         this.ground = new Laya.Sprite();
         this.groundEffects = new Laya.Sprite();
+        this.groundArt = new Laya.Sprite();
         this.actors = new Laya.Sprite();
         this.effects = new Laya.Sprite();
+        this.effectArt = new Laya.Sprite();
         this.playerNode = new Laya.Sprite();
         Laya.stage.addChild(this.world);
         this.world.addChild(this.ground);
+        this.world.addChild(this.groundArt);
         this.world.addChild(this.groundEffects);
         this.world.addChild(this.actors);
+        this.world.addChild(this.effectArt);
         this.world.addChild(this.effects);
+        routeVfx(this.groundEffects.graphics, this.groundArt.graphics);
+        routeVfx(this.effects.graphics, this.effectArt.graphics);
+        vfxAtlas();
         this.actors.addChild(this.playerNode);
         const map = buildWorldMap(this.ground, this.actors, pillars, this.enemyAtlas);
         this.pillarNodes = map.nodes;
@@ -145,6 +155,8 @@ export class SceneRenderer {
         this.syncActors(state, zoom, inView);
         const g = this.effects.graphics;
         g.clear();
+        this.effectArt.graphics.clear();
+        this.groundArt.graphics.clear();
         if (excluded !== 'drops')
             this.drawIndicators(state, g);
         const floor = this.groundEffects.graphics;
@@ -291,7 +303,7 @@ export class SceneRenderer {
         const p = state.player;
         this.ellipse(floor, p.x, p.y, 27, null, '#bcecb0');
         for (const f of state.fields) {
-            this.ellipse(floor, f.x, f.y, f.radius, '#503b2e', '#b87549');
+            this.ellipse(floor, f.x, f.y, f.radius, null, '#b87549');
             burningGround(floor, f.x, f.y, f.radius, state.time, state.visuals.debris);
         }
         // 爆炸冲击圈压在地面层，焰冠位于上层；不让大光斑整块覆盖怪物身体。
@@ -348,7 +360,8 @@ export class SceneRenderer {
             if (!r.trigger || !r.action || !r.element)
                 return;
             const color = ELEMENTS.find(e => e.id === r.element)!.color;
-            g.drawRect(pp.x + (i ? 22 : -30), pp.y - 53, 8, 10, color, '#fff0c0', 1);
+            if (!paintVfx(g, 'focus', r.element, pp.x + (i ? 27 : -27), pp.y - 49 + Math.sin(state.time * 3 + i * Math.PI) * 2, 18))
+                g.drawRect(pp.x + (i ? 22 : -30), pp.y - 53, 8, 10, color, '#fff0c0', 1);
         });
         if (weaponOf(state.loadout) === 'blade') {
             const count = 3 + 2 * (state.levels.blades || 0), r = WEAPONS.blade.range * (1 + .2 * (state.levels.orbit || 0));

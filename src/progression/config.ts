@@ -66,7 +66,7 @@ export const gear = (item: Item | string): Gear => {
 export const multiplier = (q: Quality): number => 1 + q * .2;
 export const WEAPONS = {
     storm: {
-        damage: 25, interval: .32, range: 490, name: '雷电', color: '#91c9bd'
+        damage: 25, interval: .32, range: 490, name: '雷电', color: '#c5ade5'
     },
     flame: {
         damage: 30, interval: .5, range: 460, name: '火焰', color: '#eab176'

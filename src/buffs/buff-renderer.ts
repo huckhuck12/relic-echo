@@ -1,5 +1,6 @@
 import { glyph, ring, arc, drawBuffEffect, elementImpact } from './buff-visuals.js';
 import { drawEvolutionState, drawEvolutionBurst } from './buff-evolution-visuals.js';
+import { paintVfx } from '../rendering/vfx-atlas.js';
 import type { BuffEvolutions } from './buff-evolutions.js';
 import type { BuffEffect, BuffFeedback, BuffStatus, BuffTarget } from './buff-types.js';
 export interface BuffRenderState<T extends BuffTarget> {
@@ -45,8 +46,11 @@ export function renderBuffs<T extends BuffTarget>(state: BuffRenderState<T>, ove
             const end = project(feedback.tx, feedback.ty);
             glyph(overlay, end.x, end.y - 27, 'lightning', 8 * (1 - t) + 2);
         }
-        else if (feedback.kind === 'scorch')
-            ring(floor, project, feedback.x, feedback.y, 12 + t * 15, t < .5 ? '#76442c' : '#4a3b2e', 3 * (1 - t) + 1);
+        else if (feedback.kind === 'scorch') {
+            const q = project(feedback.x, feedback.y);
+            if (!paintVfx(floor, 'field', 'fire', q.x, q.y, 28 + t * 22, 28 + t * 22, 0, .5 * (1 - t)))
+                ring(floor, project, feedback.x, feedback.y, 12 + t * 15, t < .5 ? '#76442c' : '#4a3b2e', 3 * (1 - t) + 1);
+        }
         else
             elementImpact(overlay, floor, project, feedback.x, feedback.y, feedback.tx, feedback.ty, feedback.element, t, detail);
     }

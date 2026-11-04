@@ -1,6 +1,7 @@
 import type { Weapon } from '../progression/config.js';
 import type { Effect } from '../shared/entities.js';
 import { clamp, project } from '../shared/model.js';
+import { paintVfx } from './vfx-atlas.js';
 /** 武器命中的纯画面快照。方向来自实际连锁来源/爆心/轨道切线，不能用当前装备倒推。 */
 export interface HitFeedback {
     weapon: Weapon;
@@ -14,6 +15,12 @@ export function drawHitFeedback(g: any, effect: Effect): void {
     if (t >= 1)
         return;
     const dx = Math.cos(effect.tx), dy = Math.sin(effect.tx), x = q.x, y = q.y - 26;
+    const element = effect.ty === 1 ? 'fire' : 'lightning';
+    if (paintVfx(g, effect.ty === 2 ? 'focus' : 'impact', element, x, y, effect.ty === 2 ? 34 : 29 + t * 9, effect.ty === 2 ? 22 : 29 + t * 9, effect.ty === 2 ? effect.tx : 0, 1 - t)) {
+        if (effect.ty === 2)
+            g.drawLine(x - dx * 17, y - dy * 17, x + dx * 17, y + dy * 17, '#f0e5ff', 1.5 * (1 - t) + .5);
+        return;
+    }
     if (effect.ty === 0) {
         // 身体两侧的短电弧按离散阶段换折点，强调抽动，不用全屏白闪。
         const phase = Math.floor(t * 4);

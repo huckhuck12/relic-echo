@@ -1,5 +1,6 @@
 import type { Element, Action } from './buff-types.js';
 import { directionalShape, lightningStroke, spark } from '../rendering/skill-visuals.js';
+import { paintVfx, vfxAtlas } from '../rendering/vfx-atlas.js';
 type Project = (x: number, y: number) => {
     x: number;
     y: number;
@@ -16,9 +17,9 @@ export function buffRankSeal(g: any, project: Project, x: number, y: number, ele
     const tier = buffVisualTier(level);
     if (!tier)
         return;
-    const points: number[] = [], count = tier === 2 ? 8 : 4;
+    const points: number[] = [], count = tier === 2 ? 12 : 8;
     for (let i = 0; i < count; i++) {
-        const a = i * Math.PI * 2 / count, r = tier === 2 && i % 2 ? radius * .55 : radius;
+        const a = i * Math.PI * 2 / count, r = i % 2 ? radius * .65 : radius;
         const q = project(x + Math.cos(a) * r, y + Math.sin(a) * r);
         points.push(q.x, q.y);
     }
@@ -41,6 +42,8 @@ export function ring(g: any, project: Project, x: number, y: number, r: number, 
 }
 /** Elements differ in silhouette as well as color. */
 export function glyph(g: any, x: number, y: number, element: Element, size: number, phase = 0): void {
+    if (paintVfx(g, 'focus', element, x, y - size * .55, size * 2.6, size * 2.6, element === 'force' ? Math.sin(phase) * .12 : 0))
+        return;
     const c = ELEMENT_COLOR[element];
     if (element === 'fire') {
         g.drawPoly(x, y, [-size * 1.2, 0, -size * .8, -size * .9, -size * .2, -size * .6, size * .2, -size * 1.9, size, -size * .7, size * 1.2, 0], '#8e443c');
@@ -82,6 +85,10 @@ export interface BuffVisualEffect {
  * 地面区域与轨道只画在 floor，爆发/弹头画在 overlay，不将所有组合都画成圆圈撒图标。
  */
 export function drawBuffEffect(overlay: any, floor: any, project: Project, e: BuffVisualEffect, detail: number): void {
+    if (overlay.drawTexture && floor.drawTexture && vfxAtlas()?.status.ready) {
+        drawPaintedBuffEffect(overlay, floor, project, e, detail);
+        return;
+    }
     const c = ELEMENT_COLOR[e.element], q = project(e.x, e.y), tier = buffVisualTier(e.level);
     if (e.kind === 'bolt') {
         const back = project(e.x - e.vx * .075, e.y - e.vy * .075), dx = q.x - back.x, dy = q.y - back.y;
@@ -169,9 +176,79 @@ export function drawBuffEffect(overlay: any, floor: any, project: Project, e: Bu
         buffRankSeal(floor, project, e.x, e.y, e.element, e.level || 1, e.age, Math.min(40, r * .5), detail);
     }
 }
+/** Shared painted materials, four different motions; vector contours remain the gameplay guide. */
+function drawPaintedBuffEffect(g: any, floor: any, project: Project, e: BuffVisualEffect, detail: number): void {
+    const q = project(e.x, e.y), tier = buffVisualTier(e.level), color = ELEMENT_COLOR[e.element];
+    if (e.kind === 'bolt') {
+        const back = project(e.x - e.vx * .065, e.y - e.vy * .065), angle = Math.atan2(q.y - back.y, q.x - back.x);
+        const size = 48 + tier * 5;
+        paintVfx(g, 'projectile', e.element, q.x, q.y - 24, size, size, angle);
+        if (tier)
+            g.drawLine(back.x, back.y - 24, q.x, q.y - 24, RANK_CORE[e.element], tier === 2 ? 1.5 : .8);
+        return;
+    }
+    if (e.kind === 'field') {
+        // Full-resolution boundary is independent of the painted interior and quality tier.
+        paintVfx(floor, 'field', e.element, q.x, q.y, 146, 146, 0, .62 + tier * .1);
+        ring(floor, project, e.x, e.y, 90, color, 1.2);
+        const count = Math.min(3, detail);
+        for (let i = 0; i < count; i++) {
+            const a = i / count * Math.PI * 2 + .6, v = project(e.x + Math.cos(a) * 53, e.y + Math.sin(a) * 53);
+            const pulse = .7 + .3 * Math.sin(e.age * (e.element === 'fire' ? 7 : 3) + i * 2);
+            paintVfx(floor, 'focus', e.element, v.x, v.y, 11 + pulse * 5, 11 + pulse * 5, e.element === 'force' ? a : 0, .65);
+        }
+        if (e.element === 'force')
+            ring(floor, project, e.x, e.y, 90 * ((e.age * 1.5) % 1), '#d3bd8a', 1);
+        if (e.element === 'lightning') {
+            const a = project(e.x - 35, e.y), b = project(e.x + 35, e.y);
+            floor.drawLines(0, 0, [a.x, a.y, q.x - 5, q.y - 3, q.x + 4, q.y + 3, b.x, b.y], '#d2bde2', 1);
+        }
+        buffRankSeal(floor, project, e.x, e.y, e.element, e.level || 1, e.age, 29, detail);
+        return;
+    }
+    if (e.kind === 'orbit') {
+        ring(floor, project, e.x, e.y, 90, '#8e9d8a', .7);
+        for (let n = 0; n < 2; n++) {
+            const a = e.age * 6 + n * Math.PI, tip = project(e.x + Math.cos(a) * 90, e.y + Math.sin(a) * 90);
+            const tangent = project(-Math.sin(a), Math.cos(a)), points: number[] = [];
+            for (let j = 0; j <= Math.min(5, detail); j++) {
+                const v = project(e.x + Math.cos(a - j * .12) * 90, e.y + Math.sin(a - j * .12) * 90);
+                points.push(v.x, v.y - 22);
+            }
+            g.drawLines(0, 0, points, tier === 2 ? RANK_CORE[e.element] : color, 1 + tier * .35);
+            paintVfx(g, 'focus', e.element, tip.x, tip.y - 22, 26 + tier * 3, 26 + tier * 3, Math.atan2(tangent.y, tangent.x));
+            if (tier)
+                spark(g, tip.x, tip.y - 22, 2 + tier, RANK_CORE[e.element]);
+        }
+        return;
+    }
+    const t = Math.min(1, Math.max(0, e.age / .25));
+    if (t >= 1)
+        return;
+    const radius = 110 * (1 - Math.pow(1 - t, 3));
+    ring(floor, project, e.x, e.y, radius, color, 2 * (1 - t) + .5);
+    const size = (48 + radius * .55) * (1 - t * .3);
+    paintVfx(g, 'impact', e.element, q.x, q.y - 20 - Math.sin(t * Math.PI) * 7, size, size, 0, 1 - t * t);
+    if (detail >= 5)
+        for (let i = 0; i < 3; i++) {
+            const a = i * Math.PI * 2 / 3, v = project(e.x + Math.cos(a) * radius * .7, e.y + Math.sin(a) * radius * .7);
+            paintVfx(g, 'focus', e.element, v.x, v.y - 8 - Math.sin(t * Math.PI) * 9, 13 * (1 - t) + 4, 13 * (1 - t) + 4, a * .3, .8 * (1 - t));
+        }
+    buffRankSeal(floor, project, e.x, e.y, e.element, e.level || 1, e.age, Math.min(35, radius * .5), detail);
+}
 /** 元素命中采用短促白芯与各自的碎片；持续场反馈已由运行时聚合，避免每目标喷一整套特效。 */
 export function elementImpact(g: any, floor: any, project: Project, x: number, y: number, tx: number, ty: number, element: Element, t: number, detail: number): void {
     const c = ELEMENT_COLOR[element], q = project(x, y), angle = Math.atan2(y - ty, x - tx);
+    if (paintVfx(g, 'impact', element, q.x, q.y - 23, (31 + t * 18), (31 + t * 18), 0, Math.max(0, 1 - t))) {
+        if (element === 'force')
+            ring(floor, project, x, y, 12 + t * 38, c, 1.5 * (1 - t) + .5);
+        if (detail >= 5 && t < .55)
+            for (let i = 0; i < 2; i++) {
+                const a = angle + (i ? .65 : -.65), v = project(x + Math.cos(a) * t * 32, y + Math.sin(a) * t * 32);
+                paintVfx(g, 'focus', element, v.x, v.y - 22 - t * 8, 9 * (1 - t) + 3, 9 * (1 - t) + 3, a, 1 - t);
+            }
+        return;
+    }
     if (t < .35)
         spark(g, q.x, q.y - 24, 12 * (1 - t / .35), '#fff5da');
     for (let i = 0; i < detail; i++) {

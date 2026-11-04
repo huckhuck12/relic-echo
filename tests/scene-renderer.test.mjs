@@ -24,7 +24,7 @@ test('standalone renderer updates display nodes without changing frozen world st
   scene.render(Object.freeze(state));scene.render(Object.freeze(state));
   const after={...enemy};delete after.node;delete after.flashPaint;delete after.icePaint;
   assert.deepEqual(after,enemyBefore);assert.equal(enemy.node.visible,true);
-  assert.deepEqual(childrenOf(scene.world),[scene.ground,scene.groundEffects,scene.actors,scene.effects]);
+  assert.deepEqual(childrenOf(scene.world),[scene.ground,scene.groundArt,scene.groundEffects,scene.actors,scene.effectArt,scene.effects]);
 });
 
 test('routine attack recoil leaves the player foot origin and scale grounded',()=>{

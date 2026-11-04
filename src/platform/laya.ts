@@ -11,7 +11,7 @@ export interface LayaEvent {
 }
 export interface LayaGraphics {
     clear(): void;
-    drawTexture?(texture: LayaTexture, x: number, y: number, width: number, height: number, matrix?: LayaMatrix): void;
+    drawTexture?(texture: LayaTexture, x: number, y: number, width: number, height: number, matrix?: LayaMatrix, alpha?: number): void;
     drawRect(x: number, y: number, width: number, height: number, fill: string | null, line?: string | null, lineWidth?: number): void;
     drawCircle(x: number, y: number, radius: number, fill: string | null, line?: string | null, lineWidth?: number): void;
     drawPoly(x: number, y: number, points: number[], fill: string | null, line?: string | null, lineWidth?: number): void;
@@ -85,7 +85,7 @@ export interface LayaTexture {
 }
 export interface LayaTextureBitmap {
     lock: boolean;
-    loadImageSource(source: HTMLCanvasElement, premultiplyAlpha?: boolean): void;
+    loadImageSource(source: HTMLCanvasElement | HTMLImageElement, premultiplyAlpha?: boolean): void;
     destroy(): void;
 }
 export interface LayaRuntime {
