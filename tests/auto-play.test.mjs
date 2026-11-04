@@ -31,12 +31,12 @@ test('autoplay drives normal movement, pauses for user/background, claims real r
 test('autoplay restarts with rotating weapons, excludes test scores and keeps bounded persistent diagnostics',()=>{
  setupLayaStub();const storage=new Map();localStorage.getItem=k=>storage.get(k)||null;localStorage.setItem=(k,v)=>storage.set(k,v);
  const g=new Game();g.sound=false;g.toggleAutoPlay('storm');const a=g.autoPlay;
- for(let i=0;i<10;i++){
+ for(let i=0;i<22;i++){
   a.frame(i*4000);g.time=30+i;g.finish(false,'test death');a.frame(i*4000+200);a.frame(i*4000+2100);
  }
- assert.equal(a.rounds,11);assert.equal(g.loadout.weapon.id,'flame');
+ assert.equal(a.rounds,23);assert.equal(g.loadout.weapon.id,'flame');
  assert.equal(storage.has(STORAGE.records),false);
- const report=JSON.parse(storage.get(AUTO_PLAY_KEY));assert.equal(report.results.length,6);assert.ok(report.actions.length<=24);assert.ok(storage.get(AUTO_PLAY_KEY).length<16384);
+ const report=JSON.parse(storage.get(AUTO_PLAY_KEY));assert.equal(report.results.length,18);assert.ok(report.actions.length<=24);assert.ok(storage.get(AUTO_PLAY_KEY).length<16384);
  a.stop();g.finish(false,'stopped test');assert.equal(storage.has(STORAGE.records),false,'Stopping does not turn an existing test run into a real score');
  const next=new Game();assert.equal(next.autoPlay.enabled,false,'Reopening never starts unattended play automatically');
  g.start('storm');g.finish(false,'normal');assert.equal(JSON.parse(storage.get(STORAGE.records)).length,1);

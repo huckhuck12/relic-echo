@@ -215,7 +215,9 @@ export class BuffRuntime<T extends BuffTarget> {
     private readonly apply = (target: T, effect: BuffEffect): void => {
         if (target.dead)
             return;
-        this.host.damage(target, effect.damage, true, effect.kind === 'field' || effect.kind === 'orbit');
+        // Sustained contact must not eject its own target; elemental force remains explicit below.
+        const sustained = effect.kind === 'field' || effect.kind === 'orbit';
+        this.host.damage(target, effect.damage, !sustained, sustained);
         if (target.dead)
             return;
         const status = this.statuses.get(target);

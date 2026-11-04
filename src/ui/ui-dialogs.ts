@@ -13,6 +13,7 @@ import { Loadout, emptyLoadout, resolveStats } from '../shared/model.js';
 import type { ScreenLayout } from './layout.js';
 import { clock, percent, SYMBOLS } from './ui-config.js';
 import { platform } from '../platform/runtime.js';
+import { autoBuildProfile } from '../game/auto-builds.js';
 export interface DialogHooks {
     /** 使原有弹窗缓存失效，保留编辑槽位；绘制层不自行推进战斗。 */
     invalidate(): void;
@@ -322,7 +323,7 @@ export class GameDialogs {
             if (copyDiagnostics)
                 this.button(p, '复制运行诊断', pad + (columns === 3 ? 2 : 1) * (settingW + gap), columns === 3 ? body + 50 : body + 100, settingW, 44, copyDiagnostics, false, 'copy-diagnostics');
             if (footer - body > 225)
-                this.text(p, this.game.autoPlay.enabled ? `${this.game.autoPlay.stress ? '保命压测' : '正常试玩'}第 ${this.game.autoPlay.rounds} 局 · 已决策 ${this.game.autoPlay.decisions} 次\n${this.game.autoPlay.stress ? '致命伤保留 1 血，覆盖五分钟 Boss 与结算重开。' : '正常扣血与死亡重开，不保证到达 Boss。'}\n测试局不计战绩；继续探索后恢复，后台暂停。` : '自动压测保留 1 血，走完整局怪潮和 Boss。\n自动移动、冲刺、选卡与轮换武器重开。\n测试局不计战绩；触摸操作仍需手动测试。', pad, body + 156, inner, 12, C.muted);
+                this.text(p, this.game.autoPlay.enabled ? `${this.game.autoPlay.stress ? '保命压测' : '正常试玩'}第 ${this.game.autoPlay.rounds} 局 · ${autoBuildProfile(this.game.autoPlay.rounds).name}路线\n${this.game.autoPlay.stress ? '致命伤保留 1 血，覆盖五分钟 Boss 与结算重开。' : '正常扣血与死亡重开，不保证到达 Boss。'}\n每条分支轮换三武器，18 局覆盖六分支；测试局不计战绩。` : '自动压测保留 1 血，走完整局怪潮和 Boss。\n按构筑移动、冲刺、选卡，18 局轮换六分支与三武器。\n测试局不计战绩；触摸操作仍需手动测试。', pad, body + 156, inner, 12, C.muted);
             pair('继续探索 →', () => this.game.close(), 'resume', '结束本局', () => this.game.finish(false, '本次探索已主动结束。'), 'quit');
         }
         if (dialog.type === 'result') {

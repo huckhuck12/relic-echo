@@ -5,6 +5,8 @@ import { project } from '../shared/model.js';
 import { WORLD_RULES } from './game-config.js';
 import { platform } from '../platform/runtime.js';
 import { RUN } from './pace.js';
+import { autoBuildProfile, buildTactics } from './auto-builds.js';
+import type { BuildTactics } from './auto-builds.js';
 export interface AutoPlayWorld {
     enemies: readonly Enemy[];
     shots: readonly Shot[];
@@ -84,9 +86,9 @@ export class AutoPlay {
                 this.trackBoss();
                 this.recordedResult = this.dialogId;
                 this.results.push({
-                    round: this.rounds, weapon: this.weapon, stress: this.stress, win: dialog.win, reason: dialog.reason, seconds: Math.round(g.time), kills: g.kills, ...this.run
+                    round: this.rounds, weapon: this.weapon, build: autoBuildProfile(this.rounds), equipped: this.equipped(), stress: this.stress, win: dialog.win, reason: dialog.reason, seconds: Math.round(g.time), kills: g.kills, ...this.run
                 });
-                if (this.results.length > 6)
+                if (this.results.length > 18)
                     this.results.shift();
                 this.note('result:' + dialog.win);
                 this.save();
@@ -98,12 +100,29 @@ export class AutoPlay {
             }
             else if (delay >= 650) {
                 if (dialog.type === 'upgrade' || dialog.type === 'fragment' || dialog.type === 'build' || dialog.type === 'branch') {
-                    const id = dialog.type === 'upgrade' && g.player.hp < g.stats.hp * .65 && dialog.choices.includes('heal') ? 'heal' : dialog.choices[this.rounds % dialog.choices.length];
+                    const profile = autoBuildProfile(this.rounds);
+                    let id = dialog.type === 'upgrade' && g.player.hp < g.stats.hp * .65 && dialog.choices.includes('heal') ? 'heal' : dialog.choices[this.rounds % dialog.choices.length];
+                    if (dialog.type === 'build' && dialog.choices.includes(profile.build))
+                        id = profile.build;
+                    if (dialog.type === 'branch' && dialog.choices.includes(profile.branch))
+                        id = profile.branch;
+                    if (dialog.type === 'fragment') {
+                        let best = -Infinity;
+                        for (const candidate of dialog.choices) {
+                            const target = g.buffs.upgradePreview(candidate);
+                            const score = target ? (target.slot === 0 ? 20 : 10) - target.level : 0;
+                            if (score > best) {
+                                best = score;
+                                id = candidate;
+                            }
+                        }
+                    }
                     if (id && g.claimReward(this.dialogId, { type: dialog.type, id }))
                         this.note(dialog.type + ':' + id);
                 }
                 else if (dialog.type === 'drop') {
-                    const old = g.loadout[gear(dialog.item).slot], accept = !old || dialog.item.quality >= old.quality;
+                    const slot = gear(dialog.item).slot, old = g.loadout[slot];
+                    const accept = (slot !== 'weapon' || dialog.item.id === this.weapon) && (!old || dialog.item.quality >= old.quality);
                     if (g.claimReward(this.dialogId, { type: 'drop', accept }))
                         this.note('drop:' + accept);
                 }
@@ -118,7 +137,7 @@ export class AutoPlay {
         if (g.mode !== 'battle' || g.gate.paused)
             return;
         this.trackBoss();
-        const world = this.world(), intent = autoPlayIntent(g.player, world, g.time);
+        const world = this.world(), intent = autoPlayIntent(g.player, world, g.time, buildTactics(g.buffs, g.player, world.enemies));
         const screen = project(intent.x, intent.y), length = Math.hypot(screen.x, screen.y) || 1;
         g.setStick(screen.x / length, screen.y / length);
         this.decisions++;
@@ -162,10 +181,13 @@ export class AutoPlay {
         }
         this.run.bossSeconds = Math.max(0, this.game.time - RUN.bossAt);
     }
+    private equipped() {
+        return this.game.buffs.recipes.map(recipe => ({ ...recipe, level: this.game.buffs.levelOf(recipe), branch: this.game.buffs.branchOf(recipe) || null }));
+    }
     private save(): void {
         try {
             platform().writeStorage(AUTO_PLAY_KEY, JSON.stringify({
-                schema: 2, startedAt: this.startedAt, savedAt: Date.now(), enabled: this.enabled, stress: this.stress, round: this.rounds, seconds: this.game.time, weapon: this.weapon, decisions: this.decisions, current: this.run, results: this.results, actions: this.actions
+                schema: 3, startedAt: this.startedAt, savedAt: Date.now(), enabled: this.enabled, stress: this.stress, round: this.rounds, seconds: this.game.time, weapon: this.weapon, build: autoBuildProfile(this.rounds), equipped: this.equipped(), decisions: this.decisions, current: this.run, results: this.results, actions: this.actions
             }));
         }
         catch { /* Test reporting must never interrupt combat. */ }
@@ -174,7 +196,7 @@ export class AutoPlay {
 /** O(enemies + shots + drops), with short look-ahead and steering away from walls/pillars. */
 export function autoPlayIntent(player: Point & {
     hp: number;
-}, world: AutoPlayWorld, time: number) {
+}, world: AutoPlayWorld, time: number, tactics?: BuildTactics) {
     let x = Math.cos(time * .19) * .5, y = Math.sin(time * .19) * .5, danger = false;
     const repel = (px: number, py: number, radius: number, strength: number) => {
         const dx = player.x - px, dy = player.y - py, d = Math.hypot(dx, dy);
@@ -205,7 +227,7 @@ export function autoPlayIntent(player: Point & {
         const d = Math.hypot(player.x - e.x, player.y - e.y);
         if (d < e.radius + 55)
             danger = true;
-        repel(e.x, e.y, e.radius + 125, 3);
+        repel(e.x, e.y, e.radius + (tactics?.orbit ? 60 : 125), 3);
         if (e.kind === 4 && e.wind > 0 && e.charge === 1) {
             repel(e.dx, e.dy, 210, 9);
             if (Math.hypot(player.x - e.dx, player.y - e.dy) < 180)
@@ -224,6 +246,14 @@ export function autoPlayIntent(player: Point & {
         if (Math.hypot(player.x - px, player.y - py) < 50)
             danger = true;
     }
+    if (!danger && tactics?.focus) {
+        const dx = tactics.focus.x - player.x, dy = tactics.focus.y - player.y, d = Math.hypot(dx, dy) || 1;
+        const desired = tactics.orbit ? 105 : 220;
+        const approach = Math.max(-1, Math.min(1, (d - desired) / 80));
+        // Emergency avoidance takes precedence over approaching the contact band.
+        x += (dx / d * approach - dy / d * .55) * 3;
+        y += (dy / d * approach + dx / d * .55) * 3;
+    }
     for (const p of world.pillars)
         repel(p.x, p.y, WORLD_RULES.playerPillarRadius + 90, 5);
     const edge = WORLD_RULES.limit - 200;
@@ -231,6 +261,17 @@ export function autoPlayIntent(player: Point & {
         x -= Math.sign(player.x) * 4;
     if (Math.abs(player.y) > edge)
         y -= Math.sign(player.y) * 4;
+    if (!danger && tactics?.dashTarget) {
+        const dx = tactics.dashTarget.x - player.x, dy = tactics.dashTarget.y - player.y, d = Math.hypot(dx, dy);
+        const landingX = player.x + dx / (d || 1) * 180, landingY = player.y + dy / (d || 1) * 180;
+        const safe = Math.abs(landingX) < WORLD_RULES.limit - 40 && Math.abs(landingY) < WORLD_RULES.limit - 40
+            && !world.pillars.some(p => Math.hypot(landingX - p.x, landingY - p.y) < WORLD_RULES.playerPillarRadius + 25)
+            && !world.shots.some(s => s.hostile && Math.hypot(landingX - s.x - s.vx * .16, landingY - s.y - s.vy * .16) < 50)
+            && !world.enemies.some(e => !e.dead && e.kind === 4 && e.wind > 0 && e.charge === 1 && Math.hypot(landingX - e.dx, landingY - e.dy) < 210)
+            && !world.enemies.some(e => !e.dead && (e.wind > 0 || e.charge > 0) && Math.hypot(landingX - e.x, landingY - e.y) < e.radius + 100);
+        if (d > 1 && safe)
+            return { x: dx / d, y: dy / d, dash: true };
+    }
     const length = Math.hypot(x, y) || 1;
     return { x: x / length, y: y / length, dash: danger };
 }

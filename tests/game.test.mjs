@@ -635,11 +635,11 @@ test('ice tint follows slow status transitions and expires without repainting ev
   g.buffs.update(2.1);g.render();assert.equal(e.icePaint,false);assert.equal(paints,2);
 });
 
-test('quiet continuous Buff feedback retains damage and knockback without repeated white flashes',()=>{
+test('quiet continuous Buff feedback retains damage without self-ejecting recoil or repeated white flashes',()=>{
   const g=create();clearArena(g);const e=enemyAt(g,50,0);g.grid.rebuild(g.enemies);
   for(const id of ['dash','field'])g.buffs.grant(id);
   g.buffs.install(0,'trigger','dash');g.buffs.install(0,'action','field');g.buffs.install(0,'element','fire');
   g.buffs.trigger('dash',0,0,1);g.buffs.update(.01);
-  assert.ok(e.hp<e.max);assert.ok(e.kx>0);assert.equal(e.flash,0);assert.equal(g.labels.length,0);
+  assert.ok(e.hp<e.max);assert.equal(e.kx,0);assert.equal(e.flash,0);assert.equal(g.labels.length,0);
 });
 
