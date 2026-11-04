@@ -62,12 +62,12 @@ test('wearables share one decoded body image and one current GPU page; casts do 
  atlas.destroy();assert.equal(atlas.bytes,0);assert.equal(r.uploads.at(-1).dead,true);
 });
 
-test('every item preview and all three qualities retain the 64 KiB static budget and release their texture',()=>{
+test('every item preview and all three qualities retain the 256 KiB static budget and release their texture',()=>{
  const r=engine(),p={direction:1,face:1,back:false,moving:false};
  const seed=new PlayerAtlas();seed.paint(r.g,outfit(),p,0);r.images[0].onload();seed.destroy();
  for(const [slot,items]of [['head',heads],['armor',armors],['back',backs]])for(const id of items)for(const quality of [0,1,2])for(let direction=0;direction<8;direction++){
   const atlas=new PlayerAtlas(true),loadout=emptyLoadout('storm');loadout[slot]={id,quality};
-  assert.equal(atlas.paint(r.g,loadout,{...p,direction},0),true);assert.ok(atlas.bytes>0&&atlas.bytes<=65536);atlas.destroy();assert.equal(r.uploads.at(-1).dead,true);
+  assert.equal(atlas.paint(r.g,loadout,{...p,direction},0),true);assert.ok(atlas.bytes>0&&atlas.bytes<=262144);atlas.destroy();assert.equal(r.uploads.at(-1).dead,true);
  }
  assert.equal(r.images.length,1);
 });

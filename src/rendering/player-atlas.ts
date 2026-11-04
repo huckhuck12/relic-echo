@@ -78,7 +78,8 @@ export class PlayerAtlas {
                 for (let cast = 0; cast < (this.preview ? 0 : 12); cast++)
                     frames.push(entry(`${direction}:cast:${cast}`, direction as Facing8, 0, 0, CAST_DURATION[weapon] * (1 - (cast + .5) / 12), cast));
             }
-            this.sheet = new ShapeAtlas(frames, 1, this.preview ? 128 : 1024);
+            // Near-native painted detail while keeping every equipped pose set within 8 MiB.
+            this.sheet = new ShapeAtlas(frames, image ? 1.4 : 1, this.preview ? 256 : 2048, !!image);
         }
         const remaining = !this.preview && !p.moving && p.castWeapon === weapon ? (p.castTime || 0) : 0;
         const walk = this.preview || p.moving === false ? 0 : walkFrame(phase);

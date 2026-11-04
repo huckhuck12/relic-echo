@@ -53,9 +53,9 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  assert.ok(performance.samples>0,'Collect actual battle frame intervals rather than treating requested FPS as measured FPS');
  assert.ok(performance.engineSamples>0&&performance.drawCalls>0&&performance.simulationSteps>0,'Real Stage.render records engine CPU, draw calls and simulation steps');
  const atlas=await evaluate(`(()=>{const t=wechatTest,g=t.app.game;return{bytes:g.scene.enemyAtlas.bytes,tiles:g.scene.enemyAtlas.sheet.tiles.size};})()`);
- assert.equal(atlas.tiles,341,'Directional gait/body/arms/staff, palettes and actors share one page');assert.equal(atlas.bytes,4194304,'GPU atlas has a fixed 4 MiB budget');
+ assert.equal(atlas.tiles,341,'Directional gait/body/arms/staff, palettes and actors share one page');assert.equal(atlas.bytes,8388608,'GPU atlas has a fixed 8 MiB budget');
  const highAtlas=await evaluate(`(()=>{const g=wechatTest.app.game;g.spawnEnemy(1);g.cycleVisualQuality();for(const e of g.enemies)g.paintEnemy(e);return {quality:g.quality,...g.scene.enemyAtlas.snapshot(true),total:g.scene.enemyAtlas.bytes};})()`);
- assert.equal(highAtlas.quality,'high');assert.equal(highAtlas.ready,true,'Detailed enemies use a shared atlas too');assert.equal(highAtlas.bytes,4194304);assert.equal(highAtlas.total,4194304,'Painted family shares the same page across quality changes');
+ assert.equal(highAtlas.quality,'high');assert.equal(highAtlas.ready,true,'Detailed enemies use a shared atlas too');assert.equal(highAtlas.bytes,8388608);assert.equal(highAtlas.total,8388608,'Painted family shares the same page across quality changes');
  const wearables=[];
  for(const [head,armor,back]of [['visor','light','cape'],['helmet','heavy','thorn'],['hood','energy','pack']]){
   const row=await evaluate(`(()=>{const g=wechatTest.app.game;wechatTest.savedLoadout??=g.loadout;g.loadout={...g.loadout,head:{id:${JSON.stringify(head)},quality:2},armor:{id:${JSON.stringify(armor)},quality:2},back:{id:${JSON.stringify(back)},quality:2}};g.player.direction=1;g.render();wechatTest.app.ui.update();return{head:${JSON.stringify(head)},armor:${JSON.stringify(armor)},back:${JSON.stringify(back)},bytes:g.scene.playerAtlas.bytes,ready:g.scene.playerArtStatus.ready};})()`);

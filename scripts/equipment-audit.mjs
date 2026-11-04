@@ -14,7 +14,7 @@ export async function checkEquipmentAudit({send,evaluate,origin,directory}){
   const shot=await send('Page.captureScreenshot',{format:'png'});await writeFile(resolve(directory,`equipment-${category}-${mode}-${frame}.png`),Buffer.from(shot.data,'base64'));rows.push(row);
  }
  for(const id of ['visor','hood','helmet','light','heavy','energy','cape','pack','thorn'])for(let direction=0;direction<8;direction++){
-  const preview=await evaluate(`equipmentReview.preview(${JSON.stringify(id)},${direction})`);assert.equal(preview.result,true);assert.ok(preview.bytes>0&&preview.bytes<=65536,'Static equipment preview stays within 64 KiB');
+  const preview=await evaluate(`equipmentReview.preview(${JSON.stringify(id)},${direction})`);assert.equal(preview.result,true);assert.ok(preview.bytes>0&&preview.bytes<=262144,'Static equipment preview stays within 256 KiB');
  }
  const report={scope:'Real desktop Laya WebGL wearable art, eight-direction mapping, cast/move and preview budgets; not native iPhone performance',rows};
  await writeFile(resolve(directory,'equipment-audit.json'),JSON.stringify(report,null,2));return report;

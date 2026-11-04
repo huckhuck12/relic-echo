@@ -1,5 +1,6 @@
 import type { LayaGraphics, LayaTexture, LayaTextureBitmap, LayaMatrix } from '../platform/laya.js';
 import type { Shape } from './voxel.js';
+import { packAtlas } from './atlas-packing.js';
 interface Tile {
     texture: LayaTexture;
     x: number;
@@ -69,7 +70,7 @@ export class ShapeAtlas {
         key: string;
         shapes: Shape[];
         raster?: AtlasRaster;
-    }[], scale = 1.5, width = 1024) {
+    }[], scale = 1.5, width = 1024, compact = false) {
         const { Browser, Texture, Texture2D } = Laya;
         if (!Browser || !Texture || !Texture2D) {
             this.error = 'unsupported-engine';
@@ -98,7 +99,17 @@ export class ShapeAtlas {
                 row = Math.max(row, h);
                 return tile;
             });
-            const height = 2 ** Math.ceil(Math.log2(y + row));
+            let height = 2 ** Math.ceil(Math.log2(y + row));
+            if (compact) {
+                for (const candidate of [128, 256, 512, 1024, 2048]) {
+                    const positions = packAtlas(packed, width, candidate);
+                    if (!positions)
+                        continue;
+                    packed.forEach((tile, index) => Object.assign(tile, positions[index]));
+                    height = candidate;
+                    break;
+                }
+            }
             if (height > 2048) {
                 this.error = 'atlas-budget';
                 return;

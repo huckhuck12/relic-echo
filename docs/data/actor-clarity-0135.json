@@ -1,0 +1,710 @@
+{
+  "beforeVersion": "0.13.4",
+  "afterVersion": "0.13.5",
+  "before": {
+    "scope": "Frozen real Laya WebGL, desktop browser; all enemies visible; no projectiles, drops or gameplay updates. Not native iPhone performance.",
+    "heroBytes": [
+      4194304
+    ],
+    "enemyBytes": 4194304,
+    "equipmentBytes": [
+      4194304
+    ],
+    "drawCalls": [
+      {
+        "count": 25,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 25,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 100,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 100,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 200,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 200,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 400,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 400,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 5,
+        "kind": 3,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 5,
+        "visible": 5,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 20,
+        "kind": 3,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 20,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 50,
+        "kind": 3,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 50,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      }
+    ]
+  },
+  "after": {
+    "scope": "Frozen real Laya WebGL, desktop browser; all enemies visible; no projectiles, drops or gameplay updates. Not native iPhone performance.",
+    "heroBytes": [
+      8388608
+    ],
+    "enemyBytes": 8388608,
+    "equipmentBytes": [
+      8388608
+    ],
+    "drawCalls": [
+      {
+        "count": 25,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 25,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 100,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 100,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 200,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 200,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 400,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 400,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 5,
+        "kind": 3,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 5,
+        "visible": 5,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 20,
+        "kind": 3,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 20,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 50,
+        "kind": 3,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 50,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      }
+    ]
+  }
+}

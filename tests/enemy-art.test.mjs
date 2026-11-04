@@ -31,7 +31,7 @@ test('delayed enemy art replaces both fallback qualities with one page shared by
   assert.equal(a.paint(r.g,kind,palette==='flash',palette==='ice',pose,detail,gait,facing),true,JSON.stringify({kind,action,palette,detail,gait,snapshot:a.snapshot(detail)}));
  }}finally{Math.random=random;}
  assert.equal(r.uploads.length,3,'Two initial fallback pages replaced by one painted page');assert.equal(r.uploads[1].dead,true);
- assert.equal(a.bytes,4194304);assert.equal(r.images.length,1,'All qualities share one decoded source');
+ assert.equal(a.bytes,8388608);assert.equal(r.images.length,1,'All qualities share one decoded source');
  assert.ok(r.raster.length>100);assert.ok(r.transforms.flat().every(Number.isFinite));
  assert.equal(ordinaryAtlasFrames(false,r.images[0]).length,120);assert.equal(guardianAtlasFrames(false,r.images[0]).length,150);
  const before=r.uploads.length;for(let i=0;i<100;i++)assert.equal(a.paintKey(r.g,'pillar'),true);assert.equal(r.uploads.length,before);

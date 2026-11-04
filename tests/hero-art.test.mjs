@@ -22,7 +22,7 @@ test('delayed hero load replaces fallback once, shares decoded image, and keeps 
  assert.equal(r.uploads.length,2,'Fallback upload plus one painted replacement');assert.equal(r.uploads[0].dead,true);
  assert.equal(r.raster.filter(args=>args[2]===800).length,128,'One weapon per cached pose, baked into the body page');assert.ok(a.bytes<=8*1048576);
  const preview=new PlayerAtlas(true);preview.paint(r.g,loadout,p,0);
- assert.equal(r.images.length,1,'One decoded source for all previews');assert.ok(preview.bytes<=65536,'One static preview is at most 128x128 RGBA');
+ assert.equal(r.images.length,1,'One decoded source for all previews');assert.ok(preview.bytes<=262144,'One static preview is at most 256x256 RGBA');
  preview.destroy();assert.equal(preview.bytes,0);assert.equal(r.uploads.at(-1).dead,true);
 });
 test('moving attacks keep the walk silhouette, and stopping or finishing a cast returns to idle',()=>{

@@ -7,8 +7,8 @@ import { actorAtlasFrames } from './painted-world.js';
 import { enemyArt, enemyRaster } from './enemy-art.js';
 import { enemyView, enemyViewPartPoint } from './enemy-view.js';
 import type { AtlasRaster } from './shape-atlas.js';
-/** Depth sorted enemies, pillars and projectiles share one 4 MiB page.
- * 341 directional parts/palettes use .8 sampling; mirrors and attack transforms remain runtime geometry. */
+/** Depth sorted enemies, pillars and projectiles share one page.
+ * 341 directional parts/palettes retain painted detail; transforms remain runtime geometry. */
 export class EnemyAtlas {
     enabled = true;
     private sheet: ShapeAtlas;
@@ -17,7 +17,7 @@ export class EnemyAtlas {
     private high?: EnemyAtlas;
     constructor(private readonly detail = false) {
         const image = enemyArt().image;
-        this.sheet = new ShapeAtlas([...ordinaryAtlasFrames(detail, image), ...guardianAtlasFrames(detail, image), ...actorAtlasFrames()], image ? .8 : 1.25);
+        this.sheet = new ShapeAtlas([...ordinaryAtlasFrames(detail, image), ...guardianAtlasFrames(detail, image), ...actorAtlasFrames()], 1.25, image ? 2048 : 1024, !!image);
         this.sourceRevision = image && this.sheet.bytes ? 1 : 0;
         if (this.sourceRevision && Laya.Matrix)
             enemyArt().directionalReady = true;
@@ -31,7 +31,7 @@ export class EnemyAtlas {
         if (this.artAttempted || !enemyArt().image)
             return;
         this.artAttempted = true;
-        const next = new ShapeAtlas([...ordinaryAtlasFrames(this.detail, enemyArt().image), ...guardianAtlasFrames(this.detail, enemyArt().image), ...actorAtlasFrames()], .8);
+        const next = new ShapeAtlas([...ordinaryAtlasFrames(this.detail, enemyArt().image), ...guardianAtlasFrames(this.detail, enemyArt().image), ...actorAtlasFrames()], 1.25, 2048, true);
         if (!next.bytes)
             return;
         this.sheet.destroy();
