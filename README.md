@@ -4,6 +4,8 @@ LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 **`0.12.6`
 
 当前优化计划、优先级和真机验收状态见[优化清单](docs/优化清单.md)。
 
+下一阶段转向可玩性：[Buff 构筑改造方案](docs/buff-build-design.md)定义跨槽联动、机制升级分支和局内奖励节奏，首批验证冲刺布场、冰冻碎裂、雷印引爆。当前为设计稿，0.12.6 的战斗规则尚未切换。
+
 [在线试玩](https://huckhuck12.github.io/relic-echo/) · [视觉制作进度](docs/art/visual-production-backlog.md) · [微信小游戏接入](docs/微信小游戏接入.md)
 
 ## 本地运行与 GitHub Pages
