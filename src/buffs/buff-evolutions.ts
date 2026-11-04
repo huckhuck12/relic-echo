@@ -1,4 +1,4 @@
-import type { Action, Element, Recipe, BuffHost, BuffTarget } from './buff-types.js';
+import type { Action, Element, Recipe, BuffHost, BuffTarget, BuffBranch } from './buff-types.js';
 /** 行为与元素共同决定进化，触发碎片继续决定释放时机/冷却，不增加第四种槽位。 */
 export const EVOLUTIONS = [
     {
@@ -15,17 +15,23 @@ export type Evolution = typeof EVOLUTIONS[number]['id'];
 export function evolutionOf(recipe: Pick<Recipe, 'action' | 'element'>) {
     return EVOLUTIONS.find(e => e.action === recipe.action && e.element === recipe.element);
 }
-export const EVOLUTION_LIMITS = { targets: 200, seeds: 6, links: 8, shatterTargets: 8 };
+export const EVOLUTION_LIMITS = {
+    targets: 200, seeds: 6, links: 8, shatterTargets: 8, frostBurstsPerStep: 16
+};
 export interface EvolutionSource {
     kind: Action;
     element: Element;
     damage: number;
     level?: number;
+    slot?: number;
+    branch?: BuffBranch;
+    reactionDamage?: number;
 }
 export interface EvolutionMark {
     stacks: number;
     life: number;
     lock: number;
+    source?: EvolutionSource;
 }
 export interface FireSeed {
     x: number;
@@ -45,6 +51,7 @@ interface EvolutionHooks<T> {
     /** 爆发反馈进入 BuffRuntime 原有反馈预算，不单开无上限粒子数组。 */
     burst(kind: 'detonate' | 'shatter', x: number, y: number, level: number): void;
     arc(x: number, y: number, tx: number, ty: number): void;
+    shard?(x: number, y: number, tx: number, ty: number, level: number): void;
 }
 /**
  * 三种进化的模拟状态，和普通 Buff 冷却分开；不引用 Game、Laya 或显示节点。
@@ -59,6 +66,8 @@ export class BuffEvolutions<T extends BuffTarget> {
     /** 调试/预览计数，不控制规则；即使关闭粒子也能确认实际爆发是否发生。 */
     detonations = 0;
     shatters = 0;
+    frostRejected = 0;
+    private frostBudget: number = EVOLUTION_LIMITS.frostBurstsPerStep;
     private linkTick = 0;
     constructor(private readonly host: BuffHost<T>, private readonly hooks: EvolutionHooks<T>) { }
     clear(): void {
@@ -69,11 +78,17 @@ export class BuffEvolutions<T extends BuffTarget> {
         this.linkTick = 0;
         this.detonations = 0;
         this.shatters = 0;
+        this.frostRejected = 0;
+        this.frostBudget = EVOLUTION_LIMITS.frostBurstsPerStep;
     }
     /** 两配方共享同类叠层；来源伤害在 Buff 生成时快照，本次命中决定爆发伤害。 */
     hit(target: T, source: EvolutionSource): void {
         if (target.dead)
             return;
+        if (source.element === 'force') {
+            this.breakFrost(target, source);
+            return;
+        }
         if (source.kind === 'bolt' && source.element === 'lightning') {
             // 9 秒覆盖受击触发的 4 秒冷却，所有触发碎片都有机会完成三次命中。
             if (!this.stack(this.thunder, target, 9, 1))
@@ -92,11 +107,71 @@ export class BuffEvolutions<T extends BuffTarget> {
                     break;
             }
         }
-        else if (source.kind === 'orbit' && source.element === 'ice') {
-            if (!this.stack(this.frost, target, 3, 1))
+        else if (source.kind === 'orbit' && source.element === 'ice')
+            this.stackFrost(target, source);
+    }
+    private stackFrost(target: T, source: EvolutionSource): void {
+        let mark = this.frost.get(target);
+        if (!mark) {
+            if (this.frost.size >= EVOLUTION_LIMITS.targets)
                 return;
-            this.shatters++;
-            this.hooks.burst('shatter', target.x, target.y, source.level || 1);
+            mark = { stacks: 0, life: source.branch === 'prison' ? 4 : 3, lock: 0 };
+            this.frost.set(target, mark);
+        }
+        if (mark.lock > 0)
+            return;
+        mark.source = {
+            kind: source.kind, element: source.element, damage: source.reactionDamage ?? source.damage, level: source.level, slot: source.slot, branch: source.branch
+        };
+        mark.stacks = Math.min(source.branch === 'prison' ? 5 : 3, mark.stacks + 1);
+        if (source.branch === 'prison' || mark.stacks < 3)
+            return;
+        this.consumeFrost(target, mark, false);
+    }
+    /** Direct cross-slot force only. Reserve the mark before damage callbacks; secondary damage never re-enters hit. */
+    private breakFrost(target: T, force: EvolutionSource): void {
+        const mark = this.frost.get(target);
+        if (!mark || mark.lock > 0 || mark.life <= 0 || mark.stacks < 2 || force.slot === undefined || mark.source?.slot === undefined || force.slot === mark.source.slot)
+            return;
+        this.consumeFrost(target, mark, true);
+    }
+    private consumeFrost(target: T, mark: EvolutionMark, manual: boolean): void {
+        if (this.frostBudget <= 0) {
+            this.frostRejected++;
+            return;
+        }
+        this.frostBudget--;
+        const source = mark.source!, stacks = mark.stacks;
+        mark.stacks = 0;
+        mark.lock = 1;
+        mark.life = 1;
+        this.shatters++;
+        this.hooks.burst('shatter', target.x, target.y, source.level || 1);
+        if (manual) {
+            const multiplier = source.branch === 'prison' && (source.level || 1) >= 5 && stacks >= 4 ? 1.25 : 1;
+            this.host.damage(target, source.damage * stacks * .4 * multiplier, true, true);
+            let count = 0;
+            for (const other of this.host.query(target.x, target.y, 90)) {
+                if (other === target || other.dead)
+                    continue;
+                this.host.damage(other, source.damage * .4, true, true);
+                this.hooks.shard?.(target.x, target.y, other.x, other.y, source.level || 1);
+                if (++count === 4)
+                    break;
+            }
+        }
+        else if (source.branch === 'shards') {
+            let count = 0;
+            for (const other of this.host.query(target.x, target.y, 110)) {
+                if (other === target || other.dead)
+                    continue;
+                this.host.damage(other, source.damage * .7, true, true);
+                this.hooks.shard?.(target.x, target.y, other.x, other.y, source.level || 1);
+                if (++count === ((source.level || 1) >= 5 ? 5 : 3))
+                    break;
+            }
+        }
+        else {
             let count = 0;
             for (const other of this.host.query(target.x, target.y, 110)) {
                 if (other.dead)
@@ -158,6 +233,7 @@ export class BuffEvolutions<T extends BuffTarget> {
                 this.links.splice(i, 1);
     }
     update(dt: number): void {
+        this.frostBudget = EVOLUTION_LIMITS.frostBurstsPerStep;
         for (const map of [this.thunder, this.frost])
             for (const [target, mark] of map) {
                 mark.life -= dt;

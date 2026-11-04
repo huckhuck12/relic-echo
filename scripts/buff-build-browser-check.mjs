@@ -25,5 +25,22 @@ export async function checkBuffBuildBrowser({send,evaluate,directory,wechat=fals
   else{await send('Input.dispatchMouseEvent',{type:'mousePressed',...p,button:'left',clickCount:1});await send('Input.dispatchMouseEvent',{type:'mouseReleased',...p,button:'left',clickCount:1});}
   assert.equal(await run(`return g.buffs.branchOf(g.buffs.recipes[0]);`),'trail');
  }
+ // Exercise the second branch family through real production cards too.
+ await run(`g.start('storm',true);g.addXP(10);ui.update();`);
+ const tapCard=async name=>{
+  if(wechat){await evaluate(`wechatTest.tap('${name}')`);return;}
+  const p=await run(`const find=n=>{if(n.name==='${name}')return n;for(let i=0;i<n.numChildren;i++){const f=find(n.getChildAt(i));if(f)return f;}};const n=find(ui.root),p=n.localToGlobal(new L.Point(n.width*.5,n.height*.7));return {x:p.x,y:p.y};`);
+  if(touch){await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[p]});await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});}
+  else{await send('Input.dispatchMouseEvent',{type:'mousePressed',...p,button:'left',clickCount:1});await send('Input.dispatchMouseEvent',{type:'mouseReleased',...p,button:'left',clickCount:1});}
+ };
+ await tapCard('build-ice');
+ await run(`g.buffs.receiveFragment('ice');g.buffs.receiveFragment('ice');g.show(g.buffs.takeBranchReward());ui.update();`);
+ const iceShot=await send('Page.captureScreenshot',{format:'png'});
+ await writeFile(resolve(directory,`buff-ice-branch-${touch?'touch':'mouse'}.png`),Buffer.from(iceShot.data,'base64'));
+ await tapCard('branch-prison');
+ assert.equal(await run(`return g.buffs.branchOf(g.buffs.recipes[0]);`),'prison');
+ await run(`g.toggleBuffs();ui.update();const find=n=>{if(n.name==='buff-description')return n;for(let i=0;i<n.numChildren;i++){const f=find(n.getChildAt(i));if(f)return f;}};if(!find(ui.root)?.text.includes('寒牢'))throw Error('Missing prison editor description');`);
+ const editorShot=await send('Page.captureScreenshot',{format:'png'});
+ await writeFile(resolve(directory,`buff-ice-editor-${touch?'touch':'mouse'}.png`),Buffer.from(editorShot.data,'base64'));
  await run(`g.start('storm',true);ui.update();`);
 }

@@ -1,4 +1,5 @@
-import type { Recipe } from './buff-types.js';
+import { branchPair } from './buff-branches.js';
+import type { BuffBranch, Recipe } from './buff-types.js';
 export const BUFF_UPGRADES = { maxLevel: 5, damagePerLevel: .1 } as const;
 export interface BuffUpgradeTarget {
     slot: number;
@@ -9,7 +10,7 @@ export interface BuffUpgradeTarget {
  * 换槽/清空不抹掉投入，也不能把等级转移到其他配方；无节点、随机数或逐帧工作。
  */
 export class BuffUpgrades {
-    readonly branches = new Map<string, 'trail' | 'furnace'>();
+    readonly branches = new Map<string, BuffBranch>();
     private readonly levels = new Map<string, number>();
     private key(r: Recipe): string | null { return r.trigger && r.action && r.element ? `${r.action}/${r.element}` : null; }
     level(r: Recipe): number {
@@ -27,7 +28,8 @@ export class BuffUpgrades {
             if (!this.key(r) || ![r.trigger, r.action, r.element].some(part => part === id))
                 return;
             const level = this.level(r);
-            if (r.action === 'field' && r.element === 'fire' && level >= 4 && !this.branches.has('field/fire'))
+            const pair = branchPair(r);
+            if (pair && level >= 4 && !this.branches.has(pair.pair))
                 return;
             if (level >= BUFF_UPGRADES.maxLevel || best && best.level <= level)
                 return;

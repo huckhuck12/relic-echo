@@ -661,8 +661,9 @@ export class Game {
         if (this.mode !== 'battle')
             return;
         this.buffs.update(dt);
-        if (this.buffs.takeBranchRequest())
-            this.show({ type: 'branch', choices: ['trail', 'furnace'] });
+        const branchReward = this.buffs.takeBranchReward();
+        if (branchReward)
+            this.show(branchReward);
         if (this.mode !== 'battle')
             return;
         this.updateDrops(dt);

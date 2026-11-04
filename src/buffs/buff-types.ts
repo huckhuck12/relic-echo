@@ -56,10 +56,12 @@ export interface BuffEffect {
     level: number;
     slot?: number;
     cast?: number;
-    branch?: FireBranch;
+    branch?: BuffBranch;
+    reactionDamage?: number;
     radius?: number;
 }
 export type FireBranch = 'trail' | 'furnace';
+export type BuffBranch = FireBranch | 'shards' | 'prison';
 export interface BuffFeedback {
     x: number;
     y: number;

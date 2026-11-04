@@ -18,6 +18,7 @@ export type Dialog = {
     choices: string[];
 } | {
     type: 'branch';
+    pair?: string;
     choices: string[];
 } | {
     type: 'drop';

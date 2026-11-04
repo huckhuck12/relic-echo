@@ -1,0 +1,28 @@
+import type { BuffBranch, Recipe } from './buff-types.js';
+/** Branch identity belongs to a pair, never to its current slot or trigger. */
+export const BUFF_BRANCHES = [
+    {
+        pair: 'field/fire', action: 'field', element: 'fire', name: '火焰区域', choices: ['trail', 'furnace']
+    },
+    {
+        pair: 'orbit/ice', action: 'orbit', element: 'ice', name: '冰霜环绕', choices: ['shards', 'prison']
+    },
+] as const;
+export const BRANCH_TEXT: Record<BuffBranch, {
+    name: string;
+    note: string;
+}> = {
+    trail: { name: '火径', note: '冲刺沿途铺 3 个火场，各 45% 伤害，持续 3 秒；重叠不叠伤。Lv.5 延长至 4 秒。' },
+    furnace: { name: '炉心', note: '火场缩至半径 70，伤害 ×1.35；同处刷新。Lv.5 回炉追加 60% 火场伤害，每目标 2 秒一次。' },
+    shards: { name: '碎冰', note: '三层自动碎裂改为向附近 3 敌射出冰片，各 70% 伤害；不伤主目标。Lv.5 最多 5 敌。跨槽冲击仍可提前碎裂。' },
+    prison: { name: '寒牢', note: '储存最多 5 层、窗口 4 秒，不再自动碎裂；环绕直伤 ×0.8。需另一槽冲击引爆。Lv.5 消费至少 4 层时主目标爆发 ×1.25。' },
+};
+export const BRANCH_COMPACT: Record<BuffBranch, string> = {
+    trail: '冲刺铺 3 场，各 45% 伤害，持续 3 秒；Lv.5 持续 4 秒。',
+    furnace: '半径 70、伤害 ×1.35；Lv.5 回炉追加 60% 火场伤害。',
+    shards: '三层向 3 敌射冰片，各 70%，不伤主目标；Lv.5 最多 5 敌。',
+    prison: '5 层/4 秒，直伤 ×0.8；跨槽冲击消耗 ≥2 层。Lv.5 消耗 ≥4 层爆发 ×1.25。',
+};
+export function branchPair(recipe: Pick<Recipe, 'action' | 'element'>) {
+    return BUFF_BRANCHES.find(b => b.action === recipe.action && b.element === recipe.element);
+}

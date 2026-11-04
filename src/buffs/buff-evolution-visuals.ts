@@ -48,8 +48,9 @@ export function drawEvolutionState<T extends BuffTarget>(overlay: any, floor: an
                 return;
             const q = project(target.x, target.y), color = element === 'ice' ? '#91dcf3' : '#d2adf3';
             glyph(overlay, q.x - 14, q.y - 48, element, 5);
-            for (let i = 0; i < 3; i++) {
-                const x = q.x - 5 + i * 9;
+            const slots = element === 'ice' && mark.source?.branch === 'prison' ? 5 : 3;
+            for (let i = 0; i < slots; i++) {
+                const x = q.x - (slots === 5 ? 14 : 5) + i * 9;
                 if (i >= mark.stacks || !paintVfx(overlay, 'focus', element, x, q.y - 53, 9))
                     overlay.drawPoly(x, q.y - 53, [0, -3, 3, 0, 0, 3, -3, 0], i < mark.stacks ? color : '#283f42', color, 1);
             }

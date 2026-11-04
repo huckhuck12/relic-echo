@@ -1,12 +1,13 @@
 import { BUFF_FEEDBACK, BUFF_LIMITS, BUFF_RULES, PARTS, START_FRAGMENTS, TRIGGERS } from './buff-config.js';
 import { complete, emptyRecipe, fragment, recipeDamage } from './buff-recipes.js';
 import { BuffEvolutions } from './buff-evolutions.js';
+import { BUFF_BRANCHES, branchPair } from './buff-branches.js';
 import { BuffUpgrades } from './buff-upgrades.js';
 import { createBuffEffect, updateBuffEffects } from './buff-effects.js';
 import { applyBuffElement, applyBuffSlow, updateBuffStatuses } from './buff-status.js';
 import { enqueueBuffFeedback, updateBuffFeedback } from './buff-feedback.js';
 import { renderBuffs } from './buff-renderer.js';
-import type { BuffEffect, BuffFeedback, BuffFeedbackSink, BuffHost, BuffStatus, BuffTarget, FragmentReward, FireBranch, Part, Recipe, Trigger } from './buff-types.js';
+import type { BuffEffect, BuffFeedback, BuffFeedbackSink, BuffHost, BuffStatus, BuffTarget, FragmentReward, BuffBranch, Part, Recipe, Trigger } from './buff-types.js';
 // 公共导出兼容既有场景、测试和预览；内部模块应直接依赖 config/types，避免循环依赖。
 export * from './buff-config.js';
 export * from './buff-types.js';
@@ -35,7 +36,7 @@ export class BuffRuntime<T extends BuffTarget> {
         this.starterRequested = true;
         return true;
     }
-    private branchRequested = false;
+    private readonly branchRequested = new Set<string>();
     private castSequence = 0;
     private dashStart: {
         x: number;
@@ -43,17 +44,32 @@ export class BuffRuntime<T extends BuffTarget> {
     } | null = null;
     reforges = 0;
     beginDash(x: number, y: number): void { this.dashStart = { x, y }; }
-    branchOf(recipe: Recipe): FireBranch | undefined { return recipe.action === 'field' && recipe.element === 'fire' ? this.upgrades.branches.get('field/fire') : undefined; }
-    takeBranchRequest(): boolean {
-        if (this.branchRequested || this.upgrades.level({ trigger: 'dash', action: 'field', element: 'fire' }) < 3 || this.upgrades.branches.has('field/fire'))
+    branchOf(recipe: Recipe): BuffBranch | undefined {
+        const pair = branchPair(recipe);
+        return pair ? this.upgrades.branches.get(pair.pair) : undefined;
+    }
+    takeBranchRequest(pair = 'field/fire'): boolean {
+        const definition = BUFF_BRANCHES.find(b => b.pair === pair);
+        if (!definition || this.branchRequested.has(pair) || this.upgrades.level({ trigger: 'dash', action: definition.action, element: definition.element }) < 3 || this.upgrades.branches.has(pair))
             return false;
-        this.branchRequested = true;
+        this.branchRequested.add(pair);
         return true;
     }
-    chooseBranch(branch: FireBranch): boolean {
-        if (!this.branchRequested || this.upgrades.branches.has('field/fire') || !['trail', 'furnace'].includes(branch))
+    takeBranchReward(): {
+        type: 'branch';
+        pair: string;
+        choices: string[];
+    } | null {
+        for (const definition of BUFF_BRANCHES)
+            if (this.takeBranchRequest(definition.pair))
+                return { type: 'branch', pair: definition.pair, choices: [...definition.choices] };
+        return null;
+    }
+    chooseBranch(branch: string, pair = 'field/fire'): boolean {
+        const definition = BUFF_BRANCHES.find(b => b.pair === pair);
+        if (!definition || !this.branchRequested.has(pair) || this.upgrades.branches.has(pair) || !(definition.choices as readonly string[]).includes(branch))
             return false;
-        this.upgrades.branches.set('field/fire', branch);
+        this.upgrades.branches.set(pair, branch as BuffBranch);
         return true;
     }
     chooseStarter(id: string): boolean {
@@ -78,6 +94,7 @@ export class BuffRuntime<T extends BuffTarget> {
             slow: (target, seconds) => applyBuffSlow(this.statuses, target, seconds),
             burst: (kind, x, y, level) => this.feedbackAt(kind, kind === 'detonate' ? 'lightning' : 'ice', x, y, x, y, level),
             arc: (x, y, tx, ty) => this.feedbackAt('arc', 'lightning', x, y, tx, ty),
+            shard: (x, y, tx, ty, level) => this.feedbackAt('impact', 'ice', tx, ty, x, y, level),
         });
     }
     levelOf(recipe: Recipe): number { return this.upgrades.level(recipe); }
@@ -110,14 +127,14 @@ export class BuffRuntime<T extends BuffTarget> {
         this.procs = 0;
         this.starterChosen = false;
         this.starterRequested = false;
-        this.branchRequested = false;
+        this.branchRequested.clear();
         this.castSequence = 0;
         this.reforges = 0;
     }
     clearTransient(): void {
         this.effects.length = 0;
         this.dashStart = null;
-        this.branchRequested = false;
+        this.branchRequested.clear();
         if (!this.starterChosen)
             this.starterRequested = false;
         this.statuses.clear();
@@ -156,6 +173,10 @@ export class BuffRuntime<T extends BuffTarget> {
                 effect.slot = slot;
                 effect.cast = ++this.castSequence;
                 effect.branch = this.branchOf(recipe);
+                if (effect.branch === 'prison') {
+                    effect.reactionDamage = effect.damage;
+                    effect.damage *= .8;
+                }
                 if (effect.kind === 'field' && effect.element === 'fire' && effect.branch === 'furnace') {
                     effect.radius = 70;
                     effect.damage *= 1.35;
@@ -189,7 +210,7 @@ export class BuffRuntime<T extends BuffTarget> {
     private readonly feedbackAt: BuffFeedbackSink = (kind, element, x, y, tx = x, ty = y, level = 1) => {
         enqueueBuffFeedback(this.feedback, this.visualBudget, kind, element, x, y, tx, ty, level);
     };
-    speedMultiplier(target: T): number { return (this.statuses.get(target)?.slow || 0) > 0 ? BUFF_RULES.slow.multiplier : 1; }
+    speedMultiplier(target: T): number { return (this.statuses.get(target)?.slow || 0) > 0 ? (target.kind === 4 ? .85 : BUFF_RULES.slow.multiplier) : 1; }
     /** 基础扣血→元素→进化；进化额外伤害不再调用 apply。 */
     private readonly apply = (target: T, effect: BuffEffect): void => {
         if (target.dead)

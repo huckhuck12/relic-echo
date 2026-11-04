@@ -4,6 +4,8 @@ import type { Player, Enemy } from '../shared/entities.js';
 import { gear, UPGRADES } from './config.js';
 import type { Item } from './config.js';
 import { weaponOf } from '../rendering/appearance.js';
+import { BRANCH_TEXT } from '../buffs/buff-branches.js';
+import type { BuffBranch } from '../buffs/buff-types.js';
 import { FRAGMENTS, BuffRuntime } from '../buffs/buffs.js';
 import { fragmentChoices, fragmentRewardText } from './fragment-rewards.js';
 import type { Dialog } from '../game/run-flow.js';
@@ -98,9 +100,9 @@ export class RunProgression {
             return { message: choice.id === 'free' ? '保留自由组合' : '两槽配方已装入 · 可随时在 Buff 面板修改' };
         }
         if (choice.type === 'branch' && dialog.type === 'branch') {
-            if (!dialog.choices.includes(choice.id) || (choice.id !== 'trail' && choice.id !== 'furnace') || !state.buffs.chooseBranch(choice.id))
+            if (!dialog.choices.includes(choice.id) || !state.buffs.chooseBranch(choice.id, dialog.pair))
                 return null;
-            return { message: choice.id === 'trail' ? '已选择火径 · 冲刺沿途铺火' : '已选择炉心 · 小范围高伤火场' };
+            return { message: `已选择 ${BRANCH_TEXT[choice.id as BuffBranch].name} · 成长分支已生效` };
         }
         if (choice.type === 'fragment' && dialog.type === 'fragment') {
             if (!dialog.choices.includes(choice.id) || !FRAGMENTS.some(f => f.id === choice.id))

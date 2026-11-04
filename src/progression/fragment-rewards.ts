@@ -19,7 +19,7 @@ export function fragmentChoices(owned: ReadonlySet<string>, ground: ReadonlySet<
 /** 说明以当前持有集合为准，明确“解锁可组合”和“已经装入配方”的区别。 */
 export function fragmentRouteHint(id: string, owned: ReadonlySet<string>, upgrade?: BuffUpgradeTarget | null): string {
     if (owned.has(id))
-        return upgrade ? `强化配方 ${upgrade.slot + 1}：Lv.${upgrade.level} → ${upgrade.nextLevel}\nLv.2/4 提升伤害；火焰区域 Lv.3 选择分支` : '已解锁：领取转为 5 经验';
+        return upgrade ? `强化配方 ${upgrade.slot + 1}：Lv.${upgrade.level} → ${upgrade.nextLevel}\nLv.2/4 提升伤害；火场/冰环 Lv.3 选择分支` : '已解锁：领取转为 5 经验';
     const routes = EVOLUTIONS.filter(e => e.action === id || e.element === id);
     if (!routes.length)
         return '改变释放时机，可搭配三条进化路线';

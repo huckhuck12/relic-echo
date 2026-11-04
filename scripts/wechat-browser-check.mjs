@@ -79,6 +79,12 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  await evaluate(`wechatTest.tap('branch-furnace',[wechatTest.heldStick])`);
  assert.equal(await evaluate(`wechatTest.app.ui.hudView.stick.stickTouch`),7);
  assert.ok(await evaluate(`wechatTest.app.game.input.stick.x>.9`));
+ await evaluate(`(()=>{const g=wechatTest.app.game,b=g.buffs;for(const id of ['orbit','ice'])b.grant(id);b.install(0,'trigger','hit');b.install(0,'action','orbit');b.install(0,'element','ice');b.receiveFragment('ice');b.receiveFragment('ice');g.show(b.takeBranchReward());})()`);
+ await screenshot('ice-branch');
+ await evaluate(`wechatTest.tap('branch-prison',[wechatTest.heldStick])`);
+ assert.equal(await evaluate(`wechatTest.app.game.buffs.branchOf(wechatTest.app.game.buffs.recipes[0])`),'prison');
+ assert.equal(await evaluate(`wechatTest.app.ui.hudView.stick.stickTouch`),7);
+ assert.ok(await evaluate(`wechatTest.app.game.input.stick.x>.9`));
  await evaluate(`(()=>{const t=wechatTest,{UPGRADES}=t.load('/app/progression/config.js'),g=t.app.game;g.levels=Object.fromEntries(UPGRADES.map(u=>[u.id,u.max]));for(let i=0;i<3;i++)g.show({type:'upgrade',choices:[]});t.app.ui.update();})()`);
  for(let i=0;i<3;i++){
   const result=await evaluate(`(()=>{const t=wechatTest,g=t.app.game,id=g.flow.dialogId;t.tap('upgrade-heal',[t.heldStick]);return{pending:g.flow.pendingCount,dialog:g.dialog?.type,owner:t.app.ui.hudView.stick.stickTouch,stick:g.input.stick,stale:g.claimReward(id,{type:'upgrade',id:'heal'})};})()`);
