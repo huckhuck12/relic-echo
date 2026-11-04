@@ -116,9 +116,15 @@ try{
   const shot=await send('Page.captureScreenshot',{format:'png'});
   await writeFile(resolve(directory,`${width}x${height}-battle.png`),Buffer.from(shot.data,'base64'));
   // Exercise the actual card surface, including icon/title/description.
+  // Screenshots can take seconds on software-rendered CI. Natural XP/build rewards
+  // must not race the synthetic card fixtures or become their current dialog.
+  if(touch)await evaluate(`import('/dist/main.js').then(({game})=>{
+   game.flow.replace(null);game.gate.add('browser-card-fixture');
+  })`);
   if(touch)for(const [u,v]of [[.15,.25],[.5,.5],[.85,.75]]){
    const card=await evaluate(`import('/dist/main.js').then(({game,ui})=>{
     game.show({type:'upgrade',choices:[]});
+    if(game.dialog?.type!=='upgrade')throw Error('Expected isolated upgrade fixture');
     const id=game.dialog.choices[0];
     const find=n=>{if(n.name==='upgrade-'+id)return n;for(let i=0;i<n.numChildren;i++){const found=find(n.getChildAt(i));if(found)return found;}};
     const node=find(ui.root),p=node.localToGlobal(new Laya.Point(node.width*${u},node.height*${v}));
@@ -157,7 +163,7 @@ try{
     assert.equal(stale.claimed,false,'Settlement rejects the consumed card ID');assert.equal(stale.pending,Math.max(0,remaining-2));
    }
   }
-  await evaluate(`import('/dist/main.js').then(({game})=>game.toggleInventory())`);
+  await evaluate(`import('/dist/main.js').then(({game})=>{game.gate.remove('browser-card-fixture');game.toggleInventory();})`);
   const inventoryShot=await send('Page.captureScreenshot',{format:'png'});
   await writeFile(resolve(directory,`${width}x${height}-inventory.png`),Buffer.from(inventoryShot.data,'base64'));
   assert.equal(errors.length,0,JSON.stringify(errors));
