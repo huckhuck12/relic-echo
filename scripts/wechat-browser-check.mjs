@@ -30,6 +30,8 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  const battle=await evaluate(`({mode:wechatTest.app.game.mode,time:wechatTest.app.game.time})`);
  assert.equal(battle.mode,'battle');assert.ok(battle.time>.1);
  assert.equal(await evaluate(`wechatTest.app.game.scene.playerArtStatus.ready`),true,'Packaged painted hero loads through native image creation');
+ for(let i=0;i<100&&!await evaluate(`wechatTest.app.game.scene.enemyAtlas.revision===1`);i++)await new Promise(r=>setTimeout(r,50));
+ assert.equal(await evaluate(`wechatTest.app.game.scene.enemyAtlas.revision`),1,'Packaged painted enemies load through native image creation');
  const stick=await evaluate(`(()=>{const t=wechatTest,s=t.app.ui.hudView.stick.activation,p=s.localToGlobal(new t.root.Laya.Point(s.width*.6,s.height*.35));const touch={identifier:7,clientX:p.x,clientY:p.y};t.touch('Start',[touch]);t.touch('Move',[{...touch,clientX:p.x+44}]);return{x:p.x,y:p.y,playerX:t.app.game.player.x,playerY:t.app.game.player.y};})()`);
  await new Promise(r=>setTimeout(r,200));
  const moved=await evaluate(`(()=>{const t=wechatTest;const p=t.app.game.player;return {x:p.x,y:p.y,owner:t.app.ui.hudView.stick.stickTouch};})()`);
@@ -51,9 +53,9 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  assert.ok(performance.samples>0,'Collect actual battle frame intervals rather than treating requested FPS as measured FPS');
  assert.ok(performance.engineSamples>0&&performance.drawCalls>0&&performance.simulationSteps>0,'Real Stage.render records engine CPU, draw calls and simulation steps');
  const atlas=await evaluate(`(()=>{const t=wechatTest,g=t.app.game;return{bytes:g.scene.enemyAtlas.bytes,tiles:g.scene.enemyAtlas.sheet.tiles.size};})()`);
- assert.ok(atlas.tiles>=57+65,'Enemies, projectiles and pillars share one page');assert.equal(atlas.bytes,4194304,'GPU atlas has a fixed 4 MiB budget');
+ assert.ok(atlas.tiles>=164,'Painted gait/caster/guardian frames, projectiles and pillars share one page');assert.equal(atlas.bytes,4194304,'GPU atlas has a fixed 4 MiB budget');
  const highAtlas=await evaluate(`(()=>{const g=wechatTest.app.game;g.spawnEnemy(1);g.cycleVisualQuality();for(const e of g.enemies)g.paintEnemy(e);return {quality:g.quality,...g.scene.enemyAtlas.snapshot(true),total:g.scene.enemyAtlas.bytes};})()`);
- assert.equal(highAtlas.quality,'high');assert.equal(highAtlas.ready,true,'Detailed enemies use a shared atlas too');assert.equal(highAtlas.bytes,4194304);assert.equal(highAtlas.total,8388608);
+ assert.equal(highAtlas.quality,'high');assert.equal(highAtlas.ready,true,'Detailed enemies use a shared atlas too');assert.equal(highAtlas.bytes,4194304);assert.equal(highAtlas.total,4194304,'Painted family shares the same page across quality changes');
  await evaluate(`wechatTest.app.game.cycleVisualQuality();wechatTest.app.game.cycleVisualQuality()`);
  // Isolate input checks from random combat rewards on slower CI machines.
  await evaluate(`(()=>{const t=wechatTest,g=t.app.game;g.start('storm',true);t.root.Laya.timer.clear(g.loop,g.loop.frame);t.app.ui.update();})()`);
@@ -116,5 +118,5 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  assert.equal(await evaluate(`JSON.parse(wechatTest.clipboard()).drawCalls.rows.length`),10,'Copied diagnostics contain the complete split report');
  await evaluate(`wechatTest.app.game.returnToTitle()`);
  const stress=process.argv.includes('--stress')?await checkWechatStress({evaluate,directory,send}):undefined;
- return {kind:'wechat-package-in-browser',initial,battle,dual,paused,death,performance,drawCallProbe,probeContext,stress};
+ return {kind:'wechat-package-in-browser',initial,battle,dual,paused,death,performance,enemyArt:{atlas,highAtlas},drawCallProbe,probeContext,stress};
 }

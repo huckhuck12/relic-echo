@@ -1,6 +1,7 @@
 import {SceneRenderer} from '../dist/rendering/scene-renderer.js';
 import {enemyPose, drawEnemyDeath,drawEnemyRelease} from '../dist/rendering/enemy-presentation.js';
 import {enemyArtPose,ENEMY_ACTION_SECONDS} from '../dist/enemies/enemy-actions.js';
+import {enemyGaitFrame} from '../dist/rendering/enemy-art.js';
 import {unproject} from '../dist/shared/model.js';
 import {QUALITY_PRESETS} from '../dist/rendering/quality.js';
 import {UIControls} from '../dist/ui/ui-controls.js';
@@ -9,7 +10,7 @@ import {UIControls} from '../dist/ui/ui-controls.js';
 Laya.init(innerWidth,innerHeight,Laya.WebGL);Laya.stage.scaleMode='full';Laya.stage.bgColor='#17271f';
 const renderer=new SceneRenderer([]);renderer.world.visible=false;
 const root=new Laya.Sprite();Laya.stage.addChild(root);
-const controls=new UIControls(()=>{}),names=['苔藓史莱姆','骸骨法师','獠牙野猪','精英石像','遗迹核心'];
+const controls=new UIControls(()=>{}),names=['苔芽史莱姆','遗迹法师','荒野野猪','苔藓守卫','王冠核心'];
 controls.text(root,'怪物表现 · 移动 → 蓄力 → 出招 → 受击 → 碎裂',24,22,1050,22,'#e8d795');
 controls.text(root,'效果沙盒：无伤害结算，复用游戏正式绘制逻辑。',24,60,1050,13,'#a6b79b');
 let paused=false,quality='standard',time=0;
@@ -40,7 +41,7 @@ let last=performance.now();
 Laya.timer.frameLoop(1,null,()=>{
  const now=performance.now();if(!paused)time+=Math.min(.05,(now-last)/1000);last=now;
  const t=time%6,wind=t>=2&&t<3,attack=t>=3&&t<3.7,flash=t>=3.7&&t<3.84,death=t>=4.1&&t<4.62;
- status.text=death?'击杀 · 方块碎裂':flash?'受击 · 回弹':attack?'出招':wind?'蓄力 · 注意预警':'移动';
+ status.text=death?'击杀 · 材质碎片':flash?'受击 · 回弹':attack?'出招':wind?'蓄力 · 注意预警':'移动';
  overlay.graphics.clear();
  floor.graphics.clear();
  for(const e of enemies){
@@ -50,7 +51,8 @@ Laya.timer.frameLoop(1,null,()=>{
   e.flash=flash?.06:0;
   e.action=e.kind===1?'cast':e.kind===2?(t>=3.7?'brake':'launch'):e.kind===4?'slam':'burst';
   e.actionTime=e.kind>0&&t>=3?Math.max(0,ENEMY_ACTION_SECONDS[e.action]-(t-(e.kind===2&&t>=3.7?3.7:3))):0;
-  if(e.flashPaint!==flash||e.actionPaint!==enemyArtPose(e).key)renderer.paintEnemy(e,buffs,QUALITY_PRESETS[quality]);
+  const gait=enemyGaitFrame(e.kind,time,e.x,e.y);
+  if(e.flashPaint!==flash||e.actionPaint!==enemyArtPose(e).key||e.previewGait!==gait||e.previewRevision!==renderer.enemyAtlas.revision){renderer.paintEnemy(e,buffs,QUALITY_PRESETS[quality],time);e.previewGait=gait;e.previewRevision=renderer.enemyAtlas.revision;}
   const pose=enemyPose(e,time,false),x=120+e.kind*215;
   e.node.pos(x,410-pose.lift);e.node.scale(pose.sx,pose.sy);e.node.rotation=pose.rotation;e.node.visible=!death;
   if(death)drawEnemyDeath(overlay.graphics,{x:e.x,y:e.y,life:.52-(t-4.1),max:.52,tx:e.kind>=3?58:30,ty:e.kind,color:['#93b962','#c7a1e4','#d79459','#99aa7c','#e2ae65'][e.kind]},QUALITY_PRESETS[quality].debris);

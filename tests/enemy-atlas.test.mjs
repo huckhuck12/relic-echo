@@ -8,7 +8,7 @@ import {enemyArtPose,ENEMY_ACTION_SECONDS} from '../dist/enemies/enemy-actions.j
 function engine(){
  setupLayaStub();const canvases=[],bitmaps=[],textures=[];
  const context={setTransform(){},fillRect(){},beginPath(){},moveTo(){},lineTo(){},closePath(){},fill(){},stroke(){}};
- Laya.Browser={createElement:()=>{const c={width:0,height:0,getContext:()=>context};canvases.push(c);return c;}};
+ Laya.Browser={createElement:tag=>{if(tag==='img')return {};const c={width:0,height:0,getContext:()=>context};canvases.push(c);return c;}};
  Laya.Texture2D=class{constructor(w,h){this.width=w;this.height=h;this.destroyed=false;bitmaps.push(this);}loadImageSource(){}destroy(){this.destroyed=true;}};
  Laya.Texture=class{constructor(bitmap){this.bitmap=bitmap;textures.push(this);}destroy(){this.destroyed=true;}static createFromTexture(texture,x,y,w,h){return Object.assign(new this(texture.bitmap),{x,y,w,h});}};
  Laya.Matrix=class{constructor(a,b,c,d,tx,ty){Object.assign(this,{a,b,c,d,tx,ty});}};

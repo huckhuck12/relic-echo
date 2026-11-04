@@ -112,12 +112,23 @@ export function drawEnemyDeath(g: any, effect: Effect, debris: number): void {
         const x = q.x + Math.cos(a) * size * t;
         const y = q.y - 15 + Math.sin(a) * size * t * .45 - Math.sin(t * Math.PI) * size * .7;
         const edge = (effect.ty >= 3 ? 8 : 5) * (1 - t) + 1;
-        g.drawRect(Math.round(x), Math.round(y), edge, edge, i % 2 ? effect.color : '#e2d6ae');
+        if (g.drawPoly) {
+            const a = t * 2 + i, cs = Math.cos(a), sn = Math.sin(a), points: number[] = [];
+            const shape = effect.ty === 0 ? [-1, 0, -.3, -.6, .8, -.2, .5, .5, -.5, .6] : effect.ty === 1 ? [-.7, -.9, .6, -.5, 1, .3, -.2, .7] : [-.8, -.5, .1, -.9, .8, -.2, .6, .7, -.5, .6];
+            for (let j = 0; j < shape.length; j += 2)
+                points.push((shape[j] * cs - shape[j + 1] * sn) * edge, (shape[j] * sn + shape[j + 1] * cs) * edge);
+            g.drawPoly(x, y, points, i % 2 ? effect.color : effect.ty >= 3 ? '#d5c8a5' : effect.ty === 0 ? '#b9ca81' : '#c3a17d');
+        }
+        else
+            g.drawRect(Math.round(x), Math.round(y), edge, edge, i % 2 ? effect.color : '#e2d6ae');
     }
     // 短暂的碎裂中心先亮后收缩，普通怪也能读到击杀点，避免堆叠大光圈。
     if (t < .28) {
         const edge = 12 * (1 - t / .28);
-        g.drawRect(q.x - edge / 2, q.y - 23 - edge / 2, edge, edge, '#fff0c4');
+        if (g.drawPoly)
+            g.drawPoly(q.x, q.y - 23, [0, -edge * .65, edge * .35, 0, 0, edge * .65, -edge * .35, 0], '#fff0c4');
+        else
+            g.drawRect(q.x - edge / 2, q.y - 23 - edge / 2, edge, edge, '#fff0c4');
     }
 }
 /** 只控制蓄力显示比例；真实攻击何时释放仍完全由 AI.wind 决定。 */

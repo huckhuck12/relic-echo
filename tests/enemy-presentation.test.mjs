@@ -77,11 +77,11 @@ test('death fragments obey quality budgets with finite geometry and never consum
   const random=Math.random;Math.random=()=>{throw Error('visuals consumed combat RNG');};
   try{
     for(let kind=0;kind<5;kind++)for(const debris of [3,5,10])for(const t of [0,.15,.5,.95,1]){
-      const calls=[],g={drawRect:(...a)=>calls.push(a)};
+      const calls=[],g={drawPoly:(...a)=>calls.push(a),drawRect(){throw Error('Death must use painted fragment silhouettes');}};
       const effect=Object.freeze({x:80,y:20,kind:'death',life:(1-t)*.52,max:.52,tx:kind>=3?58:30,ty:kind,color:'#aabbcc'});
       drawEnemyDeath(g,effect,debris);
       assert.ok(calls.length<=(kind>=3?debris:Math.min(5,debris))+1);
-      assert.ok(calls.every(c=>c.slice(0,4).every(Number.isFinite)&&c[2]>0&&c[3]>0));
+      assert.ok(calls.every(c=>Number.isFinite(c[0])&&Number.isFinite(c[1])&&Array.isArray(c[2])&&c[2].every(Number.isFinite)));
       enemyPose({kind,x:0,y:0,wind:0,charge:0,flash:0},t,false);
     }
   }finally{Math.random=random;}

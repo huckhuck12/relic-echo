@@ -22,6 +22,8 @@ export interface AtlasRaster {
     attachments?: RasterLayer[];
     fingers?: Shape[];
     attachmentsBehind?: boolean;
+    tint?: string;
+    tintAlpha?: number;
 }
 export interface RasterLayer {
     sx: number;
@@ -38,6 +40,14 @@ export interface RasterLayer {
     flip?: boolean;
     offsetX?: number;
     offsetY?: number;
+    transform?: {
+        a: number;
+        b: number;
+        c: number;
+        d: number;
+        tx: number;
+        ty: number;
+    };
 }
 /** Shared, bounded GPU atlases for ordinary enemies, including all caster action phases.
  * High detail is created only on demand. No per-enemy textures or per-frame uploads.
@@ -101,7 +111,8 @@ export class ShapeAtlas {
                 context.setTransform(scale, 0, 0, scale, tile.x + padding - tile.left * scale, tile.y + padding - tile.top * scale);
                 if (tile.raster) {
                     const r = tile.raster;
-                    drawCanvasShapes(context, r.behind);
+                    if (!r.tint)
+                        drawCanvasShapes(context, r.behind);
                     if (r.attachmentsBehind)
                         drawRasterLayers(context, r.source, r.attachments || []);
                     drawRasterLayers(context, r.source, r.layers || [r]);
@@ -109,6 +120,18 @@ export class ShapeAtlas {
                         drawRasterLayers(context, r.source, r.attachments || []);
                     if (r.fingers)
                         drawCanvasShapes(context, r.fingers);
+                    if (r.tint) {
+                        context.globalCompositeOperation = 'source-atop';
+                        context.globalAlpha = r.tintAlpha ?? 1;
+                        context.fillStyle = r.tint;
+                        context.fillRect(tile.left, tile.top, tile.right - tile.left, tile.bottom - tile.top);
+                        context.globalCompositeOperation = 'source-over';
+                        context.globalAlpha = 1;
+                        // Status tint belongs to the creature, not its contact shadow.
+                        context.globalCompositeOperation = 'destination-over';
+                        drawCanvasShapes(context, r.behind);
+                        context.globalCompositeOperation = 'source-over';
+                    }
                 }
                 drawCanvasShapes(context, tile.shapes);
             }
@@ -176,14 +199,21 @@ function entryBounds(entry: {
         const y = transformed ? (layer.offsetY || 0) : 0;
         const a = layer.angle || 0, side = layer.flip ? -1 : 1;
         const p: number[] = [];
-        for (const [dx, dy] of [[x, y], [x + layer.width, y], [x + layer.width, y + layer.height], [x, y + layer.height]])
-            p.push(layer.x + dx * side * Math.cos(a) - dy * Math.sin(a), layer.y + dx * side * Math.sin(a) + dy * Math.cos(a));
+        for (const [dx, dy] of [[x, y], [x + layer.width, y], [x + layer.width, y + layer.height], [x, y + layer.height]]) {
+            const px = layer.x + dx * side * Math.cos(a) - dy * Math.sin(a), py = layer.y + dx * side * Math.sin(a) + dy * Math.cos(a), m = layer.transform;
+            p.push(m ? m.a * px + m.c * py + m.tx : px, m ? m.b * px + m.d * py + m.ty : py);
+        }
         bounds.push({ type: 'poly', p, fill: '#000000' });
     }
     return shapeBounds(bounds);
 }
 function drawRasterLayers(context: CanvasRenderingContext2D, source: HTMLImageElement, layers: RasterLayer[]) {
     for (const r of layers) {
+        if (r.transform) {
+            const m = r.transform;
+            context.save();
+            context.transform(m.a, m.b, m.c, m.d, m.tx, m.ty);
+        }
         const transformed = r.angle !== undefined || r.flip;
         if (transformed) {
             context.save();
@@ -199,6 +229,8 @@ function drawRasterLayers(context: CanvasRenderingContext2D, source: HTMLImageEl
         if (r.add)
             context.globalCompositeOperation = 'source-over';
         if (transformed)
+            context.restore();
+        if (r.transform)
             context.restore();
     }
 }

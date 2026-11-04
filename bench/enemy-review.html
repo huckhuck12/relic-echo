@@ -1,0 +1,33 @@
+<!doctype html><meta charset="utf-8"><base href="/">
+<title>Painted enemy family production review</title>
+<style>body{margin:0;background:#526b50}canvas{display:block}</style>
+<script src="/vendor/laya.core.js"></script><script src="/vendor/laya.webgl.js"></script>
+<script type="module">
+import {EnemyAtlas} from '/dist/rendering/enemy-atlas.js';
+import {enemyArt,enemyGaitFrame} from '/dist/rendering/enemy-art.js';
+import {enemyArtPose,ENEMY_ACTION_SECONDS} from '/dist/enemies/enemy-actions.js';
+import {enemyPose,drawRangedWarning,drawChargeWarning,drawEnemyRelease,drawEnemyDeath} from '/dist/rendering/enemy-presentation.js';
+Laya.init(1100,1000,Laya.WebGL);Laya.stage.bgColor='#526b50';
+const art=enemyArt();for(let i=0;i<100&&!art.image&&!art.error;i++)await new Promise(r=>setTimeout(r,50));
+const atlas=new EnemyAtlas(),floor=new Laya.Sprite(),actors=new Laya.Sprite(),upper=new Laya.Sprite(),labels=new Laya.Sprite();
+for(const n of [floor,actors,upper,labels])Laya.stage.addChild(n);
+const names=['moss slime','ruin mage','wild boar','moss guardian','crowned core'];
+window.enemyReview={paint(time=0,detail=false,palette='normal',death=false){
+ for(const n of [floor,actors,upper,labels]){n.graphics.clear();n.destroyChildren();}
+ const label=(text,x,y)=>{const n=new Laya.Text();n.text=text;n.fontSize=14;n.color='#f7edce';n.pos(x,y);labels.addChild(n);};
+ label('painted enemy family / '+palette+' / '+(detail?'fine':'standard')+' / '+time.toFixed(2)+'s',20,18);
+ const cases=death?[{name:'alive'},{name:'death fragments',dead:true}]:[{name:'pursuit'},{name:'anticipation',wind:.12},{name:'release',action:true},{name:'recovery',recover:true}];
+ for(const [row,state]of cases.entries())for(let kind=0;kind<5;kind++){
+  const x=110+kind*220,y=240+row*240,action=kind===1?'cast':kind===2?'launch':kind===4?'slam':'burst';
+  const e={kind,x:0,y:0,dx:1,dy:0,radius:20,wind:state.wind||0,flash:palette==='flash'?.1:0,icePaint:palette==='ice',action:state.action||state.recover?action:undefined,actionTime:state.action?ENEMY_ACTION_SECONDS[action]*.85:state.recover?ENEMY_ACTION_SECONDS[action]*.1:0};
+  const p=enemyPose(e,time,palette==='ice'),n=new Laya.Sprite();n.pos(x,y-p.lift);n.scale(p.sx,p.sy);n.rotation=p.rotation;actors.addChild(n);
+  const gait=enemyGaitFrame(kind,time,0,0,palette==='ice');if(!atlas.paint(n.graphics,kind,palette==='flash',palette==='ice',enemyArtPose(e),detail,gait))throw Error('Enemy atlas fallback: '+kind);
+  // Draw warning geometry in a translated local layer, sharing the actual staff socket logic.
+  const g=new Laya.Sprite(),f=new Laya.Sprite();g.pos(x,y);f.pos(x,y);upper.addChild(g);floor.addChild(f);
+  if(state.dead){n.visible=false;drawEnemyDeath(g.graphics,{x:0,y:0,life:Math.max(0,.52-time),max:.52,tx:kind>=3?58:30,ty:kind,color:['#93b962','#b49bc4','#b57c53','#91a087','#c4a171'][kind]},detail?10:5);}
+  else{drawRangedWarning(g.graphics,f.graphics,e,time,detail);drawChargeWarning(f.graphics,e);drawEnemyRelease(g.graphics,f.graphics,e,time,detail);}
+  label(names[kind]+' / '+state.name,x-85,y+28);
+ }
+ return {time,detail,palette,death,ready:!!art.image,error:art.error,atlas:atlas.snapshot(detail),revision:atlas.revision};
+}};window.enemyReview.paint();
+</script>

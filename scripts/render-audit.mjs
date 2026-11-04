@@ -19,7 +19,7 @@ export async function checkRenderAudit({send,evaluate,origin,directory}){
  await send('Emulation.setDeviceMetricsOverride',{width:1024,height:720,deviceScaleFactor:1,mobile:false});
  await send('Page.navigate',{url:origin+'/bench/guardian-motion.html'});
  for(let i=0;i<100&&!await evaluate('!!window.guardianReady');i++)await new Promise(r=>setTimeout(r,100));
- const guardian=await evaluate('guardianReady');assert.ok(guardian.ready&&guardian.bytes<=4194304);
+ const guardian=await evaluate('guardianReady');assert.ok(guardian.ready&&guardian.bytes<=4194304);assert.equal(guardian.revision,1,'Guardian review uses painted source');
  await new Promise(r=>setTimeout(r,60));
  const guardianShot=await send('Page.captureScreenshot',{format:'png'});
  await writeFile(resolve(directory,'guardian-motion.png'),Buffer.from(guardianShot.data,'base64'));
@@ -28,6 +28,9 @@ export async function checkRenderAudit({send,evaluate,origin,directory}){
  for(let i=0;i<100&&!await evaluate('!!window.Laya?.stage?.getChildByName("game-ui")');i++)await new Promise(r=>setTimeout(r,100));
  await evaluate(`(async()=>{
   const {game:g}=await import('/dist/main.js'),{scenario,seeded}=await import('/bench/scenario.js');
+  const {enemyArt}=await import('/dist/rendering/enemy-art.js');
+  for(let i=0;i<100&&!enemyArt().image&&!enemyArt().error;i++)await new Promise(r=>setTimeout(r,50));
+  if(!enemyArt().image)throw Error('Painted enemy source unavailable');
   const L=Laya;L.timer.clear(g.loop,g.loop.frame);
   const original=L.stage._loop;let samples=[];
   L.stage._loop=function(...args){const d=L.Stat.renderBatches;const v=original.apply(this,args);samples.push(L.Stat.renderBatches-d);return v;};

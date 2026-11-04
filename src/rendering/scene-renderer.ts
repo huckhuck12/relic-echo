@@ -1,5 +1,6 @@
 import { PlayerAtlas } from './player-atlas.js';
 import { routeVfx, vfxAtlas, paintVfx } from './vfx-atlas.js';
+import { enemyGaitFrame } from './enemy-art.js';
 import { shotTile } from './painted-world.js';
 import { platform } from '../platform/runtime.js';
 import { ELEMENTS } from '../buffs/buffs.js';
@@ -73,9 +74,11 @@ export class SceneRenderer {
     private readonly terrainBytes: number;
     get textureBytes(): number { return this.terrainBytes + this.enemyAtlas.bytes + this.playerAtlas.bytes + (vfxAtlas()?.status.bytes || 0); }
     private readonly playerAtlas = new PlayerAtlas();
-    private readonly shotPaint = new WeakMap<Shot, boolean>();
-    private readonly dropPaint = new WeakMap<Drop, boolean>();
-    private pillarDetail = false;
+    private shotPaint = new WeakMap<Shot, boolean>();
+    private dropPaint = new WeakMap<Drop, boolean>();
+    private pillarDetail: boolean | undefined = false;
+    private enemyRevision = 0;
+    private readonly enemyFramePaint = new WeakMap<Enemy, string>();
     private lastAvatar = '';
     private readonly enemyShapeCache = new Map<string, Shape[]>();
     readonly enemyAtlas = new EnemyAtlas();
@@ -131,10 +134,11 @@ export class SceneRenderer {
         drawShapes(this.playerNode.graphics, avatarShapes(loadout, p.back, p.face, walkPhase, p.direction, castTime));
     }
     /** 受击、减速状态或画质变化才重建形状，避免每帧重画方块面片。 */
-    paintEnemy(e: Enemy, buffs: Pick<BuffRuntime<Enemy>, 'speedMultiplier'>, visuals: VisualSettings): void {
+    paintEnemy(e: Enemy, buffs: Pick<BuffRuntime<Enemy>, 'speedMultiplier'>, visuals: VisualSettings, time = 0): void {
         const art = enemyArtPose(e), frozen = buffs.speedMultiplier(e) < 1;
         const key = `${e.kind}:${e.flash > 0}:${frozen}:${visuals.detail}:${art.key}`;
-        if (!this.enemyAtlas.paint(e.node.graphics, e.kind, e.flash > 0, frozen, art, visuals.detail)) {
+        const gait = enemyGaitFrame(e.kind, time, e.x, e.y, frozen);
+        if (!this.enemyAtlas.paint(e.node.graphics, e.kind, e.flash > 0, frozen, art, visuals.detail, gait)) {
             let shapes = this.enemyShapeCache.get(key);
             if (!shapes) {
                 shapes = enemyVisualShapes(e.kind, e.flash > 0, frozen, visuals.detail, art);
@@ -147,6 +151,7 @@ export class SceneRenderer {
         e.flashPaint = e.flash > 0;
         e.icePaint = frozen;
         e.actionPaint = art.key;
+        this.enemyFramePaint.set(e, `${this.enemyAtlas.revision}:${gait}`);
     }
     /** 每帧更新相机与显示；屏幕外只隐藏节点，不移除实体或停止 AI。 */
     render(state: SceneFrame, excluded: DrawGroup | null = null): void {
@@ -221,14 +226,21 @@ export class SceneRenderer {
     }
     /** 只同步显示属性和绘图缓存；屏幕外节点保留，返回视野时直接重新显示。 */
     private syncActors(state: SceneFrame, zoom: number, inView: (x: number, y: number, margin?: number) => boolean): void {
+        if (this.enemyRevision !== this.enemyAtlas.revision) {
+            this.enemyRevision = this.enemyAtlas.revision;
+            this.shotPaint = new WeakMap();
+            this.dropPaint = new WeakMap();
+            this.pillarDetail = undefined;
+        }
         const pp = project(state.player.x, state.player.y);
         for (const e of state.enemies) {
             const q = project(e.x, e.y);
             e.node.visible = inView(q.x * zoom + this.world.x, q.y * zoom + this.world.y);
             if (!e.node.visible)
                 continue;
-            if (e.flashPaint !== (e.flash > 0) || e.icePaint !== (state.buffs.speedMultiplier(e) < 1) || e.actionPaint !== enemyArtPose(e).key)
-                this.paintEnemy(e, state.buffs, state.visuals);
+            const gait = this.enemyAtlas.revision ? enemyGaitFrame(e.kind, state.time, e.x, e.y, state.buffs.speedMultiplier(e) < 1) : 0;
+            if (e.flashPaint !== (e.flash > 0) || e.icePaint !== (state.buffs.speedMultiplier(e) < 1) || e.actionPaint !== enemyArtPose(e).key || (this.enemyAtlas.revision > 0 && this.enemyFramePaint.get(e) !== `${this.enemyAtlas.revision}:${gait}`))
+                this.paintEnemy(e, state.buffs, state.visuals, state.time);
             const pose = enemyPose(e, state.time, e.icePaint === true);
             e.node.pos(q.x, q.y - pose.lift);
             this.depth(e.node, e.x + e.y);

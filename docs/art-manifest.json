@@ -1,9 +1,9 @@
 {
-  "version": "0.12.2",
+  "version": "0.12.4",
   "direction": "handdrawn-fantasy",
-  "production": "Selected B painted hero; shared articulated enemy atlas; painted elemental weapon and Buff VFX; full enemy redraw pending",
+  "production": "Selected B painted hero, elemental weapon/Buff VFX, five painted enemy families with shared articulated atlas",
   "view": "2.5D isometric, screen-space artwork with foot origin",
-  "rights": "Original project code art plus user-authorized generated hero raster; generation prompts and edits recorded in docs/art/hero-b-production.md; no sourced art or new font dependency; generated elemental VFX provenance in docs/art/element-vfx-production.md",
+  "rights": "Original project code art plus user-authorized generated hero raster; generation prompts and edits recorded in docs/art/hero-b-production.md; no sourced art or new font dependency; generated elemental VFX provenance in docs/art/element-vfx-production.md; generated enemy family provenance in docs/art/enemy-family-production.md",
   "assets": [
     {
       "family": "player-equipment",
@@ -25,16 +25,19 @@
     {
       "family": "all-enemies-actors",
       "source": "src/rendering/enemy-atlas.ts",
-      "frames": 146,
+      "frames": 164,
       "variants": [
-        "standard",
-        "high"
+        "all qualities share painted page"
       ],
       "pivot": "existing entity origins; projectile center (0,-18)",
       "collision": "unchanged world entities",
-      "maxGpuBytes": 8388608,
-      "cache": "shared pages across rounds",
-      "status": "engine-preview-verified; native-device-pending"
+      "maxGpuBytes": 4194304,
+      "cache": "one shared GPU page across quality changes; delayed replacement invalidates actor and prop caches",
+      "status": "real-WebGL-and-WeChat-shim-verified; native-device-pending",
+      "body": "assets/enemies/ruin-creatures.png",
+      "metadata": "assets/enemies/ruin-creatures.json",
+      "sourceFrames": 20,
+      "decodedSourceBytes": 4194304
     },
     {
       "family": "meadow-path",
