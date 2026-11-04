@@ -56,6 +56,13 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  assert.ok(atlas.tiles>=164,'Painted gait/caster/guardian frames, projectiles and pillars share one page');assert.equal(atlas.bytes,4194304,'GPU atlas has a fixed 4 MiB budget');
  const highAtlas=await evaluate(`(()=>{const g=wechatTest.app.game;g.spawnEnemy(1);g.cycleVisualQuality();for(const e of g.enemies)g.paintEnemy(e);return {quality:g.quality,...g.scene.enemyAtlas.snapshot(true),total:g.scene.enemyAtlas.bytes};})()`);
  assert.equal(highAtlas.quality,'high');assert.equal(highAtlas.ready,true,'Detailed enemies use a shared atlas too');assert.equal(highAtlas.bytes,4194304);assert.equal(highAtlas.total,4194304,'Painted family shares the same page across quality changes');
+ const wearables=[];
+ for(const [head,armor,back]of [['visor','light','cape'],['helmet','heavy','thorn'],['hood','energy','pack']]){
+  const row=await evaluate(`(()=>{const g=wechatTest.app.game;wechatTest.savedLoadout??=g.loadout;g.loadout={...g.loadout,head:{id:${JSON.stringify(head)},quality:2},armor:{id:${JSON.stringify(armor)},quality:2},back:{id:${JSON.stringify(back)},quality:2}};g.player.direction=1;g.render();wechatTest.app.ui.update();return{head:${JSON.stringify(head)},armor:${JSON.stringify(armor)},back:${JSON.stringify(back)},bytes:g.scene.playerAtlas.bytes,ready:g.scene.playerArtStatus.ready};})()`);
+  assert.equal(row.ready,true);assert.ok(row.bytes>0&&row.bytes<=8388608,'Painted wearable composition succeeds in the WeChat engine environment');wearables.push(row);
+  await new Promise(r=>setTimeout(r,60));await screenshot('wearables-'+head);
+ }
+ await evaluate(`(()=>{const g=wechatTest.app.game;g.loadout=wechatTest.savedLoadout;delete wechatTest.savedLoadout;g.render();wechatTest.app.ui.update();})()`);
  await evaluate(`wechatTest.app.game.cycleVisualQuality();wechatTest.app.game.cycleVisualQuality()`);
  // Isolate input checks from random combat rewards on slower CI machines.
  await evaluate(`(()=>{const t=wechatTest,g=t.app.game;g.start('storm',true);t.root.Laya.timer.clear(g.loop,g.loop.frame);t.app.ui.update();})()`);
@@ -118,5 +125,5 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  assert.equal(await evaluate(`JSON.parse(wechatTest.clipboard()).drawCalls.rows.length`),10,'Copied diagnostics contain the complete split report');
  await evaluate(`wechatTest.app.game.returnToTitle()`);
  const stress=process.argv.includes('--stress')?await checkWechatStress({evaluate,directory,send}):undefined;
- return {kind:'wechat-package-in-browser',initial,battle,dual,paused,death,performance,enemyArt:{atlas,highAtlas},drawCallProbe,probeContext,stress};
+ return {kind:'wechat-package-in-browser',initial,battle,dual,paused,death,performance,enemyArt:{atlas,highAtlas},wearables,drawCallProbe,probeContext,stress};
 }

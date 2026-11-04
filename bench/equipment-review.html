@@ -1,0 +1,44 @@
+<!doctype html>
+<meta charset="utf-8">
+<base href="/">
+<title>Painted wearable equipment review</title>
+<style>body{margin:0;background:#526b50}canvas{display:block}</style>
+<script src="/vendor/laya.core.js"></script>
+<script src="/vendor/laya.webgl.js"></script>
+<script type="module">
+import {PlayerAtlas} from '/dist/rendering/player-atlas.js';
+import {heroArt} from '/dist/rendering/hero-art.js';
+import {CAST_DURATION} from '/dist/rendering/player-pose.js';
+import {emptyLoadout} from '/dist/shared/model.js';
+Laya.init(1024,800,Laya.WebGL);Laya.stage.bgColor='#526b50';
+await new Promise(resolve=>heroArt().whenReady(resolve));
+const sets=[['visor','light','cape'],['helmet','heavy','thorn'],['hood','energy','pack']];
+const rows=[];
+for(let row=0;row<4;row++){
+ const atlas=new PlayerAtlas(),sprites=[];
+ const text=new Laya.Text();text.color='#f8edce';text.fontSize=14;text.pos(12,12+row*198);Laya.stage.addChild(text);
+ for(let direction=0;direction<8;direction++){
+  const sprite=new Laya.Sprite();sprite.pos(64+direction*128,168+row*198);sprite.scale(1.6,1.6);Laya.stage.addChild(sprite);sprites.push(sprite);
+  const cross=new Laya.Sprite();cross.graphics.drawLine(sprite.x-25,sprite.y,sprite.x+25,sprite.y,'#a4b592',1);Laya.stage.addChild(cross);
+ }
+ rows.push({atlas,sprites,text});
+}
+window.equipmentReview={paint(category='sets',mode='idle',frame=0,quality=0){
+ for(let row=0;row<4;row++){
+  const {atlas,sprites,text}=rows[row],weapon=['storm','storm','flame','blade'][row];
+  const loadout=emptyLoadout(weapon);
+  if(row)for(const [index,slot]of ['head','armor','back'].entries())if(category==='sets'||category===slot)loadout[slot]={id:sets[row-1][index],quality};
+  text.text=row===0?'BASE / no wearables':Object.entries(loadout).map(([slot,item])=>slot+': '+(item?.id||'-')).join('  ');
+  for(let direction=0;direction<8;direction++){
+   const moving=mode==='walk'||mode==='walk-cast';
+   atlas.paint(sprites[direction].graphics,loadout,{direction,face:1,back:false,moving,castWeapon:weapon,castTime:mode.includes('cast')?CAST_DURATION[weapon]*(1-(frame+.5)/12):0},moving?frame*Math.PI/2:0);
+  }
+ }
+ return {ready:!!heroArt().image,category,mode,frame,quality,bytes:rows.map(row=>row.atlas.bytes)};
+},preview(id,direction=1){
+ const loadout=emptyLoadout('storm'),slot=['visor','hood','helmet'].includes(id)?'head':['light','heavy','energy'].includes(id)?'armor':'back';loadout[slot]={id,quality:2};
+ const sprite=new Laya.Sprite(),atlas=new PlayerAtlas(true);Laya.stage.addChild(sprite);sprite.pos(80,160);
+ const result=atlas.paint(sprite.graphics,loadout,{direction,face:1,back:false,moving:false},0),bytes=atlas.bytes;atlas.destroy();sprite.destroy();return {result,bytes};
+}};
+window.equipmentReview.paint();
+</script>

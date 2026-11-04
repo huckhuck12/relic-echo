@@ -1,6 +1,6 @@
 # 遗迹回响 · Relic Echo
 
-LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 **`0.12.4`**。采用手绘幻想风格：玩家、怪物与元素特效使用仓库内的透明图片和共享图集，场景、伤害边界与 UI 结合程序绘图，由 LayaAir 显示节点统一渲染。
+LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 **`0.12.5`**。采用手绘幻想风格：玩家、可穿戴装备、怪物与元素特效使用仓库内的透明图片和共享图集，场景、伤害边界与 UI 结合程序绘图，由 LayaAir 显示节点统一渲染。
 
 当前优化计划、优先级和真机验收状态见[优化清单](docs/优化清单.md)。
 
@@ -13,6 +13,16 @@ LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 **`0.12.4`
 项目已包含 [GitHub Pages 工作流](.github/workflows/pages.yml)。上传到自己的 GitHub 仓库，在 **Settings → Pages → Source** 选择 **GitHub Actions**；向 main/master 推送或手动运行工作流，构建和测试通过后自动发布。所有资源使用相对路径，支持 `https://用户名.github.io/仓库名/` 和账号主页站点。
 
 本地生成发布包：`npm run build:pages`。模拟仓库子路径：`npm run preview:pages -- --port 8081`，访问 `http://localhost:8081/relic-echo/`。详见[开发与发布说明](docs/开发与发布.md)。仓库为 `huckhuck12/relic-echo`，本地修改需推送后等待 GitHub Actions 部署成功才会更新线上站点。
+
+## 0.12.5 主角可穿戴装备重画
+
+- 重画三种头饰、三种护甲、三种背饰，共 9 件、45 个视角切片；五个独立视角加镜像映射八向。护甲包含实际躯干衣装，袖口与四肢沿用身体动作。
+- 战斗与装备预览共用穿戴合成，修正头盔/兜帽的头发遮挡、背饰前后层级与施法锚点。素材放入原有角色源图空白处，解码源图仍为 4 MiB；三套完整穿搭各为 4 MiB GPU 缓存，静态预览最多 64 KiB。
+- 238 项测试及 H5/微信模拟检查通过；混合怪物密度场景仍为 18 DC，微信固定压力场景仍为 28 DC。本地 `_wechat` 已更新至 0.12.5；独立衣袖动画和真机长时间验收仍待完成。
+
+![主角三套穿搭与八向对照](docs/art/equipment-sets-0125.png)
+
+[装备制作记录与完整提示词路径](docs/art/equipment-production.md) · [行走样张](docs/art/equipment-walk-0125.png) · [施法样张](docs/art/equipment-cast-0125.png) · [0.12.5 验收数据](docs/render-results-0125.json)
 
 ## 0.12.4 怪物重画与跨画质共享图集
 
@@ -552,7 +562,7 @@ npm run check:mobile
 npm run check:wechat
 ```
 
-当前 234 项自动测试通过，覆盖战斗规则、升级与装备、触控和弹窗隔离、屏幕布局、自动试玩、资源预算、图集回退与生命周期等。浏览器检查使用真实 Laya WebGL，覆盖手机横竖屏、桌面交互和微信 SDK 模拟环境；运行浏览器检查需要本机安装受支持的 Chromium/Edge。
+当前 238 项自动测试通过，覆盖战斗规则、升级与装备、触控和弹窗隔离、屏幕布局、自动试玩、资源预算、图集回退与生命周期等。浏览器检查使用真实 Laya WebGL，覆盖手机横竖屏、桌面交互和微信 SDK 模拟环境；运行浏览器检查需要本机安装受支持的 Chromium/Edge。
 
 怪物与密度专项检查可在构建后运行：
 
@@ -560,7 +570,7 @@ npm run check:wechat
 node scripts/check-mobile-browser.mjs --enemy-audit --render-audit
 ```
 
-最新怪物样张、密度对照和微信模拟结果见 [0.12.4 验收数据](docs/render-results-0124.json)。自动测试、浏览器和 SDK 模拟结果不能替代真机验收：iPhone Air 精细画质下的长时间帧率、摇杆多指连续操作及微信整进程退出仍需复验，当前不能认定闪退根因已修复。
+最新装备样张、密度对照和微信模拟结果见 [0.12.5 验收数据](docs/render-results-0125.json)。自动测试、浏览器和 SDK 模拟结果不能替代真机验收：iPhone Air 精细画质下的长时间帧率、摇杆多指连续操作及微信整进程退出仍需复验，当前不能认定闪退根因已修复。
 
 ## 当前原型与目标方案的差异
 

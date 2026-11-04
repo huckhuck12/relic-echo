@@ -1,16 +1,16 @@
 {
-  "version": "0.12.4",
+  "version": "0.12.5",
   "direction": "handdrawn-fantasy",
-  "production": "Selected B painted hero, elemental weapon/Buff VFX, five painted enemy families with shared articulated atlas",
+  "production": "Selected B painted hero, nine painted wearables, elemental weapon/Buff VFX, five painted enemy families with shared articulated atlas",
   "view": "2.5D isometric, screen-space artwork with foot origin",
-  "rights": "Original project code art plus user-authorized generated hero raster; generation prompts and edits recorded in docs/art/hero-b-production.md; no sourced art or new font dependency; generated elemental VFX provenance in docs/art/element-vfx-production.md; generated enemy family provenance in docs/art/enemy-family-production.md",
+  "rights": "Original project code art plus user-authorized generated hero raster; generation prompts and edits recorded in docs/art/hero-b-production.md; no sourced art or new font dependency; generated elemental VFX provenance in docs/art/element-vfx-production.md; generated enemy family provenance in docs/art/enemy-family-production.md; generated wearable art and full prompt/source paths recorded in docs/art/equipment-production.md",
   "assets": [
     {
       "family": "player-equipment",
       "source": "src/rendering/player-atlas.ts",
       "body": "assets/hero/ruin-apprentice.png",
       "bodyMetadata": "assets/hero/ruin-apprentice.json",
-      "attachments": "src/rendering/hero-motion.ts; src/rendering/appearance.ts",
+      "attachments": "src/rendering/hero-motion.ts; src/rendering/equipment-art.ts",
       "bodyFrames": 56,
       "frames": 128,
       "pivot": "feet (0,0); source pivot (48,124) at 1.5 px per logical pixel",
@@ -19,8 +19,13 @@
       "decodedSourceBytes": 4194304,
       "staticPreviewMaxGpuBytes": 65536,
       "cache": "one current loadout; decoded source shared; replaced and preview sheets destroyed",
-      "status": "browser-entry-and-equipment-preview-verified; native-device-pending",
-      "weaponMetadata": "assets/hero/weapons.json"
+      "status": "real-WebGL-and-WeChat-shim-verified; native-device-pending",
+      "weaponMetadata": "assets/hero/weapons.json",
+      "equipmentMetadata": "assets/hero/equipment.json",
+      "wearableFrames": 45,
+      "wearableItems": 9,
+      "wearableViews": 5,
+      "additionalDecodedSourceBytes": 0
     },
     {
       "family": "all-enemies-actors",
@@ -77,5 +82,5 @@
       "status": "real-WebGL-verified; native-device-pending"
     }
   ],
-  "preview": "docs/art/hero-b-ingame.png"
+  "preview": "docs/art/equipment-sets-0125.png"
 }

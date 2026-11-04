@@ -10,6 +10,7 @@ import { castBlend, castHand, handPoint, walkFrame, weaponMount } from './hero-m
 import { oval } from './painted-art.js';
 import type { AtlasRaster, RasterLayer } from './shape-atlas.js';
 import type { Shape } from './voxel.js';
+import { equipmentLayers } from './equipment-art.js';
 /** One equipment set, 128 poses, at most 8 MiB. Replaced sets are destroyed. */
 export class PlayerAtlas {
     private sheet?: ShapeAtlas;
@@ -45,12 +46,13 @@ export class PlayerAtlas {
                 if (!image)
                     return { key, shapes };
                 const back = direction >= 5;
-                const behind = shapes.filter(s => s.avatarLayer === 'back' && !back);
-                const front = shapes.filter(s => s.avatarLayer && s.avatarLayer !== 'weapon' && !behind.includes(s) && s.avatarLayer !== 'badge');
+                const behind: Shape[] = [];
+                const front: Shape[] = [];
                 // The painted feet rest on a compact contact shadow; recoil never transforms it.
                 behind.unshift(oval(0, 0, 13, 3, '#354638', '#354638'));
                 const hand = cast >= 0 ? castHand(direction, cast) : handPoint(direction, pose);
                 const attachments = [weaponMount(weapon, direction, hand)];
+                const equipment = equipmentLayers(loadout, direction, pose, cast);
                 const fingers = back ? [] : [oval(hand.x, hand.y, 1.7, 2.2, '#dba878', '#a77555')];
                 let layers: RasterLayer[] | undefined;
                 if (cast >= 0) {
@@ -63,8 +65,10 @@ export class PlayerAtlas {
                             ...idle, sy: idle.sy + 82, sh: 46, y: -28, height: 46 / 1.5
                         }, upper(blend.from, 1 - blend.mix), upper(blend.to, blend.mix)];
                 }
+                if (equipment.bodyClip)
+                    layers = (layers || [heroFrame(direction, pose)]).map(layer => ({ ...layer, clip: equipment.bodyClip }));
                 return { key, shapes: front, raster: {
-                        source: image, ...heroFrame(direction, pose), layers, behind, attachments, fingers, attachmentsBehind: back
+                        source: image, ...heroFrame(direction, pose), layers, behind, ...equipment, attachments, fingers, attachmentsBehind: back
                     } };
             };
             const directions = this.preview ? [playerDirection(p)] : [0, 1, 2, 3, 4, 5, 6, 7];

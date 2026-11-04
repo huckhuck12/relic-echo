@@ -18,6 +18,8 @@ export interface AtlasRaster {
     width: number;
     height: number;
     behind: Shape[];
+    underlays?: RasterLayer[];
+    overlays?: RasterLayer[];
     layers?: RasterLayer[];
     attachments?: RasterLayer[];
     fingers?: Shape[];
@@ -26,6 +28,8 @@ export interface AtlasRaster {
     tintAlpha?: number;
 }
 export interface RasterLayer {
+    /** Logical-space body mask, used to hide old hair beneath a fitted hood/helmet. */
+    clip?: number[];
     sx: number;
     sy: number;
     sw: number;
@@ -115,7 +119,9 @@ export class ShapeAtlas {
                         drawCanvasShapes(context, r.behind);
                     if (r.attachmentsBehind)
                         drawRasterLayers(context, r.source, r.attachments || []);
+                    drawRasterLayers(context, r.source, r.underlays || []);
                     drawRasterLayers(context, r.source, r.layers || [r]);
+                    drawRasterLayers(context, r.source, r.overlays || []);
                     if (!r.attachmentsBehind)
                         drawRasterLayers(context, r.source, r.attachments || []);
                     if (r.fingers)
@@ -192,7 +198,7 @@ function entryBounds(entry: {
         return shapeBounds(entry.shapes);
     const r = entry.raster;
     const bounds: Shape[] = [...entry.shapes, ...r.behind, ...(r.fingers || [])];
-    const layers: RasterLayer[] = [...(r.layers || [r]), ...(r.attachments || [])];
+    const layers: RasterLayer[] = [...(r.layers || [r]), ...(r.underlays || []), ...(r.overlays || []), ...(r.attachments || [])];
     for (const layer of layers) {
         const transformed = layer.angle !== undefined || layer.flip;
         const x = transformed ? (layer.offsetX || 0) : 0;
@@ -209,6 +215,15 @@ function entryBounds(entry: {
 }
 function drawRasterLayers(context: CanvasRenderingContext2D, source: HTMLImageElement, layers: RasterLayer[]) {
     for (const r of layers) {
+        if (r.clip) {
+            context.save();
+            context.beginPath();
+            context.moveTo(r.clip[0], r.clip[1]);
+            for (let i = 2; i < r.clip.length; i += 2)
+                context.lineTo(r.clip[i], r.clip[i + 1]);
+            context.closePath();
+            context.clip();
+        }
         if (r.transform) {
             const m = r.transform;
             context.save();
@@ -231,6 +246,8 @@ function drawRasterLayers(context: CanvasRenderingContext2D, source: HTMLImageEl
         if (transformed)
             context.restore();
         if (r.transform)
+            context.restore();
+        if (r.clip)
             context.restore();
     }
 }
