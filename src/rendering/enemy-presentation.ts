@@ -3,6 +3,8 @@ import { clamp, project } from '../shared/model.js';
 import { enemyArtPose, ENEMY_ACTION_SECONDS } from '../enemies/enemy-actions.js';
 import { enemyPartPoint } from './voxel.js';
 import { HIT_SECONDS } from './hit-feedback.js';
+import { enemyViewPartPoint } from './enemy-view.js';
+import { enemyArt } from './enemy-art.js';
 /**
  * 纯表现姿态：只读取战斗状态，绝不推进 AI、消耗随机数或修改碰撞半径。
  * 普通怪只改节点变换，形状仍缓存；使用局内时间，暂停时自然定格。
@@ -168,7 +170,8 @@ export function drawRangedWarning(g: any, floor: any, e: Enemy, time: number, de
 /** 与法杖局部动作、敌人整体节点共用的结晶挂载点，返回未叠加相机的投影坐标。 */
 export function enemyStaffSocket(e: Enemy, time: number, detail: boolean) {
     void detail;
-    const q = project(e.x, e.y), part = enemyPartPoint(22, -50, 'staff', e.kind, enemyArtPose(e));
+    const q = project(e.x, e.y), poseArt = enemyArtPose(e);
+    const part = enemyArt().directionalReady ? enemyViewPartPoint(22, -55, 'staff', e.kind, poseArt, e.facing) : enemyPartPoint(22, -50, 'staff', e.kind, poseArt);
     const pose = enemyPose(e, time, e.icePaint === true), a = pose.rotation * Math.PI / 180, x = part.x * pose.sx, y = part.y * pose.sy;
     return { x: q.x + x * Math.cos(a) - y * Math.sin(a), y: q.y - pose.lift + x * Math.sin(a) + y * Math.cos(a) };
 }

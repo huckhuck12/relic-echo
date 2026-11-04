@@ -138,7 +138,7 @@ export class SceneRenderer {
         const art = enemyArtPose(e), frozen = buffs.speedMultiplier(e) < 1;
         const key = `${e.kind}:${e.flash > 0}:${frozen}:${visuals.detail}:${art.key}`;
         const gait = enemyGaitFrame(e.kind, time, e.x, e.y, frozen);
-        if (!this.enemyAtlas.paint(e.node.graphics, e.kind, e.flash > 0, frozen, art, visuals.detail, gait)) {
+        if (!this.enemyAtlas.paint(e.node.graphics, e.kind, e.flash > 0, frozen, art, visuals.detail, gait, e.facing ?? 1)) {
             let shapes = this.enemyShapeCache.get(key);
             if (!shapes) {
                 shapes = enemyVisualShapes(e.kind, e.flash > 0, frozen, visuals.detail, art);
@@ -151,7 +151,7 @@ export class SceneRenderer {
         e.flashPaint = e.flash > 0;
         e.icePaint = frozen;
         e.actionPaint = art.key;
-        this.enemyFramePaint.set(e, `${this.enemyAtlas.revision}:${gait}`);
+        this.enemyFramePaint.set(e, `${this.enemyAtlas.revision}:${gait}:${e.facing ?? 1}`);
     }
     /** 每帧更新相机与显示；屏幕外只隐藏节点，不移除实体或停止 AI。 */
     render(state: SceneFrame, excluded: DrawGroup | null = null): void {
@@ -239,7 +239,7 @@ export class SceneRenderer {
             if (!e.node.visible)
                 continue;
             const gait = this.enemyAtlas.revision ? enemyGaitFrame(e.kind, state.time, e.x, e.y, state.buffs.speedMultiplier(e) < 1) : 0;
-            if (e.flashPaint !== (e.flash > 0) || e.icePaint !== (state.buffs.speedMultiplier(e) < 1) || e.actionPaint !== enemyArtPose(e).key || (this.enemyAtlas.revision > 0 && this.enemyFramePaint.get(e) !== `${this.enemyAtlas.revision}:${gait}`))
+            if (e.flashPaint !== (e.flash > 0) || e.icePaint !== (state.buffs.speedMultiplier(e) < 1) || e.actionPaint !== enemyArtPose(e).key || (this.enemyAtlas.revision > 0 && this.enemyFramePaint.get(e) !== `${this.enemyAtlas.revision}:${gait}:${e.facing ?? 1}`))
                 this.paintEnemy(e, state.buffs, state.visuals, state.time);
             const pose = enemyPose(e, state.time, e.icePaint === true);
             e.node.pos(q.x, q.y - pose.lift);

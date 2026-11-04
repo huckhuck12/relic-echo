@@ -1,0 +1,1152 @@
+{
+  "version": "0.12.6",
+  "scope": "Desktop real Laya WebGL and mock WeChat SDK; not native iPhone FPS, memory or crash validation.",
+  "tests": {
+    "passed": 242,
+    "failed": 0
+  },
+  "wechatBuild": {
+    "version": "0.12.6",
+    "bytes": 3907232
+  },
+  "enemy": {
+    "families": 5,
+    "independentViews": 5,
+    "directions": 8,
+    "mirroredDirections": 3,
+    "sourceFrames": 90,
+    "atlasFrames": 341,
+    "sourcePngBytes": 939349,
+    "decodedSourceBytes": 4194304,
+    "gpuBytes": 4194304,
+    "runtimeSampling": 0.8
+  },
+  "passed": true,
+  "reports": [
+    {
+      "scope": "Real desktop Laya WebGL enemy animation and palette review; not native iPhone performance",
+      "rows": [
+        {
+          "time": 0,
+          "detail": false,
+          "palette": "normal",
+          "death": false,
+          "ready": true,
+          "error": "",
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1
+        },
+        {
+          "time": 0.17,
+          "detail": false,
+          "palette": "normal",
+          "death": false,
+          "ready": true,
+          "error": "",
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1
+        },
+        {
+          "time": 0.34,
+          "detail": false,
+          "palette": "normal",
+          "death": false,
+          "ready": true,
+          "error": "",
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1
+        },
+        {
+          "time": 0.51,
+          "detail": false,
+          "palette": "normal",
+          "death": false,
+          "ready": true,
+          "error": "",
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1
+        },
+        {
+          "time": 0,
+          "detail": true,
+          "palette": "normal",
+          "death": false,
+          "ready": true,
+          "error": "",
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1
+        },
+        {
+          "time": 0.17,
+          "detail": true,
+          "palette": "normal",
+          "death": false,
+          "ready": true,
+          "error": "",
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1
+        },
+        {
+          "time": 0.34,
+          "detail": true,
+          "palette": "normal",
+          "death": false,
+          "ready": true,
+          "error": "",
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1
+        },
+        {
+          "time": 0.51,
+          "detail": true,
+          "palette": "normal",
+          "death": false,
+          "ready": true,
+          "error": "",
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1
+        },
+        {
+          "time": 0.17,
+          "detail": true,
+          "palette": "ice",
+          "death": false,
+          "ready": true,
+          "error": "",
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1
+        },
+        {
+          "time": 0.17,
+          "detail": true,
+          "palette": "flash",
+          "death": false,
+          "ready": true,
+          "error": "",
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1
+        },
+        {
+          "time": 0,
+          "detail": true,
+          "palette": "normal",
+          "death": true,
+          "ready": true,
+          "error": "",
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1
+        },
+        {
+          "time": 0.1,
+          "detail": true,
+          "palette": "normal",
+          "death": true,
+          "ready": true,
+          "error": "",
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1
+        },
+        {
+          "time": 0.3,
+          "detail": true,
+          "palette": "normal",
+          "death": true,
+          "ready": true,
+          "error": "",
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1
+        },
+        {
+          "time": 0.5,
+          "detail": true,
+          "palette": "normal",
+          "death": true,
+          "ready": true,
+          "error": "",
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1
+        },
+        {
+          "ready": true,
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1,
+          "time": 0,
+          "palette": "normal",
+          "state": "idle"
+        },
+        {
+          "ready": true,
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1,
+          "time": 0.17,
+          "palette": "normal",
+          "state": "idle"
+        },
+        {
+          "ready": true,
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1,
+          "time": 0.34,
+          "palette": "normal",
+          "state": "idle"
+        },
+        {
+          "ready": true,
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1,
+          "time": 0.51,
+          "palette": "normal",
+          "state": "idle"
+        },
+        {
+          "ready": true,
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1,
+          "time": 0.17,
+          "palette": "normal",
+          "state": "wind"
+        },
+        {
+          "ready": true,
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1,
+          "time": 0.17,
+          "palette": "normal",
+          "state": "release"
+        },
+        {
+          "ready": true,
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1,
+          "time": 0.17,
+          "palette": "ice",
+          "state": "wind"
+        },
+        {
+          "ready": true,
+          "atlas": {
+            "ready": true,
+            "bytes": 4194304,
+            "error": ""
+          },
+          "revision": 1,
+          "time": 0.17,
+          "palette": "flash",
+          "state": "release"
+        }
+      ]
+    },
+    {
+      "scope": "Frozen real Laya WebGL, desktop browser; all enemies visible; no projectiles, drops or gameplay updates. Not native iPhone performance.",
+      "hero": [
+        {
+          "mode": "idle",
+          "frame": 0,
+          "ready": true,
+          "bytes": [
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304
+          ]
+        },
+        {
+          "mode": "walk",
+          "frame": 1,
+          "ready": true,
+          "bytes": [
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304
+          ]
+        },
+        {
+          "mode": "cast",
+          "frame": 0,
+          "ready": true,
+          "bytes": [
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304
+          ]
+        },
+        {
+          "mode": "cast",
+          "frame": 5,
+          "ready": true,
+          "bytes": [
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304
+          ]
+        },
+        {
+          "mode": "cast",
+          "frame": 11,
+          "ready": true,
+          "bytes": [
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304
+          ]
+        },
+        {
+          "mode": "walk-cast",
+          "frame": 2,
+          "ready": true,
+          "bytes": [
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304,
+            4194304
+          ]
+        }
+      ],
+      "guardian": {
+        "ready": true,
+        "bytes": 4194304,
+        "error": "",
+        "revision": 1
+      },
+      "rows": [
+        {
+          "count": 25,
+          "kind": 0,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 25,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 25,
+          "kind": 0,
+          "wind": 0,
+          "flash": true,
+          "facingVariants": 8,
+          "visible": 25,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 25,
+          "kind": 1,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 25,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 25,
+          "kind": 1,
+          "wind": 0.12,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 25,
+          "dc": 19,
+          "min": 19,
+          "max": 19
+        },
+        {
+          "count": 25,
+          "kind": 2,
+          "wind": 0.2,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 25,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 25,
+          "kind": -1,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 25,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 25,
+          "kind": -2,
+          "wind": 0.2,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 25,
+          "dc": 19,
+          "min": 19,
+          "max": 19
+        },
+        {
+          "count": 100,
+          "kind": 0,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 100,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 100,
+          "kind": 0,
+          "wind": 0,
+          "flash": true,
+          "facingVariants": 8,
+          "visible": 100,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 100,
+          "kind": 1,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 100,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 100,
+          "kind": 1,
+          "wind": 0.12,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 100,
+          "dc": 19,
+          "min": 19,
+          "max": 19
+        },
+        {
+          "count": 100,
+          "kind": 2,
+          "wind": 0.2,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 100,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 100,
+          "kind": -1,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 100,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 100,
+          "kind": -2,
+          "wind": 0.2,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 100,
+          "dc": 19,
+          "min": 19,
+          "max": 19
+        },
+        {
+          "count": 200,
+          "kind": 0,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 200,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 200,
+          "kind": 0,
+          "wind": 0,
+          "flash": true,
+          "facingVariants": 8,
+          "visible": 200,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 200,
+          "kind": 1,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 200,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 200,
+          "kind": 1,
+          "wind": 0.12,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 200,
+          "dc": 19,
+          "min": 19,
+          "max": 19
+        },
+        {
+          "count": 200,
+          "kind": 2,
+          "wind": 0.2,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 200,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 200,
+          "kind": -1,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 200,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 200,
+          "kind": -2,
+          "wind": 0.2,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 200,
+          "dc": 19,
+          "min": 19,
+          "max": 19
+        },
+        {
+          "count": 400,
+          "kind": 0,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 400,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 400,
+          "kind": 0,
+          "wind": 0,
+          "flash": true,
+          "facingVariants": 8,
+          "visible": 400,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 400,
+          "kind": 1,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 400,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 400,
+          "kind": 1,
+          "wind": 0.12,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 400,
+          "dc": 19,
+          "min": 19,
+          "max": 19
+        },
+        {
+          "count": 400,
+          "kind": 2,
+          "wind": 0.2,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 400,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 400,
+          "kind": -1,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 400,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 400,
+          "kind": -2,
+          "wind": 0.2,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 400,
+          "dc": 19,
+          "min": 19,
+          "max": 19
+        },
+        {
+          "count": 5,
+          "kind": 3,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 5,
+          "visible": 5,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 20,
+          "kind": 3,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 20,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 50,
+          "kind": 3,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 50,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        }
+      ]
+    },
+    {
+      "kind": "wechat-package-in-browser",
+      "initial": {
+        "dialog": "start",
+        "stage": [
+          393,
+          852
+        ],
+        "mobile": true,
+        "top": 88,
+        "adapter": true,
+        "canvas": [
+          786,
+          1704
+        ]
+      },
+      "battle": {
+        "mode": "battle",
+        "time": 0.966666666666668
+      },
+      "dual": {
+        "owner": 7,
+        "dash": 2.2
+      },
+      "paused": {
+        "dialog": "pause",
+        "owner": null,
+        "stick": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "death": {
+        "dialog": "result",
+        "revival": false
+      },
+      "performance": {
+        "samples": 121,
+        "fps": 60.019841269841265,
+        "frameMs": 16.66115702479339,
+        "p95Ms": 19,
+        "maxMs": 21,
+        "updateMs": 0.05785123966942149,
+        "renderMs": 0.12396694214876033,
+        "simulationSteps": 1,
+        "maxSimulationSteps": 2,
+        "stepMs": 0.05785123966942149,
+        "engineSamples": 121,
+        "engineMs": 1.4297520661157024,
+        "drawCalls": 24.553719008264462,
+        "enemies": 0,
+        "shots": 0,
+        "drops": 15,
+        "effects": 1,
+        "enemyAtlasBytes": 4194304,
+        "sceneTextureBytes": 11534336,
+        "enemyAtlasReady": true,
+        "enemyAtlasError": "",
+        "autoPlayEnabled": false,
+        "autoPlayRound": 0,
+        "autoPlayStress": false,
+        "autoPlayDecisions": 0,
+        "autoPlayLastAction": "",
+        "drawCallReport": null,
+        "paused": false,
+        "quality": "标准"
+      },
+      "enemyArt": {
+        "atlas": {
+          "bytes": 4194304,
+          "tiles": 341
+        },
+        "highAtlas": {
+          "quality": "high",
+          "ready": true,
+          "bytes": 4194304,
+          "error": "",
+          "total": 4194304
+        }
+      },
+      "wearables": [
+        {
+          "head": "visor",
+          "armor": "light",
+          "back": "cape",
+          "bytes": 4194304,
+          "ready": true
+        },
+        {
+          "head": "helmet",
+          "armor": "heavy",
+          "back": "thorn",
+          "bytes": 4194304,
+          "ready": true
+        },
+        {
+          "head": "hood",
+          "armor": "energy",
+          "back": "pack",
+          "bytes": 4194304,
+          "ready": true
+        }
+      ],
+      "drawCallProbe": {
+        "active": false,
+        "error": "",
+        "report": {
+          "capturedAt": 1793779778000,
+          "context": {
+            "version": "0.12.6",
+            "seconds": 271.49999999999864,
+            "quality": "精细",
+            "enemies": 235,
+            "shots": 208,
+            "drops": 150,
+            "width": 393,
+            "height": 760
+          },
+          "baseline": 28,
+          "finalBaseline": 28,
+          "stable": true,
+          "rows": [
+            {
+              "group": "enemies",
+              "label": "怪物本体",
+              "without": 28,
+              "saved": 0
+            },
+            {
+              "group": "shots",
+              "label": "弹道",
+              "without": 28,
+              "saved": 0
+            },
+            {
+              "group": "buffs",
+              "label": "Buff 特效",
+              "without": 25,
+              "saved": 3
+            },
+            {
+              "group": "effects",
+              "label": "其他特效",
+              "without": 28,
+              "saved": 0
+            },
+            {
+              "group": "warnings",
+              "label": "血条/预警",
+              "without": 24,
+              "saved": 4
+            },
+            {
+              "group": "drops",
+              "label": "掉落/光柱",
+              "without": 28,
+              "saved": 0
+            },
+            {
+              "group": "labels",
+              "label": "飘字",
+              "without": 27,
+              "saved": 1
+            },
+            {
+              "group": "environment",
+              "label": "地图/柱子",
+              "without": 26,
+              "saved": 2
+            },
+            {
+              "group": "player",
+              "label": "玩家本体",
+              "without": 26,
+              "saved": 2
+            },
+            {
+              "group": "ui",
+              "label": "界面",
+              "without": 14,
+              "saved": 14
+            }
+          ]
+        },
+        "time": 271.49999999999864,
+        "hp": 100,
+        "dialog": "performance"
+      },
+      "probeContext": {
+        "time": 271.49999999999864,
+        "hp": 100,
+        "enemies": 235,
+        "shots": 208,
+        "drops": 150
+      }
+    }
+  ],
+  "h5": [
+    {
+      "width": 393,
+      "height": 852,
+      "dpr": 3,
+      "touch": true,
+      "initial": {
+        "dialog": "start",
+        "stickVisible": true,
+        "font": "PingFang SC",
+        "point": {
+          "x": 114.4175,
+          "y": 696.315
+        },
+        "stage": [
+          393,
+          852
+        ]
+      },
+      "battle": {
+        "mode": "battle",
+        "time": 1.9333333333333313,
+        "hp": 100,
+        "enemies": 5,
+        "hero": {
+          "ready": true,
+          "error": ""
+        },
+        "textureBytes": 11534336
+      }
+    },
+    {
+      "width": 852,
+      "height": 393,
+      "dpr": 3,
+      "touch": true,
+      "initial": {
+        "dialog": "start",
+        "stickVisible": true,
+        "font": "PingFang SC",
+        "point": {
+          "x": 233.5,
+          "y": 331.35
+        },
+        "stage": [
+          852,
+          393
+        ]
+      },
+      "battle": {
+        "mode": "battle",
+        "time": 1.7999999999999985,
+        "hp": 100,
+        "enemies": 4,
+        "hero": {
+          "ready": true,
+          "error": ""
+        },
+        "textureBytes": 11534336
+      }
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "dpr": 1,
+      "touch": false,
+      "initial": {
+        "dialog": "start",
+        "stickVisible": false,
+        "font": "system-ui",
+        "point": {
+          "x": 447.5,
+          "y": 628
+        },
+        "stage": [
+          1280,
+          720
+        ]
+      },
+      "battle": {
+        "mode": "battle",
+        "time": 1.8333333333333317,
+        "hp": 100,
+        "enemies": 5,
+        "hero": {
+          "ready": true,
+          "error": ""
+        },
+        "textureBytes": 11534336
+      }
+    }
+  ]
+}

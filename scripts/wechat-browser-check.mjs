@@ -53,7 +53,7 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  assert.ok(performance.samples>0,'Collect actual battle frame intervals rather than treating requested FPS as measured FPS');
  assert.ok(performance.engineSamples>0&&performance.drawCalls>0&&performance.simulationSteps>0,'Real Stage.render records engine CPU, draw calls and simulation steps');
  const atlas=await evaluate(`(()=>{const t=wechatTest,g=t.app.game;return{bytes:g.scene.enemyAtlas.bytes,tiles:g.scene.enemyAtlas.sheet.tiles.size};})()`);
- assert.ok(atlas.tiles>=164,'Painted gait/caster/guardian frames, projectiles and pillars share one page');assert.equal(atlas.bytes,4194304,'GPU atlas has a fixed 4 MiB budget');
+ assert.equal(atlas.tiles,341,'Directional gait/body/arms/staff, palettes and actors share one page');assert.equal(atlas.bytes,4194304,'GPU atlas has a fixed 4 MiB budget');
  const highAtlas=await evaluate(`(()=>{const g=wechatTest.app.game;g.spawnEnemy(1);g.cycleVisualQuality();for(const e of g.enemies)g.paintEnemy(e);return {quality:g.quality,...g.scene.enemyAtlas.snapshot(true),total:g.scene.enemyAtlas.bytes};})()`);
  assert.equal(highAtlas.quality,'high');assert.equal(highAtlas.ready,true,'Detailed enemies use a shared atlas too');assert.equal(highAtlas.bytes,4194304);assert.equal(highAtlas.total,4194304,'Painted family shares the same page across quality changes');
  const wearables=[];

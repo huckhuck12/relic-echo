@@ -114,3 +114,12 @@ test('burn death prevents attacks and live battle status stops subsequent enemy 
   assert.equal(burning.dead,true);assert.equal(a.shots.length,0);assert.ok(next.cooldown<999);
   assert.equal(last.cooldown,cooldown);assert.equal(f.state.enemies.length,3);
 });
+
+test('visual facing locks across wind, charger travel, cast recovery and Boss absolute slam target',()=>{
+ for(const [kind,extra]of [[1,{wind:.3}],[2,{wind:.3}],[2,{charge:.3,dx:1,dy:0}],[1,{action:'cast',actionTime:.2}],[4,{wind:.4,charge:1,dx:900,dy:800}],[4,{action:'slam',actionTime:.2}]]){
+  const f=fixture(200),e=enemy(f,kind,400,0,{facing:6,...extra}),a=aiFixture(f);
+  updateEnemies(a.state,a.hooks,.01);assert.equal(e.facing,6);
+  f.state.player.x=800;f.state.player.y=-800;updateEnemies(a.state,a.hooks,.01);assert.equal(e.facing,6);
+ }
+ const f=fixture(),e=enemy(f,0,400,0,{facing:6}),a=aiFixture(f);updateEnemies(a.state,a.hooks,.01);assert.equal(e.facing,5);
+});

@@ -5,6 +5,7 @@ import { progressionTime } from '../game/pace.js';
 import type { Player, Enemy, Point } from '../shared/entities.js';
 import { startEnemyAction } from './enemy-actions.js';
 import type { DamageOptions } from '../combat/combat-system.js';
+import { enemyDirection } from './enemy-facing.js';
 /**
  * 一步 AI 的只读集合视图；敌人本身原地更新，不增删数组、不回收节点。
  * 时间/速度/碰撞使用世界坐标与秒，不读取摄像机或节点 visible，屏幕外也正常模拟。
@@ -58,6 +59,8 @@ export function updateEnemies(state: EnemyAIState, hooks: EnemyAIHooks, dt: numb
         // 远程怪在中距离停步，过近则后退；冰霜对追击、后退和冲锋均生效。
         if (e.kind === 1 && d < 340)
             speed = (d < 210 ? -25 : 0) * hooks.speedMultiplier(e);
+        if (e.wind <= 0 && !(e.kind === 2 && e.charge > 0) && !(e.action && (e.actionTime || 0) > 0))
+            e.facing = enemyDirection(x * (speed < 0 ? -1 : 1), y * (speed < 0 ? -1 : 1), e.facing);
         if (e.wind > 0) {
             speed = 0;
             e.wind -= dt;
@@ -91,11 +94,13 @@ export function updateEnemies(state: EnemyAIState, hooks: EnemyAIHooks, dt: numb
         else if (e.cooldown <= 0) {
             e.cooldown = (e.kind === 4 ? (e.hp < e.max * .5 ? 1.5 : 2.1) : e.kind === 3 ? 3.2 : 2.5) * difficulty.attackInterval;
             if (e.kind === 1) {
+                e.facing = enemyDirection(x, y, e.facing);
                 e.wind = .45;
                 e.dx = x / d;
                 e.dy = y / d;
             }
             if (e.kind === 2 && d < 550) {
+                e.facing = enemyDirection(x, y, e.facing);
                 e.wind = .75;
                 e.dx = x / d;
                 e.dy = y / d;
@@ -104,6 +109,7 @@ export function updateEnemies(state: EnemyAIState, hooks: EnemyAIHooks, dt: numb
                 radial(state, hooks, e, progressionTime(state.time) >= 360 ? 14 : 10, 155 * difficulty.projectileSpeed);
             // Boss 每轮只抽一次：落点攻击或环形弹幕；半血后加快攻击并增加弹幕。
             if (e.kind === 4) {
+                e.facing = enemyDirection(x, y, e.facing);
                 if (Math.random() < .5) {
                     e.wind = .85;
                     e.charge = 1;

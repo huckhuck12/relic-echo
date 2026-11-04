@@ -1,6 +1,6 @@
 # 遗迹回响 · Relic Echo
 
-LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 **`0.12.5`**。采用手绘幻想风格：玩家、可穿戴装备、怪物与元素特效使用仓库内的透明图片和共享图集，场景、伤害边界与 UI 结合程序绘图，由 LayaAir 显示节点统一渲染。
+LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 **`0.12.6`**。采用手绘幻想风格：玩家、可穿戴装备、怪物与元素特效使用仓库内的透明图片和共享图集，场景、伤害边界与 UI 结合程序绘图，由 LayaAir 显示节点统一渲染。
 
 当前优化计划、优先级和真机验收状态见[优化清单](docs/优化清单.md)。
 
@@ -13,6 +13,16 @@ LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 **`0.12.5`
 项目已包含 [GitHub Pages 工作流](.github/workflows/pages.yml)。上传到自己的 GitHub 仓库，在 **Settings → Pages → Source** 选择 **GitHub Actions**；向 main/master 推送或手动运行工作流，构建和测试通过后自动发布。所有资源使用相对路径，支持 `https://用户名.github.io/仓库名/` 和账号主页站点。
 
 本地生成发布包：`npm run build:pages`。模拟仓库子路径：`npm run preview:pages -- --port 8081`，访问 `http://localhost:8081/relic-echo/`。详见[开发与发布说明](docs/开发与发布.md)。仓库为 `huckhuck12/relic-echo`，本地修改需推送后等待 GitHub Actions 部署成功才会更新线上站点。
+
+## 0.12.6 怪物八方向
+
+- 五类怪物各有正面、前侧、侧面、后侧和背面五个独立视角，镜像补齐八方向；移动时转身，蓄力、冲锋和出招期间锁定朝向。
+- 史莱姆/野猪保留四帧动作；法师、精英与 Boss 使用分件，修正肩部遮挡和法杖特效挂点。身体、手臂、法杖、弹道及掉落共 341 个图集帧，仍共用 **4 MiB GPU 页 + 4 MiB 解码源图**。
+- 242 项自动测试通过；八方向混合怪物 25/100/200/400 只均为 18 DC，微信固定压力场景为 28 DC。H5/微信模拟及画面回归结果见[验收数据](docs/render-results-0126.json)。本地微信包为 0.12.6，约 3.91 MB；iPhone Air 长时间性能与闪退仍待真机复验。
+
+![五类怪物八方向对照](docs/art/enemy-directions-0126.png)
+
+[多视角素材与完整提示词记录](docs/art/enemy-directions-production.md) · [出招样张](docs/art/enemy-directions-release-0126.png)
 
 ## 0.12.5 主角可穿戴装备重画
 
@@ -36,7 +46,7 @@ LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 **`0.12.5`
 
 [怪物素材与生成提示词记录](docs/art/enemy-family-production.md) · [冰冻样张](docs/art/enemy-ice-0124.png) · [死亡反馈](docs/art/enemy-death-0124.png) · [验收数据](docs/render-results-0124.json)
 
-当前怪物源素材为单一三分之四朝向，攻击通过分件变换表达；完整八向转身、玩家更清晰的步态源图、场景/UI 深化仍待完成。iPhone Air 精细画质的长时间性能、触控连续性与整进程闪退仍需真机复验。
+0.12.6 已补齐怪物五视角加镜像八向，攻击通过分件变换表达；独立逐帧转身/攻击动画、玩家更清晰的步态源图、场景/UI 深化仍待完成。iPhone Air 精细画质的长时间性能、触控连续性与整进程闪退仍需真机复验。
 
 ## 0.12.3 武器、Buff 与进化特效
 

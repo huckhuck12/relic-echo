@@ -1,9 +1,9 @@
 {
-  "version": "0.12.5",
+  "version": "0.12.6",
   "direction": "handdrawn-fantasy",
-  "production": "Selected B painted hero, nine painted wearables, elemental weapon/Buff VFX, five painted enemy families with shared articulated atlas",
+  "production": "Selected B painted hero, nine painted wearables, elemental weapon/Buff VFX, five painted enemy families with shared articulated atlas; five independent enemy views mapped to eight directions",
   "view": "2.5D isometric, screen-space artwork with foot origin",
-  "rights": "Original project code art plus user-authorized generated hero raster; generation prompts and edits recorded in docs/art/hero-b-production.md; no sourced art or new font dependency; generated elemental VFX provenance in docs/art/element-vfx-production.md; generated enemy family provenance in docs/art/enemy-family-production.md; generated wearable art and full prompt/source paths recorded in docs/art/equipment-production.md",
+  "rights": "Original project code art plus user-authorized generated hero raster; generation prompts and edits recorded in docs/art/hero-b-production.md; no sourced art or new font dependency; generated elemental VFX provenance in docs/art/element-vfx-production.md; generated enemy family provenance in docs/art/enemy-family-production.md; generated wearable art and full prompt/source paths recorded in docs/art/equipment-production.md; directional enemy prompts and normalization recorded in docs/art/enemy-directions-production.md",
   "assets": [
     {
       "family": "player-equipment",
@@ -30,7 +30,7 @@
     {
       "family": "all-enemies-actors",
       "source": "src/rendering/enemy-atlas.ts",
-      "frames": 164,
+      "frames": 341,
       "variants": [
         "all qualities share painted page"
       ],
@@ -41,8 +41,11 @@
       "status": "real-WebGL-and-WeChat-shim-verified; native-device-pending",
       "body": "assets/enemies/ruin-creatures.png",
       "metadata": "assets/enemies/ruin-creatures.json",
-      "sourceFrames": 20,
-      "decodedSourceBytes": 4194304
+      "sourceFrames": 90,
+      "decodedSourceBytes": 4194304,
+      "independentViews": 5,
+      "directions": 8,
+      "runtimeSampling": 0.8
     },
     {
       "family": "meadow-path",

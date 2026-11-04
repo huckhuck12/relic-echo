@@ -35,6 +35,8 @@ export interface Enemy extends Point {
     max: number;
     /** 0 史莱姆、1 远程、2 冲锋、3 精英、4 Boss。 */
     kind: number;
+    /** Screen-space visual facing. Locked through wind/charge/release; never used for damage. */
+    facing?: import('../rendering/player-pose.js').Facing8;
     radius: number;
     speed: number;
     damage: number;

@@ -12,7 +12,21 @@ const art=enemyArt();for(let i=0;i<100&&!art.image&&!art.error;i++)await new Pro
 const atlas=new EnemyAtlas(),floor=new Laya.Sprite(),actors=new Laya.Sprite(),upper=new Laya.Sprite(),labels=new Laya.Sprite();
 for(const n of [floor,actors,upper,labels])Laya.stage.addChild(n);
 const names=['moss slime','ruin mage','wild boar','moss guardian','crowned core'];
-window.enemyReview={paint(time=0,detail=false,palette='normal',death=false){
+window.enemyReview={directions(time=0,palette='normal',state='idle') {
+ for(const n of [floor,actors,upper,labels]){n.graphics.clear();n.destroyChildren();}
+ const label=(text,x,y)=>{const n=new Laya.Text();n.text=text;n.fontSize=13;n.color='#f7edce';n.pos(x,y);labels.addChild(n);};
+ label('Eight directions / '+state+' / '+palette+' / '+time.toFixed(2),20,12);
+ for(let kind=0;kind<5;kind++)for(let facing=0;facing<8;facing++) {
+  const x=70+facing*137,y=150+kind*190;
+  const action=kind===1?'cast':kind===2?'brake':kind===4?'slam':'burst';
+  const e={kind,facing,x:0,y:0,dx:1,dy:0,wind:state==='wind'?.12:0,flash:palette==='flash'?.1:0,icePaint:palette==='ice',action:state==='release'?action:undefined,actionTime:state==='release'?ENEMY_ACTION_SECONDS[action]*.8:0};
+  const n=new Laya.Sprite(),p=enemyPose(e,time,palette==='ice');n.pos(x,y-p.lift);n.scale(p.sx,p.sy);n.rotation=p.rotation;actors.addChild(n);
+  if(!atlas.paint(n.graphics,kind,palette==='flash',palette==='ice',enemyArtPose(e),true,enemyGaitFrame(kind,time,0,0,palette==='ice'),facing))throw Error('direction missing '+kind+':'+facing);
+  if(kind===1&&state==='wind'){const g=new Laya.Sprite();g.pos(x,y);upper.addChild(g);drawRangedWarning(g.graphics,g.graphics,e,time,true);}
+  label(names[kind]+' / '+['E','SE','S','SW','W','NW','N','NE'][facing],x-58,y+12);
+ }
+ return {ready:!!art.image,atlas:atlas.snapshot(),revision:atlas.revision,time,palette,state};
+},paint(time=0,detail=false,palette='normal',death=false){
  for(const n of [floor,actors,upper,labels]){n.graphics.clear();n.destroyChildren();}
  const label=(text,x,y)=>{const n=new Laya.Text();n.text=text;n.fontSize=14;n.color='#f7edce';n.pos(x,y);labels.addChild(n);};
  label('painted enemy family / '+palette+' / '+(detail?'fine':'standard')+' / '+time.toFixed(2)+'s',20,18);

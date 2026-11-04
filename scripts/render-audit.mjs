@@ -41,12 +41,12 @@ export async function checkRenderAudit({send,evaluate,origin,directory}){
    for(const d of g.drops)g.release(d.node);g.drops=[];g.fx=[];g.fields=[];
    for(const [i,e]of g.enemies.entries()){
     const a=i*2.399963229728653,r=30+Math.sqrt((i+.5)/count)*210;
-    e.x=Math.cos(a)*r;e.y=Math.sin(a)*r;e.kind=kind===-1?i%4:kind===-2?1+i%2:kind;e.wind=wind;e.dx=1;e.dy=0;e.hp=e.max;e.flash=flash?.1:0;e.action=undefined;e.actionTime=0;g.paintEnemy(e);
+    e.facing=i%8;e.x=Math.cos(a)*r;e.y=Math.sin(a)*r;e.kind=kind===-1?i%4:kind===-2?1+i%2:kind;e.wind=wind;e.dx=1;e.dy=0;e.hp=e.max;e.flash=flash?.1:0;e.action=undefined;e.actionTime=0;g.paintEnemy(e);
    }
    g.render();samples=[];
    for(let i=0;i<12;i++)await new Promise(requestAnimationFrame);
    const sorted=samples.slice(4).sort((a,b)=>a-b);
-   return {count,kind,wind,flash,visible:g.enemies.filter(e=>e.node.visible).length,dc:sorted[Math.floor(sorted.length/2)],min:sorted[0],max:sorted.at(-1)};
+   return {count,kind,wind,flash,facingVariants:Math.min(count,8),visible:g.enemies.filter(e=>e.node.visible).length,dc:sorted[Math.floor(sorted.length/2)],min:sorted[0],max:sorted.at(-1)};
   },stop(){L.stage._loop=original;}};
  })()`);
  const rows=[];

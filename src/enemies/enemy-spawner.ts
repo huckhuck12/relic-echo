@@ -4,6 +4,7 @@ import type { SpatialGrid } from '../shared/model.js';
 import { difficultyAt, enemyKind } from '../game/difficulty.js';
 import { RUN, progressionTime } from '../game/pace.js';
 import type { Player, Enemy, Shot, Field } from '../shared/entities.js';
+import { enemyDirection } from './enemy-facing.js';
 /**
  * 敌人生成与时间轴所需的当前局状态；模块不导入 Game、不保存跨局引用。
  * time 已由 Game 增加本步 dt；本模块只推进刷怪计时，不再次推进局内时间。
@@ -65,7 +66,7 @@ export function spawnEnemy(state: SpawnState, hooks: SpawnHooks, kind: number, d
     const hp = kind === 4 ? 8400 : [28, 35, 45, 180][kind] * difficulty.hp;
     const node = hooks.acquire();
     const enemy: Enemy = {
-        x, y, hp, max: hp, kind,
+        x, y, hp, max: hp, kind, facing: enemyDirection(p.x - x, p.y - y),
         // 表中索引依次是普通、远程、冲锋、精英、Boss，保持与实体 kind 契约一致。
         radius: [16, 18, 20, 31, 54][kind],
         speed: [78, 65, 90, 62, 60][kind] * difficulty.speed,
