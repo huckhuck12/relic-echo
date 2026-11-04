@@ -18,6 +18,8 @@ import { enemyArtPose } from '../enemies/enemy-actions.js';
 import { drawHitFeedback } from './hit-feedback.js';
 import { lootPose } from './loot-presentation.js';
 import { cameraZoom } from '../ui/layout.js';
+import type { SealEvent } from '../game/map-events.js';
+import { drawMapEvents } from './map-event-visuals.js';
 import { buildWorldMap } from './world-map.js';
 import { enemyPose, drawEnemyDeath, enemyWindProgress, drawRangedWarning, drawChargeWarning, drawEnemyRelease } from './enemy-presentation.js';
 import { lightningStroke, bladePulse, flameBurst, burningGround, drawBladeOrbit, castFlash } from './skill-visuals.js';
@@ -31,6 +33,7 @@ import type { DrawGroup } from '../game/draw-call-probe.js';
  * Buff 仅暴露状态查询和绘制接口，渲染器拿不到 trigger/update 等战斗入口。
  */
 export interface SceneFrame {
+    readonly sites?: readonly SealEvent[];
     readonly player: Readonly<Player>;
     readonly loadout: Loadout;
     readonly levels: Readonly<Record<string, number>>;
@@ -167,6 +170,7 @@ export class SceneRenderer {
         const floor = this.groundEffects.graphics;
         floor.clear();
         if (excluded !== 'effects') {
+            drawMapEvents(floor, state.sites || []);
             this.drawGroundEffects(state, floor);
             this.drawCombatEffects(state, g);
         }

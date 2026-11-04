@@ -1,10 +1,11 @@
 import { clamp } from '../shared/model.js';
-import { progressionTime } from './pace.js';
+import { RUN, progressionTime } from './pace.js';
+import type { RunPace } from './pace.js';
 export const ENEMY_LIMIT = 240;
 export const SHOT_LIMIT = 240;
 // Time drives the curve; upgrading equipment never secretly strengthens enemies.
-export function difficultyAt(time: number) {
-    const t = progressionTime(time), late = clamp((t - 120) / 420, 0, 1);
+export function difficultyAt(time: number, run: RunPace = RUN) {
+    const t = progressionTime(time, run), late = clamp((t - 120) / 420, 0, 1);
     return {
         late,
         hp: 1 + t / 270 + late * 1.6,
@@ -21,8 +22,8 @@ export function difficultyAt(time: number) {
         healCooldown: 6 + late * 14,
     };
 }
-export function enemyKind(time: number, roll = Math.random()): number {
-    const t = progressionTime(time);
+export function enemyKind(time: number, roll = Math.random(), run: RunPace = RUN): number {
+    const t = progressionTime(time, run);
     if (t < 60)
         return 0;
     if (t < 180)

@@ -1,9 +1,9 @@
-import { ELITE_TIMES } from '../progression/config.js';
 import { clamp } from '../shared/model.js';
 import type { SpatialGrid } from '../shared/model.js';
 import { difficultyAt, enemyKind } from '../game/difficulty.js';
-import { RUN, progressionTime } from '../game/pace.js';
+import { RUN, progressionTime, encounterBeat } from '../game/pace.js';
 import type { Player, Enemy, Shot, Field } from '../shared/entities.js';
+import type { RunPace } from '../game/pace.js';
 import { enemyDirection } from './enemy-facing.js';
 /**
  * 敌人生成与时间轴所需的当前局状态；模块不导入 Game、不保存跨局引用。
@@ -12,6 +12,7 @@ import { enemyDirection } from './enemy-facing.js';
  */
 export interface SpawnState {
     time: number;
+    run?: RunPace;
     player: Readonly<Pick<Player, 'x' | 'y'>>;
     enemies: Enemy[];
     shots: Shot[];
@@ -46,7 +47,7 @@ const LIMIT = 1120;
  * 节点只绘制一次；空间索引留给 Game 在刷怪与流程节点结束后统一重建。
  */
 export function spawnEnemy(state: SpawnState, hooks: SpawnHooks, kind: number, distance = 360 + Math.random() * 150, angle = Math.random() * Math.PI * 2): void {
-    const difficulty = difficultyAt(state.time);
+    const difficulty = difficultyAt(state.time, state.run);
     if (state.enemies.length >= difficulty.maxEnemies) {
         if (kind < 3)
             return;
@@ -101,7 +102,7 @@ export function spawnBoss(state: SpawnState, hooks: SpawnHooks): void {
     spawnEnemy(state, hooks, 4);
     state.spawnTimer = 3;
     hooks.ring(state.player.x, state.player.y, '#d9a177');
-    hooks.onToast('最终封印已开启 · 60 秒内击败遗迹核心');
+    hooks.onToast(`最终封印已开启 · ${(state.run || RUN).duration - (state.run || RUN).bossAt} 秒内击败遗迹核心`);
 }
 /**
  * 每个固定步调用一次：普通波次 → 怪潮 → Boss 援军 → 定时精英 → Boss 登场。
@@ -110,36 +111,37 @@ export function spawnBoss(state: SpawnState, hooks: SpawnHooks): void {
  * 超时失败与首级经验保底仍由 Game 在本函数返回后处理，避免两处维护对局流程。
  */
 export function updateSpawns(state: SpawnState, hooks: SpawnHooks, dt: number): void {
-    const difficulty = difficultyAt(state.time);
+    const difficulty = difficultyAt(state.time, state.run);
+    const run = state.run || RUN, beat = encounterBeat(state.time, run), eliteTimes = run.eliteTimes;
     state.spawnTimer -= dt;
-    if (state.time < RUN.bossAt && state.spawnTimer <= 0) {
-        state.spawnTimer = difficulty.spawnInterval;
+    if (state.time < run.bossAt && state.spawnTimer <= 0) {
+        state.spawnTimer = difficulty.spawnInterval * (beat.recovery ? 3 : 1);
         for (let i = 0; i < difficulty.batch; i++)
-            spawnEnemy(state, hooks, enemyKind(state.time));
+            spawnEnemy(state, hooks, enemyKind(state.time, Math.random(), state.run));
     }
-    if (state.time < RUN.bossAt - 10 && state.time >= state.nextSurge) {
+    if (state.time < run.bossAt - 10 && state.time >= state.nextSurge && !beat.recovery) {
         state.nextSurge += difficulty.surgeInterval;
         const direction = Math.random() * Math.PI * 2;
         for (let i = 0; i < difficulty.pack; i++)
-            spawnEnemy(state, hooks, enemyKind(state.time), 340 + (i % 4) * 30, direction + i / difficulty.pack * Math.PI * 2);
-        if (progressionTime(state.time) >= 240) {
+            spawnEnemy(state, hooks, enemyKind(state.time, Math.random(), state.run), 340 + (i % 4) * 30, direction + i / difficulty.pack * Math.PI * 2);
+        if (progressionTime(state.time, state.run) >= 240) {
             spawnEnemy(state, hooks, 3, 460, direction);
-            if (progressionTime(state.time) >= 420)
+            if (progressionTime(state.time, state.run) >= 420)
                 spawnEnemy(state, hooks, 3, 460, direction + Math.PI);
         }
-        hooks.onToast(progressionTime(state.time) >= 240 ? '围攻怪潮 · 优先躲避远程与冲锋' : '怪潮涌入 · 连续击杀积蓄狂热');
+        hooks.onToast(progressionTime(state.time, state.run) >= 240 ? '围攻怪潮 · 优先躲避远程与冲锋' : '怪潮涌入 · 连续击杀积蓄狂热');
     }
     // 核心登场后关闭普通波次，但保留远程/冲锋援军；封印时刻不再补援军。
-    if (state.bossSpawned && state.time < RUN.duration && state.spawnTimer <= 0) {
+    if (state.bossSpawned && state.time < run.duration && state.spawnTimer <= 0) {
         state.spawnTimer = 5;
         for (let i = 0; i < 3; i++)
             spawnEnemy(state, hooks, i % 2 ? 1 : 2, 460);
     }
-    if (state.eliteIndex < ELITE_TIMES.length && state.time >= ELITE_TIMES[state.eliteIndex]) {
+    if (state.eliteIndex < eliteTimes.length && state.time >= eliteTimes[state.eliteIndex]) {
         state.eliteIndex++;
         spawnEnemy(state, hooks, 3);
         hooks.onToast('精英守卫已出现 · 击败后必定掉落装备');
     }
-    if (state.time >= RUN.bossAt && !state.bossSpawned)
+    if (state.time >= run.bossAt && !state.bossSpawned)
         spawnBoss(state, hooks);
 }

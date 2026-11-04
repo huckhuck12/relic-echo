@@ -3,6 +3,17 @@ import assert from 'node:assert/strict';
 import {SpatialGrid} from '../dist/shared/model.js';
 import {spawnEnemy, spawnBoss, updateSpawns} from '../dist/enemies/enemy-spawner.js';
 import {updateEnemies} from '../dist/enemies/enemy-ai.js';
+import {RUNS} from '../dist/game/pace.js';
+import {difficultyAt} from '../dist/game/difficulty.js';
+
+test('standard recovery slows fresh spawns and defers surges without changing simulation time',()=>{
+ const f=fixture(170);f.state.run=RUNS.standard;f.state.spawnTimer=0;f.state.nextSurge=169;f.state.eliteIndex=2;
+ updateSpawns(f.state,f.hooks,1/60);
+ assert.equal(f.state.time,170);assert.equal(f.state.nextSurge,169);
+ assert.equal(f.state.spawnTimer,difficultyAt(170,RUNS.standard).spawnInterval*3);
+ const before=f.state.enemies.length;f.state.time=180;updateSpawns(f.state,f.hooks,1/60);
+ assert.ok(f.state.nextSurge>169);assert.ok(f.state.enemies.length>before);
+});
 
 // 独立模块测试：不创建 Game 或 Laya，只观察世界数据和对外动作。
 function fixture(time=0) {

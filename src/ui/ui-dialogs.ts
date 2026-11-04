@@ -13,6 +13,9 @@ import { Loadout, emptyLoadout, resolveStats } from '../shared/model.js';
 import type { ScreenLayout } from './layout.js';
 import { clock, percent, SYMBOLS } from './ui-config.js';
 import { platform } from '../platform/runtime.js';
+import { renderMapEventReward } from './map-event-dialog.js';
+import { RUNS } from '../game/pace.js';
+import type { RunKind } from '../game/pace.js';
 import { autoBuildProfile } from '../game/auto-builds.js';
 export interface DialogHooks {
     /** 使原有弹窗缓存失效，保留编辑槽位；绘制层不自行推进战斗。 */
@@ -25,6 +28,7 @@ export interface DialogHooks {
  */
 export class GameDialogs {
     private selected: Weapon = 'storm';
+    private selectedRun: RunKind = 'standard';
     constructor(private readonly game: Game, private readonly dialogs: LayaSprite, private readonly controls: UIControls, private readonly buffEditor: BuffEditorState, private readonly hooks: DialogHooks) { }
     private clear(...args: Parameters<UIControls['clear']>) { return this.controls.clear(...args); }
     private block(...args: Parameters<UIControls['block']>) { return this.controls.block(...args); }
@@ -87,6 +91,10 @@ export class GameDialogs {
         }
         if (dialog.type === 'build' || dialog.type === 'branch') {
             this.buildDialog(p, dialog, w, h);
+            return;
+        }
+        if (dialog.type === 'event') {
+            renderMapEventReward(p, w, h, dialog.site, this.game, this.controls);
             return;
         }
         if (dialog.type === 'fragment') {
@@ -184,7 +192,7 @@ export class GameDialogs {
         return `${this.game.upgradeFeedback ? this.game.upgradeFeedback + ' · ' : ''}待领取 ${remaining} 份奖励`;
     }
     private standardDialog(p: LayaSprite, dialog: Exclude<NonNullable<Dialog>, {
-        type: 'revive' | 'performance' | 'build' | 'branch';
+        type: 'revive' | 'performance' | 'build' | 'branch' | 'event';
     }>, w: number, h: number): void {
         const dialogId = this.game.flow.dialogId;
         if (dialog.type === 'fragment') {
@@ -196,7 +204,7 @@ export class GameDialogs {
             buffs: '碎片组合', start: '唤醒遗迹中的回响', upgrade: '选择你的回响', drop: '发现新的装备', inventory: '探索者装备', pause: '探索已暂停', result: dialog.type === 'result' && dialog.win ? '回响归来' : '探索终止'
         };
         const descriptions = {
-            buffs: '组合两条自定义 Buff', start: '选择武器，发现装备，挑战六分钟怪潮。', upgrade: '战斗已暂停，选择一项强化。', drop: '穿戴立即改变外观，旧装备分解为经验。', inventory: this.game.training ? '点击装备槽位试装；可查看正反面。' : '武器、头饰、护甲、背饰均有可见外观。', pause: '准备好后，继续前进。', result: dialog.type === 'result' ? dialog.reason : ''
+            buffs: '组合两条自定义 Buff', start: '选择探索时长与武器，建立你的回响构筑。', upgrade: '战斗已暂停，选择一项强化。', drop: '穿戴立即改变外观，旧装备分解为经验。', inventory: this.game.training ? '点击装备槽位试装；可查看正反面。' : '武器、头饰、护甲、背饰均有可见外观。', pause: `${this.game.run.name} · ${clock(this.game.run.bossAt)} 核心登场 · ${clock(this.game.run.duration)} 封印合拢`, result: dialog.type === 'result' ? this.game.run.name + ' · ' + dialog.reason : ''
         };
         this.text(p, 'RELIC ECHO / ' + dialog.type.toUpperCase(), pad, pad, inner, 10, C.mint);
         this.text(p, titles[dialog.type], pad, pad + 23, inner, short ? 21 : 24);
@@ -209,9 +217,17 @@ export class GameDialogs {
                 this.button(p, second, pad + bw + gap, footer, bw, 44, other, false, otherName);
         };
         if (dialog.type === 'start') {
-            const bottom = footer - 60, rowH = Math.max(44, Math.min(112, (bottom - body - 2 * gap) / 3)), cardW = narrow ? inner : (inner - 2 * gap) / 3, cardH = narrow ? rowH : Math.min(255, bottom - body);
+            for (const [i, id] of (['quick', 'standard'] as RunKind[]).entries()) {
+                const run = RUNS[id];
+                this.button(p, run.name + ' · ' + run.duration / 60 + ' 分钟', pad + i * (inner + gap) / 2, body, (inner - gap) / 2, 44, () => {
+                    this.selectedRun = id;
+                    this.hooks.refresh();
+                }, this.selectedRun === id, 'mode-' + id);
+            }
+            const weaponTop = body + 52;
+            const bottom = footer - 60, rowH = Math.max(44, Math.min(112, (bottom - weaponTop - 2 * gap) / 3)), cardW = narrow ? inner : (inner - 2 * gap) / 3, cardH = narrow ? rowH : Math.max(44, Math.min(255, bottom - weaponTop));
             (['storm', 'flame', 'blade'] as Weapon[]).forEach((weapon, i) => {
-                const card = this.button(p, '', pad + (narrow ? 0 : i * (cardW + gap)), body + (narrow ? i * (rowH + gap) : 0), cardW, cardH, () => {
+                const card = this.button(p, '', pad + (narrow ? 0 : i * (cardW + gap)), weaponTop + (narrow ? i * (rowH + gap) : 0), cardW, cardH, () => {
                     this.selected = weapon;
                     this.hooks.refresh();
                 }, false, `select-${weapon}`);
@@ -223,6 +239,10 @@ export class GameDialogs {
                     if (cardH >= 58)
                         this.text(card, gear(weapon).note, 84, cardH < 72 ? 35 : 44, cardW - 96, 11, C.muted);
                 }
+                else if (cardH < 105) {
+                    this.text(card, gear(weapon).name, 10, 9, cardW - 20, 15);
+                    this.text(card, gear(weapon).note, 10, 32, cardW - 20, 11, C.muted);
+                }
                 else {
                     this.avatar(card, emptyLoadout(weapon), cardW / 2, cardH - 69, Math.min(1.5, (cardH - 85) / 85));
                     this.text(card, gear(weapon).name, 12, cardH - 55, cardW - 24, 17);
@@ -230,10 +250,16 @@ export class GameDialogs {
                 }
             });
             const autoW = (inner - gap) / 2;
-            this.button(p, '自动试玩', pad, footer - 50, autoW, 44, () => this.game.toggleAutoPlay(this.selected), false, 'autoplay-start');
-            this.button(p, '自动压测·保命', pad + autoW + gap, footer - 50, autoW, 44, () => this.game.toggleAutoPlay(this.selected, true), false, 'autoplay-stress');
-            pair('开始探索 →', () => this.game.start(this.selected), 'start', '试装与练习', () => {
-                this.game.start(this.selected, true);
+            this.button(p, '自动试玩', pad, footer - 50, autoW, 44, () => {
+                this.game.runKind = this.selectedRun;
+                this.game.toggleAutoPlay(this.selected);
+            }, false, 'autoplay-start');
+            this.button(p, '自动压测·保命', pad + autoW + gap, footer - 50, autoW, 44, () => {
+                this.game.runKind = this.selectedRun;
+                this.game.toggleAutoPlay(this.selected, true);
+            }, false, 'autoplay-stress');
+            pair('开始探索 →', () => this.game.start(this.selected, false, this.selectedRun), 'start', '试装与练习', () => {
+                this.game.start(this.selected, true, this.selectedRun);
                 this.game.toggleInventory();
             }, 'training');
         }

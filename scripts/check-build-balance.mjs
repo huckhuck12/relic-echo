@@ -8,13 +8,15 @@ const seeded=value=>()=>{value=(Math.imul(value,1664525)+1013904223)>>>0;return 
 const arg=name=>process.argv.find(a=>a.startsWith('--'+name+'='))?.split('=')[1];
 const seeds=(arg('seeds')||'627,1104').split(',').map(Number);
 const weapons=(arg('weapons')||'storm').split(',');
+const mode=arg('mode')||'quick';
+if(!['quick','standard'].includes(mode))throw Error('Use --mode=quick or --mode=standard.');
 if(seeds.some(s=>!Number.isInteger(s))||weapons.some(w=>!Object.hasOwn(WEAPONS,w)))throw Error('Use integer seeds and weapons storm,flame,blade.');
 const protectedRun=!process.argv.includes('--normal');
 const legacyContact=process.argv.includes('--legacy-contact');
 const rows=[],originalRandom=Math.random;
 try{
  for(const weapon of weapons)for(const seed of seeds)for(const [build,branch] of routes){
-  setupLayaStub();Math.random=seeded(seed);const g=new Game();g.sound=false;g.autoPlay.start(weapon,protectedRun);
+  setupLayaStub();Math.random=seeded(seed);const g=new Game();g.sound=false;g.runKind=mode;g.autoPlay.start(weapon,protectedRun);
   const events=[],checkpoints=[];let buffDamage=0,bossBuffDamage=0,totalDamage=0,firstBranch=null,maxLevelAt=null,bossStartHP=null,pressureHits=0,protectedHits=0,now=0;
   const reactions={reforges:0,shatters:0,detonations:0};
   // Count once at the damage hook, before nested hit-triggered Buff callbacks. Cap overkill.
@@ -42,7 +44,7 @@ try{
    return ok;
   };
   let nextCheckpoint=60;
-  for(let step=0;step<50000&&g.dialog?.type!=='result';step++){
+  for(let step=0;step<65000&&g.dialog?.type!=='result';step++){
    now+=1000/60;g.autoPlay.frame(now);
    if(g.mode!=='battle'||g.gate.paused)continue;
    g.update(1/60);
@@ -53,7 +55,7 @@ try{
    if(g.time>=nextCheckpoint){checkpoints.push({time:nextCheckpoint,kills:g.kills,level:g.level,buffLevel:level,buffDamage:Math.round(buffDamage),procs:g.buffs.procs,...reactions});nextCheckpoint+=60;}
   }
   const boss=g.enemies.find(e=>e.kind===4);
-  rows.push({weapon,seed,build,branch,protected:protectedRun,seconds:+g.time.toFixed(2),win:g.dialog?.win||false,kills:g.kills,firstBranch,maxLevelAt,buffLevel:g.buffs.levelOf(g.buffs.recipes[0]),buffDamage:Math.round(buffDamage),totalDamage:Math.round(totalDamage),bossBuffDamage:Math.round(bossBuffDamage),bossRemaining:boss?+Math.max(0,boss.hp).toFixed(1):null,bossStartHP,pressureHits,protectedHits,procs:g.buffs.procs,...reactions,checkpoints,events});
+  rows.push({weapon,seed,build,branch,mode,seals:g.mapEvents.sites.map(s=>({id:s.id,state:s.state,progress:+s.progress.toFixed(2)})),protected:protectedRun,seconds:+g.time.toFixed(2),win:g.dialog?.win||false,kills:g.kills,firstBranch,maxLevelAt,buffLevel:g.buffs.levelOf(g.buffs.recipes[0]),buffDamage:Math.round(buffDamage),totalDamage:Math.round(totalDamage),bossBuffDamage:Math.round(bossBuffDamage),bossRemaining:boss?+Math.max(0,boss.hp).toFixed(1):null,bossStartHP,pressureHits,protectedHits,procs:g.buffs.procs,...reactions,checkpoints,events});
   console.log(JSON.stringify(rows.at(-1)));g.autoPlay.stop();g.returnToTitle();
  }
 }finally{Math.random=originalRandom;}

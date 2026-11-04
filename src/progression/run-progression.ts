@@ -40,7 +40,7 @@ export type RewardChoice = {
     type: 'fragment';
     id: string;
 } | {
-    type: 'build' | 'branch';
+    type: 'build' | 'branch' | 'event';
     id: string;
 } | {
     type: 'drop';
@@ -92,6 +92,17 @@ export class RunProgression {
         const dialog = state.dialog;
         if (!dialog || dialog.type !== choice.type)
             return null;
+        if (choice.type === 'event' && dialog.type === 'event') {
+            if (choice.id === 'fragment') {
+                this.hooks.show({ type: 'fragment', choices: [] });
+                return { message: '封印奖励 · 选择一枚碎片' };
+            }
+            if (choice.id !== 'heal')
+                return null;
+            const before = state.player.hp;
+            state.player.hp = Math.min(state.stats.hp, before + state.stats.hp * .3);
+            return { message: state.player.hp > before ? '封印奖励 · 已恢复生命' : '生命已满，本次奖励已领取' };
+        }
         if (choice.type === 'build' && dialog.type === 'build') {
             if (!dialog.choices.includes(choice.id) || !state.buffs.chooseStarter(choice.id))
                 return null;

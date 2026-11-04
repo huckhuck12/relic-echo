@@ -2,6 +2,9 @@ import type { Item } from '../progression/config.js';
 import { PauseGate } from '../shared/model.js';
 /** UI 请求描述，不含 Laya 节点，流程模块可在无浏览器环境下测试。 */
 export type Dialog = {
+    type: 'event';
+    site: string;
+} | {
     type: 'revive';
 } | {
     type: 'performance';
@@ -101,7 +104,7 @@ export class RunFlow {
     /** 领取令牌只对应当前奖励；提交期间拒绝重入，结束后只公布一次最终队列状态。 */
     settleReward(dialogId: number, commit: () => boolean): boolean {
         if (this.settlingReward || this.state !== 'battle' || this.activeId !== dialogId ||
-            !this.current || !['upgrade', 'fragment', 'drop', 'build', 'branch'].includes(this.current.type))
+            !this.current || !['upgrade', 'fragment', 'drop', 'build', 'branch', 'event'].includes(this.current.type))
             return false;
         this.settlingReward = true;
         try {

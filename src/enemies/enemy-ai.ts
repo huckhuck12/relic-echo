@@ -5,6 +5,7 @@ import { progressionTime } from '../game/pace.js';
 import type { Player, Enemy, Point } from '../shared/entities.js';
 import { startEnemyAction } from './enemy-actions.js';
 import type { DamageOptions } from '../combat/combat-system.js';
+import type { RunPace } from '../game/pace.js';
 import { enemyDirection } from './enemy-facing.js';
 /**
  * 一步 AI 的只读集合视图；敌人本身原地更新，不增删数组、不回收节点。
@@ -13,6 +14,7 @@ import { enemyDirection } from './enemy-facing.js';
  */
 export interface EnemyAIState {
     time: number;
+    run?: RunPace;
     player: Readonly<Pick<Player, 'x' | 'y'>>;
     enemies: readonly Enemy[];
     pillars: readonly Point[];
@@ -37,7 +39,7 @@ const LIMIT = 1120;
  * 不把这些分支合成循环：蓄力结束的本步不立刻多推进一段冲锋，原有预警时长因此保留。
  */
 export function updateEnemies(state: EnemyAIState, hooks: EnemyAIHooks, dt: number): void {
-    const p = state.player, difficulty = difficultyAt(state.time);
+    const p = state.player, difficulty = difficultyAt(state.time, state.run);
     for (const e of state.enemies) {
         if (e.dead)
             continue;
@@ -106,7 +108,7 @@ export function updateEnemies(state: EnemyAIState, hooks: EnemyAIHooks, dt: numb
                 e.dy = y / d;
             }
             if (e.kind === 3)
-                radial(state, hooks, e, progressionTime(state.time) >= 360 ? 14 : 10, 155 * difficulty.projectileSpeed);
+                radial(state, hooks, e, progressionTime(state.time, state.run) >= 360 ? 14 : 10, 155 * difficulty.projectileSpeed);
             // Boss 每轮只抽一次：落点攻击或环形弹幕；半血后加快攻击并增加弹幕。
             if (e.kind === 4) {
                 e.facing = enemyDirection(x, y, e.facing);
@@ -149,7 +151,7 @@ export function updateEnemies(state: EnemyAIState, hooks: EnemyAIHooks, dt: numb
 }
 /** 使用蓄力时保存的方向，不追踪玩家新位置；后期改为对称三发散射。 */
 function aimedVolley(state: EnemyAIState, hooks: EnemyAIHooks, e: Enemy): void {
-    const angle = Math.atan2(e.dy, e.dx), count = progressionTime(state.time) >= 240 ? 3 : 1, speed = 210 * difficultyAt(state.time).projectileSpeed;
+    const angle = Math.atan2(e.dy, e.dx), count = progressionTime(state.time, state.run) >= 240 ? 3 : 1, speed = 210 * difficultyAt(state.time, state.run).projectileSpeed;
     for (let i = 0; i < count; i++) {
         const a = angle + (i - (count - 1) / 2) * .18;
         hooks.shoot(e.x, e.y, Math.cos(a) * speed, Math.sin(a) * speed, e.damage, true, '#c99bef', e);

@@ -95,8 +95,9 @@ try{
    await send('Input.dispatchMouseEvent',{type:'mouseReleased',...initial.point,button:'left',clickCount:1});
   }
   await new Promise(r=>setTimeout(r,1800));
-  const battle=await evaluate(`import('/dist/main.js').then(({game})=>({mode:game.mode,time:game.time,hp:game.player.hp,enemies:game.snapshot().enemies,hero:game.scene.playerArtStatus,textureBytes:game.scene.textureBytes}))`);
+  const battle=await evaluate(`import('/dist/main.js').then(({game})=>({mode:game.mode,runKind:game.runKind,time:game.time,hp:game.player.hp,enemies:game.snapshot().enemies,hero:game.scene.playerArtStatus,textureBytes:game.scene.textureBytes}))`);
   assert.equal(battle.mode,'battle');assert.ok(battle.time>.2,'Simulation advances after start');
+  assert.equal(battle.runKind,'standard','Title defaults to the new standard mode');
   assert.equal(battle.hero.ready,true,'Painted hero source loads in the production browser entry');
   if(touch){
    const stick=await evaluate(`import('/dist/main.js').then(({ui,game})=>{
@@ -161,6 +162,27 @@ try{
     assert.equal(outcome.feedback,'生命已满，本次奖励已领取');
     const stale=await evaluate(`import('/dist/main.js').then(({game})=>({claimed:game.claimReward(${card.dialogId},{type:'upgrade',id:'heal'}),pending:game.flow.pendingCount}))`);
     assert.equal(stale.claimed,false,'Settlement rejects the consumed card ID');assert.equal(stale.pending,Math.max(0,remaining-2));
+   }
+  }
+  if(touch){
+   for(const choice of ['heal','fragment']){
+    const card=await evaluate(`import('/dist/main.js').then(({game,ui})=>{
+     game.player.hp=50;game.show({type:'event',site:'苔庭封印'});
+     const find=n=>{if(n.name==='event-${choice}')return n;for(let i=0;i<n.numChildren;i++){const r=find(n.getChildAt(i));if(r)return r;}};
+     const n=find(ui.root),p=n.localToGlobal(new Laya.Point(n.width*.5,n.height*.6));
+     return {x:p.x,y:p.y,token:game.flow.dialogId,expectedHP:Math.min(game.stats.hp,50+game.stats.hp*.3)};
+    })`);
+    assert.ok(card.y>0&&card.y<height,'Event card stays inside viewport');
+    if(choice==='heal'){
+     const shot=await send('Page.captureScreenshot',{format:'png'});
+     await writeFile(resolve(directory,`${width}x${height}-seal-reward.png`),Buffer.from(shot.data,'base64'));
+    }
+    await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:card.x,y:card.y}]});
+    await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+    const result=await evaluate(`import('/dist/main.js').then(({game})=>({hp:game.player.hp,dialog:game.dialog?.type,stale:game.claimReward(${card.token},{type:'event',id:'${choice}'})}))`);
+    assert.equal(result.stale,false);
+    if(choice==='heal'){assert.equal(result.hp,card.expectedHP);assert.equal(result.dialog,undefined);}
+    else {assert.equal(result.dialog,'fragment');await evaluate(`import('/dist/main.js').then(({game})=>game.claimReward(game.flow.dialogId,{type:'fragment',id:game.dialog.choices[0]}))`);}
    }
   }
   await evaluate(`import('/dist/main.js').then(({game})=>{game.gate.remove('browser-card-fixture');game.toggleInventory();})`);

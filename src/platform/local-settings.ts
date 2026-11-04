@@ -9,6 +9,7 @@ export interface LocalSettings {
     showPerformance: boolean;
 }
 export interface RunRecord {
+    runKind?: 'quick' | 'standard';
     win: boolean;
     time: number;
     kills: number;

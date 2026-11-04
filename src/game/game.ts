@@ -30,7 +30,9 @@ import { RunFlow } from './run-flow.js';
 import type { Dialog } from './run-flow.js';
 import type { Enemy, Shot, Drop, Field, Effect, DamageLabel, Player } from '../shared/entities.js';
 export type { Dialog } from './run-flow.js';
-import { RUN } from './pace.js';
+import { RUN, RUNS } from './pace.js';
+import type { RunKind } from './pace.js';
+import { MapEvents } from './map-events.js';
 import { difficultyAt } from './difficulty.js';
 import { QUALITY_PRESETS, VisualQuality } from '../rendering/quality.js';
 import { profileEngine } from './engine-profiler.js';
@@ -123,6 +125,23 @@ export class Game {
     stats: Stats = resolveStats(this.loadout, this.levels);
     player: Player = {
         x: 0, y: 0, hp: 100, inv: 0, dash: 0, dashTime: 0, dx: 0, dy: 1, face: 1, back: false, direction: 2
+    };
+    runKind: RunKind = 'quick';
+    get run() { return RUNS[this.runKind]; }
+    readonly mapEvents = new MapEvents();
+    private readonly mapEventHooks = {
+        announce: (message: string) => this.onToast(message),
+        start: (site: {
+            x: number;
+            y: number;
+        }) => {
+            this.spawnEnemy(3, 230, Math.atan2(site.y - this.player.y, site.x - this.player.x));
+            for (let i = 0; i < 4; i++)
+                this.spawnEnemy(i % 2, 270, i * Math.PI / 2);
+        },
+        complete: (site: {
+            name: string;
+        }) => this.show({ type: 'event', site: site.name })
     };
     time = 0;
     xp = 0;
@@ -268,7 +287,9 @@ export class Game {
      * 开局事务：先归还显示节点，再替换实体/角色与清除冷却，最后重置流程。
      * Buff 恢复基础配方；所有字段初始化完后才通知 UI，不能展示旧局奖励。
      */
-    start(weapon: Weapon, training = false): void {
+    start(weapon: Weapon, training = false, runKind: RunKind = this.runKind): void {
+        this.runKind = runKind === 'standard' ? 'standard' : 'quick';
+        this.mapEvents.reset(this.run);
         this.drawCallProbe.cancel();
         this.testRun = this.autoPlay.enabled;
         this.revival.cancel();
@@ -327,7 +348,7 @@ export class Game {
         this.comboTime = 0;
         this.momentum = 0;
         this.overdrive = 0;
-        this.nextSurge = RUN.firstSurgeAt;
+        this.nextSurge = this.run.firstSurgeAt;
         this.healDropCooldown = 0;
         this.feedback.hitStop = 0;
         this.feedback.hitStopCooldown = 0;
@@ -510,7 +531,7 @@ export class Game {
     testBoss(): void {
         if (!this.training)
             return;
-        this.time = RUN.bossAt;
+        this.time = this.run.bossAt;
         this.spawnBoss();
         this.close();
     }
@@ -542,7 +563,7 @@ export class Game {
         this.beep(win ? 880 : 130, .35, .05);
         if (!this.training && !this.testRun)
             saveRunRecord({
-                win, time: Math.floor(this.time), kills: this.kills, level: this.level, date: new Date().toLocaleDateString()
+                runKind: this.runKind, win, time: Math.floor(this.time), kills: this.kills, level: this.level, date: new Date().toLocaleDateString()
             });
     }
     /** HUD 只查询当前状态，不通过此接口修改战斗；大型实体数组不传给 UI。 */
@@ -636,15 +657,18 @@ export class Game {
         p.gaitPhase = this.walkPhase;
         // 波次先写回：Boss 可能清场换数组，精英序号也参与随后击杀的装备奖励。
         this.updateSpawns(dt);
-        if (this.time >= RUN.duration) {
+        if (this.time >= this.run.duration) {
             this.finish(false, '遗迹封印已合拢，未能及时击败核心。');
             return;
         }
-        if (this.time >= RUN.firstUpgradeAt && this.level === 1) {
+        if (this.time >= this.run.firstUpgradeAt && this.level === 1) {
             this.addXP(nextXP(1) - this.xp);
             if (this.gate.paused)
                 return;
         }
+        this.mapEvents.update(this.time, p, dt, this.run, this.mapEventHooks);
+        if (this.gate.paused)
+            return;
         this.grid.rebuild(this.enemies.filter(e => !e.dead));
         this.attackTimer -= dt;
         if (this.attackTimer <= 0) {
@@ -702,7 +726,7 @@ export class Game {
     /** 每次读取本局引用，重开会替换玩家和数组；不能跨步缓存此视图。 */
     private spawnState(): EnemySpawner.SpawnState {
         return {
-            time: this.time, player: this.player, enemies: this.enemies, shots: this.shots, fields: this.fields, grid: this.grid,
+            time: this.time, run: this.run, player: this.player, enemies: this.enemies, shots: this.shots, fields: this.fields, grid: this.grid,
             spawnTimer: this.spawnTimer, nextSurge: this.nextSurge, eliteIndex: this.eliteIndex, bossSpawned: this.bossSpawned
         };
     }
@@ -761,7 +785,7 @@ export class Game {
     /** AI 始终在世界坐标运行；屏幕外照常追击，蓄力/冲锋与渲染可见性无关。 */
     private updateEnemies(dt: number): void {
         EnemyAI.updateEnemies({
-            time: this.time, player: this.player, enemies: this.enemies, pillars: this.pillars, grid: this.grid
+            time: this.time, run: this.run, player: this.player, enemies: this.enemies, pillars: this.pillars, grid: this.grid
         }, this.enemyAIHooks, dt);
     }
     /** 每次生成当前状态视图，禁止缓存：start 会替换玩家、装备和数组。 */
@@ -852,13 +876,13 @@ export class Game {
         }
         this.dropXP(e.x, e.y, e.kind === 3 ? 18 : e.kind === 2 ? 4 : 3);
         if (e.kind === 3)
-            this.dropGear(e.x, e.y, rollItem(this.time, this.loadout, this.eliteIndex === 1));
+            this.dropGear(e.x, e.y, rollItem(this.time * RUN.bossAt / this.run.bossAt, this.loadout, this.eliteIndex === 1));
         else if (this.dropCooldown <= 0 && Math.random() < .01) {
             this.dropCooldown = 30;
-            this.dropGear(e.x, e.y, rollItem(this.time, this.loadout));
+            this.dropGear(e.x, e.y, rollItem(this.time * RUN.bossAt / this.run.bossAt, this.loadout));
         }
-        if (e.kind === 3 || this.fragmentCooldown <= 0 && (this.kills === 5 || this.kills % RUN.fragmentEvery === 0)) {
-            this.fragmentCooldown = RUN.fragmentCooldown;
+        if (e.kind === 3 || this.fragmentCooldown <= 0 && (this.kills === 5 || this.kills % this.run.fragmentEvery === 0)) {
+            this.fragmentCooldown = this.run.fragmentCooldown;
             if (e.kind === 3 && !this.firstEliteFragment) {
                 // 先占用本局标记，再打开/排队，避免击杀 Buff 连锁结算再次发放。
                 this.firstEliteFragment = true;
@@ -870,7 +894,7 @@ export class Game {
         if (triggerBuffs)
             this.triggerBuff('kill', e.x, e.y);
         if (this.healDropCooldown <= 0 && Math.random() < .03) {
-            this.healDropCooldown = difficultyAt(this.time).healCooldown;
+            this.healDropCooldown = difficultyAt(this.time, this.run).healCooldown;
             this.dropXP(e.x + 10, e.y + 10, -15);
         }
         return false;
@@ -958,7 +982,7 @@ export class Game {
             player: this.player, loadout: this.loadout, levels: this.levels,
             enemies: this.enemies, shots: this.shots, drops: this.drops,
             fields: this.fields, fx: this.fx, labels: this.labels,
-            buffs: this.buffs, visuals: this.visuals,
+            buffs: this.buffs, visuals: this.visuals, sites: this.mapEvents.sites,
             time: this.time, walkPhase: this.walkPhase, mode: this.mode, paused: this.gate.paused,
             mouseTarget: this.input.mouseTarget, shake: this.shake && !this.drawCallProbe.active, shakeTime: this.feedback.shakeTime,
             shakeStrength: this.feedback.shakeStrength, recoil: this.recoil,

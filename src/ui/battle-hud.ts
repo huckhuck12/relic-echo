@@ -4,10 +4,11 @@ import { TouchStick } from './touch-stick.js';
 import type { Game, Snapshot } from '../game/game.js';
 import type { ScreenLayout } from './layout.js';
 import { complete } from '../buffs/buffs.js';
-import { COMBAT, ELITE_TIMES, QUALITY, QUALITY_COLOR, SLOTS, SLOT_NAME, UPGRADES, WEAPONS, gear } from '../progression/config.js';
+import { COMBAT, QUALITY, QUALITY_COLOR, SLOTS, SLOT_NAME, UPGRADES, WEAPONS, gear } from '../progression/config.js';
 import { clamp } from '../shared/model.js';
 import type { Loadout } from '../shared/model.js';
-import { RUN } from '../game/pace.js';
+import { encounterBeat } from '../game/pace.js';
+import { SEAL_RULES } from '../game/map-events.js';
 import { clock, SYMBOLS } from './ui-config.js';
 import { mobileHUDLayout, TOUCH_UI } from './hud-layout.js';
 /** HUD 持有战斗显示节点与缓存；只通过 Game 动作请求交互，不写战斗数值。 */
@@ -60,6 +61,10 @@ export class BattleHUD {
         node.graphics.drawRect(0, 0, node.width * clamp(amount, 0, 1), node.height, color);
     }
     private label(id: string, value: string, parent: LayaSprite, x: number, y: number, w: number, size = 12, color = C.text, align = 'left'): void { this.labels[id] = this.text(parent, value, x, y, w, size, color, align); }
+    private siteDirection(x: number, y: number): string {
+        const angle = Math.atan2((x + y) * .5, x - y);
+        return ['→', '↘', '↓', '↙', '←', '↖', '↑', '↗'][(Math.round(angle / (Math.PI / 4)) + 8) % 8];
+    }
     private set(id: string, value: string): void {
         if (!this.labels[id])
             return;
@@ -199,6 +204,7 @@ export class BattleHUD {
         const bossY = portrait ? p.comboY + 30 : m + 64;
         this.label('boss', '', this.root, bossX, bossY, bossW, 12, '#e4b596', 'center');
         this.bar(this.root, 'boss', bossX, bossY + 22, bossW, 5);
+        this.label('event', '', this.root, bossX, bossY, bossW, 12, C.gold, 'center');
         const buff = this.button(this.root, '', p.buffX, p.buffY, TOUCH_UI.buffWidth, TOUCH_UI.buffHeight, this.openBuffs, false, 'buffs');
         this.label('buffs', '', buff, 4, 13, TOUCH_UI.buffWidth - 8, 13, C.gold, 'center');
         const dash = this.button(this.root, '冲刺', p.dashX, p.dashY, TOUCH_UI.dashWidth, TOUCH_UI.dashHeight, () => { }, true, 'dash');
@@ -259,9 +265,15 @@ export class BattleHUD {
         this.set('time', clock(s.time));
         this.set('kills', this.mobile ? `击败 ${s.kills}` : String(s.kills));
         this.set('level', this.mobile ? `Lv.${s.level}` : String(s.level).padStart(2, '0'));
-        this.set('objective', this.game.training ? '试装模式 · 角色不会死亡\n按 E 切换装备，查看背面。' : s.time >= RUN.bossAt ? '击败遗迹核心。\n在封印合拢前完成挑战。' : '在遗迹中生存，收集回响。\n5 分钟后挑战遗迹核心。');
-        this.fill('progress', s.time / RUN.duration, C.gold);
-        this.set('event', s.time >= RUN.bossAt ? '最终封印 · 06:00 合拢' : `下次${s.time >= ELITE_TIMES[ELITE_TIMES.length - 1] ? '核心' : '精英'} · ${clock(ELITE_TIMES.find(t => t > s.time) ?? RUN.bossAt)}`);
+        const run = this.game.run, beat = encounterBeat(s.time, run), site = this.game.mapEvents.active();
+        this.set('objective', this.game.training ? '试装模式 · 角色不会死亡\n按 E 切换装备，查看背面。' : s.time >= run.bossAt ? '击败遗迹核心。\n在封印合拢前完成挑战。' : `${run.name} · ${beat.name}\n${clock(run.bossAt)} 挑战遗迹核心。`);
+        this.fill('progress', s.time / run.duration, C.gold);
+        this.set('event', site ? site.state === 'active'
+            ? site.name + ' · 圈内 ' + site.progress.toFixed(0) + '/' + SEAL_RULES.holdSeconds + ' 秒 · 余 ' + Math.max(0, Math.ceil(site.startedAt + SEAL_RULES.challengeSeconds - s.time)) + ' 秒'
+            : site.name + ' · ' + this.siteDirection(site.x - this.game.player.x, site.y - this.game.player.y) + ' · 距离 ' + Math.round(Math.hypot(site.x - this.game.player.x, site.y - this.game.player.y))
+            : s.time >= run.bossAt ? '最终封印 · ' + clock(run.duration) + ' 合拢' : beat.name + ' · 下次' + (run.eliteTimes.find(t => t > s.time) ? '精英' : '核心') + ' ' + clock(run.eliteTimes.find(t => t > s.time) ?? run.bossAt));
+        if (this.mobile && this.labels.event)
+            this.labels.event.visible = !s.boss && this.game.runKind === 'standard';
         this.set('combo', s.overdrive > 0 ? `狂热 ${s.overdrive.toFixed(1)}s · ${s.combo} 连杀` : s.combo > 0 ? `${s.combo} 连杀 · 狂热 ${s.momentum} / ${COMBAT.frenzyKills}` : '');
         this.labels.combo.visible = s.combo > 0 || s.overdrive > 0;
         this.bars.combo.visible = s.combo > 0 || s.overdrive > 0;

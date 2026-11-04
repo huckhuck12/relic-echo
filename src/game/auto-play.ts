@@ -4,7 +4,6 @@ import { gear, Weapon } from '../progression/config.js';
 import { project } from '../shared/model.js';
 import { WORLD_RULES } from './game-config.js';
 import { platform } from '../platform/runtime.js';
-import { RUN } from './pace.js';
 import { autoBuildProfile, buildTactics } from './auto-builds.js';
 import type { BuildTactics } from './auto-builds.js';
 export interface AutoPlayWorld {
@@ -86,7 +85,7 @@ export class AutoPlay {
                 this.trackBoss();
                 this.recordedResult = this.dialogId;
                 this.results.push({
-                    round: this.rounds, weapon: this.weapon, build: autoBuildProfile(this.rounds), equipped: this.equipped(), stress: this.stress, win: dialog.win, reason: dialog.reason, seconds: Math.round(g.time), kills: g.kills, ...this.run
+                    round: this.rounds, runKind: g.runKind, weapon: this.weapon, build: autoBuildProfile(this.rounds), equipped: this.equipped(), stress: this.stress, win: dialog.win, reason: dialog.reason, seconds: Math.round(g.time), kills: g.kills, ...this.run
                 });
                 if (this.results.length > 18)
                     this.results.shift();
@@ -120,6 +119,9 @@ export class AutoPlay {
                     if (id && g.claimReward(this.dialogId, { type: dialog.type, id }))
                         this.note(dialog.type + ':' + id);
                 }
+                else if (dialog.type === 'event') {
+                    g.claimReward(this.dialogId, { type: 'event', id: g.player.hp < g.stats.hp * .65 ? 'heal' : 'fragment' });
+                }
                 else if (dialog.type === 'drop') {
                     const slot = gear(dialog.item).slot, old = g.loadout[slot];
                     const accept = (slot !== 'weapon' || dialog.item.id === this.weapon) && (!old || dialog.item.quality >= old.quality);
@@ -137,7 +139,13 @@ export class AutoPlay {
         if (g.mode !== 'battle' || g.gate.paused)
             return;
         this.trackBoss();
-        const world = this.world(), intent = autoPlayIntent(g.player, world, g.time, buildTactics(g.buffs, g.player, world.enemies));
+        const world = this.world(), tactics = buildTactics(g.buffs, g.player, world.enemies);
+        const site = g.mapEvents.active();
+        if (site) {
+            tactics.waypoint = site;
+            tactics.dashTarget = undefined;
+        }
+        const intent = autoPlayIntent(g.player, world, g.time, tactics);
         const screen = project(intent.x, intent.y), length = Math.hypot(screen.x, screen.y) || 1;
         g.setStick(screen.x / length, screen.y / length);
         this.decisions++;
@@ -173,13 +181,13 @@ export class AutoPlay {
             this.actions.shift();
     }
     private trackBoss(): void {
-        if (this.game.time < RUN.bossAt)
+        if (this.game.time < this.game.run.bossAt)
             return;
         if (!this.run.reachedBoss) {
             this.run.reachedBoss = true;
             this.note('boss:entered');
         }
-        this.run.bossSeconds = Math.max(0, this.game.time - RUN.bossAt);
+        this.run.bossSeconds = Math.max(0, this.game.time - this.game.run.bossAt);
     }
     private equipped() {
         return this.game.buffs.recipes.map(recipe => ({ ...recipe, level: this.game.buffs.levelOf(recipe), branch: this.game.buffs.branchOf(recipe) || null }));
@@ -187,7 +195,7 @@ export class AutoPlay {
     private save(): void {
         try {
             platform().writeStorage(AUTO_PLAY_KEY, JSON.stringify({
-                schema: 3, startedAt: this.startedAt, savedAt: Date.now(), enabled: this.enabled, stress: this.stress, round: this.rounds, seconds: this.game.time, weapon: this.weapon, build: autoBuildProfile(this.rounds), equipped: this.equipped(), decisions: this.decisions, current: this.run, results: this.results, actions: this.actions
+                schema: 3, runKind: this.game.runKind, startedAt: this.startedAt, savedAt: Date.now(), enabled: this.enabled, stress: this.stress, round: this.rounds, seconds: this.game.time, weapon: this.weapon, build: autoBuildProfile(this.rounds), equipped: this.equipped(), decisions: this.decisions, current: this.run, results: this.results, actions: this.actions
             }));
         }
         catch { /* Test reporting must never interrupt combat. */ }
@@ -246,7 +254,13 @@ export function autoPlayIntent(player: Point & {
         if (Math.hypot(player.x - px, player.y - py) < 50)
             danger = true;
     }
-    if (!danger && tactics?.focus) {
+    if (!danger && tactics?.waypoint) {
+        const dx = tactics.waypoint.x - player.x, dy = tactics.waypoint.y - player.y, d = Math.hypot(dx, dy) || 1;
+        const approach = Math.max(-1, Math.min(1, (d - 55) / 70));
+        x += (dx / d * approach - dy / d * .2) * 6;
+        y += (dy / d * approach + dx / d * .2) * 6;
+    }
+    else if (!danger && tactics?.focus) {
         const dx = tactics.focus.x - player.x, dy = tactics.focus.y - player.y, d = Math.hypot(dx, dy) || 1;
         const desired = tactics.orbit ? 105 : 220;
         const approach = Math.max(-1, Math.min(1, (d - desired) / 80));
