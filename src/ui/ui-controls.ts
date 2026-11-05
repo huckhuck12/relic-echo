@@ -69,11 +69,20 @@ export class UIControls {
         node.graphics.drawLine(10, h - 4, w - 10, h - 4, primary ? C.hudGold : '#536f59', 1);
         node.caption.color = primary ? C.ink : C.hudText;
     }
+    /** Paper choices keep the entire card as one hit target, including its ornament. */
+    choiceCard(node: LayaSprite, selected = false): void {
+        const w = node.width, h = node.height, cut = 6;
+        node.graphics.clear();
+        node.graphics.drawPoly(0, 0, [cut, 0, w - cut, 0, w, cut, w, h - cut, w - cut, h, cut, h, 0, h - cut, 0, cut], selected ? '#e1e8d5' : '#f5eedb', selected ? C.mint : '#a5a78a', selected ? 2 : 1);
+        node.graphics.drawLine(10, h - 5, w - 10, h - 5, selected ? '#8da283' : '#d5c9a8', 1);
+        if (selected)
+            node.graphics.drawRect(0, 9, 3, h - 18, C.mint);
+    }
     /** 文本不参与命中，点击整块按钮时不会被标签截住。 */
     text(parent: LayaSprite, value: string, x: number, y: number, w: number, size = 12, color = C.text, align = 'left'): LayaText {
         const label = new Laya.Text();
         label.text = value;
-        label.font = size >= 20 ? 'serif' : UI_FONT;
+        label.font = UI_FONT;
         label.fontSize = size;
         label.color = color;
         label.width = w;
@@ -98,7 +107,12 @@ export class UIControls {
             this.enableAudio();
             action();
         });
-        return Object.assign(node, { caption });
+        const button = Object.assign(node, { caption });
+        if (label)
+            this.fieldButton(button, primary);
+        else
+            this.choiceCard(button);
+        return button;
     }
     avatar(parent: LayaSprite, loadout: Loadout, x: number, y: number, scale = 1, back = false): LayaSprite {
         const node = new Laya.Sprite();

@@ -1,0 +1,2919 @@
+{
+  "version": "0.15.3",
+  "passed": true,
+  "reports": [
+    {
+      "scope": "Real Laya browser, responsive dialog geometry and screenshots. Not native device acceptance.",
+      "rows": [
+        {
+          "width": 320,
+          "height": 568,
+          "type": "start",
+          "buttons": [
+            {
+              "name": "mode-quick",
+              "x": 30.4,
+              "y": 144,
+              "w": 124.6,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "mode-standard",
+              "x": 165,
+              "y": 144,
+              "w": 124.60000000000002,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "select-storm",
+              "x": 30.4,
+              "y": 196,
+              "w": 259.2,
+              "h": 72.53333333333336,
+              "mouseEnabled": true
+            },
+            {
+              "name": "select-flame",
+              "x": 30.4,
+              "y": 278.53333333333336,
+              "w": 259.2,
+              "h": 72.53333333333336,
+              "mouseEnabled": true
+            },
+            {
+              "name": "select-blade",
+              "x": 30.4,
+              "y": 361.0666666666667,
+              "w": 259.2,
+              "h": 72.53333333333336,
+              "mouseEnabled": true
+            },
+            {
+              "name": "autoplay-start",
+              "x": 30.4,
+              "y": 443.6,
+              "w": 124.6,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "autoplay-stress",
+              "x": 165,
+              "y": 443.6,
+              "w": 124.60000000000002,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "start",
+              "x": 30.4,
+              "y": 493.6,
+              "w": 124.6,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "training",
+              "x": 165,
+              "y": 493.6,
+              "w": 124.60000000000002,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "type": "upgrade",
+          "buttons": [
+            {
+              "name": "upgrade-power",
+              "x": 30.4,
+              "y": 144,
+              "w": 259.2,
+              "h": 112,
+              "mouseEnabled": true
+            },
+            {
+              "name": "upgrade-speed",
+              "x": 30.4,
+              "y": 266,
+              "w": 259.2,
+              "h": 112,
+              "mouseEnabled": true
+            },
+            {
+              "name": "upgrade-blades",
+              "x": 30.4,
+              "y": 388,
+              "w": 259.2,
+              "h": 112,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "type": "heal",
+          "buttons": [
+            {
+              "name": "upgrade-heal",
+              "x": 30.4,
+              "y": 144,
+              "w": 259.2,
+              "h": 112,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "type": "inventory",
+          "buttons": [
+            {
+              "name": "gear-weapon",
+              "x": 130.52800000000002,
+              "y": 144,
+              "w": 159.072,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-head",
+              "x": 130.52800000000002,
+              "y": 196,
+              "w": 159.072,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-armor",
+              "x": 130.52800000000002,
+              "y": 248,
+              "w": 159.072,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-back",
+              "x": 130.52800000000002,
+              "y": 300,
+              "w": 159.072,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "turn",
+              "x": 36.4,
+              "y": 300,
+              "w": 76.12800000000001,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "close-inventory",
+              "x": 30.4,
+              "y": 493.6,
+              "w": 225,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "type": "drop",
+          "buttons": [
+            {
+              "name": "equip",
+              "x": 30.4,
+              "y": 493.6,
+              "w": 124.6,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "salvage",
+              "x": 165,
+              "y": 493.6,
+              "w": 124.60000000000002,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "type": "build",
+          "buttons": [
+            {
+              "name": "build-fire",
+              "x": 32,
+              "y": 104,
+              "w": 256,
+              "h": 94,
+              "mouseEnabled": true
+            },
+            {
+              "name": "build-ice",
+              "x": 32,
+              "y": 208,
+              "w": 256,
+              "h": 94,
+              "mouseEnabled": true
+            },
+            {
+              "name": "build-thunder",
+              "x": 32,
+              "y": 312,
+              "w": 256,
+              "h": 94,
+              "mouseEnabled": true
+            },
+            {
+              "name": "build-free",
+              "x": 32,
+              "y": 416,
+              "w": 256,
+              "h": 94,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "type": "event",
+          "buttons": [
+            {
+              "name": "event-fragment",
+              "x": 34,
+              "y": 128,
+              "w": 252,
+              "h": 100,
+              "mouseEnabled": true
+            },
+            {
+              "name": "event-heal",
+              "x": 34,
+              "y": 240,
+              "w": 252,
+              "h": 100,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "type": "fragment",
+          "buttons": [
+            {
+              "name": "fragment-fire",
+              "x": 30.4,
+              "y": 108,
+              "w": 259.2,
+              "h": 116,
+              "mouseEnabled": true
+            },
+            {
+              "name": "fragment-hit",
+              "x": 30.4,
+              "y": 234,
+              "w": 259.2,
+              "h": 116,
+              "mouseEnabled": true
+            },
+            {
+              "name": "fragment-blast",
+              "x": 30.4,
+              "y": 360,
+              "w": 259.2,
+              "h": 116,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "type": "pause",
+          "buttons": [
+            {
+              "name": "sound",
+              "x": 30.4,
+              "y": 144,
+              "w": 124.6,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "shake",
+              "x": 165,
+              "y": 144,
+              "w": 124.60000000000002,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "visual-quality",
+              "x": 30.4,
+              "y": 194,
+              "w": 124.6,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "performance-toggle",
+              "x": 165,
+              "y": 194,
+              "w": 124.60000000000002,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "autoplay-toggle",
+              "x": 30.4,
+              "y": 244,
+              "w": 124.6,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "resume",
+              "x": 30.4,
+              "y": 493.6,
+              "w": 124.6,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "quit",
+              "x": 165,
+              "y": 493.6,
+              "w": 124.60000000000002,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "type": "result",
+          "buttons": [
+            {
+              "name": "gear-weapon",
+              "x": 130.52800000000002,
+              "y": 268,
+              "w": 159.072,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-head",
+              "x": 130.52800000000002,
+              "y": 320,
+              "w": 159.072,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-armor",
+              "x": 130.52800000000002,
+              "y": 372,
+              "w": 159.072,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-back",
+              "x": 130.52800000000002,
+              "y": 424,
+              "w": 159.072,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "restart",
+              "x": 30.4,
+              "y": 493.6,
+              "w": 124.6,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "title",
+              "x": 165,
+              "y": 493.6,
+              "w": 124.60000000000002,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "type": "start",
+          "buttons": [
+            {
+              "name": "mode-quick",
+              "x": 37.33500000000001,
+              "y": 244,
+              "w": 154.165,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "mode-standard",
+              "x": 201.5,
+              "y": 244,
+              "w": 154.16499999999996,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "select-storm",
+              "x": 37.33500000000001,
+              "y": 296,
+              "w": 318.3299999999999,
+              "h": 99.43833333333333,
+              "mouseEnabled": true
+            },
+            {
+              "name": "select-flame",
+              "x": 37.33500000000001,
+              "y": 405.43833333333333,
+              "w": 318.3299999999999,
+              "h": 99.43833333333333,
+              "mouseEnabled": true
+            },
+            {
+              "name": "select-blade",
+              "x": 37.33500000000001,
+              "y": 514.8766666666667,
+              "w": 318.3299999999999,
+              "h": 99.43833333333339,
+              "mouseEnabled": true
+            },
+            {
+              "name": "autoplay-start",
+              "x": 37.33500000000001,
+              "y": 624.315,
+              "w": 154.165,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "autoplay-stress",
+              "x": 201.5,
+              "y": 624.315,
+              "w": 154.16499999999996,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "start",
+              "x": 37.33500000000001,
+              "y": 674.315,
+              "w": 154.165,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "training",
+              "x": 201.5,
+              "y": 674.315,
+              "w": 154.16499999999996,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "type": "upgrade",
+          "buttons": [
+            {
+              "name": "upgrade-blades",
+              "x": 37.33500000000001,
+              "y": 244,
+              "w": 318.3299999999999,
+              "h": 112,
+              "mouseEnabled": true
+            },
+            {
+              "name": "upgrade-orbit",
+              "x": 37.33500000000001,
+              "y": 366,
+              "w": 318.3299999999999,
+              "h": 112,
+              "mouseEnabled": true
+            },
+            {
+              "name": "upgrade-magnet",
+              "x": 37.33500000000001,
+              "y": 488,
+              "w": 318.3299999999999,
+              "h": 112,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "type": "heal",
+          "buttons": [
+            {
+              "name": "upgrade-heal",
+              "x": 37.33500000000001,
+              "y": 244,
+              "w": 318.3299999999999,
+              "h": 112,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "type": "inventory",
+          "buttons": [
+            {
+              "name": "gear-weapon",
+              "x": 157.5672,
+              "y": 244,
+              "w": 198.09779999999995,
+              "h": 50,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-head",
+              "x": 157.5672,
+              "y": 302,
+              "w": 198.09779999999995,
+              "h": 50,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-armor",
+              "x": 157.5672,
+              "y": 360,
+              "w": 198.09779999999995,
+              "h": 50,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-back",
+              "x": 157.5672,
+              "y": 418,
+              "w": 198.09779999999995,
+              "h": 50,
+              "mouseEnabled": true
+            },
+            {
+              "name": "turn",
+              "x": 43.33500000000001,
+              "y": 424,
+              "w": 96.2322,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "close-inventory",
+              "x": 37.33500000000001,
+              "y": 674.315,
+              "w": 225.00000000000003,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "type": "drop",
+          "buttons": [
+            {
+              "name": "equip",
+              "x": 37.33500000000001,
+              "y": 674.315,
+              "w": 154.165,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "salvage",
+              "x": 201.5,
+              "y": 674.315,
+              "w": 154.16499999999996,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "type": "build",
+          "buttons": [
+            {
+              "name": "build-fire",
+              "x": 35.650000000000006,
+              "y": 204,
+              "w": 321.70000000000005,
+              "h": 115,
+              "mouseEnabled": true
+            },
+            {
+              "name": "build-ice",
+              "x": 35.650000000000006,
+              "y": 329,
+              "w": 321.70000000000005,
+              "h": 115,
+              "mouseEnabled": true
+            },
+            {
+              "name": "build-thunder",
+              "x": 35.650000000000006,
+              "y": 454,
+              "w": 321.70000000000005,
+              "h": 115,
+              "mouseEnabled": true
+            },
+            {
+              "name": "build-free",
+              "x": 35.650000000000006,
+              "y": 579,
+              "w": 321.70000000000005,
+              "h": 115,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "type": "event",
+          "buttons": [
+            {
+              "name": "event-fragment",
+              "x": 37.650000000000006,
+              "y": 228,
+              "w": 317.70000000000005,
+              "h": 100,
+              "mouseEnabled": true
+            },
+            {
+              "name": "event-heal",
+              "x": 37.650000000000006,
+              "y": 340,
+              "w": 317.70000000000005,
+              "h": 100,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "type": "fragment",
+          "buttons": [
+            {
+              "name": "fragment-fire",
+              "x": 37.33500000000001,
+              "y": 208,
+              "w": 318.3299999999999,
+              "h": 116,
+              "mouseEnabled": true
+            },
+            {
+              "name": "fragment-blast",
+              "x": 37.33500000000001,
+              "y": 334,
+              "w": 318.3299999999999,
+              "h": 116,
+              "mouseEnabled": true
+            },
+            {
+              "name": "fragment-hit",
+              "x": 37.33500000000001,
+              "y": 460,
+              "w": 318.3299999999999,
+              "h": 116,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "type": "pause",
+          "buttons": [
+            {
+              "name": "sound",
+              "x": 37.33500000000001,
+              "y": 244,
+              "w": 154.165,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "shake",
+              "x": 201.5,
+              "y": 244,
+              "w": 154.16499999999996,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "visual-quality",
+              "x": 37.33500000000001,
+              "y": 294,
+              "w": 154.165,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "performance-toggle",
+              "x": 201.5,
+              "y": 294,
+              "w": 154.16499999999996,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "autoplay-toggle",
+              "x": 37.33500000000001,
+              "y": 344,
+              "w": 154.165,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "resume",
+              "x": 37.33500000000001,
+              "y": 674.315,
+              "w": 154.165,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "quit",
+              "x": 201.5,
+              "y": 674.315,
+              "w": 154.16499999999996,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "type": "result",
+          "buttons": [
+            {
+              "name": "gear-weapon",
+              "x": 157.5672,
+              "y": 368,
+              "w": 198.09779999999995,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-head",
+              "x": 157.5672,
+              "y": 420,
+              "w": 198.09779999999995,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-armor",
+              "x": 157.5672,
+              "y": 472,
+              "w": 198.09779999999995,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-back",
+              "x": 157.5672,
+              "y": 524,
+              "w": 198.09779999999995,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "restart",
+              "x": 37.33500000000001,
+              "y": 674.315,
+              "w": 154.165,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "title",
+              "x": 201.5,
+              "y": 674.315,
+              "w": 154.16499999999996,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "type": "start",
+          "buttons": [
+            {
+              "name": "mode-quick",
+              "x": 36,
+              "y": 82,
+              "w": 243,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "mode-standard",
+              "x": 289,
+              "y": 82,
+              "w": 243,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "select-storm",
+              "x": 36,
+              "y": 134,
+              "w": 158.66666666666666,
+              "h": 46,
+              "mouseEnabled": true
+            },
+            {
+              "name": "select-flame",
+              "x": 204.66666666666666,
+              "y": 134,
+              "w": 158.66666666666666,
+              "h": 46,
+              "mouseEnabled": true
+            },
+            {
+              "name": "select-blade",
+              "x": 373.3333333333333,
+              "y": 134,
+              "w": 158.66666666666669,
+              "h": 46,
+              "mouseEnabled": true
+            },
+            {
+              "name": "autoplay-start",
+              "x": 36,
+              "y": 190,
+              "w": 243,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "autoplay-stress",
+              "x": 289,
+              "y": 190,
+              "w": 243,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "start",
+              "x": 36,
+              "y": 240,
+              "w": 243,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "training",
+              "x": 289,
+              "y": 240,
+              "w": 243,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "type": "upgrade",
+          "buttons": [
+            {
+              "name": "upgrade-haste",
+              "x": 36,
+              "y": 82,
+              "w": 158.66666666666666,
+              "h": 167,
+              "mouseEnabled": true
+            },
+            {
+              "name": "upgrade-orbit",
+              "x": 204.66666666666666,
+              "y": 82,
+              "w": 158.66666666666666,
+              "h": 167,
+              "mouseEnabled": true
+            },
+            {
+              "name": "upgrade-magnet",
+              "x": 373.3333333333333,
+              "y": 82,
+              "w": 158.66666666666669,
+              "h": 167,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "type": "heal",
+          "buttons": [
+            {
+              "name": "upgrade-heal",
+              "x": 36,
+              "y": 82,
+              "w": 496,
+              "h": 167,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "type": "inventory",
+          "buttons": [
+            {
+              "name": "gear-weapon",
+              "x": 198,
+              "y": 82,
+              "w": 163,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-head",
+              "x": 369,
+              "y": 82,
+              "w": 163,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-armor",
+              "x": 198,
+              "y": 134,
+              "w": 163,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-back",
+              "x": 369,
+              "y": 134,
+              "w": 163,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "turn",
+              "x": 42,
+              "y": 134,
+              "w": 138,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "close-inventory",
+              "x": 36,
+              "y": 240,
+              "w": 225,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "type": "drop",
+          "buttons": [
+            {
+              "name": "equip",
+              "x": 36,
+              "y": 240,
+              "w": 243,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "salvage",
+              "x": 289,
+              "y": 240,
+              "w": 243,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "type": "build",
+          "buttons": [
+            {
+              "name": "build-fire",
+              "x": 32,
+              "y": 82,
+              "w": 247,
+              "h": 85,
+              "mouseEnabled": true
+            },
+            {
+              "name": "build-ice",
+              "x": 289,
+              "y": 82,
+              "w": 247,
+              "h": 85,
+              "mouseEnabled": true
+            },
+            {
+              "name": "build-thunder",
+              "x": 32,
+              "y": 177,
+              "w": 247,
+              "h": 85,
+              "mouseEnabled": true
+            },
+            {
+              "name": "build-free",
+              "x": 289,
+              "y": 177,
+              "w": 247,
+              "h": 85,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "type": "event",
+          "buttons": [
+            {
+              "name": "event-fragment",
+              "x": 34,
+              "y": 106,
+              "w": 500,
+              "h": 84,
+              "mouseEnabled": true
+            },
+            {
+              "name": "event-heal",
+              "x": 34,
+              "y": 202,
+              "w": 500,
+              "h": 84,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "type": "fragment",
+          "buttons": [
+            {
+              "name": "fragment-hit",
+              "x": 40,
+              "y": 86,
+              "w": 156,
+              "h": 162,
+              "mouseEnabled": true
+            },
+            {
+              "name": "fragment-blast",
+              "x": 206,
+              "y": 86,
+              "w": 156,
+              "h": 162,
+              "mouseEnabled": true
+            },
+            {
+              "name": "fragment-fire",
+              "x": 372,
+              "y": 86,
+              "w": 156,
+              "h": 162,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "type": "pause",
+          "buttons": [
+            {
+              "name": "sound",
+              "x": 36,
+              "y": 82,
+              "w": 243,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "shake",
+              "x": 289,
+              "y": 82,
+              "w": 243,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "visual-quality",
+              "x": 36,
+              "y": 132,
+              "w": 243,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "performance-toggle",
+              "x": 289,
+              "y": 132,
+              "w": 243,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "autoplay-toggle",
+              "x": 36,
+              "y": 182,
+              "w": 243,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "resume",
+              "x": 36,
+              "y": 240,
+              "w": 243,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "quit",
+              "x": 289,
+              "y": 240,
+              "w": 243,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "type": "result",
+          "buttons": [
+            {
+              "name": "gear-weapon",
+              "x": 198,
+              "y": 138,
+              "w": 163,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-head",
+              "x": 369,
+              "y": 138,
+              "w": 163,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-armor",
+              "x": 198,
+              "y": 190,
+              "w": 163,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-back",
+              "x": 369,
+              "y": 190,
+              "w": 163,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "restart",
+              "x": 36,
+              "y": 240,
+              "w": 243,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "title",
+              "x": 289,
+              "y": 240,
+              "w": 243,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "type": "start",
+          "buttons": [
+            {
+              "name": "mode-quick",
+              "x": 46,
+              "y": 102.65,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "mode-standard",
+              "x": 431,
+              "y": 102.65,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "select-storm",
+              "x": 46,
+              "y": 154.65,
+              "w": 246.66666666666663,
+              "h": 94.69999999999999,
+              "mouseEnabled": true
+            },
+            {
+              "name": "select-flame",
+              "x": 302.66666666666663,
+              "y": 154.65,
+              "w": 246.66666666666663,
+              "h": 94.69999999999999,
+              "mouseEnabled": true
+            },
+            {
+              "name": "select-blade",
+              "x": 559.3333333333333,
+              "y": 154.65,
+              "w": 246.66666666666663,
+              "h": 94.69999999999999,
+              "mouseEnabled": true
+            },
+            {
+              "name": "autoplay-start",
+              "x": 46,
+              "y": 259.35,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "autoplay-stress",
+              "x": 431,
+              "y": 259.35,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "start",
+              "x": 46,
+              "y": 309.35,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "training",
+              "x": 431,
+              "y": 309.35,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "type": "upgrade",
+          "buttons": [
+            {
+              "name": "upgrade-vital",
+              "x": 46,
+              "y": 102.65,
+              "w": 246.66666666666663,
+              "h": 215.70000000000002,
+              "mouseEnabled": true
+            },
+            {
+              "name": "upgrade-orbit",
+              "x": 302.66666666666663,
+              "y": 102.65,
+              "w": 246.66666666666663,
+              "h": 215.70000000000002,
+              "mouseEnabled": true
+            },
+            {
+              "name": "upgrade-crit",
+              "x": 559.3333333333333,
+              "y": 102.65,
+              "w": 246.66666666666663,
+              "h": 215.70000000000002,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "type": "heal",
+          "buttons": [
+            {
+              "name": "upgrade-heal",
+              "x": 46,
+              "y": 102.65,
+              "w": 760,
+              "h": 215.70000000000002,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "type": "inventory",
+          "buttons": [
+            {
+              "name": "gear-weapon",
+              "x": 208,
+              "y": 102.65,
+              "w": 295,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-head",
+              "x": 511,
+              "y": 102.65,
+              "w": 295,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-armor",
+              "x": 208,
+              "y": 154.65,
+              "w": 295,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-back",
+              "x": 511,
+              "y": 154.65,
+              "w": 295,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "turn",
+              "x": 52,
+              "y": 154.65,
+              "w": 138,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "close-inventory",
+              "x": 46,
+              "y": 309.35,
+              "w": 225,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "type": "drop",
+          "buttons": [
+            {
+              "name": "equip",
+              "x": 46,
+              "y": 309.35,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "salvage",
+              "x": 431,
+              "y": 309.35,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "type": "build",
+          "buttons": [
+            {
+              "name": "build-fire",
+              "x": 42,
+              "y": 85.65,
+              "w": 379,
+              "h": 117.85,
+              "mouseEnabled": true
+            },
+            {
+              "name": "build-ice",
+              "x": 431,
+              "y": 85.65,
+              "w": 379,
+              "h": 117.85,
+              "mouseEnabled": true
+            },
+            {
+              "name": "build-thunder",
+              "x": 42,
+              "y": 213.5,
+              "w": 379,
+              "h": 117.85000000000002,
+              "mouseEnabled": true
+            },
+            {
+              "name": "build-free",
+              "x": 431,
+              "y": 213.5,
+              "w": 379,
+              "h": 117.85000000000002,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "type": "event",
+          "buttons": [
+            {
+              "name": "event-fragment",
+              "x": 44,
+              "y": 131.65,
+              "w": 764,
+              "h": 100,
+              "mouseEnabled": true
+            },
+            {
+              "name": "event-heal",
+              "x": 44,
+              "y": 243.65,
+              "w": 764,
+              "h": 99.99999999999997,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "type": "fragment",
+          "buttons": [
+            {
+              "name": "fragment-fire",
+              "x": 50,
+              "y": 111.65,
+              "w": 244,
+              "h": 205.70000000000002,
+              "mouseEnabled": true
+            },
+            {
+              "name": "fragment-blast",
+              "x": 304,
+              "y": 111.65,
+              "w": 244,
+              "h": 205.70000000000002,
+              "mouseEnabled": true
+            },
+            {
+              "name": "fragment-hit",
+              "x": 558,
+              "y": 111.65,
+              "w": 244,
+              "h": 205.70000000000002,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "type": "pause",
+          "buttons": [
+            {
+              "name": "sound",
+              "x": 46,
+              "y": 102.65,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "shake",
+              "x": 431,
+              "y": 102.65,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "visual-quality",
+              "x": 46,
+              "y": 152.65,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "performance-toggle",
+              "x": 431,
+              "y": 152.65,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "autoplay-toggle",
+              "x": 46,
+              "y": 202.65,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "resume",
+              "x": 46,
+              "y": 309.35,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "quit",
+              "x": 431,
+              "y": 309.35,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "type": "result",
+          "buttons": [
+            {
+              "name": "gear-weapon",
+              "x": 208,
+              "y": 158.65,
+              "w": 295,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-head",
+              "x": 511,
+              "y": 158.65,
+              "w": 295,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-armor",
+              "x": 208,
+              "y": 210.65,
+              "w": 295,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-back",
+              "x": 511,
+              "y": 210.65,
+              "w": 295,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "restart",
+              "x": 46,
+              "y": 309.35,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "title",
+              "x": 431,
+              "y": 309.35,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 1280,
+          "height": 720,
+          "type": "start",
+          "buttons": [
+            {
+              "name": "mode-quick",
+              "x": 260,
+              "y": 178,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "mode-standard",
+              "x": 645,
+              "y": 178,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "select-storm",
+              "x": 260,
+              "y": 230,
+              "w": 246.66666666666663,
+              "h": 255,
+              "mouseEnabled": true
+            },
+            {
+              "name": "select-flame",
+              "x": 516.6666666666666,
+              "y": 230,
+              "w": 246.66666666666663,
+              "h": 255,
+              "mouseEnabled": true
+            },
+            {
+              "name": "select-blade",
+              "x": 773.3333333333333,
+              "y": 230,
+              "w": 246.66666666666663,
+              "h": 255,
+              "mouseEnabled": true
+            },
+            {
+              "name": "autoplay-start",
+              "x": 260,
+              "y": 556,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "autoplay-stress",
+              "x": 645,
+              "y": 556,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "start",
+              "x": 260,
+              "y": 606,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "training",
+              "x": 645,
+              "y": 606,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 1280,
+          "height": 720,
+          "type": "upgrade",
+          "buttons": [
+            {
+              "name": "upgrade-power",
+              "x": 260,
+              "y": 178,
+              "w": 246.66666666666663,
+              "h": 290,
+              "mouseEnabled": true
+            },
+            {
+              "name": "upgrade-magnet",
+              "x": 516.6666666666666,
+              "y": 178,
+              "w": 246.66666666666663,
+              "h": 290,
+              "mouseEnabled": true
+            },
+            {
+              "name": "upgrade-blades",
+              "x": 773.3333333333333,
+              "y": 178,
+              "w": 246.66666666666663,
+              "h": 290,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 1280,
+          "height": 720,
+          "type": "heal",
+          "buttons": [
+            {
+              "name": "upgrade-heal",
+              "x": 260,
+              "y": 178,
+              "w": 760,
+              "h": 290,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 1280,
+          "height": 720,
+          "type": "inventory",
+          "buttons": [
+            {
+              "name": "gear-weapon",
+              "x": 422,
+              "y": 178,
+              "w": 295,
+              "h": 50,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-head",
+              "x": 725,
+              "y": 178,
+              "w": 295,
+              "h": 50,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-armor",
+              "x": 422,
+              "y": 236,
+              "w": 295,
+              "h": 50,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-back",
+              "x": 725,
+              "y": 236,
+              "w": 295,
+              "h": 50,
+              "mouseEnabled": true
+            },
+            {
+              "name": "turn",
+              "x": 266,
+              "y": 242,
+              "w": 138,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "close-inventory",
+              "x": 260,
+              "y": 606,
+              "w": 225,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 1280,
+          "height": 720,
+          "type": "drop",
+          "buttons": [
+            {
+              "name": "equip",
+              "x": 260,
+              "y": 606,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "salvage",
+              "x": 645,
+              "y": 606,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 1280,
+          "height": 720,
+          "type": "build",
+          "buttons": [
+            {
+              "name": "build-fire",
+              "x": 256,
+              "y": 138,
+              "w": 379,
+              "h": 140,
+              "mouseEnabled": true
+            },
+            {
+              "name": "build-ice",
+              "x": 645,
+              "y": 138,
+              "w": 379,
+              "h": 140,
+              "mouseEnabled": true
+            },
+            {
+              "name": "build-thunder",
+              "x": 256,
+              "y": 288,
+              "w": 379,
+              "h": 140,
+              "mouseEnabled": true
+            },
+            {
+              "name": "build-free",
+              "x": 645,
+              "y": 288,
+              "w": 379,
+              "h": 140,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 1280,
+          "height": 720,
+          "type": "event",
+          "buttons": [
+            {
+              "name": "event-fragment",
+              "x": 258,
+              "y": 162,
+              "w": 764,
+              "h": 100,
+              "mouseEnabled": true
+            },
+            {
+              "name": "event-heal",
+              "x": 258,
+              "y": 274,
+              "w": 764,
+              "h": 100,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 1280,
+          "height": 720,
+          "type": "fragment",
+          "buttons": [
+            {
+              "name": "fragment-fire",
+              "x": 264,
+              "y": 142,
+              "w": 244,
+              "h": 270,
+              "mouseEnabled": true
+            },
+            {
+              "name": "fragment-blast",
+              "x": 518,
+              "y": 142,
+              "w": 244,
+              "h": 270,
+              "mouseEnabled": true
+            },
+            {
+              "name": "fragment-hit",
+              "x": 772,
+              "y": 142,
+              "w": 244,
+              "h": 270,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 1280,
+          "height": 720,
+          "type": "pause",
+          "buttons": [
+            {
+              "name": "sound",
+              "x": 260,
+              "y": 178,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "shake",
+              "x": 645,
+              "y": 178,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "visual-quality",
+              "x": 260,
+              "y": 228,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "performance-toggle",
+              "x": 645,
+              "y": 228,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "autoplay-toggle",
+              "x": 260,
+              "y": 278,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "resume",
+              "x": 260,
+              "y": 606,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "quit",
+              "x": 645,
+              "y": 606,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        },
+        {
+          "width": 1280,
+          "height": 720,
+          "type": "result",
+          "buttons": [
+            {
+              "name": "gear-weapon",
+              "x": 422,
+              "y": 242,
+              "w": 295,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-head",
+              "x": 725,
+              "y": 242,
+              "w": 295,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-armor",
+              "x": 422,
+              "y": 294,
+              "w": 295,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "gear-back",
+              "x": 725,
+              "y": 294,
+              "w": 295,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "restart",
+              "x": 260,
+              "y": 606,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            },
+            {
+              "name": "title",
+              "x": 645,
+              "y": 606,
+              "w": 375,
+              "h": 44,
+              "mouseEnabled": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scope": "Frozen real Laya WebGL, desktop browser; all enemies visible; no projectiles, drops or gameplay updates. Not native iPhone performance.",
+      "hero": [
+        {
+          "mode": "idle",
+          "frame": 0,
+          "ready": true,
+          "bytes": [
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608
+          ]
+        },
+        {
+          "mode": "walk",
+          "frame": 1,
+          "ready": true,
+          "bytes": [
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608
+          ]
+        },
+        {
+          "mode": "cast",
+          "frame": 0,
+          "ready": true,
+          "bytes": [
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608
+          ]
+        },
+        {
+          "mode": "cast",
+          "frame": 5,
+          "ready": true,
+          "bytes": [
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608
+          ]
+        },
+        {
+          "mode": "cast",
+          "frame": 11,
+          "ready": true,
+          "bytes": [
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608
+          ]
+        },
+        {
+          "mode": "walk-cast",
+          "frame": 2,
+          "ready": true,
+          "bytes": [
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608,
+            8388608
+          ]
+        }
+      ],
+      "guardian": {
+        "ready": true,
+        "bytes": 8388608,
+        "error": "",
+        "revision": 1
+      },
+      "rows": [
+        {
+          "count": 25,
+          "kind": 0,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 25,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 25,
+          "kind": 0,
+          "wind": 0,
+          "flash": true,
+          "facingVariants": 8,
+          "visible": 25,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 25,
+          "kind": 1,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 25,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 25,
+          "kind": 1,
+          "wind": 0.12,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 25,
+          "dc": 19,
+          "min": 19,
+          "max": 19
+        },
+        {
+          "count": 25,
+          "kind": 2,
+          "wind": 0.2,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 25,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 25,
+          "kind": -1,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 25,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 25,
+          "kind": -2,
+          "wind": 0.2,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 25,
+          "dc": 19,
+          "min": 19,
+          "max": 19
+        },
+        {
+          "count": 100,
+          "kind": 0,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 100,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 100,
+          "kind": 0,
+          "wind": 0,
+          "flash": true,
+          "facingVariants": 8,
+          "visible": 100,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 100,
+          "kind": 1,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 100,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 100,
+          "kind": 1,
+          "wind": 0.12,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 100,
+          "dc": 19,
+          "min": 19,
+          "max": 19
+        },
+        {
+          "count": 100,
+          "kind": 2,
+          "wind": 0.2,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 100,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 100,
+          "kind": -1,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 100,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 100,
+          "kind": -2,
+          "wind": 0.2,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 100,
+          "dc": 19,
+          "min": 19,
+          "max": 19
+        },
+        {
+          "count": 200,
+          "kind": 0,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 200,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 200,
+          "kind": 0,
+          "wind": 0,
+          "flash": true,
+          "facingVariants": 8,
+          "visible": 200,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 200,
+          "kind": 1,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 200,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 200,
+          "kind": 1,
+          "wind": 0.12,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 200,
+          "dc": 19,
+          "min": 19,
+          "max": 19
+        },
+        {
+          "count": 200,
+          "kind": 2,
+          "wind": 0.2,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 200,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 200,
+          "kind": -1,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 200,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 200,
+          "kind": -2,
+          "wind": 0.2,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 200,
+          "dc": 19,
+          "min": 19,
+          "max": 19
+        },
+        {
+          "count": 400,
+          "kind": 0,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 400,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 400,
+          "kind": 0,
+          "wind": 0,
+          "flash": true,
+          "facingVariants": 8,
+          "visible": 400,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 400,
+          "kind": 1,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 400,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 400,
+          "kind": 1,
+          "wind": 0.12,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 400,
+          "dc": 19,
+          "min": 19,
+          "max": 19
+        },
+        {
+          "count": 400,
+          "kind": 2,
+          "wind": 0.2,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 400,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 400,
+          "kind": -1,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 400,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 400,
+          "kind": -2,
+          "wind": 0.2,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 400,
+          "dc": 19,
+          "min": 19,
+          "max": 19
+        },
+        {
+          "count": 5,
+          "kind": 3,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 5,
+          "visible": 5,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 20,
+          "kind": 3,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 20,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        },
+        {
+          "count": 50,
+          "kind": 3,
+          "wind": 0,
+          "flash": false,
+          "facingVariants": 8,
+          "visible": 50,
+          "dc": 18,
+          "min": 18,
+          "max": 18
+        }
+      ]
+    },
+    {
+      "kind": "wechat-package-in-browser",
+      "initial": {
+        "dialog": "start",
+        "stage": [
+          393,
+          852
+        ],
+        "mobile": true,
+        "top": 88,
+        "adapter": true,
+        "canvas": [
+          786,
+          1704
+        ]
+      },
+      "battle": {
+        "mode": "battle",
+        "time": 0.9000000000000011
+      },
+      "dual": {
+        "owner": 7,
+        "dash": 2.2
+      },
+      "paused": {
+        "dialog": "pause",
+        "owner": null,
+        "stick": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "death": {
+        "dialog": "result",
+        "revival": false
+      },
+      "performance": {
+        "samples": 122,
+        "fps": 60.09852216748768,
+        "frameMs": 16.639344262295083,
+        "p95Ms": 19,
+        "maxMs": 24,
+        "updateMs": 0.13934426229508196,
+        "renderMs": 0.1557377049180328,
+        "simulationSteps": 0.9754098360655737,
+        "maxSimulationSteps": 2,
+        "stepMs": 0.14285714285714285,
+        "engineSamples": 122,
+        "engineMs": 1.5,
+        "drawCalls": 24.229508196721312,
+        "enemies": 0,
+        "shots": 0,
+        "drops": 14,
+        "effects": 4,
+        "enemyAtlasBytes": 8388608,
+        "sceneTextureBytes": 19922944,
+        "enemyAtlasReady": true,
+        "enemyAtlasError": "",
+        "autoPlayEnabled": false,
+        "autoPlayRound": 0,
+        "autoPlayStress": false,
+        "autoPlayDecisions": 0,
+        "autoPlayLastAction": "",
+        "drawCallReport": null,
+        "paused": false,
+        "quality": "标准"
+      },
+      "enemyArt": {
+        "atlas": {
+          "bytes": 8388608,
+          "tiles": 341
+        },
+        "highAtlas": {
+          "quality": "high",
+          "ready": true,
+          "bytes": 8388608,
+          "error": "",
+          "total": 8388608
+        }
+      },
+      "wearables": [
+        {
+          "head": "visor",
+          "armor": "light",
+          "back": "cape",
+          "bytes": 8388608,
+          "ready": true
+        },
+        {
+          "head": "helmet",
+          "armor": "heavy",
+          "back": "thorn",
+          "bytes": 8388608,
+          "ready": true
+        },
+        {
+          "head": "hood",
+          "armor": "energy",
+          "back": "pack",
+          "bytes": 8388608,
+          "ready": true
+        }
+      ],
+      "drawCallProbe": {
+        "active": false,
+        "error": "",
+        "report": {
+          "capturedAt": 1793863278357,
+          "context": {
+            "version": "0.15.3",
+            "seconds": 271.49999999999864,
+            "quality": "精细",
+            "enemies": 235,
+            "shots": 208,
+            "drops": 150,
+            "width": 393,
+            "height": 760
+          },
+          "baseline": 34,
+          "finalBaseline": 34,
+          "stable": true,
+          "rows": [
+            {
+              "group": "enemies",
+              "label": "怪物本体",
+              "without": 34,
+              "saved": 0
+            },
+            {
+              "group": "shots",
+              "label": "弹道",
+              "without": 34,
+              "saved": 0
+            },
+            {
+              "group": "buffs",
+              "label": "Buff 特效",
+              "without": 31,
+              "saved": 3
+            },
+            {
+              "group": "effects",
+              "label": "其他特效",
+              "without": 34,
+              "saved": 0
+            },
+            {
+              "group": "warnings",
+              "label": "血条/预警",
+              "without": 30,
+              "saved": 4
+            },
+            {
+              "group": "drops",
+              "label": "掉落/光柱",
+              "without": 34,
+              "saved": 0
+            },
+            {
+              "group": "labels",
+              "label": "飘字",
+              "without": 31,
+              "saved": 3
+            },
+            {
+              "group": "environment",
+              "label": "地图/柱子",
+              "without": 32,
+              "saved": 2
+            },
+            {
+              "group": "player",
+              "label": "玩家本体",
+              "without": 32,
+              "saved": 2
+            },
+            {
+              "group": "ui",
+              "label": "界面",
+              "without": 16,
+              "saved": 18
+            }
+          ]
+        },
+        "time": 271.49999999999864,
+        "hp": 100,
+        "dialog": "performance"
+      },
+      "probeContext": {
+        "time": 271.49999999999864,
+        "hp": 100,
+        "enemies": 235,
+        "shots": 208,
+        "drops": 150
+      }
+    }
+  ],
+  "mobile": {
+    "passed": true,
+    "directory": "E:\\devtools\\xxgame\\artifacts\\mobile-check-1793863566671",
+    "reports": [
+      {
+        "width": 393,
+        "height": 852,
+        "dpr": 3,
+        "touch": true,
+        "initial": {
+          "dialog": "start",
+          "stickVisible": true,
+          "font": "PingFang SC",
+          "point": {
+            "x": 114.4175,
+            "y": 696.315
+          },
+          "stage": [
+            393,
+            852
+          ]
+        },
+        "battle": {
+          "mode": "battle",
+          "runKind": "standard",
+          "time": 1.8499999999999983,
+          "hp": 100,
+          "enemies": 4,
+          "hero": {
+            "ready": true,
+            "error": ""
+          },
+          "textureBytes": 19922944
+        },
+        "buffBuilds": true
+      },
+      {
+        "width": 852,
+        "height": 393,
+        "dpr": 3,
+        "touch": true,
+        "initial": {
+          "dialog": "start",
+          "stickVisible": true,
+          "font": "PingFang SC",
+          "point": {
+            "x": 233.5,
+            "y": 331.35
+          },
+          "stage": [
+            852,
+            393
+          ]
+        },
+        "battle": {
+          "mode": "battle",
+          "runKind": "standard",
+          "time": 1.8333333333333317,
+          "hp": 100,
+          "enemies": 2,
+          "hero": {
+            "ready": true,
+            "error": ""
+          },
+          "textureBytes": 19922944
+        },
+        "buffBuilds": true
+      },
+      {
+        "width": 1280,
+        "height": 720,
+        "dpr": 1,
+        "touch": false,
+        "initial": {
+          "dialog": "start",
+          "stickVisible": false,
+          "font": "system-ui",
+          "point": {
+            "x": 447.5,
+            "y": 628
+          },
+          "stage": [
+            1280,
+            720
+          ]
+        },
+        "battle": {
+          "mode": "battle",
+          "runKind": "standard",
+          "time": 1.8833333333333315,
+          "hp": 100,
+          "enemies": 4,
+          "hero": {
+            "ready": true,
+            "error": ""
+          },
+          "textureBytes": 19922944
+        },
+        "buffBuilds": true
+      }
+    ]
+  }
+}

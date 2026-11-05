@@ -12,6 +12,7 @@ import {checkEquipmentAudit} from './equipment-audit.mjs';
 import {checkBuffBuildBrowser} from './buff-build-browser-check.mjs';
 import {checkMapAudit} from './map-audit.mjs';
 import {checkHudAudit} from './hud-audit.mjs';
+import {checkDialogAudit} from './dialog-audit.mjs';
 
 // Real bundled Laya + WebGL. Emulates touch/DPR, not an iOS GPU or Safari.
 const directory=resolve('artifacts','mobile-check-'+Date.now());
@@ -60,6 +61,8 @@ try{
  const equipmentAudit=process.argv.includes('--equipment-audit');
  const mapAudit=process.argv.includes('--map-audit');
  const hudAudit=process.argv.includes('--hud-audit');
+ const dialogAudit=process.argv.includes('--dialog-audit');
+ if(dialogAudit)reports.push(await checkDialogAudit({send,evaluate,origin,directory}));
  if(hudAudit)reports.push(await checkHudAudit({send,evaluate,origin,directory}));
  if(mapAudit)reports.push(await checkMapAudit({send,evaluate,origin,directory}));
  if(equipmentAudit)reports.push(await checkEquipmentAudit({send,evaluate,origin,directory}));
@@ -67,7 +70,7 @@ try{
  if(vfxAudit)reports.push(await checkVfxAudit({send,evaluate,origin,directory}));
  if(renderAudit)reports.push(await checkRenderAudit({send,evaluate,origin,directory}));
  if(wechat)reports.push(await checkWechatBrowser({send,evaluate,origin,directory}));
- for(const [width,height,dpr,touch] of wechat||renderAudit||vfxAudit||enemyAudit||equipmentAudit||mapAudit||hudAudit?[]:[[393,852,3,true],[852,393,3,true],[1280,720,1,false]]){
+ for(const [width,height,dpr,touch] of wechat||renderAudit||vfxAudit||enemyAudit||equipmentAudit||mapAudit||hudAudit||dialogAudit?[]:[[393,852,3,true],[852,393,3,true],[1280,720,1,false]]){
   await send('Emulation.setUserAgentOverride',{userAgent:touch?'Mozilla/5.0 (iPhone; CPU iPhone OS 26_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1':'Mozilla/5.0 Chrome/140.0.0.0 Safari/537.36',platform:touch?'iPhone':'Win32'});
   await send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:dpr,mobile:touch});
   await send('Emulation.setTouchEmulationEnabled',{enabled:touch,maxTouchPoints:touch?5:1});

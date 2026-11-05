@@ -9,7 +9,7 @@ import { fragment, PART_NAMES } from '../buffs/buffs.js';
 import { fragmentRouteHint } from '../progression/fragment-rewards.js';
 import type { Game } from '../game/game.js';
 import type { Dialog } from '../game/run-flow.js';
-import { Item, QUALITY, QUALITY_COLOR, SLOTS, SLOT_NAME, UPGRADES, WEAPONS, Weapon, gear, multiplier } from '../progression/config.js';
+import { Item, QUALITY, SLOTS, SLOT_NAME, UPGRADES, WEAPONS, Weapon, gear, multiplier } from '../progression/config.js';
 import { Loadout, emptyLoadout, resolveStats } from '../shared/model.js';
 import type { ScreenLayout } from './layout.js';
 import { clock, percent, SYMBOLS } from './ui-config.js';
@@ -78,14 +78,14 @@ export class GameDialogs {
         if (!dialog)
             return;
         const { width, height, dialogWidth: w, dialogHeight: h } = layout;
-        const shade = this.panel(this.dialogs, 0, 0, width, height, '#0e1218', '#0e1218');
+        const shade = this.panel(this.dialogs, 0, 0, width, height, '#14291f', '#14291f');
         shade.name = 'modal-shade';
-        shade.alpha = .88;
+        shade.alpha = .9;
         this.dialogs.size(width, height);
         this.block(this.dialogs);
         const p = this.panel(this.dialogs, (width - w) / 2, (height - h) / 2, w, h, C.panel, C.border);
         p.name = 'dialog-panel';
-        p.graphics.drawRect(0, 0, 3, Math.min(48, h), C.gold);
+        p.graphics.drawLine(12, 1, w - 12, 1, C.hudGold, 2);
         if (dialog.type === 'revive' || dialog.type === 'performance') {
             renderSystemDialog(dialog.type, p, w, h, this.game, this.controls);
             return;
@@ -167,8 +167,9 @@ export class GameDialogs {
                 if (cycle)
                     this.game.testGear(slot);
             }, false, `${cycle ? 'cycle' : 'gear'}-${slot}`);
+            node.graphics.drawRect(6, 6, 30, rowH - 12, '#e1e2cb');
             this.text(node, item ? SYMBOLS[item.id] : '◇', 7, 10, 27, 23, item ? gear(item).color : C.muted, 'center');
-            this.text(node, `${SLOT_NAME[slot]}${item ? ' · ' + QUALITY[item.quality] : ''}`, 42, 6, cardW - 49, 10, item ? QUALITY_COLOR[item.quality] : C.muted);
+            this.text(node, `${SLOT_NAME[slot]}${item ? ' · ' + QUALITY[item.quality] : ''}`, 42, 6, cardW - 49, 10, item ? [C.muted, '#426b55', '#79572d'][item.quality] : C.muted);
             this.text(node, item ? gear(item).name : '尚未装备', 42, 25, cardW - 49, 11);
         });
         return Math.ceil(4 / columns) * (rowH + gap) - gap;
@@ -179,7 +180,7 @@ export class GameDialogs {
     ][], columns: number, cellH: number): number {
         const gap = 8, cellW = (width - gap * (columns - 1)) / columns;
         entries.forEach(([name, value], i) => {
-            const cell = this.panel(parent, x + (i % columns) * (cellW + gap), y + Math.floor(i / columns) * (cellH + gap), cellW, cellH);
+            const cell = this.panel(parent, x + (i % columns) * (cellW + gap), y + Math.floor(i / columns) * (cellH + gap), cellW, cellH, C.surface);
             this.text(cell, name, 8, 6, cellW - 16, 10, C.muted);
             this.text(cell, value, 8, 24, cellW - 16, cellH < 50 ? 14 : 18);
         });
@@ -208,10 +209,15 @@ export class GameDialogs {
         const descriptions = {
             buffs: '组合两条自定义 Buff', start: '选择探索时长与武器，建立你的回响构筑。', upgrade: '战斗已暂停，选择一项强化。', drop: '穿戴立即改变外观，旧装备分解为经验。', inventory: this.game.training ? '点击装备槽位试装；可查看正反面。' : '武器、头饰、护甲、背饰均有可见外观。', pause: `${this.game.run.name} · ${clock(this.game.run.bossAt)} 核心登场 · ${clock(this.game.run.duration)} 封印合拢`, result: dialog.type === 'result' ? this.game.run.name + ' · ' + dialog.reason : ''
         };
-        this.text(p, 'RELIC ECHO / ' + dialog.type.toUpperCase(), pad, pad, inner, 10, C.mint);
-        this.text(p, titles[dialog.type], pad, pad + 23, inner, short ? 21 : 24);
+        const headerH = short ? body - 4 : body - 18;
+        p.graphics.drawRect(1, 2, w - 2, headerH - 2, C.hud);
+        p.graphics.drawLine(pad, headerH, w - pad, headerH, C.hudGold, 1);
+        this.text(p, '遗迹回响  /  ' + ({
+            start: '准备探索', upgrade: '成长抉择', drop: '遗物发现', inventory: '探索者手册', pause: '休整', result: '探索记录', buffs: '碎片组合'
+        }[dialog.type]), pad, pad, inner, 10, C.hudGold);
+        this.text(p, titles[dialog.type], pad, pad + (h < 330 ? 15 : 23), inner, h < 330 ? 19 : short ? 21 : 24, C.hudText);
         if (!short)
-            this.text(p, descriptions[dialog.type], pad, pad + 63, inner, 12, C.muted);
+            this.text(p, descriptions[dialog.type], pad, pad + 63, inner, 12, C.hudMuted);
         const pair = (first: string, action: () => void, name: string, second?: string, other?: () => void, otherName?: string) => {
             const bw = second ? (inner - gap) / 2 : Math.min(225, inner);
             this.button(p, first, pad, footer, bw, 44, action, true, name);
@@ -233,8 +239,7 @@ export class GameDialogs {
                     this.selected = weapon;
                     this.hooks.refresh();
                 }, false, `select-${weapon}`);
-                if (weapon === this.selected)
-                    card.graphics.drawRect(0, 0, cardW, cardH, null, C.gold, 1);
+                this.controls.choiceCard(card, weapon === this.selected);
                 if (narrow) {
                     this.avatar(card, emptyLoadout(weapon), 40, cardH - 7, Math.min(1.05, (cardH - 12) / 85));
                     this.text(card, gear(weapon).name, 84, cardH < 72 ? 10 : 14, cardW - 96, cardH < 72 ? 14 : 17);
@@ -289,7 +294,7 @@ export class GameDialogs {
             const item = dialog.item, g = gear(item), old = this.game.loadout[g.slot], next = { ...this.game.loadout, [g.slot]: item }, cw = (inner - gap) / 2, ch = Math.min(325, footer - body - (short ? 42 : 65));
             [this.game.loadout, next].forEach((loadout, i) => {
                 const current = i ? item : old, card = this.panel(p, pad + i * (cw + gap), body, cw, ch, C.surface, i ? C.mint : C.border);
-                this.text(card, i ? `${QUALITY[item.quality]} · 候选` : '当前穿戴', 8, 8, cw - 16, 11, i ? QUALITY_COLOR[item.quality] : C.gold, 'center');
+                this.text(card, i ? `${QUALITY[item.quality]} · 候选` : '当前穿戴', 8, 8, cw - 16, 11, i ? [C.muted, '#426b55', '#79572d'][item.quality] : C.gold, 'center');
                 if (short) {
                     this.text(card, current ? gear(current).name : '空槽位', 8, 29, cw - 16, 14, C.text, 'center');
                     if (ch >= 140)
