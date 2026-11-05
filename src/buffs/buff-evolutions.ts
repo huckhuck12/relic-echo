@@ -138,12 +138,12 @@ export class BuffEvolutions<T extends BuffTarget> {
         this.hooks.burst('shatter', target.x, target.y, source.level || 1);
         if (manual) {
             const multiplier = source.branch === 'prison' && (source.level || 1) >= 5 && stacks >= 4 ? 1.25 : 1;
-            this.host.damage(target, source.damage * stacks * .4 * multiplier, true, true);
+            this.host.damage(target, source.damage * stacks * .4 * multiplier, true, true, source);
             let count = 0;
             for (const other of this.host.query(target.x, target.y, 90)) {
                 if (other === target || other.dead)
                     continue;
-                this.host.damage(other, source.damage * .4, true, true);
+                this.host.damage(other, source.damage * .4, true, true, source);
                 this.hooks.shard?.(target.x, target.y, other.x, other.y, source.level || 1);
                 if (++count === 4)
                     break;
@@ -154,7 +154,7 @@ export class BuffEvolutions<T extends BuffTarget> {
             for (const other of this.host.query(target.x, target.y, 110)) {
                 if (other === target || other.dead)
                     continue;
-                this.host.damage(other, source.damage * .7, true, true);
+                this.host.damage(other, source.damage * .7, true, true, source);
                 this.hooks.shard?.(target.x, target.y, other.x, other.y, source.level || 1);
                 if (++count === ((source.level || 1) >= 5 ? 5 : 3))
                     break;
@@ -165,7 +165,7 @@ export class BuffEvolutions<T extends BuffTarget> {
             for (const other of this.host.query(target.x, target.y, 110)) {
                 if (other.dead)
                     continue;
-                this.host.damage(other, source.damage * 1.2, true, true);
+                this.host.damage(other, source.damage * 1.2, true, true, source);
                 if (!other.dead)
                     this.hooks.slow(other, 2);
                 if (++count === EVOLUTION_LIMITS.shatterTargets)
@@ -205,7 +205,7 @@ export class BuffEvolutions<T extends BuffTarget> {
         this.detonations++;
         this.hooks.burst('detonate', target.x, target.y, source.level || 1);
         const multiplier = source.branch === 'charge' ? ((source.level || 1) >= 5 ? 3.5 : 3) : source.branch === 'spread' ? 1.2 : 1.6;
-        this.host.damage(target, source.damage * multiplier, true, true);
+        this.host.damage(target, source.damage * multiplier, true, true, source);
         if (source.branch === 'charge')
             return;
         let count = 0;
@@ -225,7 +225,7 @@ export class BuffEvolutions<T extends BuffTarget> {
                 next.stacks = Math.min(limit - 1, next.stacks + 1);
             }
             else
-                this.host.damage(other, source.damage * .8, true, true);
+                this.host.damage(other, source.damage * .8, true, true, source);
             this.hooks.arc(target.x, target.y, other.x, other.y);
             if (++count === cap)
                 break;
@@ -297,7 +297,7 @@ export class BuffEvolutions<T extends BuffTarget> {
         }
         for (const [target, damage] of hits)
             if (!target.dead)
-                this.host.damage(target, damage, true, true);
+                this.host.damage(target, damage, true, true, { kind: 'field', element: 'fire' });
     }
 }
 function segmentDistance(x: number, y: number, ax: number, ay: number, bx: number, by: number): number {

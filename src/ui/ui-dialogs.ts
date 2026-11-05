@@ -1,3 +1,4 @@
+import { renderDamagePanel } from './damage-panel.js';
 import type { LayaSprite } from '../platform/laya.js';
 import { UIControls, C } from './ui-controls.js';
 import { renderSystemDialog } from './system-dialogs.js';
@@ -28,6 +29,9 @@ export interface DialogHooks {
  * GameUI 保留 HUD/触控/刷新缓存；所有玩法写入仍走 Game 的语义动作入口。
  */
 export class GameDialogs {
+    private rankingDialogId = 0;
+    private rankingOpen = false;
+    private rankingPage = 0;
     private selected: Weapon = 'storm';
     private selectedRun: RunKind = 'standard';
     constructor(private readonly game: Game, private readonly dialogs: LayaSprite, private readonly controls: UIControls, private readonly buffEditor: BuffEditorState, private readonly hooks: DialogHooks) { }
@@ -86,6 +90,27 @@ export class GameDialogs {
         const p = this.panel(this.dialogs, (width - w) / 2, (height - h) / 2, w, h, C.panel, C.border);
         p.name = 'dialog-panel';
         p.graphics.drawLine(12, 1, w - 12, 1, C.hudGold, 2);
+        if (this.rankingDialogId !== this.game.flow.dialogId) {
+            this.rankingDialogId = this.game.flow.dialogId;
+            this.rankingOpen = false;
+            this.rankingPage = 0;
+        }
+        if (this.rankingOpen && (dialog.type === 'pause' || dialog.type === 'result')) {
+            const dialogId = this.game.flow.dialogId;
+            const valid = () => this.game.flow.dialogId === dialogId && this.rankingOpen;
+            renderDamagePanel(p, w, h, this.game.damageRanking, this.rankingPage, this.controls, page => {
+                if (valid()) {
+                    this.rankingPage = page;
+                    this.hooks.refresh();
+                }
+            }, () => {
+                if (valid()) {
+                    this.rankingOpen = false;
+                    this.hooks.refresh();
+                }
+            });
+            return;
+        }
         if (dialog.type === 'revive' || dialog.type === 'performance') {
             renderSystemDialog(dialog.type, p, w, h, this.game, this.controls);
             return;
@@ -219,10 +244,17 @@ export class GameDialogs {
         if (!short)
             this.text(p, descriptions[dialog.type], pad, pad + 63, inner, 12, C.hudMuted);
         const pair = (first: string, action: () => void, name: string, second?: string, other?: () => void, otherName?: string) => {
-            const bw = second ? (inner - gap) / 2 : Math.min(225, inner);
+            const ranking = dialog.type === 'pause' || dialog.type === 'result';
+            const bw = ranking ? (inner - gap * 2) / 3 : second ? (inner - gap) / 2 : Math.min(225, inner);
             this.button(p, first, pad, footer, bw, 44, action, true, name);
             if (second && other)
                 this.button(p, second, pad + bw + gap, footer, bw, 44, other, false, otherName);
+            if (ranking)
+                this.button(p, '伤害排行', pad + 2 * (bw + gap), footer, bw, 44, () => {
+                    this.rankingOpen = true;
+                    this.rankingPage = 0;
+                    this.hooks.refresh();
+                }, false, 'damage-ranking');
         };
         if (dialog.type === 'start') {
             for (const [i, id] of (['quick', 'standard'] as RunKind[]).entries()) {

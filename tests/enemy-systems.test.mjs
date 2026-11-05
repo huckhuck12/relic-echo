@@ -118,7 +118,7 @@ test('Boss ground attack uses telegraphed position and half-health volley has 24
 
 test('burn death prevents attacks and live battle status stops subsequent enemy updates',()=>{
   const f=fixture(),burning=enemy(f,1,400,0,{burn:1,burnD:12,wind:.01}),next=enemy(f,0,0,0),last=enemy(f,0,500,0),a=aiFixture(f);
-  a.hooks.hit=(e,damage,options)=>{assert.ok(Math.abs(damage-1.2)<1e-12);assert.deepEqual(options,{impact:false,round:false});e.dead=true;};
+  a.hooks.hit=(e,damage,options)=>{assert.ok(Math.abs(damage-1.2)<1e-12);assert.deepEqual(options,{impact:false,round:false,source:'flame'});e.dead=true;};
   a.hooks.hurt=()=>a.stop();
   const cooldown=last.cooldown;
   updateEnemies(a.state,a.hooks,.1);

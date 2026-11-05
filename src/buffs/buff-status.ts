@@ -31,7 +31,7 @@ export function applyBuffElement<T extends BuffTarget>(host: BuffHost<T>, status
         for (const other of host.query(target.x, target.y, BUFF_RULES.chain.radius)) {
             if (other === target || other.dead)
                 continue;
-            host.damage(other, effect.damage * BUFF_RULES.chain.damage, true, true);
+            host.damage(other, effect.damage * BUFF_RULES.chain.damage, true, true, effect);
             feedback('arc', 'lightning', target.x, target.y, other.x, other.y);
             if (++count === BUFF_RULES.chain.count)
                 break;
@@ -53,6 +53,8 @@ export function applyBuffElement<T extends BuffTarget>(host: BuffHost<T>, status
         else {
             status.burn = BUFF_RULES.burn.duration;
             status.burnSlot = effect.slot;
+            if (effect.damage * BUFF_RULES.burn.damage >= status.burnDamage)
+                status.burnSource = { kind: effect.kind, element: effect.element };
             status.burnDamage = Math.max(status.burnDamage, effect.damage * BUFF_RULES.burn.damage);
         }
     }
@@ -76,7 +78,7 @@ export function updateBuffStatuses<T extends BuffTarget>(statuses: Map<T, BuffSt
             status.burnTick -= elapsed;
             if (status.burnTick <= 0) {
                 status.burnTick += BUFF_RULES.burn.tick;
-                host.damage(target, status.burnDamage, false);
+                host.damage(target, status.burnDamage, false, false, status.burnSource);
             }
         }
         if (target.dead || status.slow <= 0 && status.burn <= 0)

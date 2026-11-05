@@ -230,7 +230,7 @@ export class BuffRuntime<T extends BuffTarget> {
             return;
         // Sustained contact must not eject its own target; elemental force remains explicit below.
         const sustained = effect.kind === 'field' || effect.kind === 'orbit';
-        this.host.damage(target, effect.damage, !sustained, sustained);
+        this.host.damage(target, effect.damage, !sustained, sustained, effect);
         if (target.dead)
             return;
         const status = this.statuses.get(target);
@@ -246,7 +246,7 @@ export class BuffRuntime<T extends BuffTarget> {
                     this.feedbackAt('impact', 'force', target.x, target.y, field.x, field.y);
                     if (field.branch === 'furnace' && field.level >= 5 && !(status.heatLock! > 0)) {
                         status.heatLock = 2;
-                        this.host.damage(target, field.damage * .6, true, true);
+                        this.host.damage(target, field.damage * .6, true, true, field);
                     }
                 }
                 return;

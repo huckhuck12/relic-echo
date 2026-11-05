@@ -38,6 +38,7 @@ import { QUALITY_PRESETS, VisualQuality } from '../rendering/quality.js';
 import { profileEngine } from './engine-profiler.js';
 import { AutoPlay } from './auto-play.js';
 import { DrawCallProbe, DRAW_CALL_KEY } from './draw-call-probe.js';
+import { DamageRanking } from '../combat/damage-ranking.js';
 import { GAME_VERSION } from '../shared/version.js';
 export interface Snapshot {
     time: number;
@@ -91,9 +92,9 @@ export class Game {
         show: dialog => this.show(dialog), settleReward: (id, commit) => this.flow.settleReward(id, commit), onToast: message => this.onToast(message),
     });
     /** Buff 通过有限回调进入伤害系统，triggerBuffs=false 阻止 Buff 再触发 Buff。 */
-    readonly buffs = new BuffRuntime<Enemy>({ player: this.playerProxy(), query: (x, y, r) => this.grid.query(x, y, r).filter(e => !e.dead), damage: (e, value, feedback = true, quiet = false) => {
+    readonly buffs = new BuffRuntime<Enemy>({ player: this.playerProxy(), query: (x, y, r) => this.grid.query(x, y, r).filter(e => !e.dead), damage: (e, value, feedback = true, quiet = false, source) => {
             if (this.mode === 'battle')
-                this.hit(e, value, { impact: feedback, triggerBuffs: false, quiet });
+                this.hit(e, value, { impact: feedback, triggerBuffs: false, quiet, source });
         }, knock: (e, force, x, y) => {
             if (e.dead)
                 return;
@@ -149,6 +150,7 @@ export class Game {
     upgradeFeedback = '';
     kills = 0;
     damage = 0;
+    readonly damageRanking = new DamageRanking();
     quality: VisualQuality = 'standard';
     get visuals() { return QUALITY_PRESETS[this.quality]; }
     sound = true;
@@ -332,6 +334,7 @@ export class Game {
         this.level = 1;
         this.kills = 0;
         this.damage = 0;
+        this.damageRanking.reset();
         this.spawnTimer = 0;
         this.attackTimer = .08;
         this.bossSpawned = false;
@@ -854,7 +857,10 @@ export class Game {
         kick: (...args) => this.kick(...args), freeze: duration => this.freeze(duration),
     };
     private readonly enemyDamageHooks: EnemyDamageHooks = {
-        recordDamage: value => { this.damage += value; },
+        recordDamage: (value, effective, source) => {
+            this.damage += value;
+            this.damageRanking.record(effective, source);
+        },
         // 按调用时读取当前 labels 和画质；重开会替换数组，不能在构造时绑定旧引用。
         present: (enemy, result) => presentEnemyHit({ enemyCount: this.enemies.length, labels: this.labels, visuals: this.visuals }, this.combatFeedbackHooks, enemy, result),
         killed: (enemy, triggerBuffs) => this.onEnemyKilled(enemy, triggerBuffs),
@@ -918,7 +924,7 @@ export class Game {
             const p = this.player;
             this.ring(p.x, p.y, '#eab68b');
             for (const enemy of this.grid.query(p.x, p.y, 100))
-                this.hit(enemy, damage, { triggerBuffs: false });
+                this.hit(enemy, damage, { triggerBuffs: false, source: 'thorns' });
         },
         finish: () => this.onPlayerDown(),
         triggerHurt: (x, y) => this.triggerBuff('hurt', x, y),

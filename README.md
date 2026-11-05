@@ -1,6 +1,6 @@
 # 遗迹回响 · Relic Echo
 
-LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 **`0.15.5`**。采用手绘幻想风格：玩家、可穿戴装备、怪物与元素特效使用仓库内的透明图片和共享图集，场景、伤害边界与 UI 结合程序绘图，由 LayaAir 显示节点统一渲染。
+LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 **`0.15.6`**。采用手绘幻想风格：玩家、可穿戴装备、怪物与元素特效使用仓库内的透明图片和共享图集，场景、伤害边界与 UI 结合程序绘图，由 LayaAir 显示节点统一渲染。
 
 当前优化计划、优先级和真机验收状态见[优化清单](docs/优化清单.md)。
 
@@ -17,6 +17,10 @@ LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 **`0.15.5`
 项目已包含 [GitHub Pages 工作流](.github/workflows/pages.yml)。上传到自己的 GitHub 仓库，在 **Settings → Pages → Source** 选择 **GitHub Actions**；向 main/master 推送或手动运行工作流，构建和测试通过后自动发布。所有资源使用相对路径，支持 `https://用户名.github.io/仓库名/` 和账号主页站点。
 
 本地生成发布包：`npm run build:pages`。模拟仓库子路径：`npm run preview:pages -- --port 8081`，访问 `http://localhost:8081/relic-echo/`。详见[开发与发布说明](docs/开发与发布.md)。仓库为 `huckhuck12/relic-echo`，本地修改需推送后等待 GitHub Actions 部署成功才会更新线上站点。
+
+## 0.15.6 伤害排行
+
+暂停菜单与结算页点击「伤害排行」，查看本局各武器、Buff 行为/元素组合及装备反伤的有效伤害、占比和排名，支持手机横竖屏分页。灼烧、连锁与进化伤害归入原始来源；换装/换配方保留历史，新局清零。排行排除溢出伤害，原结算「总伤害」仍含溢出，因此两者可能不同。见[统计口径与样张](docs/art/damage-ranking-0156.md)。
 
 ## 0.15.5 碎片选择与替换预览
 

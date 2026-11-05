@@ -53,7 +53,7 @@ export function updateEnemies(state: EnemyAIState, hooks: EnemyAIHooks, dt: numb
         // 按 dt 累积持续伤害，不做逐帧取整，也不产生普通命中击退/反馈。
         if (e.burn > 0) {
             e.burn -= dt;
-            hooks.hit(e, e.burnD * dt, { impact: false, round: false });
+            hooks.hit(e, e.burnD * dt, { impact: false, round: false, source: 'flame' });
             if (e.dead)
                 continue;
         }

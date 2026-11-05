@@ -1,3 +1,4 @@
+import type { BuffDamageSource } from '../combat/damage-ranking.js';
 import type { Trigger, Action, Element } from './buff-config.js';
 export type { Trigger, Action, Element, Part } from './buff-config.js';
 /** 配方可以暂未填满；只有 CompleteRecipe 可进入效果生成。 */
@@ -44,7 +45,7 @@ export interface BuffHost<T extends BuffTarget> {
         dy: number;
     };
     query(x: number, y: number, radius: number): T[];
-    damage(target: T, value: number, feedback?: boolean, quiet?: boolean): void;
+    damage(target: T, value: number, feedback?: boolean, quiet?: boolean, source?: BuffDamageSource): void;
     knock(target: T, force: number, x: number, y: number): void;
 }
 /** damage/element/level 都在释放时快照，后续换配方或升级不会追溯修改。 */
@@ -85,6 +86,7 @@ export interface BuffStatus {
     burnDamage: number;
     burnTick: number;
     burnSlot?: number;
+    burnSource?: BuffDamageSource;
     reforgeLock?: number;
     heatLock?: number;
     slow: number;

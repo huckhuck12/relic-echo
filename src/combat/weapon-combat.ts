@@ -60,7 +60,7 @@ export function attack(state: WeaponState, hooks: WeaponHooks): void {
     // 短促施放反馈与伤害分离；tx 保存世界瞄准角，ty 标记武器材质，不增加伤害延迟。
     hooks.effect('cast', p.x + offset.x, p.y + offset.y, config.color, .12, Math.atan2(target.y - p.y, target.x - p.x), weapon === 'storm' ? 0 : weapon === 'flame' ? 1 : 2);
     if (weapon === 'storm') {
-        hooks.hit(target, base, { canCrit: true, feedback: { weapon: 'storm', dx: target.x - p.x, dy: target.y - p.y } });
+        hooks.hit(target, base, { canCrit: true, source: 'storm', feedback: { weapon: 'storm', dx: target.x - p.x, dy: target.y - p.y } });
         let previous = target;
         const used = new Set<Enemy>([target]);
         hooks.line(p.x + offset.x, p.y + offset.y, target.x, target.y, config.color, 0);
@@ -68,7 +68,7 @@ export function attack(state: WeaponState, hooks: WeaponHooks): void {
             const next = state.grid.nearest(previous.x, previous.y, 210 + 40 * (state.levels.conductor || 0), e => !e.dead && !used.has(e));
             if (!next)
                 break;
-            hooks.hit(next, base * Math.pow(1 - (.24 - .08 * (state.levels.conductor || 0)), i + 1), { feedback: { weapon: 'storm', dx: next.x - previous.x, dy: next.y - previous.y } });
+            hooks.hit(next, base * Math.pow(1 - (.24 - .08 * (state.levels.conductor || 0)), i + 1), { source: 'storm', feedback: { weapon: 'storm', dx: next.x - previous.x, dy: next.y - previous.y } });
             hooks.line(previous.x, previous.y, next.x, next.y, config.color);
             used.add(next);
             previous = next;
@@ -89,7 +89,7 @@ export function attack(state: WeaponState, hooks: WeaponHooks): void {
     else {
         for (const enemy of state.grid.query(p.x, p.y, range))
             if (!enemy.dead && enemy.bladeCd <= 0) {
-                hooks.hit(enemy, base * (1 + .2 * (state.levels.blades || 0)), { canCrit: true, feedback: { weapon: 'blade', dx: -(enemy.y - p.y), dy: enemy.x - p.x } });
+                hooks.hit(enemy, base * (1 + .2 * (state.levels.blades || 0)), { canCrit: true, source: 'blade', feedback: { weapon: 'blade', dx: -(enemy.y - p.y), dy: enemy.x - p.x } });
                 enemy.bladeCd = .12;
             }
         hooks.effect('slash', p.x, p.y, config.color, .2, range, state.time * 9 + (p.bladeSpin || 0));
@@ -165,7 +165,7 @@ export function explode(state: WeaponState, hooks: WeaponHooks, s: Shot, x: numb
         if (!e.dead && Math.hypot(e.x - x, e.y - y) <= s.radius + e.radius) {
             // 正在飞行的炎炮即使途中换装，也保持火焰反馈；中心命中沿来弹方向。
             const centered = Math.hypot(e.x - x, e.y - y) < .001;
-            hooks.hit(e, s.damage, { canCrit: true, feedback: { weapon: 'flame', dx: centered ? s.vx : e.x - x, dy: centered ? s.vy : e.y - y } });
+            hooks.hit(e, s.damage, { canCrit: true, source: 'flame', feedback: { weapon: 'flame', dx: centered ? s.vx : e.x - x, dy: centered ? s.vy : e.y - y } });
             e.burn = 3;
             e.burnD = Math.max(e.burnD, s.burn);
         }
@@ -186,7 +186,7 @@ export function updateFields(state: WeaponState, hooks: WeaponHooks, dt: number)
             field.tick = .4;
             for (const e of state.grid.query(field.x, field.y, field.radius))
                 if (!e.dead && !ticked.has(e)) {
-                    hooks.hit(e, field.damage * .4, { impact: false });
+                    hooks.hit(e, field.damage * .4, { impact: false, source: 'flame' });
                     ticked.add(e);
                 }
         }

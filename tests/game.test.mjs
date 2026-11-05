@@ -9,6 +9,27 @@ const create=()=>{const g=new Game();g.start('storm',true);g.buffs.starterChosen
 const tick=(g,seconds)=>{for(let i=0;i<Math.ceil(seconds*60);i++){if(g.gate.paused||g.mode!=='battle')break;g.update(1/60);g.render();}};
 const find=(root,name)=>root.name===name?root:childrenOf(root).map(child=>find(child,name)).find(Boolean);
 
+test('damage panel pages on phones and returns without replacing pause/result or rewards',()=>{
+ for(const [w,h] of [[320,568],[393,852],[568,320],[852,393],[1280,720]]){
+  const g=create(),ui=new GameUI(g);ui.mobile=w<1000;Laya.stage.width=w;Laya.stage.height=h;Laya.stage.emit('resize');
+  for(const type of ['pause','result']){
+   if(type==='result')g.finish(false,'ranking test');else g.togglePause();
+   const original=g.dialog,id=g.flow.dialogId;
+   if(type==='pause')g.show({type:'upgrade',choices:[]});
+   const pending=g.flow.pendingCount;
+   g.damageRanking.reset();find(ui.root,'damage-ranking').emit('click');
+   assert.ok(find(ui.root,'damage-empty'));assertControls(find(ui.root,'dialog-panel'),w,h,true);
+   for(const kind of ['bolt','blast','field','orbit'])for(const element of ['fire','ice','lightning','force'])g.damageRanking.record(100,{kind,element});
+   g.flow.refresh();assert.ok(find(ui.root,'damage-total'));find(ui.root,'damage-next').emit('click');
+   assertControls(find(ui.root,'dialog-panel'),w,h,true);
+   assert.equal(g.flow.dialogId,id);assert.equal(g.flow.pendingCount,pending);assert.equal(g.dialog,original);assert.equal(g.gate.paused,true);
+   find(ui.root,'damage-back').emit('click');assert.ok(find(ui.root,'damage-ranking'));assert.equal(g.dialog,original);
+   if(type==='pause'){g.close();assert.equal(g.dialog.type,'upgrade');g.close();}
+  }
+  g.start('storm',true);assert.equal(g.damageRanking.total,0);
+ }
+});
+
 test('performance sampling freezes in dialogs/background and resets on restart/resize/toggle',()=>{
  const g=create();g.showPerformance=true;g.sound=false;g.performanceMonitor.record(0,0,0);g.performanceMonitor.record(16,1,2);
  assert.equal(g.performanceSnapshot().samples,1);g.togglePause();g.loop.frame();assert.equal(g.performanceSnapshot().samples,1);

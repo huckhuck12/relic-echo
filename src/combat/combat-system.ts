@@ -6,7 +6,9 @@ import { difficultyAt } from '../game/difficulty.js';
  * 默认是普通直接命中；暴击须明确开启。持续伤害使用 impact=false，
  * 按秒累积再加 round=false；Buff/反伤使用 triggerBuffs=false 阻止递归。
  */
+import type { DamageSource } from './damage-ranking.js';
 export interface DamageOptions {
+    source?: DamageSource;
     canCrit?: boolean;
     impact?: boolean;
     round?: boolean;
@@ -29,7 +31,7 @@ export interface EnemyDamageState {
     crit: number;
 }
 export interface EnemyDamageHooks {
-    recordDamage(value: number): void;
+    recordDamage(value: number, effective: number, source?: DamageSource): void;
     present(enemy: Enemy, result: DamageResult): void;
     /** 敌人已标记 dead。先结算击杀与掉落；返回 true 表示 Boss 终局，停止后续命中派发。 */
     killed(enemy: Enemy, triggerBuffs: boolean): boolean;
@@ -47,8 +49,9 @@ export function damageEnemy(state: EnemyDamageState, hooks: EnemyDamageHooks, en
     // canCrit=false 时不得消耗随机数，持续伤害和连锁依赖这一约定保持随机序列。
     const critical = canCrit && Math.random() < state.crit;
     const value = round ? Math.max(1, Math.round(base * (critical ? 1.5 : 1))) : base;
+    const effective = Math.max(0, Math.min(enemy.hp, value));
     enemy.hp -= value;
-    hooks.recordDamage(value);
+    hooks.recordDamage(value, effective, options.source || feedback?.weapon);
     if (impact) {
         const dx = enemy.x - state.player.x, dy = enemy.y - state.player.y;
         const distance = Math.hypot(dx, dy) || 1;
