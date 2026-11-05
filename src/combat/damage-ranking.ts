@@ -14,12 +14,17 @@ export interface DamageRow {
 /** Fixed catalog: no per-hit history, timers, display nodes or current-loadout lookup. */
 export class DamageRanking {
     private totals = new Map<string, number>();
-    reset(): void { this.totals.clear(); }
+    revision = 0;
+    reset(): void {
+        this.totals.clear();
+        this.revision++;
+    }
     record(value: number, source?: DamageSource): void {
         if (!Number.isFinite(value) || value <= 0)
             return;
         const id = typeof source === 'object' ? `${source.kind}/${source.element}` : source || 'other';
         this.totals.set(id, (this.totals.get(id) || 0) + value);
+        this.revision++;
     }
     get total(): number {
         let total = 0;

@@ -45,3 +45,14 @@ export function performanceHUDLayout(layout: ScreenLayout, mobile: boolean) {
     const width = 184, inset = sidebar ? 220 : 150;
     return { width, height, x: w - m - inset - width, y: h - m - height };
 }
+/** Reserve the left edge above the touch region on portrait; stack above diagnostics elsewhere. */
+export function damageHUDLayout(layout: ScreenLayout, mobile: boolean) {
+    const { width: w, margin: m, portrait } = layout;
+    if (mobile && portrait) {
+        const controls = mobileHUDLayout(layout);
+        const height = Math.min(80, Math.max(48, controls.stickAreaY - (controls.toastY + 44) - 16));
+        return { x: m, y: controls.stickAreaY - height - 8, width: Math.min(184, w * .5 - m - 8), height };
+    }
+    const perf = performanceHUDLayout(layout, mobile);
+    return { x: perf.x, y: perf.y - (mobile ? 88 : 168), width: perf.width, height: 80 };
+}

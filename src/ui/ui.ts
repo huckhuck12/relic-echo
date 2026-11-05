@@ -8,6 +8,7 @@ import { Game } from '../game/game.js';
 import { ScreenLayout, screenLayout } from './layout.js';
 import { mobileHUDLayout, performanceHUDLayout, TOUCH_UI } from './hud-layout.js';
 import { GAME_VERSION } from '../shared/version.js';
+import { DamageHUD } from './damage-hud.js';
 import { readSafeArea } from '../platform/safe-area.js';
 /**
  * UI 编排层：组装 HUD/弹窗，控制模态缓存、诊断与短提示的层序。
@@ -21,6 +22,7 @@ export class GameUI {
     private dialogs: LayaSprite;
     private performancePanel: LayaSprite;
     private performanceLabel: LayaText;
+    private damageHUD: DamageHUD;
     private toastNode: LayaSprite;
     private toastLabel: LayaText;
     /** 仅保存正在编辑哪条配方/哪个槽位；实际配方与冷却属于 BuffRuntime。 */
@@ -48,6 +50,7 @@ export class GameUI {
         this.performancePanel.name = 'performance-panel';
         // 小条点击后暂停查看细节；仍位于模态遮罩下面。
         this.performanceLabel = this.text(this.performancePanel, '', 4, 14, 96, 10, C.mint, 'center');
+        this.damageHUD = new DamageHUD(this.root, this.controls, () => this.game.openDamageRanking());
         this.dialogs = this.layer(this.root);
         this.dialogRenderer = new GameDialogs(this.game, this.dialogs, this.controls, this.buffEditor, {
             invalidate: () => { this.modalDirty = true; },
@@ -98,6 +101,7 @@ export class GameUI {
         this.performanceLabel.align = 'left';
         this.performanceLabel.wordWrap = false;
         this.performanceLabel.overflow = 'hidden';
+        this.damageHUD.resize(this.layout, this.mobile);
         const mobileLayout = mobileHUDLayout(this.layout);
         const toastWidth = this.mobile ? mobileLayout.toastWidth : Math.min(480, width - 2 * margin);
         // 手机提示条放在整组触控按钮上方，不覆盖 Buff 按钮和摇杆。
@@ -121,6 +125,7 @@ export class GameUI {
         this.hudView.stick.sync();
         const s = this.game.snapshot();
         this.hudView.update(s);
+        this.damageHUD.update(this.game.damageRanking, this.game.mode === 'battle' && !this.game.dialog, platform().now());
         this.performancePanel.visible = this.game.showPerformance && this.game.mode === 'battle' && !this.game.dialog;
         if (this.performancePanel.visible) {
             const p = this.game.performanceSnapshot();

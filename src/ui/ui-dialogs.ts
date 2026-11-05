@@ -95,9 +95,9 @@ export class GameDialogs {
             this.rankingOpen = false;
             this.rankingPage = 0;
         }
-        if (this.rankingOpen && (dialog.type === 'pause' || dialog.type === 'result')) {
+        if (dialog.type === 'damage' || this.rankingOpen && (dialog.type === 'pause' || dialog.type === 'result')) {
             const dialogId = this.game.flow.dialogId;
-            const valid = () => this.game.flow.dialogId === dialogId && this.rankingOpen;
+            const valid = () => this.game.flow.dialogId === dialogId && (this.rankingOpen || this.game.dialog?.type === 'damage');
             renderDamagePanel(p, w, h, this.game.damageRanking, this.rankingPage, this.controls, page => {
                 if (valid()) {
                     this.rankingPage = page;
@@ -105,6 +105,10 @@ export class GameDialogs {
                 }
             }, () => {
                 if (valid()) {
+                    if (dialog.type === 'damage') {
+                        this.game.close();
+                        return;
+                    }
                     this.rankingOpen = false;
                     this.hooks.refresh();
                 }
@@ -220,7 +224,7 @@ export class GameDialogs {
         return `${this.game.upgradeFeedback ? this.game.upgradeFeedback + ' · ' : ''}待领取 ${remaining} 份奖励`;
     }
     private standardDialog(p: LayaSprite, dialog: Exclude<NonNullable<Dialog>, {
-        type: 'revive' | 'performance' | 'build' | 'branch' | 'event' | 'mastery';
+        type: 'damage' | 'revive' | 'performance' | 'build' | 'branch' | 'event' | 'mastery';
     }>, w: number, h: number): void {
         const dialogId = this.game.flow.dialogId;
         if (dialog.type === 'fragment') {

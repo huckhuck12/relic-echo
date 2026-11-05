@@ -2,6 +2,8 @@ import type { Item } from '../progression/config.js';
 import { PauseGate } from '../shared/model.js';
 /** UI 请求描述，不含 Laya 节点，流程模块可在无浏览器环境下测试。 */
 export type Dialog = {
+    type: 'damage';
+} | {
     type: 'mastery';
     pair: string;
     choices: string[];

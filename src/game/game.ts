@@ -388,6 +388,10 @@ export class Game {
         if (this.mode === 'battle' && !this.dialog)
             this.show({ type: 'performance' });
     }
+    openDamageRanking(): void {
+        if (this.mode === 'battle' && !this.dialog)
+            this.show({ type: 'damage' });
+    }
     measureDrawCalls(): void {
         if (this.mode !== 'battle' || this.dialog?.type !== 'performance' || this.drawCallProbe.active)
             return;
@@ -470,7 +474,7 @@ export class Game {
     togglePause(): void {
         if (this.dialog?.type === 'pause')
             this.close();
-        else if (this.dialog?.type === 'inventory' || this.dialog?.type === 'buffs')
+        else if (this.dialog?.type === 'inventory' || this.dialog?.type === 'buffs' || this.dialog?.type === 'damage')
             this.close();
         else if (!this.dialog)
             this.show({ type: 'pause' });

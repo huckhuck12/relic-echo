@@ -1,0 +1,805 @@
+{
+  "scope": "Real Laya browser HUD at phone portrait/landscape sizes, frozen low-health seal/Boss with toast and combo. Not native iPhone performance.",
+  "rows": [
+    {
+      "mode": "seal",
+      "width": 320,
+      "height": 568,
+      "boxes": [
+        {
+          "name": "player-hud",
+          "x": 16,
+          "y": 68,
+          "w": 288,
+          "h": 52,
+          "visible": true,
+          "mouseEnabled": false
+        },
+        {
+          "name": "hud-event",
+          "x": 16,
+          "y": 128,
+          "w": 288,
+          "h": 18,
+          "visible": true,
+          "mouseEnabled": false,
+          "text": "苔庭封印 · 守护 9/18s · 余 35s"
+        },
+        {
+          "name": "hud-combo",
+          "x": 16,
+          "y": 152,
+          "w": 260,
+          "h": 18,
+          "visible": true,
+          "mouseEnabled": false,
+          "text": "12 连杀 · 狂热 12 / 8"
+        },
+        {
+          "name": "hud-toast",
+          "x": 16,
+          "y": 180,
+          "w": 288,
+          "h": 44,
+          "visible": true,
+          "mouseEnabled": false
+        },
+        {
+          "name": "dash",
+          "x": 208,
+          "y": 464,
+          "w": 96,
+          "h": 72,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "buffs",
+          "x": 208,
+          "y": 400,
+          "w": 96,
+          "h": 44,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "hud-boss",
+          "x": 16,
+          "y": 128,
+          "w": 288,
+          "h": 0,
+          "visible": false,
+          "mouseEnabled": false,
+          "text": ""
+        },
+        {
+          "name": "damage-hud",
+          "x": 16,
+          "y": 232,
+          "w": 136,
+          "h": 55.360000000000014,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "performance-panel",
+          "x": 188,
+          "y": 300,
+          "w": 116,
+          "h": 88,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "touch-stick-area",
+          "x": 16,
+          "y": 295.36,
+          "w": 137.6,
+          "h": 240.64,
+          "visible": true,
+          "mouseEnabled": true
+        }
+      ]
+    },
+    {
+      "mode": "boss",
+      "width": 320,
+      "height": 568,
+      "boxes": [
+        {
+          "name": "player-hud",
+          "x": 16,
+          "y": 68,
+          "w": 288,
+          "h": 52,
+          "visible": true,
+          "mouseEnabled": false
+        },
+        {
+          "name": "hud-event",
+          "x": 16,
+          "y": 128,
+          "w": 288,
+          "h": 18,
+          "visible": false,
+          "mouseEnabled": false,
+          "text": "最终封印 · 12:00 合拢"
+        },
+        {
+          "name": "hud-combo",
+          "x": 16,
+          "y": 152,
+          "w": 260,
+          "h": 18,
+          "visible": true,
+          "mouseEnabled": false,
+          "text": "12 连杀 · 狂热 12 / 8"
+        },
+        {
+          "name": "hud-toast",
+          "x": 16,
+          "y": 180,
+          "w": 288,
+          "h": 44,
+          "visible": true,
+          "mouseEnabled": false
+        },
+        {
+          "name": "dash",
+          "x": 208,
+          "y": 464,
+          "w": 96,
+          "h": 72,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "buffs",
+          "x": 208,
+          "y": 400,
+          "w": 96,
+          "h": 44,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "hud-boss",
+          "x": 16,
+          "y": 128,
+          "w": 288,
+          "h": 17,
+          "visible": true,
+          "mouseEnabled": false,
+          "text": "遗 迹 核 心"
+        },
+        {
+          "name": "damage-hud",
+          "x": 16,
+          "y": 232,
+          "w": 136,
+          "h": 55.360000000000014,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "performance-panel",
+          "x": 188,
+          "y": 300,
+          "w": 116,
+          "h": 88,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "touch-stick-area",
+          "x": 16,
+          "y": 295.36,
+          "w": 137.6,
+          "h": 240.64,
+          "visible": true,
+          "mouseEnabled": true
+        }
+      ]
+    },
+    {
+      "mode": "seal",
+      "width": 393,
+      "height": 852,
+      "boxes": [
+        {
+          "name": "player-hud",
+          "x": 19.65,
+          "y": 71.65,
+          "w": 353.7,
+          "h": 52,
+          "visible": true,
+          "mouseEnabled": false
+        },
+        {
+          "name": "hud-event",
+          "x": 19.65,
+          "y": 131.65,
+          "w": 353.7,
+          "h": 18,
+          "visible": true,
+          "mouseEnabled": false,
+          "text": "苔庭封印 · 守护 9/18s · 余 35s"
+        },
+        {
+          "name": "hud-combo",
+          "x": 19.65,
+          "y": 155.65,
+          "w": 260,
+          "h": 18,
+          "visible": true,
+          "mouseEnabled": false,
+          "text": "12 连杀 · 狂热 12 / 8"
+        },
+        {
+          "name": "hud-toast",
+          "x": 26.5,
+          "y": 183.65,
+          "w": 340,
+          "h": 44,
+          "visible": true,
+          "mouseEnabled": false
+        },
+        {
+          "name": "dash",
+          "x": 277.35,
+          "y": 744.35,
+          "w": 96,
+          "h": 72,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "buffs",
+          "x": 277.35,
+          "y": 680.35,
+          "w": 96,
+          "h": 44,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "hud-boss",
+          "x": 19.65,
+          "y": 131.65,
+          "w": 353.7,
+          "h": 0,
+          "visible": false,
+          "mouseEnabled": false,
+          "text": ""
+        },
+        {
+          "name": "damage-hud",
+          "x": 19.65,
+          "y": 355.04,
+          "w": 168.85,
+          "h": 80,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "performance-panel",
+          "x": 224.50000000000003,
+          "y": 580.35,
+          "w": 148.85,
+          "h": 88,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "touch-stick-area",
+          "x": 19.65,
+          "y": 443.04,
+          "w": 168.98999999999998,
+          "h": 373.31,
+          "visible": true,
+          "mouseEnabled": true
+        }
+      ]
+    },
+    {
+      "mode": "boss",
+      "width": 393,
+      "height": 852,
+      "boxes": [
+        {
+          "name": "player-hud",
+          "x": 19.65,
+          "y": 71.65,
+          "w": 353.7,
+          "h": 52,
+          "visible": true,
+          "mouseEnabled": false
+        },
+        {
+          "name": "hud-event",
+          "x": 19.65,
+          "y": 131.65,
+          "w": 353.7,
+          "h": 18,
+          "visible": false,
+          "mouseEnabled": false,
+          "text": "最终封印 · 12:00 合拢"
+        },
+        {
+          "name": "hud-combo",
+          "x": 19.65,
+          "y": 155.65,
+          "w": 260,
+          "h": 18,
+          "visible": true,
+          "mouseEnabled": false,
+          "text": "12 连杀 · 狂热 12 / 8"
+        },
+        {
+          "name": "hud-toast",
+          "x": 26.5,
+          "y": 183.65,
+          "w": 340,
+          "h": 44,
+          "visible": true,
+          "mouseEnabled": false
+        },
+        {
+          "name": "dash",
+          "x": 277.35,
+          "y": 744.35,
+          "w": 96,
+          "h": 72,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "buffs",
+          "x": 277.35,
+          "y": 680.35,
+          "w": 96,
+          "h": 44,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "hud-boss",
+          "x": 19.65,
+          "y": 131.65,
+          "w": 353.7,
+          "h": 17,
+          "visible": true,
+          "mouseEnabled": false,
+          "text": "遗 迹 核 心"
+        },
+        {
+          "name": "damage-hud",
+          "x": 19.65,
+          "y": 355.04,
+          "w": 168.85,
+          "h": 80,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "performance-panel",
+          "x": 224.50000000000003,
+          "y": 580.35,
+          "w": 148.85,
+          "h": 88,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "touch-stick-area",
+          "x": 19.65,
+          "y": 443.04,
+          "w": 168.98999999999998,
+          "h": 373.31,
+          "visible": true,
+          "mouseEnabled": true
+        }
+      ]
+    },
+    {
+      "mode": "seal",
+      "width": 568,
+      "height": 320,
+      "boxes": [
+        {
+          "name": "player-hud",
+          "x": 16,
+          "y": 68,
+          "w": 260,
+          "h": 52,
+          "visible": true,
+          "mouseEnabled": false
+        },
+        {
+          "name": "hud-event",
+          "x": 324.79999999999995,
+          "y": 108,
+          "w": 227.20000000000002,
+          "h": 18,
+          "visible": true,
+          "mouseEnabled": false,
+          "text": "苔庭封印 · 守护 9/18s · 余 35s"
+        },
+        {
+          "name": "hud-combo",
+          "x": 192,
+          "y": 24,
+          "w": 232,
+          "h": 18,
+          "visible": true,
+          "mouseEnabled": false,
+          "text": "12 连杀 · 狂热 12 / 8"
+        },
+        {
+          "name": "hud-toast",
+          "x": 292,
+          "y": 68,
+          "w": 260,
+          "h": 36,
+          "visible": true,
+          "mouseEnabled": false
+        },
+        {
+          "name": "dash",
+          "x": 456,
+          "y": 216,
+          "w": 96,
+          "h": 72,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "buffs",
+          "x": 456,
+          "y": 152,
+          "w": 96,
+          "h": 44,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "hud-boss",
+          "x": 324.79999999999995,
+          "y": 108,
+          "w": 227.20000000000002,
+          "h": 0,
+          "visible": false,
+          "mouseEnabled": false,
+          "text": ""
+        },
+        {
+          "name": "damage-hud",
+          "x": 280.64,
+          "y": 128,
+          "w": 167.36,
+          "h": 80,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "performance-panel",
+          "x": 280.64,
+          "y": 216,
+          "w": 167.36,
+          "h": 88,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "touch-stick-area",
+          "x": 16,
+          "y": 166.4,
+          "w": 256.64,
+          "h": 121.6,
+          "visible": true,
+          "mouseEnabled": true
+        }
+      ]
+    },
+    {
+      "mode": "boss",
+      "width": 568,
+      "height": 320,
+      "boxes": [
+        {
+          "name": "player-hud",
+          "x": 16,
+          "y": 68,
+          "w": 260,
+          "h": 52,
+          "visible": true,
+          "mouseEnabled": false
+        },
+        {
+          "name": "hud-event",
+          "x": 324.79999999999995,
+          "y": 108,
+          "w": 227.20000000000002,
+          "h": 18,
+          "visible": false,
+          "mouseEnabled": false,
+          "text": "最终封印 · 12:00 合拢"
+        },
+        {
+          "name": "hud-combo",
+          "x": 192,
+          "y": 24,
+          "w": 232,
+          "h": 18,
+          "visible": true,
+          "mouseEnabled": false,
+          "text": "12 连杀 · 狂热 12 / 8"
+        },
+        {
+          "name": "hud-toast",
+          "x": 292,
+          "y": 68,
+          "w": 260,
+          "h": 36,
+          "visible": true,
+          "mouseEnabled": false
+        },
+        {
+          "name": "dash",
+          "x": 456,
+          "y": 216,
+          "w": 96,
+          "h": 72,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "buffs",
+          "x": 456,
+          "y": 152,
+          "w": 96,
+          "h": 44,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "hud-boss",
+          "x": 324.79999999999995,
+          "y": 108,
+          "w": 227.20000000000002,
+          "h": 17,
+          "visible": true,
+          "mouseEnabled": false,
+          "text": "遗 迹 核 心"
+        },
+        {
+          "name": "damage-hud",
+          "x": 280.64,
+          "y": 128,
+          "w": 167.36,
+          "h": 80,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "performance-panel",
+          "x": 280.64,
+          "y": 216,
+          "w": 167.36,
+          "h": 88,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "touch-stick-area",
+          "x": 16,
+          "y": 166.4,
+          "w": 256.64,
+          "h": 121.6,
+          "visible": true,
+          "mouseEnabled": true
+        }
+      ]
+    },
+    {
+      "mode": "seal",
+      "width": 852,
+      "height": 393,
+      "boxes": [
+        {
+          "name": "player-hud",
+          "x": 19.65,
+          "y": 71.65,
+          "w": 260,
+          "h": 52,
+          "visible": true,
+          "mouseEnabled": false
+        },
+        {
+          "name": "hud-event",
+          "x": 552.35,
+          "y": 111.65,
+          "w": 280,
+          "h": 18,
+          "visible": true,
+          "mouseEnabled": false,
+          "text": "苔庭封印 · 守护 9/18s · 余 35s"
+        },
+        {
+          "name": "hud-combo",
+          "x": 195.65,
+          "y": 27.65,
+          "w": 508.70000000000005,
+          "h": 18,
+          "visible": true,
+          "mouseEnabled": false,
+          "text": "12 连杀 · 狂热 12 / 8"
+        },
+        {
+          "name": "hud-toast",
+          "x": 552.35,
+          "y": 71.65,
+          "w": 280,
+          "h": 36,
+          "visible": true,
+          "mouseEnabled": false
+        },
+        {
+          "name": "dash",
+          "x": 736.35,
+          "y": 285.35,
+          "w": 96,
+          "h": 72,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "buffs",
+          "x": 736.35,
+          "y": 221.35000000000002,
+          "w": 96,
+          "h": 44,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "hud-boss",
+          "x": 552.35,
+          "y": 111.65,
+          "w": 280,
+          "h": 0,
+          "visible": false,
+          "mouseEnabled": false,
+          "text": ""
+        },
+        {
+          "name": "damage-hud",
+          "x": 544.35,
+          "y": 197.35000000000002,
+          "w": 184,
+          "h": 80,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "performance-panel",
+          "x": 544.35,
+          "y": 285.35,
+          "w": 184,
+          "h": 88,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "touch-stick-area",
+          "x": 19.65,
+          "y": 204.36,
+          "w": 389.31,
+          "h": 152.99,
+          "visible": true,
+          "mouseEnabled": true
+        }
+      ]
+    },
+    {
+      "mode": "boss",
+      "width": 852,
+      "height": 393,
+      "boxes": [
+        {
+          "name": "player-hud",
+          "x": 19.65,
+          "y": 71.65,
+          "w": 260,
+          "h": 52,
+          "visible": true,
+          "mouseEnabled": false
+        },
+        {
+          "name": "hud-event",
+          "x": 552.35,
+          "y": 111.65,
+          "w": 280,
+          "h": 18,
+          "visible": false,
+          "mouseEnabled": false,
+          "text": "最终封印 · 12:00 合拢"
+        },
+        {
+          "name": "hud-combo",
+          "x": 195.65,
+          "y": 27.65,
+          "w": 508.70000000000005,
+          "h": 18,
+          "visible": true,
+          "mouseEnabled": false,
+          "text": "12 连杀 · 狂热 12 / 8"
+        },
+        {
+          "name": "hud-toast",
+          "x": 552.35,
+          "y": 71.65,
+          "w": 280,
+          "h": 36,
+          "visible": true,
+          "mouseEnabled": false
+        },
+        {
+          "name": "dash",
+          "x": 736.35,
+          "y": 285.35,
+          "w": 96,
+          "h": 72,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "buffs",
+          "x": 736.35,
+          "y": 221.35000000000002,
+          "w": 96,
+          "h": 44,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "hud-boss",
+          "x": 552.35,
+          "y": 111.65,
+          "w": 280,
+          "h": 17,
+          "visible": true,
+          "mouseEnabled": false,
+          "text": "遗 迹 核 心"
+        },
+        {
+          "name": "damage-hud",
+          "x": 544.35,
+          "y": 197.35000000000002,
+          "w": 184,
+          "h": 80,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "performance-panel",
+          "x": 544.35,
+          "y": 285.35,
+          "w": 184,
+          "h": 88,
+          "visible": true,
+          "mouseEnabled": true
+        },
+        {
+          "name": "touch-stick-area",
+          "x": 19.65,
+          "y": 204.36,
+          "w": 389.31,
+          "h": 152.99,
+          "visible": true,
+          "mouseEnabled": true
+        }
+      ]
+    }
+  ]
+}
