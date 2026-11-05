@@ -18,15 +18,16 @@ export function pillarShapes(): Shape[] {
 }
 export function terrainShapes(index: number): Shape[] {
     const path = index < 3, variant = index % 3;
-    const base = path ? ['#8d9477', '#91977a', '#889173'][variant] : ['#607d62', '#668266', '#5b765e'][variant];
-    const a = project(120, 0), b = project(120, 120), c = project(0, 120);
-    const s: Shape[] = [{ type: 'poly', p: [0, 0, a.x, a.y, b.x, b.y, c.x, c.y], fill: base }];
+    const base = path ? ['#8d9477', '#8e9578', '#8c9376'][variant] : ['#607d62', '#627e63', '#5e7b60'][variant];
+    // Small bleed closes the dark filtering cracks between adjacent transparent diamonds.
+    const start = project(-.6, -.6), a = project(120.6, -.6), b = project(120.6, 120.6), c = project(-.6, 120.6);
+    const s: Shape[] = [{ type: 'poly', p: [start.x, start.y, a.x, a.y, b.x, b.y, c.x, c.y], fill: base }];
     for (let i = 0; i < 8; i++) {
         const q = project(12 + (i * 37 + variant * 19) % 96, 12 + (i * 29 + variant * 11) % 96);
         if (path)
             s.push(oval(q.x, q.y, 9 + i % 3 * 3, 2 + i % 2, variant === 1 ? '#9da187' : '#7d896d', variant === 1 ? '#9da187' : '#7d896d'));
         else
-            s.push({ type: 'poly', p: [q.x - 4, q.y + 1, q.x - 4, q.y - 3, q.x - 1, q.y - 1, q.x + 1, q.y - 5, q.x + 2, q.y, q.x + 6, q.y - 2, q.x + 4, q.y + 2], fill: i % 3 === 0 ? '#819575' : '#70896b' });
+            s.push({ type: 'poly', p: [q.x - 5, q.y + 1, q.x - 3, q.y - 3 - variant, q.x - 1, q.y - 1, q.x + 1, q.y - 5, q.x + 2, q.y, q.x + 5, q.y - 2 - i % 2, q.x + 4, q.y + 2], fill: i % 3 === 0 ? '#7a9172' : '#6c8668' });
     }
     return s;
 }

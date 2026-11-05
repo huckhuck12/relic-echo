@@ -4,6 +4,7 @@ import { pillarShapes, terrainShapes } from './painted-world.js';
 import { ShapeAtlas } from './shape-atlas.js';
 import type { EnemyAtlas } from './enemy-atlas.js';
 import type { Point } from '../shared/entities.js';
+import { drawMapRegions } from './map-regions.js';
 /** Small repeatable meadow/path textures, never a world-sized backing store. */
 export function buildWorldMap(ground: any, actors: any, pillars: readonly Point[], actorAtlas?: EnemyAtlas): {
     nodes: any[];
@@ -22,6 +23,7 @@ export function buildWorldMap(ground: any, actors: any, pillars: readonly Point[
                 ground.addChild(node);
             }
         }
+    drawMapRegions(g);
     for (let n = -1200; n < 1200; n += 120)
         for (const pos of [{ x: 1200, y: n }, { x: n, y: 1200 }]) {
             const a = project(pos.x, pos.y), b = project(pos.x + (pos.x === 1200 ? 0 : 120), pos.y + (pos.x === 1200 ? 120 : 0));

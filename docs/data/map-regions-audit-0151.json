@@ -1,0 +1,738 @@
+{
+  "version": "0.15.1",
+  "map": {
+    "scope": "Real Laya WebGL static map regions and active seal overlays; desktop browser, not native performance.",
+    "rows": [
+      {
+        "id": "grove",
+        "active": false,
+        "x": -650,
+        "y": -520,
+        "textureBytes": 19922944,
+        "dc": 18,
+        "actorNodes": 9
+      },
+      {
+        "id": "grove",
+        "active": true,
+        "x": -650,
+        "y": -520,
+        "textureBytes": 19922944,
+        "dc": 18,
+        "actorNodes": 9
+      },
+      {
+        "id": "court",
+        "active": false,
+        "x": 650,
+        "y": -500,
+        "textureBytes": 19922944,
+        "dc": 19,
+        "actorNodes": 9
+      },
+      {
+        "id": "court",
+        "active": true,
+        "x": 650,
+        "y": -500,
+        "textureBytes": 19922944,
+        "dc": 19,
+        "actorNodes": 9
+      },
+      {
+        "id": "spring",
+        "active": false,
+        "x": -580,
+        "y": 620,
+        "textureBytes": 19922944,
+        "dc": 19,
+        "actorNodes": 9
+      },
+      {
+        "id": "spring",
+        "active": true,
+        "x": -580,
+        "y": 620,
+        "textureBytes": 19922944,
+        "dc": 19,
+        "actorNodes": 9
+      },
+      {
+        "id": "gate",
+        "active": false,
+        "x": 600,
+        "y": 600,
+        "textureBytes": 19922944,
+        "dc": 18,
+        "actorNodes": 9
+      },
+      {
+        "id": "gate",
+        "active": true,
+        "x": 600,
+        "y": 600,
+        "textureBytes": 19922944,
+        "dc": 18,
+        "actorNodes": 9
+      },
+      {
+        "id": "grove",
+        "active": true,
+        "x": -650,
+        "y": -520,
+        "textureBytes": 19922944,
+        "dc": 18,
+        "actorNodes": 9,
+        "mobile": true
+      },
+      {
+        "id": "court",
+        "active": true,
+        "x": 650,
+        "y": -500,
+        "textureBytes": 19922944,
+        "dc": 19,
+        "actorNodes": 9,
+        "mobile": true
+      },
+      {
+        "id": "spring",
+        "active": true,
+        "x": -580,
+        "y": 620,
+        "textureBytes": 19922944,
+        "dc": 19,
+        "actorNodes": 9,
+        "mobile": true
+      },
+      {
+        "id": "gate",
+        "active": true,
+        "x": 600,
+        "y": 600,
+        "textureBytes": 19922944,
+        "dc": 18,
+        "actorNodes": 9,
+        "mobile": true
+      }
+    ]
+  },
+  "density": {
+    "scope": "Frozen real Laya WebGL, desktop browser; all enemies visible; no projectiles, drops or gameplay updates. Not native iPhone performance.",
+    "hero": [
+      {
+        "mode": "idle",
+        "frame": 0,
+        "ready": true,
+        "bytes": [
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608
+        ]
+      },
+      {
+        "mode": "walk",
+        "frame": 1,
+        "ready": true,
+        "bytes": [
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608
+        ]
+      },
+      {
+        "mode": "cast",
+        "frame": 0,
+        "ready": true,
+        "bytes": [
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608
+        ]
+      },
+      {
+        "mode": "cast",
+        "frame": 5,
+        "ready": true,
+        "bytes": [
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608
+        ]
+      },
+      {
+        "mode": "cast",
+        "frame": 11,
+        "ready": true,
+        "bytes": [
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608
+        ]
+      },
+      {
+        "mode": "walk-cast",
+        "frame": 2,
+        "ready": true,
+        "bytes": [
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608
+        ]
+      }
+    ],
+    "guardian": {
+      "ready": true,
+      "bytes": 8388608,
+      "error": "",
+      "revision": 1
+    },
+    "rows": [
+      {
+        "count": 25,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 25,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 100,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 100,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 200,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 200,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 400,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 400,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 5,
+        "kind": 3,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 5,
+        "visible": 5,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 20,
+        "kind": 3,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 20,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 50,
+        "kind": 3,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 50,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      }
+    ]
+  },
+  "wechat": {
+    "capturedAt": 1793860551362,
+    "context": {
+      "version": "0.15.1",
+      "seconds": 271.49999999999864,
+      "quality": "精细",
+      "enemies": 235,
+      "shots": 208,
+      "drops": 150,
+      "width": 393,
+      "height": 760
+    },
+    "baseline": 28,
+    "finalBaseline": 28,
+    "stable": true,
+    "rows": [
+      {
+        "group": "enemies",
+        "label": "怪物本体",
+        "without": 28,
+        "saved": 0
+      },
+      {
+        "group": "shots",
+        "label": "弹道",
+        "without": 28,
+        "saved": 0
+      },
+      {
+        "group": "buffs",
+        "label": "Buff 特效",
+        "without": 25,
+        "saved": 3
+      },
+      {
+        "group": "effects",
+        "label": "其他特效",
+        "without": 28,
+        "saved": 0
+      },
+      {
+        "group": "warnings",
+        "label": "血条/预警",
+        "without": 24,
+        "saved": 4
+      },
+      {
+        "group": "drops",
+        "label": "掉落/光柱",
+        "without": 28,
+        "saved": 0
+      },
+      {
+        "group": "labels",
+        "label": "飘字",
+        "without": 27,
+        "saved": 1
+      },
+      {
+        "group": "environment",
+        "label": "地图/柱子",
+        "without": 26,
+        "saved": 2
+      },
+      {
+        "group": "player",
+        "label": "玩家本体",
+        "without": 26,
+        "saved": 2
+      },
+      {
+        "group": "ui",
+        "label": "界面",
+        "without": 14,
+        "saved": 14
+      }
+    ]
+  }
+}
