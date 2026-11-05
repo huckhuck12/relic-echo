@@ -10,7 +10,8 @@ import { PlayerAtlas } from '../rendering/player-atlas.js';
 import { heroArt } from '../rendering/hero-art.js';
 export const C = {
     panel: '#eee5cd', border: '#8d927a', text: '#30443d', muted: '#64705e', mint: '#38624f', gold: '#86602d',
-    surface: '#ded9bf', ink: '#fff4d7'
+    surface: '#ded9bf', ink: '#fff4d7',
+    hud: '#243d34', hudLine: '#73856b', hudText: '#f1e7cc', hudMuted: '#b5c2aa', hudGold: '#dbbd7e', hudMint: '#9ac8a3'
 };
 /** 原生字体无需下载；iPhone 使用苹方，Android/桌面由系统选择中文黑体。 */
 export const UI_FONT = platform().font();
@@ -53,6 +54,20 @@ export class UIControls {
         parent.addChild(node);
         this.block(node);
         return node;
+    }
+    /** Compact field panels share one palette; decorative HUDs never intercept touch. */
+    hudPanel(parent: LayaSprite, x: number, y: number, w: number, h: number): LayaSprite {
+        const node = this.panel(parent, x, y, w, h, C.hud, C.hudLine);
+        node.mouseEnabled = false;
+        node.graphics.drawLine(10, 1, Math.min(w - 10, 44), 1, C.hudGold, 2);
+        return node;
+    }
+    fieldButton(node: LayaButton, primary = false): void {
+        const w = node.width, h = node.height, cut = 6;
+        node.graphics.clear();
+        node.graphics.drawPoly(0, 0, [cut, 0, w - cut, 0, w, cut, w, h - cut, w - cut, h, cut, h, 0, h - cut, 0, cut], primary ? '#395e49' : C.hud, primary ? C.hudGold : C.hudLine, 1);
+        node.graphics.drawLine(10, h - 4, w - 10, h - 4, primary ? C.hudGold : '#536f59', 1);
+        node.caption.color = primary ? C.ink : C.hudText;
     }
     /** 文本不参与命中，点击整块按钮时不会被标签截住。 */
     text(parent: LayaSprite, value: string, x: number, y: number, w: number, size = 12, color = C.text, align = 'left'): LayaText {

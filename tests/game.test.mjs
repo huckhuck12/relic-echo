@@ -229,7 +229,7 @@ test('phone portrait HUD uses a full-width status strip and readable touch contr
   Laya.stage.width=w;Laya.stage.height=h;Laya.stage.emit('resize');
   const player=find(ui.root,'player-hud'),margin=ui.layout.margin;
   assert.equal(ui.layout.compact,true);assert.equal(ui.layout.sidebar,false);
-  assert.equal(player.width,w-2*margin);assert.equal(player.height,64);
+  assert.equal(player.width,w-2*margin);assert.equal(player.height,52);
   assert.equal(find(ui.hudView.root,'gear-weapon'),undefined);assert.ok(ui.hudView.labels.hp.fontSize>=13);
   assertControls(ui.hudView.root,w,h,true);
   const stick=bounds(ui.hudView.stick.joystick);assert.equal(stick.w,144);assert.equal(stick.h,144);

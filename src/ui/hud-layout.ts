@@ -12,7 +12,8 @@ export function mobileHUDLayout(layout: ScreenLayout) {
     return {
         statusX: m, statusY: m + 52,
         statusWidth: portrait ? w - 2 * m : Math.min(260, w - 2 * m - 128),
-        statusHeight: 64,
+        statusHeight: 52,
+        eventY: portrait ? m + 112 : m + 92,
         dashX: w - m - TOUCH_UI.dashWidth, dashY,
         buffX: w - m - TOUCH_UI.buffWidth, buffY,
         stickX: m + TOUCH_UI.stickSize / 2,
@@ -22,11 +23,11 @@ export function mobileHUDLayout(layout: ScreenLayout) {
         stickAreaWidth: w * .48 - m,
         stickAreaBottom: h - m - TOUCH_UI.bottomGap,
         comboX: portrait ? m : m + 176,
-        comboY: portrait ? m + 122 : m + 8,
+        comboY: portrait ? m + 136 : m + 8,
         comboWidth: portrait ? Math.min(260, w - 2 * m) : Math.max(80, w - 2 * m - 304),
         // 提示位于触控区上方，较短横屏在右上方显示，不挡住左侧状态条。
-        toastY: portrait ? Math.min(m + 156, buffY - 50) : m + 54,
-        toastWidth: portrait ? Math.min(340, w - 2 * m) : Math.min(280, w * .45),
+        toastY: portrait ? Math.min(m + 164, buffY - 50) : m + 52,
+        toastWidth: portrait ? Math.min(340, w - 2 * m) : Math.min(280, w - 2 * m - 276),
     };
 }
 /** Keep diagnostics at an edge, outside the floating joystick region and action buttons. */

@@ -1,0 +1,1431 @@
+{
+  "version": "0.15.2",
+  "passed": true,
+  "hud": {
+    "scope": "Real Laya browser HUD at phone portrait/landscape sizes, frozen low-health seal/Boss with toast and combo. Not native iPhone performance.",
+    "rows": [
+      {
+        "mode": "seal",
+        "width": 320,
+        "height": 568,
+        "boxes": [
+          {
+            "name": "player-hud",
+            "x": 16,
+            "y": 68,
+            "w": 288,
+            "h": 52,
+            "visible": true,
+            "mouseEnabled": false
+          },
+          {
+            "name": "hud-event",
+            "x": 16,
+            "y": 128,
+            "w": 288,
+            "h": 18,
+            "visible": true,
+            "mouseEnabled": false,
+            "text": "苔庭封印 · 守护 9/18s · 余 35s"
+          },
+          {
+            "name": "hud-combo",
+            "x": 16,
+            "y": 152,
+            "w": 260,
+            "h": 18,
+            "visible": true,
+            "mouseEnabled": false,
+            "text": "12 连杀 · 狂热 12 / 8"
+          },
+          {
+            "name": "hud-toast",
+            "x": 16,
+            "y": 180,
+            "w": 288,
+            "h": 44,
+            "visible": true,
+            "mouseEnabled": false
+          },
+          {
+            "name": "dash",
+            "x": 208,
+            "y": 464,
+            "w": 96,
+            "h": 72,
+            "visible": true,
+            "mouseEnabled": true
+          },
+          {
+            "name": "buffs",
+            "x": 208,
+            "y": 400,
+            "w": 96,
+            "h": 44,
+            "visible": true,
+            "mouseEnabled": true
+          },
+          {
+            "name": "hud-boss",
+            "x": 16,
+            "y": 128,
+            "w": 288,
+            "h": 0,
+            "visible": false,
+            "mouseEnabled": false,
+            "text": ""
+          }
+        ]
+      },
+      {
+        "mode": "boss",
+        "width": 320,
+        "height": 568,
+        "boxes": [
+          {
+            "name": "player-hud",
+            "x": 16,
+            "y": 68,
+            "w": 288,
+            "h": 52,
+            "visible": true,
+            "mouseEnabled": false
+          },
+          {
+            "name": "hud-event",
+            "x": 16,
+            "y": 128,
+            "w": 288,
+            "h": 18,
+            "visible": false,
+            "mouseEnabled": false,
+            "text": "最终封印 · 12:00 合拢"
+          },
+          {
+            "name": "hud-combo",
+            "x": 16,
+            "y": 152,
+            "w": 260,
+            "h": 18,
+            "visible": true,
+            "mouseEnabled": false,
+            "text": "12 连杀 · 狂热 12 / 8"
+          },
+          {
+            "name": "hud-toast",
+            "x": 16,
+            "y": 180,
+            "w": 288,
+            "h": 44,
+            "visible": true,
+            "mouseEnabled": false
+          },
+          {
+            "name": "dash",
+            "x": 208,
+            "y": 464,
+            "w": 96,
+            "h": 72,
+            "visible": true,
+            "mouseEnabled": true
+          },
+          {
+            "name": "buffs",
+            "x": 208,
+            "y": 400,
+            "w": 96,
+            "h": 44,
+            "visible": true,
+            "mouseEnabled": true
+          },
+          {
+            "name": "hud-boss",
+            "x": 16,
+            "y": 128,
+            "w": 288,
+            "h": 17,
+            "visible": true,
+            "mouseEnabled": false,
+            "text": "遗 迹 核 心"
+          }
+        ]
+      },
+      {
+        "mode": "seal",
+        "width": 393,
+        "height": 852,
+        "boxes": [
+          {
+            "name": "player-hud",
+            "x": 19.65,
+            "y": 71.65,
+            "w": 353.7,
+            "h": 52,
+            "visible": true,
+            "mouseEnabled": false
+          },
+          {
+            "name": "hud-event",
+            "x": 19.65,
+            "y": 131.65,
+            "w": 353.7,
+            "h": 18,
+            "visible": true,
+            "mouseEnabled": false,
+            "text": "苔庭封印 · 守护 9/18s · 余 35s"
+          },
+          {
+            "name": "hud-combo",
+            "x": 19.65,
+            "y": 155.65,
+            "w": 260,
+            "h": 18,
+            "visible": true,
+            "mouseEnabled": false,
+            "text": "12 连杀 · 狂热 12 / 8"
+          },
+          {
+            "name": "hud-toast",
+            "x": 26.5,
+            "y": 183.65,
+            "w": 340,
+            "h": 44,
+            "visible": true,
+            "mouseEnabled": false
+          },
+          {
+            "name": "dash",
+            "x": 277.35,
+            "y": 744.35,
+            "w": 96,
+            "h": 72,
+            "visible": true,
+            "mouseEnabled": true
+          },
+          {
+            "name": "buffs",
+            "x": 277.35,
+            "y": 680.35,
+            "w": 96,
+            "h": 44,
+            "visible": true,
+            "mouseEnabled": true
+          },
+          {
+            "name": "hud-boss",
+            "x": 19.65,
+            "y": 131.65,
+            "w": 353.7,
+            "h": 0,
+            "visible": false,
+            "mouseEnabled": false,
+            "text": ""
+          }
+        ]
+      },
+      {
+        "mode": "boss",
+        "width": 393,
+        "height": 852,
+        "boxes": [
+          {
+            "name": "player-hud",
+            "x": 19.65,
+            "y": 71.65,
+            "w": 353.7,
+            "h": 52,
+            "visible": true,
+            "mouseEnabled": false
+          },
+          {
+            "name": "hud-event",
+            "x": 19.65,
+            "y": 131.65,
+            "w": 353.7,
+            "h": 18,
+            "visible": false,
+            "mouseEnabled": false,
+            "text": "最终封印 · 12:00 合拢"
+          },
+          {
+            "name": "hud-combo",
+            "x": 19.65,
+            "y": 155.65,
+            "w": 260,
+            "h": 18,
+            "visible": true,
+            "mouseEnabled": false,
+            "text": "12 连杀 · 狂热 12 / 8"
+          },
+          {
+            "name": "hud-toast",
+            "x": 26.5,
+            "y": 183.65,
+            "w": 340,
+            "h": 44,
+            "visible": true,
+            "mouseEnabled": false
+          },
+          {
+            "name": "dash",
+            "x": 277.35,
+            "y": 744.35,
+            "w": 96,
+            "h": 72,
+            "visible": true,
+            "mouseEnabled": true
+          },
+          {
+            "name": "buffs",
+            "x": 277.35,
+            "y": 680.35,
+            "w": 96,
+            "h": 44,
+            "visible": true,
+            "mouseEnabled": true
+          },
+          {
+            "name": "hud-boss",
+            "x": 19.65,
+            "y": 131.65,
+            "w": 353.7,
+            "h": 17,
+            "visible": true,
+            "mouseEnabled": false,
+            "text": "遗 迹 核 心"
+          }
+        ]
+      },
+      {
+        "mode": "seal",
+        "width": 568,
+        "height": 320,
+        "boxes": [
+          {
+            "name": "player-hud",
+            "x": 16,
+            "y": 68,
+            "w": 260,
+            "h": 52,
+            "visible": true,
+            "mouseEnabled": false
+          },
+          {
+            "name": "hud-event",
+            "x": 324.79999999999995,
+            "y": 108,
+            "w": 227.20000000000002,
+            "h": 18,
+            "visible": true,
+            "mouseEnabled": false,
+            "text": "苔庭封印 · 守护 9/18s · 余 35s"
+          },
+          {
+            "name": "hud-combo",
+            "x": 192,
+            "y": 24,
+            "w": 232,
+            "h": 18,
+            "visible": true,
+            "mouseEnabled": false,
+            "text": "12 连杀 · 狂热 12 / 8"
+          },
+          {
+            "name": "hud-toast",
+            "x": 292,
+            "y": 68,
+            "w": 260,
+            "h": 36,
+            "visible": true,
+            "mouseEnabled": false
+          },
+          {
+            "name": "dash",
+            "x": 456,
+            "y": 216,
+            "w": 96,
+            "h": 72,
+            "visible": true,
+            "mouseEnabled": true
+          },
+          {
+            "name": "buffs",
+            "x": 456,
+            "y": 152,
+            "w": 96,
+            "h": 44,
+            "visible": true,
+            "mouseEnabled": true
+          },
+          {
+            "name": "hud-boss",
+            "x": 324.79999999999995,
+            "y": 108,
+            "w": 227.20000000000002,
+            "h": 0,
+            "visible": false,
+            "mouseEnabled": false,
+            "text": ""
+          }
+        ]
+      },
+      {
+        "mode": "boss",
+        "width": 568,
+        "height": 320,
+        "boxes": [
+          {
+            "name": "player-hud",
+            "x": 16,
+            "y": 68,
+            "w": 260,
+            "h": 52,
+            "visible": true,
+            "mouseEnabled": false
+          },
+          {
+            "name": "hud-event",
+            "x": 324.79999999999995,
+            "y": 108,
+            "w": 227.20000000000002,
+            "h": 18,
+            "visible": false,
+            "mouseEnabled": false,
+            "text": "最终封印 · 12:00 合拢"
+          },
+          {
+            "name": "hud-combo",
+            "x": 192,
+            "y": 24,
+            "w": 232,
+            "h": 18,
+            "visible": true,
+            "mouseEnabled": false,
+            "text": "12 连杀 · 狂热 12 / 8"
+          },
+          {
+            "name": "hud-toast",
+            "x": 292,
+            "y": 68,
+            "w": 260,
+            "h": 36,
+            "visible": true,
+            "mouseEnabled": false
+          },
+          {
+            "name": "dash",
+            "x": 456,
+            "y": 216,
+            "w": 96,
+            "h": 72,
+            "visible": true,
+            "mouseEnabled": true
+          },
+          {
+            "name": "buffs",
+            "x": 456,
+            "y": 152,
+            "w": 96,
+            "h": 44,
+            "visible": true,
+            "mouseEnabled": true
+          },
+          {
+            "name": "hud-boss",
+            "x": 324.79999999999995,
+            "y": 108,
+            "w": 227.20000000000002,
+            "h": 17,
+            "visible": true,
+            "mouseEnabled": false,
+            "text": "遗 迹 核 心"
+          }
+        ]
+      },
+      {
+        "mode": "seal",
+        "width": 852,
+        "height": 393,
+        "boxes": [
+          {
+            "name": "player-hud",
+            "x": 19.65,
+            "y": 71.65,
+            "w": 260,
+            "h": 52,
+            "visible": true,
+            "mouseEnabled": false
+          },
+          {
+            "name": "hud-event",
+            "x": 552.35,
+            "y": 111.65,
+            "w": 280,
+            "h": 18,
+            "visible": true,
+            "mouseEnabled": false,
+            "text": "苔庭封印 · 守护 9/18s · 余 35s"
+          },
+          {
+            "name": "hud-combo",
+            "x": 195.65,
+            "y": 27.65,
+            "w": 508.70000000000005,
+            "h": 18,
+            "visible": true,
+            "mouseEnabled": false,
+            "text": "12 连杀 · 狂热 12 / 8"
+          },
+          {
+            "name": "hud-toast",
+            "x": 552.35,
+            "y": 71.65,
+            "w": 280,
+            "h": 36,
+            "visible": true,
+            "mouseEnabled": false
+          },
+          {
+            "name": "dash",
+            "x": 736.35,
+            "y": 285.35,
+            "w": 96,
+            "h": 72,
+            "visible": true,
+            "mouseEnabled": true
+          },
+          {
+            "name": "buffs",
+            "x": 736.35,
+            "y": 221.35000000000002,
+            "w": 96,
+            "h": 44,
+            "visible": true,
+            "mouseEnabled": true
+          },
+          {
+            "name": "hud-boss",
+            "x": 552.35,
+            "y": 111.65,
+            "w": 280,
+            "h": 0,
+            "visible": false,
+            "mouseEnabled": false,
+            "text": ""
+          }
+        ]
+      },
+      {
+        "mode": "boss",
+        "width": 852,
+        "height": 393,
+        "boxes": [
+          {
+            "name": "player-hud",
+            "x": 19.65,
+            "y": 71.65,
+            "w": 260,
+            "h": 52,
+            "visible": true,
+            "mouseEnabled": false
+          },
+          {
+            "name": "hud-event",
+            "x": 552.35,
+            "y": 111.65,
+            "w": 280,
+            "h": 18,
+            "visible": false,
+            "mouseEnabled": false,
+            "text": "最终封印 · 12:00 合拢"
+          },
+          {
+            "name": "hud-combo",
+            "x": 195.65,
+            "y": 27.65,
+            "w": 508.70000000000005,
+            "h": 18,
+            "visible": true,
+            "mouseEnabled": false,
+            "text": "12 连杀 · 狂热 12 / 8"
+          },
+          {
+            "name": "hud-toast",
+            "x": 552.35,
+            "y": 71.65,
+            "w": 280,
+            "h": 36,
+            "visible": true,
+            "mouseEnabled": false
+          },
+          {
+            "name": "dash",
+            "x": 736.35,
+            "y": 285.35,
+            "w": 96,
+            "h": 72,
+            "visible": true,
+            "mouseEnabled": true
+          },
+          {
+            "name": "buffs",
+            "x": 736.35,
+            "y": 221.35000000000002,
+            "w": 96,
+            "h": 44,
+            "visible": true,
+            "mouseEnabled": true
+          },
+          {
+            "name": "hud-boss",
+            "x": 552.35,
+            "y": 111.65,
+            "w": 280,
+            "h": 17,
+            "visible": true,
+            "mouseEnabled": false,
+            "text": "遗 迹 核 心"
+          }
+        ]
+      }
+    ]
+  },
+  "render": {
+    "scope": "Frozen real Laya WebGL, desktop browser; all enemies visible; no projectiles, drops or gameplay updates. Not native iPhone performance.",
+    "hero": [
+      {
+        "mode": "idle",
+        "frame": 0,
+        "ready": true,
+        "bytes": [
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608
+        ]
+      },
+      {
+        "mode": "walk",
+        "frame": 1,
+        "ready": true,
+        "bytes": [
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608
+        ]
+      },
+      {
+        "mode": "cast",
+        "frame": 0,
+        "ready": true,
+        "bytes": [
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608
+        ]
+      },
+      {
+        "mode": "cast",
+        "frame": 5,
+        "ready": true,
+        "bytes": [
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608
+        ]
+      },
+      {
+        "mode": "cast",
+        "frame": 11,
+        "ready": true,
+        "bytes": [
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608
+        ]
+      },
+      {
+        "mode": "walk-cast",
+        "frame": 2,
+        "ready": true,
+        "bytes": [
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608
+        ]
+      }
+    ],
+    "guardian": {
+      "ready": true,
+      "bytes": 8388608,
+      "error": "",
+      "revision": 1
+    },
+    "rows": [
+      {
+        "count": 25,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 25,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 25,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 25,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 23,
+        "min": 23,
+        "max": 23
+      },
+      {
+        "count": 25,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 25,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 25,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 23,
+        "min": 23,
+        "max": 23
+      },
+      {
+        "count": 100,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 100,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 100,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 100,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 23,
+        "min": 23,
+        "max": 23
+      },
+      {
+        "count": 100,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 100,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 100,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 23,
+        "min": 23,
+        "max": 23
+      },
+      {
+        "count": 200,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 200,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 200,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 200,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 23,
+        "min": 23,
+        "max": 23
+      },
+      {
+        "count": 200,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 200,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 200,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 23,
+        "min": 23,
+        "max": 23
+      },
+      {
+        "count": 400,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 400,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 400,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 400,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 23,
+        "min": 23,
+        "max": 23
+      },
+      {
+        "count": 400,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 400,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 400,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 23,
+        "min": 23,
+        "max": 23
+      },
+      {
+        "count": 5,
+        "kind": 3,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 5,
+        "visible": 5,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 20,
+        "kind": 3,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 20,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      },
+      {
+        "count": 50,
+        "kind": 3,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 50,
+        "dc": 22,
+        "min": 22,
+        "max": 22
+      }
+    ]
+  },
+  "wechat": {
+    "kind": "wechat-package-in-browser",
+    "initial": {
+      "dialog": "start",
+      "stage": [
+        393,
+        852
+      ],
+      "mobile": true,
+      "top": 88,
+      "adapter": true,
+      "canvas": [
+        786,
+        1704
+      ]
+    },
+    "battle": {
+      "mode": "battle",
+      "time": 1.016666666666668
+    },
+    "dual": {
+      "owner": 7,
+      "dash": 2.2
+    },
+    "paused": {
+      "dialog": "pause",
+      "owner": null,
+      "stick": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "death": {
+      "dialog": "result",
+      "revival": false
+    },
+    "performance": {
+      "samples": 49,
+      "fps": 57.714958775029444,
+      "frameMs": 17.3265306122449,
+      "p95Ms": 19,
+      "maxMs": 75,
+      "updateMs": 0.20408163265306123,
+      "renderMs": 0.12244897959183673,
+      "simulationSteps": 1,
+      "maxSimulationSteps": 3,
+      "stepMs": 0.20408163265306123,
+      "engineSamples": 49,
+      "engineMs": 2.8979591836734695,
+      "drawCalls": 24.428571428571427,
+      "enemies": 2,
+      "shots": 0,
+      "drops": 8,
+      "effects": 10,
+      "enemyAtlasBytes": 8388608,
+      "sceneTextureBytes": 19922944,
+      "enemyAtlasReady": true,
+      "enemyAtlasError": "",
+      "autoPlayEnabled": false,
+      "autoPlayRound": 0,
+      "autoPlayStress": false,
+      "autoPlayDecisions": 0,
+      "autoPlayLastAction": "",
+      "drawCallReport": null,
+      "paused": true,
+      "quality": "标准"
+    },
+    "enemyArt": {
+      "atlas": {
+        "bytes": 8388608,
+        "tiles": 341
+      },
+      "highAtlas": {
+        "quality": "high",
+        "ready": true,
+        "bytes": 8388608,
+        "error": "",
+        "total": 8388608
+      }
+    },
+    "wearables": [
+      {
+        "head": "visor",
+        "armor": "light",
+        "back": "cape",
+        "bytes": 8388608,
+        "ready": true
+      },
+      {
+        "head": "helmet",
+        "armor": "heavy",
+        "back": "thorn",
+        "bytes": 8388608,
+        "ready": true
+      },
+      {
+        "head": "hood",
+        "armor": "energy",
+        "back": "pack",
+        "bytes": 8388608,
+        "ready": true
+      }
+    ],
+    "drawCallProbe": {
+      "active": false,
+      "error": "",
+      "report": {
+        "capturedAt": 1793862086019,
+        "context": {
+          "version": "0.15.2",
+          "seconds": 271.49999999999864,
+          "quality": "精细",
+          "enemies": 235,
+          "shots": 208,
+          "drops": 150,
+          "width": 393,
+          "height": 760
+        },
+        "baseline": 28,
+        "finalBaseline": 28,
+        "stable": true,
+        "rows": [
+          {
+            "group": "enemies",
+            "label": "怪物本体",
+            "without": 28,
+            "saved": 0
+          },
+          {
+            "group": "shots",
+            "label": "弹道",
+            "without": 28,
+            "saved": 0
+          },
+          {
+            "group": "buffs",
+            "label": "Buff 特效",
+            "without": 25,
+            "saved": 3
+          },
+          {
+            "group": "effects",
+            "label": "其他特效",
+            "without": 28,
+            "saved": 0
+          },
+          {
+            "group": "warnings",
+            "label": "血条/预警",
+            "without": 24,
+            "saved": 4
+          },
+          {
+            "group": "drops",
+            "label": "掉落/光柱",
+            "without": 28,
+            "saved": 0
+          },
+          {
+            "group": "labels",
+            "label": "飘字",
+            "without": 27,
+            "saved": 1
+          },
+          {
+            "group": "environment",
+            "label": "地图/柱子",
+            "without": 26,
+            "saved": 2
+          },
+          {
+            "group": "player",
+            "label": "玩家本体",
+            "without": 26,
+            "saved": 2
+          },
+          {
+            "group": "ui",
+            "label": "界面",
+            "without": 14,
+            "saved": 14
+          }
+        ]
+      },
+      "time": 271.49999999999864,
+      "hp": 100,
+      "dialog": "performance"
+    },
+    "probeContext": {
+      "time": 271.49999999999864,
+      "hp": 100,
+      "enemies": 235,
+      "shots": 208,
+      "drops": 150
+    }
+  },
+  "mobile": {
+    "passed": true,
+    "directory": "E:\\devtools\\xxgame\\artifacts\\mobile-check-1793862113964",
+    "reports": [
+      {
+        "width": 393,
+        "height": 852,
+        "dpr": 3,
+        "touch": true,
+        "initial": {
+          "dialog": "start",
+          "stickVisible": true,
+          "font": "PingFang SC",
+          "point": {
+            "x": 114.4175,
+            "y": 696.315
+          },
+          "stage": [
+            393,
+            852
+          ]
+        },
+        "battle": {
+          "mode": "battle",
+          "runKind": "standard",
+          "time": 1.8999999999999981,
+          "hp": 100,
+          "enemies": 1,
+          "hero": {
+            "ready": true,
+            "error": ""
+          },
+          "textureBytes": 19922944
+        },
+        "buffBuilds": true
+      },
+      {
+        "width": 852,
+        "height": 393,
+        "dpr": 3,
+        "touch": true,
+        "initial": {
+          "dialog": "start",
+          "stickVisible": true,
+          "font": "PingFang SC",
+          "point": {
+            "x": 233.5,
+            "y": 331.35
+          },
+          "stage": [
+            852,
+            393
+          ]
+        },
+        "battle": {
+          "mode": "battle",
+          "runKind": "standard",
+          "time": 2.3499999999999965,
+          "hp": 100,
+          "enemies": 1,
+          "hero": {
+            "ready": true,
+            "error": ""
+          },
+          "textureBytes": 19922944
+        },
+        "buffBuilds": true
+      },
+      {
+        "width": 1280,
+        "height": 720,
+        "dpr": 1,
+        "touch": false,
+        "initial": {
+          "dialog": "start",
+          "stickVisible": false,
+          "font": "system-ui",
+          "point": {
+            "x": 447.5,
+            "y": 628
+          },
+          "stage": [
+            1280,
+            720
+          ]
+        },
+        "battle": {
+          "mode": "battle",
+          "runKind": "standard",
+          "time": 1.9166666666666647,
+          "hp": 100,
+          "enemies": 4,
+          "hero": {
+            "ready": true,
+            "error": ""
+          },
+          "textureBytes": 19922944
+        },
+        "buffBuilds": true
+      }
+    ]
+  }
+}

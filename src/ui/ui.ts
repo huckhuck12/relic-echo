@@ -58,9 +58,10 @@ export class GameUI {
             toast: message => this.toast(message),
         });
         // Toasts sit above dialogs, so they must never take part in mouse hit testing.
-        this.toastNode = this.panel(this.root, 400, 585, 480, 45);
+        this.toastNode = this.controls.hudPanel(this.root, 400, 585, 480, 45);
         this.toastNode.mouseEnabled = false;
-        this.toastLabel = this.text(this.toastNode, '', 14, 12, 452, 13, C.gold, 'center');
+        this.toastLabel = this.text(this.toastNode, '', 14, 12, 452, 13, C.hudText, 'center');
+        this.toastNode.name = 'hud-toast';
         this.toastNode.visible = false;
         this.resize();
         Laya.stage.on(Laya.Event.RESIZE, this, this.resize);
@@ -69,7 +70,6 @@ export class GameUI {
         this.update();
     }
     private layer(...args: Parameters<UIControls['layer']>): ReturnType<UIControls['layer']> { return this.controls.layer(...args); }
-    private panel(...args: Parameters<UIControls['panel']>): ReturnType<UIControls['panel']> { return this.controls.panel(...args); }
     private text(...args: Parameters<UIControls['text']>): ReturnType<UIControls['text']> { return this.controls.text(...args); }
     /** 旋转/缩放后重排 HUD 与当前弹窗；先释放摇杆，防止旧触点持续移动。 */
     private resize(): void {
@@ -86,9 +86,10 @@ export class GameUI {
         const perf = performanceHUDLayout(this.layout, this.mobile);
         this.performancePanel.pos(perf.x, perf.y);
         this.performancePanel.size(perf.width, perf.height);
-        this.performancePanel.alpha = .85;
+        this.performancePanel.alpha = .94;
         this.performancePanel.graphics.clear();
-        this.performancePanel.graphics.drawRect(0, 0, perf.width, perf.height, C.panel, C.border, 1);
+        this.performancePanel.graphics.drawRect(0, 0, perf.width, perf.height, C.hud, C.hudLine, 1);
+        this.performanceLabel.color = C.hudMuted;
         this.performanceLabel.pos(6, 6);
         this.performanceLabel.width = perf.width - 12;
         this.performanceLabel.height = perf.height - 12;
@@ -100,16 +101,17 @@ export class GameUI {
         const mobileLayout = mobileHUDLayout(this.layout);
         const toastWidth = this.mobile ? mobileLayout.toastWidth : Math.min(480, width - 2 * margin);
         // 手机提示条放在整组触控按钮上方，不覆盖 Buff 按钮和摇杆。
-        const toastHeight = this.mobile ? 44 : 54;
+        const toastHeight = this.mobile ? this.layout.portrait ? 44 : 36 : 54;
         this.toastNode.pos(this.mobile && !this.layout.portrait ? width - margin - toastWidth : (width - toastWidth) / 2, this.mobile ? mobileLayout.toastY : height - margin - 145);
         this.toastNode.size(toastWidth, toastHeight);
         this.toastNode.graphics.clear();
-        this.toastNode.graphics.drawRect(0, 0, toastWidth, toastHeight, C.panel, C.border, 1);
+        this.toastNode.graphics.drawRect(0, 0, toastWidth, toastHeight, C.hud, C.hudLine, 1);
         this.toastLabel.width = toastWidth - 28;
-        this.toastLabel.fontSize = 12;
-        this.toastLabel.y = this.mobile ? 6 : 12;
-        this.toastLabel.leading = this.mobile ? 4 : 6;
-        this.toastLabel.height = this.mobile ? 32 : 42;
+        this.toastLabel.fontSize = this.mobile && !this.layout.portrait ? 11 : 12;
+        this.toastLabel.y = this.mobile ? this.layout.portrait ? 6 : 4 : 12;
+        this.toastLabel.leading = this.mobile ? this.layout.portrait ? 4 : 2 : 6;
+        this.toastLabel.height = this.mobile ? this.layout.portrait ? 32 : 28 : 42;
+        this.toastLabel.wordWrap = true;
         this.toastLabel.overflow = 'hidden';
         this.modalDirty = true;
         this.update();

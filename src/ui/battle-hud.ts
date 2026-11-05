@@ -44,7 +44,12 @@ export class BattleHUD {
     private clear(...args: Parameters<UIControls['clear']>): ReturnType<UIControls['clear']> { return this.controls.clear(...args); }
     private panel(...args: Parameters<UIControls['panel']>): ReturnType<UIControls['panel']> { return this.controls.panel(...args); }
     private text(...args: Parameters<UIControls['text']>): ReturnType<UIControls['text']> { return this.controls.text(...args); }
-    private button(...args: Parameters<UIControls['button']>): ReturnType<UIControls['button']> { return this.controls.button(...args); }
+    private button(...args: Parameters<UIControls['button']>): ReturnType<UIControls['button']> {
+        const node = this.controls.button(...args);
+        if (['inventory', 'pause', 'dash', 'buffs'].includes(node.name))
+            this.controls.fieldButton(node, node.name === 'dash');
+        return node;
+    }
     private avatar(...args: Parameters<UIControls['avatar']>): ReturnType<UIControls['avatar']> { return this.controls.avatar(...args); }
     private bar(parent: LayaSprite, id: string, x: number, y: number, w: number, h: number): void {
         const node = this.layer(parent);
@@ -57,10 +62,13 @@ export class BattleHUD {
         if (!node)
             return;
         node.graphics.clear();
-        node.graphics.drawRect(0, 0, node.width, node.height, '#c2c5a9');
+        node.graphics.drawRect(0, 0, node.width, node.height, this.mobile ? '#526958' : '#c2c5a9');
         node.graphics.drawRect(0, 0, node.width * clamp(amount, 0, 1), node.height, color);
     }
-    private label(id: string, value: string, parent: LayaSprite, x: number, y: number, w: number, size = 12, color = C.text, align = 'left'): void { this.labels[id] = this.text(parent, value, x, y, w, size, color, align); }
+    private label(id: string, value: string, parent: LayaSprite, x: number, y: number, w: number, size = 12, color = C.text, align = 'left'): void {
+        this.labels[id] = this.text(parent, value, x, y, w, size, color, align);
+        this.labels[id].name = 'hud-' + id;
+    }
     private siteDirection(x: number, y: number): string {
         const angle = Math.atan2((x + y) * .5, x - y);
         return ['→', '↘', '↓', '↙', '←', '↖', '↑', '↗'][(Math.round(angle / (Math.PI / 4)) + 8) % 8];
@@ -154,7 +162,7 @@ export class BattleHUD {
         const buffButton = this.button(this.root, '', dashX, dashY - 54, dashW, 44, () => {
             this.openBuffs();
         }, false, 'buffs');
-        this.label('buffs', 'Buff 碎片 B', buffButton, 4, 13, dashW - 8, 11, C.gold, 'center');
+        this.label('buffs', 'Buff 碎片 B', buffButton, 4, 13, dashW - 8, 11, C.hudGold, 'center');
         const dashButton = this.button(this.root, '»  相位冲刺', dashX, dashY, dashW, 54, () => {
             if (!this.mobile)
                 this.game.dash();
@@ -180,33 +188,40 @@ export class BattleHUD {
     private buildMobile(): void {
         const { width: w, margin: m, portrait } = this.layout;
         const p = mobileHUDLayout(this.layout);
-        this.text(this.root, w < 350 ? '遗迹' : '遗迹回响', m, m + 12, w < 350 ? 48 : 98, 16, C.gold);
-        this.label('time', '', this.root, m + 102, m + 13, 66, 15);
+        this.text(this.root, w < 350 ? '遗迹' : '遗迹回响', m, m + 12, w < 350 ? 48 : 98, 16, C.hudGold);
+        this.label('time', '', this.root, m + 102, m + 13, 66, 15, C.hudText);
         this.button(this.root, '装备', w - m - 112, m, 52, 44, () => this.game.toggleInventory(), false, 'inventory');
         this.button(this.root, '暂停', w - m - 52, m, 52, 44, () => this.game.togglePause(), false, 'pause');
         // 最窄屏标题缩短，时间不挤到右侧操作键下方。
         if (w < 350) {
             this.labels.time.x = m + 54;
         }
-        const status = this.panel(this.root, p.statusX, p.statusY, p.statusWidth, p.statusHeight, C.panel);
+        const status = this.controls.hudPanel(this.root, p.statusX, p.statusY, p.statusWidth, p.statusHeight);
         status.name = 'player-hud';
-        this.label('hp', '', status, 10, 6, p.statusWidth - 66, 13, C.mint);
-        this.label('level', '', status, p.statusWidth - 58, 6, 48, 13, C.gold, 'right');
-        this.bar(status, 'hp', 10, 28, p.statusWidth - 20, 5);
-        this.label('xp', '', status, 10, 39, p.statusWidth - 80, 12, C.muted);
-        this.label('kills', '', status, p.statusWidth - 72, 39, 62, 12, C.muted, 'right');
-        this.bar(status, 'xp', 0, 62, p.statusWidth, 2);
+        this.label('hp', '', status, 10, 5, p.statusWidth - 66, 13, C.hudText);
+        this.label('level', '', status, p.statusWidth - 58, 5, 48, 13, C.hudGold, 'right');
+        this.bar(status, 'hp', 10, 25, p.statusWidth - 20, 5);
+        this.label('xp', '', status, 10, 35, p.statusWidth - 90, 11, C.hudMuted);
+        this.label('kills', '', status, p.statusWidth - 82, 35, 72, 11, C.hudMuted, 'right');
+        this.bar(status, 'xp', 0, 50, p.statusWidth, 2);
         // 连杀移到状态条下，不再压在玩家和弹幕附近。
-        this.label('combo', '', this.root, p.comboX, p.comboY, p.comboWidth, 12, C.gold);
+        this.label('combo', '', this.root, p.comboX, p.comboY, p.comboWidth, 12, C.hudGold);
+        this.labels.combo.height = 18;
+        this.labels.combo.wordWrap = false;
         this.bar(this.root, 'combo', p.comboX, p.comboY + 22, Math.min(160, p.comboWidth), 2);
         const bossW = portrait ? w - 2 * m : Math.min(280, w * .4);
         const bossX = portrait ? m : w - m - bossW;
-        const bossY = portrait ? p.comboY + 30 : m + 64;
+        const bossY = p.eventY;
         this.label('boss', '', this.root, bossX, bossY, bossW, 12, '#e4b596', 'center');
         this.bar(this.root, 'boss', bossX, bossY + 22, bossW, 5);
-        this.label('event', '', this.root, bossX, bossY, bossW, 12, C.gold, 'center');
+        this.label('event', '', this.root, bossX, bossY, bossW, 11, C.hudText, 'center');
+        this.labels.event.wordWrap = false;
+        this.labels.event.height = 18;
+        this.labels.event.overflow = 'hidden';
+        this.labels.event.stroke = 2;
+        this.labels.event.strokeColor = C.hud;
         const buff = this.button(this.root, '', p.buffX, p.buffY, TOUCH_UI.buffWidth, TOUCH_UI.buffHeight, this.openBuffs, false, 'buffs');
-        this.label('buffs', '', buff, 4, 13, TOUCH_UI.buffWidth - 8, 13, C.gold, 'center');
+        this.label('buffs', '', buff, 4, 13, TOUCH_UI.buffWidth - 8, 13, C.hudGold, 'center');
         const dash = this.button(this.root, '冲刺', p.dashX, p.dashY, TOUCH_UI.dashWidth, TOUCH_UI.dashHeight, () => { }, true, 'dash');
         // 冲刺主文字扩大；冷却放按钮下方，不覆盖文字和命中区域。
         dash.caption.fontSize = 18;
@@ -259,8 +274,8 @@ export class BattleHUD {
         };
         this.set('hp', `生命 ${Math.ceil(s.hp)} / ${Math.round(s.maxHp)}`);
         this.set('xp', `经验 ${Math.floor(s.xp)} / ${s.need}`);
-        this.fill('hp', s.hp / s.maxHp, s.hp / s.maxHp < .3 ? '#e79c86' : C.mint);
-        this.fill('xp', s.xp / s.need, C.gold);
+        this.fill('hp', s.hp / s.maxHp, s.hp / s.maxHp < .3 ? '#e79c86' : this.mobile ? C.hudMint : C.mint);
+        this.fill('xp', s.xp / s.need, this.mobile ? C.hudGold : C.gold);
         this.set('subtitle', `${WEAPONS[s.weapon].name}行者 · LV.${String(s.level).padStart(2, '0')}`);
         this.set('time', clock(s.time));
         this.set('kills', this.mobile ? `击败 ${s.kills}` : String(s.kills));
@@ -269,7 +284,7 @@ export class BattleHUD {
         this.set('objective', this.game.training ? '试装模式 · 角色不会死亡\n按 E 切换装备，查看背面。' : s.time >= run.bossAt ? '击败遗迹核心。\n在封印合拢前完成挑战。' : `${run.name} · ${beat.name}\n${clock(run.bossAt)} 挑战遗迹核心。`);
         this.fill('progress', s.time / run.duration, C.gold);
         this.set('event', site ? site.state === 'active'
-            ? site.name + ' · 圈内 ' + site.progress.toFixed(0) + '/' + SEAL_RULES.holdSeconds + ' 秒 · 余 ' + Math.max(0, Math.ceil(site.startedAt + SEAL_RULES.challengeSeconds - s.time)) + ' 秒'
+            ? site.name + ' · 守护 ' + site.progress.toFixed(0) + '/' + SEAL_RULES.holdSeconds + 's · 余 ' + Math.max(0, Math.ceil(site.startedAt + SEAL_RULES.challengeSeconds - s.time)) + 's'
             : site.name + ' · ' + this.siteDirection(site.x - this.game.player.x, site.y - this.game.player.y) + ' · 距离 ' + Math.round(Math.hypot(site.x - this.game.player.x, site.y - this.game.player.y))
             : s.time >= run.bossAt ? '最终封印 · ' + clock(run.duration) + ' 合拢' : s.time < this.game.mapEvents.reliefUntil ? '封印整备 · 余 ' + Math.ceil(this.game.mapEvents.reliefUntil - s.time) + ' 秒 · 新怪减缓' : beat.name + ' · 下次' + (run.eliteTimes.find(t => t > s.time) ? '精英' : '核心') + ' ' + clock(run.eliteTimes.find(t => t > s.time) ?? run.bossAt));
         if (this.mobile && this.labels.event)
