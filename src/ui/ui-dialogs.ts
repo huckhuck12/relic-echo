@@ -169,7 +169,7 @@ export class GameDialogs {
         ]> = {
             ...Object.fromEntries(Object.entries(MASTERY).map(([id, m]) => [id, [m.name, m.note]])),
             fire: ['冲刺布场', '冲刺留火＋命中冲击。\n燃烧目标在火场内被另一槽冲击命中，回拉至火场；每目标 1 秒一次。'],
-            ice: ['冰冻碎裂', '命中生成冰环＋冲刺冲击。\n冰环叠至少 2 层后，另一槽冲击可提前引爆；每目标 1 秒一次。'],
+            ice: ['冰冻碎裂', '命中生成冰环＋冲刺冲击。\n冰环叠至少 1 层后，另一槽冲击可提前引爆；每目标 1 秒一次。'],
             thunder: ['雷印引爆', '命中雷丸＋冲刺冰场。\n跨槽冰霜导冷加一印，每敌 1 秒一次；Lv.3 选传印或蓄雷。'],
             free: ['自由组合', '保留当前两槽，不替换。\n额外获得一次常规强化选择。'],
             ...Object.fromEntries(Object.entries(BRANCH_TEXT).map(([id, b]) => [id, [b.name, b.note]])),

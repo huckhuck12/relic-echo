@@ -7,6 +7,8 @@ const {gear,WEAPONS}=await import('../dist/progression/config.js');
 const routes=[['fire','trail'],['fire','furnace'],['ice','shards'],['ice','prison'],['thunder','spread'],['thunder','charge']];
 const seeded=value=>()=>{value=(Math.imul(value,1664525)+1013904223)>>>0;return value/4294967296;};
 const arg=name=>process.argv.find(a=>a.startsWith('--'+name+'='))?.split('=')[1];
+const branches=arg('branches')?.split(',');
+if(branches?.some(branch=>!routes.some(r=>r[1]===branch)))throw Error('Unknown --branches route.');
 const seeds=(arg('seeds')||'627,1104').split(',').map(Number);
 const weapons=(arg('weapons')||'storm').split(',');
 const mode=arg('mode')||'quick';
@@ -19,6 +21,7 @@ const legacyContact=process.argv.includes('--legacy-contact');
 const rows=[],originalRandom=Math.random;
 try{
  for(const weapon of weapons)for(const seed of seeds)for(const [build,branch] of routes){
+  if(branches&&!branches.includes(branch))continue;
   setupLayaStub();Math.random=seeded(seed);const g=new Game();g.sound=false;g.runKind=mode;g.autoPlay.start(weapon,protectedRun);
   const events=[],checkpoints=[];let buffDamage=0,bossBuffDamage=0,totalDamage=0,firstBranch=null,maxLevelAt=null,bossStartHP=null,pressureHits=0,protectedHits=0,now=0;
   const peak={enemies:0,shots:0};let lethalContext=null;

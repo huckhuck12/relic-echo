@@ -1,6 +1,6 @@
 import type { Game } from './game.js';
 import type { Enemy, Shot, Drop, Point } from '../shared/entities.js';
-import { gear, Weapon, WEAPONS } from '../progression/config.js';
+import { COMBAT, gear, Weapon, WEAPONS } from '../progression/config.js';
 import { project } from '../shared/model.js';
 import { WORLD_RULES } from './game-config.js';
 import { platform } from '../platform/runtime.js';
@@ -305,9 +305,12 @@ export function autoPlayIntent(player: Point & {
         y -= Math.sign(player.y) * 4;
     if (!danger && tactics?.dashTarget) {
         const dx = tactics.dashTarget.x - player.x, dy = tactics.dashTarget.y - player.y, d = Math.hypot(dx, dy);
-        const safe = safeAutoDash(player, { x: dx / (d || 1), y: dy / (d || 1) }, world);
-        if (d > 1 && safe)
-            return { x: dx / d, y: dy / d, dash: true };
+        for (const angle of [0, Math.PI / 6, -Math.PI / 6, Math.PI / 3, -Math.PI / 3]) {
+            const direction = { x: (dx * Math.cos(angle) - dy * Math.sin(angle)) / (d || 1), y: (dy * Math.cos(angle) + dx * Math.sin(angle)) / (d || 1) };
+            const landingDistance = Math.hypot(dx - direction.x * COMBAT.dashDistance, dy - direction.y * COMBAT.dashDistance);
+            if (d > 1 && landingDistance <= (tactics.dashRadius ?? 110) && safeAutoDash(player, direction, world))
+                return { ...direction, dash: true };
+        }
     }
     const length = Math.hypot(x, y) || 1;
     const direction = { x: x / length, y: y / length };

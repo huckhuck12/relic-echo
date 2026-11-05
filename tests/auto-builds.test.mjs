@@ -14,7 +14,7 @@ test('eighteen automatic rounds cover every branch with all three weapons and re
  assert.equal(covered.size,6);assert.ok([...covered.values()].every(s=>s.size===3));assert.equal(autoBuildProfile(19),AUTO_BUILDS[0]);
 });
 test('build tactics read the installed recipes and select only valid cross-slot frost for a dash',()=>{
- const b=runtime('ice'),a=enemy(150),far=enemy(300);for(const t of [a,far])for(let i=0;i<2;i++)b.evolutions.hit(t,{kind:'orbit',element:'ice',damage:10,slot:0,branch:'prison'});
+ const b=runtime('ice'),a=enemy(150),far=enemy(300);for(const t of [a,far])b.evolutions.hit(t,{kind:'orbit',element:'ice',damage:10,slot:0,branch:'prison'});
  const before=JSON.stringify([...b.evolutions.frost.values()]);const t=buildTactics(b,player,[far,a]);assert.equal(t.orbit,true);assert.equal(t.focus,a);assert.equal(t.dashTarget,a);assert.equal(JSON.stringify([...b.evolutions.frost.values()]),before);
  b.evolutions.frost.get(a).lock=1;assert.equal(buildTactics(b,player,[a,far]).dashTarget,undefined);
  b.evolutions.frost.get(a).lock=0;b.evolutions.frost.get(a).source.slot=1;assert.equal(buildTactics(b,player,[a]).dashTarget,undefined);
@@ -29,6 +29,16 @@ test('field builds aim a safe dash at a nearby target and ignore dead enemies',(
 test('ice steering approaches the contact band rather than continuously fleeing; generic steering is preserved',()=>{
  const e=enemy(180),w={...world,enemies:[e]},b=runtime('ice');assert.ok(autoPlayIntent(player,w,0,buildTactics(b,player,[e])).x>0);
  const near=enemy(20);assert.ok(autoPlayIntent(player,{...world,enemies:[near]},0).x<0);
+});
+
+test('combo dash chooses an offset safe landing inside the actual effect radius',()=>{
+ const target=enemy(150),w={...world,enemies:[target]};
+ const result=autoPlayIntent(player,w,0,{orbit:true,focus:target,dashTarget:target,dashRadius:110});
+ assert.equal(result.dash,true);assert.ok(Math.abs(result.y)>.1);
+ const landingDistance=Math.hypot(result.x*180-target.x,result.y*180-target.y);
+ assert.ok(landingDistance>=target.radius+20&&landingDistance<=110);
+ const unreachable=autoPlayIntent(player,world,0,{orbit:true,dashTarget:{x:300,y:0},dashRadius:110});assert.equal(unreachable.dash,false);
+ const smallField=autoPlayIntent(player,w,0,{orbit:false,dashTarget:target,dashRadius:70});assert.equal(smallField.dash,false);
 });
 test('combo dash never overrides projectile danger or lands in a pillar, warning or outside the arena',()=>{
  const target=enemy(220),t={orbit:false,focus:target,dashTarget:target};

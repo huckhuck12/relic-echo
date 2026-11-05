@@ -22,9 +22,9 @@ test('cross-slot force consumes two layers once, snapshots ice damage and never 
  e.update(1.01);e.hit(t,ice());e.hit(t,ice());e.hit(t,force);assert.equal(e.shatters,2);
 });
 
-test('same-slot, unknown provenance, one layer, expired and dead targets do not consume frost',()=>{
+test('same-slot, unknown provenance, empty, expired and dead targets do not consume frost',()=>{
  for(const bad of [{...force,slot:0},{...force,slot:undefined}]){const {e,targets,hits}=fixture();e.hit(targets[0],ice());e.hit(targets[0],ice());e.hit(targets[0],bad);assert.equal(hits.length,0);assert.equal(e.frost.get(targets[0]).stacks,2);}
- const {e,targets,hits}=fixture();e.hit(targets[0],ice());e.hit(targets[0],force);assert.equal(hits.length,0);
+ const {e,targets,hits}=fixture();e.hit(targets[0],force);assert.equal(hits.length,0);
  e.hit(targets[0],ice());e.update(3.01);e.hit(targets[0],force);assert.equal(hits.length,0);
  e.hit(targets[0],ice());e.hit(targets[0],ice());targets[0].dead=true;e.hit(targets[0],force);assert.equal(hits.length,0);
 });

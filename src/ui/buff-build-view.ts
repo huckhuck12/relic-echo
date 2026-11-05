@@ -31,7 +31,7 @@ export function buffSynergies(recipes: readonly Recipe[]) {
             id: 'fire', name: '火场回拉', source: (r: Recipe) => r.action === 'field' && r.element === 'fire', partner: (r: Recipe) => r.element === 'force', need: '火焰区域 ＋ 另一槽冲击', note: '燃烧目标仍在火场内时，另一槽冲击命中可回拉；每目标 1 秒一次，Boss 不回拉。'
         },
         {
-            id: 'ice', name: '提前碎裂', source: (r: Recipe) => r.action === 'orbit' && r.element === 'ice', partner: (r: Recipe) => r.element === 'force', need: '冰霜环绕 ＋ 另一槽冲击', note: '同一目标至少 2 层冰霜后，另一槽冲击命中提前碎裂；每目标 1 秒一次。'
+            id: 'ice', name: '提前碎裂', source: (r: Recipe) => r.action === 'orbit' && r.element === 'ice', partner: (r: Recipe) => r.element === 'force', need: '冰霜环绕 ＋ 另一槽冲击', note: '同一目标至少 1 层冰霜后，另一槽冲击命中提前碎裂；每目标 1 秒一次。'
         },
         {
             id: 'thunder', name: '冰霜导冷', source: (r: Recipe) => r.action === 'bolt' && r.element === 'lightning', partner: (r: Recipe) => r.element === 'ice', need: '雷电弹丸 ＋ 另一槽冰霜', note: '目标受另一槽冰霜减速时，雷丸命中额外加一印；每敌 1 秒一次。'

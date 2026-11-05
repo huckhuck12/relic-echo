@@ -39,6 +39,20 @@ test('frost shatter caps its burst targets and spreads slow without recursively 
  assert.equal(f.evolution.frost.size,1);assert.equal(f.evolution.frost.get(target).stacks,0);
 });
 
+test('one frost layer supports a cross-slot opener while stored layers keep proportional damage and the lock',()=>{
+ for(const stacks of [1,2,4,5]){
+  const f=fixture(1),target=f.targets[0],e=f.evolution;
+  const source={...ice,slot:0,branch:'prison',level:5};
+  for(let i=0;i<stacks;i++)e.hit(target,source);
+  e.hit(target,{kind:'blast',element:'force',damage:22,slot:0});assert.equal(e.shatters,0);
+  e.hit(target,{kind:'blast',element:'force',damage:22,slot:1});
+  assert.equal(e.shatters,1);assert.equal(f.hits[0].value,10*stacks*.4*(stacks>=4?1.25:1));
+  e.hit(target,source);e.hit(target,{kind:'blast',element:'force',damage:22,slot:1});assert.equal(e.shatters,1);
+ }
+ const f=fixture(1);f.evolution.hit(f.targets[0],{...ice,slot:0});f.evolution.update(3.01);
+ f.evolution.hit(f.targets[0],{kind:'blast',element:'force',damage:22,slot:1});assert.equal(f.evolution.shatters,0);
+});
+
 test('fire links damage a corridor outside the base field and overlapping lines do not multiply hits',()=>{
  const f=fixture(3);Object.assign(f.targets[0],{x:100,y:0});Object.assign(f.targets[1],{x:100,y:24});Object.assign(f.targets[2],{x:100,y:25});
  f.evolution.seed(0,0,20);f.evolution.seed(200,0,20);f.evolution.seed(100,100,40);f.evolution.update(.01);

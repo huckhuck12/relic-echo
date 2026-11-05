@@ -120,7 +120,7 @@ export class BuffEvolutions<T extends BuffTarget> {
     /** Direct cross-slot force only. Reserve the mark before damage callbacks; secondary damage never re-enters hit. */
     private breakFrost(target: T, force: EvolutionSource): void {
         const mark = this.frost.get(target);
-        if (!mark || mark.lock > 0 || mark.life <= 0 || mark.stacks < 2 || force.slot === undefined || mark.source?.slot === undefined || force.slot === mark.source.slot)
+        if (!mark || mark.lock > 0 || mark.life <= 0 || mark.stacks < 1 || force.slot === undefined || mark.source?.slot === undefined || force.slot === mark.source.slot)
             return;
         this.consumeFrost(target, mark, true);
     }

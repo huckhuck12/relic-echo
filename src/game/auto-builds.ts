@@ -1,5 +1,6 @@
 import type { BuffRuntime, BuffTarget } from '../buffs/buffs.js';
 import type { Point } from '../shared/entities.js';
+import { BUFF_RULES } from '../buffs/buff-config.js';
 /** Each profile is tested with all three weapons before advancing to the next. */
 export const AUTO_BUILDS = [
     { build: 'fire', branch: 'trail', name: '火径' },
@@ -19,6 +20,7 @@ export interface BuildTactics {
     waypoint?: Point;
     focus?: Point;
     dashTarget?: Point;
+    dashRadius?: number;
 }
 /** Read only, bounded by existing enemy/effect/mark caps; never deals damage or grants fragments. */
 export function buildTactics<T extends BuffTarget>(buffs: BuffRuntime<T>, player: Point, enemies: readonly T[]): BuildTactics {
@@ -43,7 +45,7 @@ export function buildTactics<T extends BuffTarget>(buffs: BuffRuntime<T>, player
         const slot = buffs.recipes.indexOf(dash);
         for (const [enemy, mark] of buffs.evolutions.frost) {
             const distance = Math.hypot(enemy.x - player.x, enemy.y - player.y);
-            if (!enemy.dead && mark.stacks >= 2 && mark.lock <= 0 && mark.life > 0 && mark.source?.slot !== undefined && mark.source.slot !== slot && distance < 260 && distance < nearest) {
+            if (!enemy.dead && mark.stacks >= 1 && mark.lock <= 0 && mark.life > 0 && mark.source?.slot !== undefined && mark.source.slot !== slot && distance < 260 && distance < nearest) {
                 nearest = distance;
                 dashTarget = enemy;
             }
@@ -51,5 +53,5 @@ export function buildTactics<T extends BuffTarget>(buffs: BuffRuntime<T>, player
     }
     else if (dash?.action === 'field' && focus && best < 260)
         dashTarget = focus;
-    return { orbit, focus, dashTarget };
+    return { orbit, focus, dashTarget, dashRadius: dash?.action === 'blast' ? BUFF_RULES.blast.radius : dash && buffs.branchOf(dash) === 'furnace' ? 70 : BUFF_RULES.field.radius };
 }
