@@ -8,12 +8,13 @@ import { evolutionOf } from '../buffs/buff-evolutions.js';
 import { MASTERY } from '../buffs/buff-mastery.js';
 import { BRANCH_TEXT, branchPair } from '../buffs/buff-branches.js';
 import { BUFF_UPGRADES, buffLevelMultiplier } from '../buffs/buff-upgrades.js';
-import { buffSynergies, recipeChain } from './buff-build-view.js';
+import { buffSynergies, fragmentChoicePreview, recipeChain } from './buff-build-view.js';
 /** 由 GameUI 持有，重绘保留选择；不存放战斗属性、配方或运行时冷却。 */
 export interface BuffEditorState {
     slot: number;
     picker: Part | null;
     page?: 'recipe' | 'links' | 'growth';
+    notice?: string;
 }
 /** 当前渲染所需的最小视图。面板不保存 Game，也不接触暂停/奖励队列。 */
 export interface BuffPanelState {
@@ -43,14 +44,16 @@ export function renderBuffPanel(p: LayaSprite, w: number, h: number, editor: Buf
         controls.button(p, entry[1], pad + i * (inner + gap) / 3, 10, (inner - gap * 2) / 3, 44, () => {
             editor.page = entry[0];
             editor.picker = null;
+            editor.notice = undefined;
             refresh();
         }, page === entry[0], `buff-page-${entry[0]}`);
     }
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < (editor.picker && page === 'recipe' ? 0 : 2); i++) {
         const r = state.buffs.recipes[i], evolution = complete(r) ? evolutionOf(r) : undefined;
         controls.button(p, `${i + 1}·Lv.${state.buffs.levelOf(r)} ${evolution?.name || (complete(r) ? '已启用' : '未完成')}`, pad + i * (inner + gap) / 2, 66, (inner - gap) / 2, 44, () => {
             editor.slot = i;
             editor.picker = null;
+            editor.notice = undefined;
             refresh();
         }, i === editor.slot, `buff-slot-${i}`);
     }
@@ -84,27 +87,41 @@ export function renderBuffPanel(p: LayaSprite, w: number, h: number, editor: Buf
     }
     else if (editor.picker) {
         const part = editor.picker, pool = FRAGMENTS.filter(f => f.part === part), columns = short || !narrow ? 2 : 1, cw = (inner - gap * (columns - 1)) / columns;
+        const rows = Math.ceil(pool.length / columns), cardH = Math.min(84, (footer - 122 - 8 - (rows - 1) * gap) / rows);
+        const status = controls.text(p, editor.notice || `槽${editor.slot + 1} · 选择${PART_NAMES[part]}\n预览替换结果 · 点击已解锁卡片装入`, pad, 65, inner, 12, editor.notice ? C.gold : C.mint);
+        status.leading = 3;
+        status.name = 'buff-picker-status';
         pool.forEach((f, i) => {
             const unlocked = state.buffs.owned.has(f.id), used = recipe[part] === f.id;
-            controls.button(p, `${used ? '✓ ' : ''}${f.name}${unlocked ? '' : ' · 未解锁'}`, pad + (i % columns) * (cw + gap), 122 + Math.floor(i / columns) * 52, cw, 44, () => {
+            const preview = fragmentChoicePreview(state.buffs.recipes, editor.slot, part, f.id)!;
+            const card = controls.button(p, '', pad + (i % columns) * (cw + gap), 122 + Math.floor(i / columns) * (cardH + gap), cw, cardH, () => {
                 if (!unlocked) {
-                    hooks.toast('击败怪物收集金边碎片，解锁后可组合');
+                    editor.notice = `${f.name}尚未解锁\n收集掉落碎片或领取碎片奖励后可装入`;
+                    refresh();
                     return;
                 }
                 hooks.installBuff(editor.slot, part, f.id);
                 editor.picker = null;
+                editor.notice = undefined;
                 refresh();
-            }, used, `fragment-${f.id}`);
+            }, false, `fragment-${f.id}`);
+            controls.choiceCard(card, used);
+            const tight = cardH < 62;
+            controls.text(card, `${f.name}${used ? ' · 当前' : unlocked ? '' : ' · 未解锁'}`, 8, tight ? 3 : 7, cw - 16, 12, unlocked ? C.text : C.muted);
+            const usage = controls.text(card, preview.usage, 8, tight ? 17 : 28, cw - 16, tight ? 10 : 11, C.muted);
+            usage.leading = 1;
+            usage.name = 'buff-choice-usage-' + f.id;
+            const summary = controls.text(card, preview.summary, 8, tight ? 30 : 49, cw - 16, 10, unlocked ? preview.lost.length ? C.gold : C.mint : C.muted);
+            summary.leading = 1;
+            summary.name = 'buff-choice-preview-' + f.id;
         });
-        const infoY = 122 + Math.ceil(pool.length / columns) * 52 + 4;
-        if (infoY + 40 < footer)
-            controls.text(p, '重复碎片强化匹配的完整配方，标准探索需累计；最高 Lv.5，无匹配时转 5 经验。', pad, infoY, inner, 12, C.muted);
     }
     else {
         PARTS.forEach((part, i) => {
             const id = recipe[part], label = PART_NAMES[part] + ' · ' + (id ? fragment(id)!.name : '请选择'), x = pad + (narrow ? 0 : i * (inner + gap) / 3), y = 122 + (narrow ? i * 52 : 0), cw = narrow ? inner : (inner - 2 * gap) / 3;
             controls.button(p, label, x, y, cw, 44, () => {
                 editor.picker = part;
+                editor.notice = undefined;
                 refresh();
             }, false, `buff-part-${part}`);
         });
@@ -135,6 +152,7 @@ export function renderBuffPanel(p: LayaSprite, w: number, h: number, editor: Buf
         controls.button(p, '返回配方', pad, footer, (inner - gap) / 2, 44, () => {
             editor.page = 'recipe';
             editor.picker = null;
+            editor.notice = undefined;
             refresh();
         }, false, 'buff-back');
     }

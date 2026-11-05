@@ -1,7 +1,28 @@
 import { complete, fragment } from '../buffs/buff-recipes.js';
 import type { Recipe } from '../buffs/buff-types.js';
+import type { Part } from '../buffs/buff-config.js';
+import { TRIGGERS } from '../buffs/buff-config.js';
+import { evolutionOf } from '../buffs/buff-evolutions.js';
 export function recipeChain(recipe: Recipe): string {
     return [recipe.trigger, recipe.action, recipe.element].map(id => id ? fragment(id)?.name || '未选择' : '未选择').join(' → ');
+}
+/** Pure candidate preview: never grant a fragment, install it, or touch cooldowns. */
+export function fragmentChoicePreview(recipes: readonly Recipe[], slot: number, part: Part, id: string) {
+    const f = fragment(id);
+    if (!recipes[slot] || !f || f.part !== part)
+        return null;
+    const next = recipes.map((r, i) => i === slot ? { ...r, [part]: id } as Recipe : r);
+    const before = buffSynergies(recipes), after = buffSynergies(next);
+    const gained = after.filter((r, i) => r.ready && !before[i].ready).map(r => r.name);
+    const lost = before.filter((r, i) => r.ready && !after[i].ready).map(r => r.name);
+    const evolution = complete(next[slot]) ? evolutionOf(next[slot])?.name : undefined;
+    const trigger = TRIGGERS.find(t => t.id === id);
+    const usage = trigger ? `${trigger.note} · 基础冷却 ${trigger.cooldown}s` : 'note' in f ? f.note : ({ bolt: '发射弹丸，命中造成伤害', blast: '瞬时范围爆炸', field: '持续区域，定时伤害', orbit: '环绕接触，持续伤害' }[id as 'bolt' | 'blast' | 'field' | 'orbit']);
+    const missing = (['trigger', 'action', 'element'] as const).filter(p => !next[slot][p]);
+    const summary = [gained.length ? '新增 ' + gained.join('、') : '', lost.length ? '失去 ' + lost.join('、') : '', missing.length ? '配方尚未完整' : evolution ? '进化 ' + evolution : !gained.length && !lost.length ? '联动保持' : ''].filter(Boolean).join(' · ');
+    return {
+        usage, summary, gained, lost, evolution, chain: recipeChain(next[slot])
+    };
 }
 /** Static compatibility, not evidence of an active status or a guaranteed reaction. */
 export function buffSynergies(recipes: readonly Recipe[]) {

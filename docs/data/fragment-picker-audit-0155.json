@@ -1,0 +1,5937 @@
+{
+  "version": "0.15.5",
+  "passed": true,
+  "reports": [
+    {
+      "scope": "Production Laya, real touch page navigation at four phone sizes. Static compatibility, no native FPS claim.",
+      "rows": [
+        {
+          "width": 320,
+          "height": 568,
+          "name": "fire-recipe",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 120,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 208,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 164,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 32,
+              "y": 138,
+              "w": 256,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 32,
+              "y": 190,
+              "w": 256,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 32,
+              "y": 242,
+              "w": 256,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 32,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 164,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.1/5 · 伤害 +0%\n冲刺结束触发 · 冷却 1 秒\n半径 90 区域，持续 4 秒，每 0.5 秒伤害 10；附加 3 秒灼烧。\n进化 · 火种连线：火种持续 6 秒，连接 260 范围内火种；燃烧带每 0.5 秒伤害 65%，交叉不叠加。",
+              "y": 298,
+              "h": 119,
+              "parentBottom": 552
+            }
+          ],
+          "footer": 492,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "name": "fire-links",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 120,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 208,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 164,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 32,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 164,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-link-fire",
+              "text": "火场回拉 · 已搭配 · 槽1 → 槽2\n燃烧目标仍在火场内时，另一槽冲击命中可回拉；每目标 1 秒一次，Boss 不回拉。",
+              "y": 144,
+              "h": 45,
+              "parentBottom": 552
+            },
+            {
+              "name": "buff-link-ice",
+              "text": "提前碎裂 · 未搭配\n槽2已有冲击，另一槽需要完整冰霜环绕配方",
+              "y": 260.6666666666667,
+              "h": 30,
+              "parentBottom": 552
+            },
+            {
+              "name": "buff-link-thunder",
+              "text": "冰霜导冷 · 未搭配\n需要 雷电弹丸 ＋ 另一槽冰霜",
+              "y": 377.33333333333337,
+              "h": 30,
+              "parentBottom": 552
+            }
+          ],
+          "footer": 492,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "name": "ice-recipe",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 120,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 208,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 164,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 32,
+              "y": 138,
+              "w": 256,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 32,
+              "y": 190,
+              "w": 256,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 32,
+              "y": 242,
+              "w": 256,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 32,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 164,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.1/5 · 伤害 +0%\n武器命中 30% 触发 · 冷却 2 秒\n双环绕物持续 3 秒，每 0.35 秒接触伤害 12；减速 35%，持续 2 秒。\n进化 · 冰层碎裂：冰霜环绕对同一敌人 3 秒内叠满 3 层：碎裂伤害 120%，附近敌人减速 2 秒。",
+              "y": 298,
+              "h": 119,
+              "parentBottom": 552
+            }
+          ],
+          "footer": 492,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "name": "ice-links",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 120,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 208,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 164,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 32,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 164,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-link-fire",
+              "text": "火场回拉 · 未搭配\n槽2已有冲击，另一槽需要完整火焰区域配方",
+              "y": 144,
+              "h": 30,
+              "parentBottom": 552
+            },
+            {
+              "name": "buff-link-ice",
+              "text": "提前碎裂 · 已搭配 · 槽1 → 槽2\n同一目标至少 2 层冰霜后，另一槽冲击命中提前碎裂；每目标 1 秒一次。",
+              "y": 260.6666666666667,
+              "h": 45,
+              "parentBottom": 552
+            },
+            {
+              "name": "buff-link-thunder",
+              "text": "冰霜导冷 · 未搭配\n槽1已有冰霜，另一槽需要完整雷电弹丸配方",
+              "y": 377.33333333333337,
+              "h": 30,
+              "parentBottom": 552
+            }
+          ],
+          "footer": 492,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "name": "thunder-recipe",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 120,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 208,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 164,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 32,
+              "y": 138,
+              "w": 256,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 32,
+              "y": 190,
+              "w": 256,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 32,
+              "y": 242,
+              "w": 256,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 32,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 164,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.1/5 · 伤害 +0%\n武器命中 30% 触发 · 冷却 2 秒\n发射弹丸，命中伤害 26；向附近 2 个敌人传导。\n进化 · 雷印引爆：9 秒内三印引爆 160%，附近 3 敌各 80%；跨槽冰霜导冷额外一印，每敌 1 秒一次。引爆后锁定 1 秒。",
+              "y": 298,
+              "h": 119,
+              "parentBottom": 552
+            }
+          ],
+          "footer": 492,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "name": "thunder-links",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 120,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 208,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 164,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 32,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 164,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-link-fire",
+              "text": "火场回拉 · 未搭配\n需要 火焰区域 ＋ 另一槽冲击",
+              "y": 144,
+              "h": 30,
+              "parentBottom": 552
+            },
+            {
+              "name": "buff-link-ice",
+              "text": "提前碎裂 · 未搭配\n需要 冰霜环绕 ＋ 另一槽冲击",
+              "y": 260.6666666666667,
+              "h": 30,
+              "parentBottom": 552
+            },
+            {
+              "name": "buff-link-thunder",
+              "text": "冰霜导冷 · 已搭配 · 槽1 → 槽2\n目标受另一槽冰霜减速时，雷丸命中额外加一印；每敌 1 秒一次。",
+              "y": 377.33333333333337,
+              "h": 45,
+              "parentBottom": 552
+            }
+          ],
+          "footer": 492,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "name": "growth",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 120,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 208,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 164,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 32,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 164,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-growth",
+              "text": "命中 → 弹丸 → 雷电 · Lv.1/5\n重复匹配碎片 0/1 → Lv.2\nLv.3 二选一：传印 / 蓄雷\n标准探索：4/7 分钟、Lv.3 起可选专精",
+              "y": 138,
+              "h": 100,
+              "parentBottom": 552
+            }
+          ],
+          "footer": 492,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "name": "picker",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 120,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 208,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "fragment-fire",
+              "x": 32,
+              "y": 138,
+              "w": 256,
+              "h": 80.5
+            },
+            {
+              "name": "fragment-ice",
+              "x": 32,
+              "y": 226.5,
+              "w": 256,
+              "h": 80.5
+            },
+            {
+              "name": "fragment-lightning",
+              "x": 32,
+              "y": 315,
+              "w": 256,
+              "h": 80.5
+            },
+            {
+              "name": "fragment-force",
+              "x": 32,
+              "y": 403.5,
+              "w": 256,
+              "h": 80.5
+            },
+            {
+              "name": "buff-back",
+              "x": 32,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 164,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-picker-status",
+              "text": "槽1 · 选择元素\n预览替换结果 · 点击已解锁卡片装入",
+              "y": 81,
+              "h": 30,
+              "parentBottom": 552
+            },
+            {
+              "name": "buff-choice-usage-fire",
+              "text": "附加 3 秒灼烧",
+              "y": 166,
+              "h": 12,
+              "parentBottom": 218.5
+            },
+            {
+              "name": "buff-choice-preview-fire",
+              "text": "失去 冰霜导冷",
+              "y": 187,
+              "h": 11,
+              "parentBottom": 218.5
+            },
+            {
+              "name": "buff-choice-usage-ice",
+              "text": "减速 35%，持续 2 秒",
+              "y": 254.5,
+              "h": 12,
+              "parentBottom": 307
+            },
+            {
+              "name": "buff-choice-preview-ice",
+              "text": "失去 冰霜导冷",
+              "y": 275.5,
+              "h": 11,
+              "parentBottom": 307
+            },
+            {
+              "name": "buff-choice-usage-lightning",
+              "text": "向附近 2 个敌人传导",
+              "y": 343,
+              "h": 12,
+              "parentBottom": 395.5
+            },
+            {
+              "name": "buff-choice-preview-lightning",
+              "text": "进化 雷印引爆",
+              "y": 364,
+              "h": 11,
+              "parentBottom": 395.5
+            },
+            {
+              "name": "buff-choice-usage-force",
+              "text": "强力击退",
+              "y": 431.5,
+              "h": 12,
+              "parentBottom": 484
+            },
+            {
+              "name": "buff-choice-preview-force",
+              "text": "失去 冰霜导冷",
+              "y": 452.5,
+              "h": 11,
+              "parentBottom": 484
+            }
+          ],
+          "footer": 492,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "name": "picker-locked",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 120,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 208,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "fragment-fire",
+              "x": 32,
+              "y": 138,
+              "w": 256,
+              "h": 80.5
+            },
+            {
+              "name": "fragment-ice",
+              "x": 32,
+              "y": 226.5,
+              "w": 256,
+              "h": 80.5
+            },
+            {
+              "name": "fragment-lightning",
+              "x": 32,
+              "y": 315,
+              "w": 256,
+              "h": 80.5
+            },
+            {
+              "name": "fragment-force",
+              "x": 32,
+              "y": 403.5,
+              "w": 256,
+              "h": 80.5
+            },
+            {
+              "name": "buff-back",
+              "x": 32,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 164,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-picker-status",
+              "text": "冲击尚未解锁\n收集掉落碎片或领取碎片奖励后可装入",
+              "y": 81,
+              "h": 30,
+              "parentBottom": 552
+            },
+            {
+              "name": "buff-choice-usage-fire",
+              "text": "附加 3 秒灼烧",
+              "y": 166,
+              "h": 12,
+              "parentBottom": 218.5
+            },
+            {
+              "name": "buff-choice-preview-fire",
+              "text": "失去 冰霜导冷",
+              "y": 187,
+              "h": 11,
+              "parentBottom": 218.5
+            },
+            {
+              "name": "buff-choice-usage-ice",
+              "text": "减速 35%，持续 2 秒",
+              "y": 254.5,
+              "h": 12,
+              "parentBottom": 307
+            },
+            {
+              "name": "buff-choice-preview-ice",
+              "text": "失去 冰霜导冷",
+              "y": 275.5,
+              "h": 11,
+              "parentBottom": 307
+            },
+            {
+              "name": "buff-choice-usage-lightning",
+              "text": "向附近 2 个敌人传导",
+              "y": 343,
+              "h": 12,
+              "parentBottom": 395.5
+            },
+            {
+              "name": "buff-choice-preview-lightning",
+              "text": "进化 雷印引爆",
+              "y": 364,
+              "h": 11,
+              "parentBottom": 395.5
+            },
+            {
+              "name": "buff-choice-usage-force",
+              "text": "强力击退",
+              "y": 431.5,
+              "h": 12,
+              "parentBottom": 484
+            },
+            {
+              "name": "buff-choice-preview-force",
+              "text": "失去 冰霜导冷",
+              "y": 452.5,
+              "h": 11,
+              "parentBottom": 484
+            }
+          ],
+          "footer": 492,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "name": "picker-installed",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 120,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 208,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 164,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 32,
+              "y": 138,
+              "w": 256,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 32,
+              "y": 190,
+              "w": 256,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 32,
+              "y": 242,
+              "w": 256,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 32,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 164,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.1/5 · 伤害 +0%\n武器命中 30% 触发 · 冷却 2 秒\n发射弹丸，命中伤害 26；附加 3 秒灼烧。",
+              "y": 298,
+              "h": 51,
+              "parentBottom": 552
+            }
+          ],
+          "footer": 492,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "name": "picker-trigger",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 120,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 208,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "fragment-hit",
+              "x": 32,
+              "y": 138,
+              "w": 256,
+              "h": 80.5
+            },
+            {
+              "name": "fragment-dash",
+              "x": 32,
+              "y": 226.5,
+              "w": 256,
+              "h": 80.5
+            },
+            {
+              "name": "fragment-kill",
+              "x": 32,
+              "y": 315,
+              "w": 256,
+              "h": 80.5
+            },
+            {
+              "name": "fragment-hurt",
+              "x": 32,
+              "y": 403.5,
+              "w": 256,
+              "h": 80.5
+            },
+            {
+              "name": "buff-back",
+              "x": 32,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 164,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-picker-status",
+              "text": "槽1 · 选择触发\n预览替换结果 · 点击已解锁卡片装入",
+              "y": 81,
+              "h": 30,
+              "parentBottom": 552
+            },
+            {
+              "name": "buff-choice-usage-hit",
+              "text": "武器命中 30% 触发 · 基础冷却 2s",
+              "y": 166,
+              "h": 12,
+              "parentBottom": 218.5
+            },
+            {
+              "name": "buff-choice-preview-hit",
+              "text": "联动保持",
+              "y": 187,
+              "h": 11,
+              "parentBottom": 218.5
+            },
+            {
+              "name": "buff-choice-usage-dash",
+              "text": "冲刺结束触发 · 基础冷却 1s",
+              "y": 254.5,
+              "h": 12,
+              "parentBottom": 307
+            },
+            {
+              "name": "buff-choice-preview-dash",
+              "text": "联动保持",
+              "y": 275.5,
+              "h": 11,
+              "parentBottom": 307
+            },
+            {
+              "name": "buff-choice-usage-kill",
+              "text": "击杀敌人触发 · 基础冷却 2.5s",
+              "y": 343,
+              "h": 12,
+              "parentBottom": 395.5
+            },
+            {
+              "name": "buff-choice-preview-kill",
+              "text": "联动保持",
+              "y": 364,
+              "h": 11,
+              "parentBottom": 395.5
+            },
+            {
+              "name": "buff-choice-usage-hurt",
+              "text": "实际受伤且存活时触发 · 基础冷却 4s",
+              "y": 431.5,
+              "h": 12,
+              "parentBottom": 484
+            },
+            {
+              "name": "buff-choice-preview-hurt",
+              "text": "联动保持",
+              "y": 452.5,
+              "h": 11,
+              "parentBottom": 484
+            }
+          ],
+          "footer": 492,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "name": "picker-action",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 120,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 208,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "fragment-bolt",
+              "x": 32,
+              "y": 138,
+              "w": 256,
+              "h": 80.5
+            },
+            {
+              "name": "fragment-blast",
+              "x": 32,
+              "y": 226.5,
+              "w": 256,
+              "h": 80.5
+            },
+            {
+              "name": "fragment-field",
+              "x": 32,
+              "y": 315,
+              "w": 256,
+              "h": 80.5
+            },
+            {
+              "name": "fragment-orbit",
+              "x": 32,
+              "y": 403.5,
+              "w": 256,
+              "h": 80.5
+            },
+            {
+              "name": "buff-back",
+              "x": 32,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 164,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-picker-status",
+              "text": "槽1 · 选择行为\n预览替换结果 · 点击已解锁卡片装入",
+              "y": 81,
+              "h": 30,
+              "parentBottom": 552
+            },
+            {
+              "name": "buff-choice-usage-bolt",
+              "text": "发射弹丸，命中造成伤害",
+              "y": 166,
+              "h": 12,
+              "parentBottom": 218.5
+            },
+            {
+              "name": "buff-choice-preview-bolt",
+              "text": "联动保持",
+              "y": 187,
+              "h": 11,
+              "parentBottom": 218.5
+            },
+            {
+              "name": "buff-choice-usage-blast",
+              "text": "瞬时范围爆炸",
+              "y": 254.5,
+              "h": 12,
+              "parentBottom": 307
+            },
+            {
+              "name": "buff-choice-preview-blast",
+              "text": "联动保持",
+              "y": 275.5,
+              "h": 11,
+              "parentBottom": 307
+            },
+            {
+              "name": "buff-choice-usage-field",
+              "text": "持续区域，定时伤害",
+              "y": 343,
+              "h": 12,
+              "parentBottom": 395.5
+            },
+            {
+              "name": "buff-choice-preview-field",
+              "text": "进化 火种连线",
+              "y": 364,
+              "h": 11,
+              "parentBottom": 395.5
+            },
+            {
+              "name": "buff-choice-usage-orbit",
+              "text": "环绕接触，持续伤害",
+              "y": 431.5,
+              "h": 12,
+              "parentBottom": 484
+            },
+            {
+              "name": "buff-choice-preview-orbit",
+              "text": "联动保持",
+              "y": 452.5,
+              "h": 11,
+              "parentBottom": 484
+            }
+          ],
+          "footer": 492,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "name": "branch-mastery",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 120,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 208,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 164,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 32,
+              "y": 138,
+              "w": 256,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 32,
+              "y": 190,
+              "w": 256,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 32,
+              "y": 242,
+              "w": 256,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 32,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 164,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.3/5 · 蓄雷 · 命中触发\n五印/9 秒，爆发 300%，取消引爆溅射；Lv.5 为 350%。跨槽冰霜可加印。\n专精 · 疾奏回响 · 伤害 -20% / 冷却 -20%",
+              "y": 298,
+              "h": 68,
+              "parentBottom": 552
+            }
+          ],
+          "footer": 492,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "name": "branch-growth",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 120,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 208,
+              "y": 26,
+              "w": 80,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 164,
+              "y": 82,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 32,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 164,
+              "y": 492,
+              "w": 124,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-growth",
+              "text": "命中 → 弹丸 → 雷电 · Lv.3/5\n重复匹配碎片 0/3 → Lv.4\n分支 · 蓄雷\n专精 · 疾奏回响 · 伤害 -20% / 冷却 -20%",
+              "y": 138,
+              "h": 100,
+              "parentBottom": 552
+            }
+          ],
+          "footer": 492,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "name": "fire-recipe",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 35.650000000000006,
+              "y": 126,
+              "w": 101.9,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 145.55,
+              "y": 126,
+              "w": 101.89999999999998,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 255.45,
+              "y": 126,
+              "w": 101.90000000000003,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 35.650000000000006,
+              "y": 182,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 200.5,
+              "y": 182,
+              "w": 156.85000000000002,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 35.650000000000006,
+              "y": 238,
+              "w": 321.70000000000005,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 35.650000000000006,
+              "y": 290,
+              "w": 321.70000000000005,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 35.650000000000006,
+              "y": 342,
+              "w": 321.70000000000005,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 35.650000000000006,
+              "y": 676,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 200.5,
+              "y": 676,
+              "w": 156.85000000000002,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.1/5 · 伤害 +0%\n冲刺结束触发 · 冷却 1 秒\n半径 90 区域，持续 4 秒，每 0.5 秒伤害 10；附加 3 秒灼烧。\n进化 · 火种连线：火种持续 6 秒，连接 260 范围内火种；燃烧带每 0.5 秒伤害 65%，交叉不叠加。",
+              "y": 398,
+              "h": 102,
+              "parentBottom": 736
+            }
+          ],
+          "footer": 676,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "name": "fire-links",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 35.650000000000006,
+              "y": 126,
+              "w": 101.9,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 145.55,
+              "y": 126,
+              "w": 101.89999999999998,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 255.45,
+              "y": 126,
+              "w": 101.90000000000003,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 35.650000000000006,
+              "y": 182,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 200.5,
+              "y": 182,
+              "w": 156.85000000000002,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 35.650000000000006,
+              "y": 676,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 200.5,
+              "y": 676,
+              "w": 156.85000000000002,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-link-fire",
+              "text": "火场回拉 · 已搭配 · 槽1 → 槽2\n燃烧目标仍在火场内时，另一槽冲击命中可回拉；每目标 1 秒一次，Boss 不回拉。",
+              "y": 244,
+              "h": 45,
+              "parentBottom": 736
+            },
+            {
+              "name": "buff-link-ice",
+              "text": "提前碎裂 · 未搭配\n槽2已有冲击，另一槽需要完整冰霜环绕配方",
+              "y": 388.66666666666663,
+              "h": 30,
+              "parentBottom": 736
+            },
+            {
+              "name": "buff-link-thunder",
+              "text": "冰霜导冷 · 未搭配\n需要 雷电弹丸 ＋ 另一槽冰霜",
+              "y": 533.3333333333333,
+              "h": 30,
+              "parentBottom": 736
+            }
+          ],
+          "footer": 676,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "name": "ice-recipe",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 35.650000000000006,
+              "y": 126,
+              "w": 101.9,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 145.55,
+              "y": 126,
+              "w": 101.89999999999998,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 255.45,
+              "y": 126,
+              "w": 101.90000000000003,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 35.650000000000006,
+              "y": 182,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 200.5,
+              "y": 182,
+              "w": 156.85000000000002,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 35.650000000000006,
+              "y": 238,
+              "w": 321.70000000000005,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 35.650000000000006,
+              "y": 290,
+              "w": 321.70000000000005,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 35.650000000000006,
+              "y": 342,
+              "w": 321.70000000000005,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 35.650000000000006,
+              "y": 676,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 200.5,
+              "y": 676,
+              "w": 156.85000000000002,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.1/5 · 伤害 +0%\n武器命中 30% 触发 · 冷却 2 秒\n双环绕物持续 3 秒，每 0.35 秒接触伤害 12；减速 35%，持续 2 秒。\n进化 · 冰层碎裂：冰霜环绕对同一敌人 3 秒内叠满 3 层：碎裂伤害 120%，附近敌人减速 2 秒。",
+              "y": 398,
+              "h": 102,
+              "parentBottom": 736
+            }
+          ],
+          "footer": 676,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "name": "ice-links",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 35.650000000000006,
+              "y": 126,
+              "w": 101.9,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 145.55,
+              "y": 126,
+              "w": 101.89999999999998,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 255.45,
+              "y": 126,
+              "w": 101.90000000000003,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 35.650000000000006,
+              "y": 182,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 200.5,
+              "y": 182,
+              "w": 156.85000000000002,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 35.650000000000006,
+              "y": 676,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 200.5,
+              "y": 676,
+              "w": 156.85000000000002,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-link-fire",
+              "text": "火场回拉 · 未搭配\n槽2已有冲击，另一槽需要完整火焰区域配方",
+              "y": 244,
+              "h": 30,
+              "parentBottom": 736
+            },
+            {
+              "name": "buff-link-ice",
+              "text": "提前碎裂 · 已搭配 · 槽1 → 槽2\n同一目标至少 2 层冰霜后，另一槽冲击命中提前碎裂；每目标 1 秒一次。",
+              "y": 388.66666666666663,
+              "h": 45,
+              "parentBottom": 736
+            },
+            {
+              "name": "buff-link-thunder",
+              "text": "冰霜导冷 · 未搭配\n槽1已有冰霜，另一槽需要完整雷电弹丸配方",
+              "y": 533.3333333333333,
+              "h": 30,
+              "parentBottom": 736
+            }
+          ],
+          "footer": 676,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "name": "thunder-recipe",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 35.650000000000006,
+              "y": 126,
+              "w": 101.9,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 145.55,
+              "y": 126,
+              "w": 101.89999999999998,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 255.45,
+              "y": 126,
+              "w": 101.90000000000003,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 35.650000000000006,
+              "y": 182,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 200.5,
+              "y": 182,
+              "w": 156.85000000000002,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 35.650000000000006,
+              "y": 238,
+              "w": 321.70000000000005,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 35.650000000000006,
+              "y": 290,
+              "w": 321.70000000000005,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 35.650000000000006,
+              "y": 342,
+              "w": 321.70000000000005,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 35.650000000000006,
+              "y": 676,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 200.5,
+              "y": 676,
+              "w": 156.85000000000002,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.1/5 · 伤害 +0%\n武器命中 30% 触发 · 冷却 2 秒\n发射弹丸，命中伤害 26；向附近 2 个敌人传导。\n进化 · 雷印引爆：9 秒内三印引爆 160%，附近 3 敌各 80%；跨槽冰霜导冷额外一印，每敌 1 秒一次。引爆后锁定 1 秒。",
+              "y": 398,
+              "h": 102,
+              "parentBottom": 736
+            }
+          ],
+          "footer": 676,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "name": "thunder-links",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 35.650000000000006,
+              "y": 126,
+              "w": 101.9,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 145.55,
+              "y": 126,
+              "w": 101.89999999999998,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 255.45,
+              "y": 126,
+              "w": 101.90000000000003,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 35.650000000000006,
+              "y": 182,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 200.5,
+              "y": 182,
+              "w": 156.85000000000002,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 35.650000000000006,
+              "y": 676,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 200.5,
+              "y": 676,
+              "w": 156.85000000000002,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-link-fire",
+              "text": "火场回拉 · 未搭配\n需要 火焰区域 ＋ 另一槽冲击",
+              "y": 244,
+              "h": 30,
+              "parentBottom": 736
+            },
+            {
+              "name": "buff-link-ice",
+              "text": "提前碎裂 · 未搭配\n需要 冰霜环绕 ＋ 另一槽冲击",
+              "y": 388.66666666666663,
+              "h": 30,
+              "parentBottom": 736
+            },
+            {
+              "name": "buff-link-thunder",
+              "text": "冰霜导冷 · 已搭配 · 槽1 → 槽2\n目标受另一槽冰霜减速时，雷丸命中额外加一印；每敌 1 秒一次。",
+              "y": 533.3333333333333,
+              "h": 45,
+              "parentBottom": 736
+            }
+          ],
+          "footer": 676,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "name": "growth",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 35.650000000000006,
+              "y": 126,
+              "w": 101.9,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 145.55,
+              "y": 126,
+              "w": 101.89999999999998,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 255.45,
+              "y": 126,
+              "w": 101.90000000000003,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 35.650000000000006,
+              "y": 182,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 200.5,
+              "y": 182,
+              "w": 156.85000000000002,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 35.650000000000006,
+              "y": 676,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 200.5,
+              "y": 676,
+              "w": 156.85000000000002,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-growth",
+              "text": "命中 → 弹丸 → 雷电 · Lv.1/5\n重复匹配碎片 0/1 → Lv.2\nLv.3 二选一：传印 / 蓄雷\n标准探索：4/7 分钟、Lv.3 起可选专精",
+              "y": 238,
+              "h": 100,
+              "parentBottom": 736
+            }
+          ],
+          "footer": 676,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "name": "picker",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 35.650000000000006,
+              "y": 126,
+              "w": 101.9,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 145.55,
+              "y": 126,
+              "w": 101.89999999999998,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 255.45,
+              "y": 126,
+              "w": 101.90000000000003,
+              "h": 44
+            },
+            {
+              "name": "fragment-fire",
+              "x": 35.650000000000006,
+              "y": 238,
+              "w": 321.70000000000005,
+              "h": 84
+            },
+            {
+              "name": "fragment-ice",
+              "x": 35.650000000000006,
+              "y": 330,
+              "w": 321.70000000000005,
+              "h": 84
+            },
+            {
+              "name": "fragment-lightning",
+              "x": 35.650000000000006,
+              "y": 422,
+              "w": 321.70000000000005,
+              "h": 84
+            },
+            {
+              "name": "fragment-force",
+              "x": 35.650000000000006,
+              "y": 514,
+              "w": 321.70000000000005,
+              "h": 84
+            },
+            {
+              "name": "buff-back",
+              "x": 35.650000000000006,
+              "y": 676,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 200.5,
+              "y": 676,
+              "w": 156.85000000000002,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-picker-status",
+              "text": "槽1 · 选择元素\n预览替换结果 · 点击已解锁卡片装入",
+              "y": 181,
+              "h": 30,
+              "parentBottom": 736
+            },
+            {
+              "name": "buff-choice-usage-fire",
+              "text": "附加 3 秒灼烧",
+              "y": 266,
+              "h": 12,
+              "parentBottom": 322
+            },
+            {
+              "name": "buff-choice-preview-fire",
+              "text": "失去 冰霜导冷",
+              "y": 287,
+              "h": 11,
+              "parentBottom": 322
+            },
+            {
+              "name": "buff-choice-usage-ice",
+              "text": "减速 35%，持续 2 秒",
+              "y": 358,
+              "h": 12,
+              "parentBottom": 414
+            },
+            {
+              "name": "buff-choice-preview-ice",
+              "text": "失去 冰霜导冷",
+              "y": 379,
+              "h": 11,
+              "parentBottom": 414
+            },
+            {
+              "name": "buff-choice-usage-lightning",
+              "text": "向附近 2 个敌人传导",
+              "y": 450,
+              "h": 12,
+              "parentBottom": 506
+            },
+            {
+              "name": "buff-choice-preview-lightning",
+              "text": "进化 雷印引爆",
+              "y": 471,
+              "h": 11,
+              "parentBottom": 506
+            },
+            {
+              "name": "buff-choice-usage-force",
+              "text": "强力击退",
+              "y": 542,
+              "h": 12,
+              "parentBottom": 598
+            },
+            {
+              "name": "buff-choice-preview-force",
+              "text": "失去 冰霜导冷",
+              "y": 563,
+              "h": 11,
+              "parentBottom": 598
+            }
+          ],
+          "footer": 676,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "name": "picker-locked",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 35.650000000000006,
+              "y": 126,
+              "w": 101.9,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 145.55,
+              "y": 126,
+              "w": 101.89999999999998,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 255.45,
+              "y": 126,
+              "w": 101.90000000000003,
+              "h": 44
+            },
+            {
+              "name": "fragment-fire",
+              "x": 35.650000000000006,
+              "y": 238,
+              "w": 321.70000000000005,
+              "h": 84
+            },
+            {
+              "name": "fragment-ice",
+              "x": 35.650000000000006,
+              "y": 330,
+              "w": 321.70000000000005,
+              "h": 84
+            },
+            {
+              "name": "fragment-lightning",
+              "x": 35.650000000000006,
+              "y": 422,
+              "w": 321.70000000000005,
+              "h": 84
+            },
+            {
+              "name": "fragment-force",
+              "x": 35.650000000000006,
+              "y": 514,
+              "w": 321.70000000000005,
+              "h": 84
+            },
+            {
+              "name": "buff-back",
+              "x": 35.650000000000006,
+              "y": 676,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 200.5,
+              "y": 676,
+              "w": 156.85000000000002,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-picker-status",
+              "text": "冲击尚未解锁\n收集掉落碎片或领取碎片奖励后可装入",
+              "y": 181,
+              "h": 30,
+              "parentBottom": 736
+            },
+            {
+              "name": "buff-choice-usage-fire",
+              "text": "附加 3 秒灼烧",
+              "y": 266,
+              "h": 12,
+              "parentBottom": 322
+            },
+            {
+              "name": "buff-choice-preview-fire",
+              "text": "失去 冰霜导冷",
+              "y": 287,
+              "h": 11,
+              "parentBottom": 322
+            },
+            {
+              "name": "buff-choice-usage-ice",
+              "text": "减速 35%，持续 2 秒",
+              "y": 358,
+              "h": 12,
+              "parentBottom": 414
+            },
+            {
+              "name": "buff-choice-preview-ice",
+              "text": "失去 冰霜导冷",
+              "y": 379,
+              "h": 11,
+              "parentBottom": 414
+            },
+            {
+              "name": "buff-choice-usage-lightning",
+              "text": "向附近 2 个敌人传导",
+              "y": 450,
+              "h": 12,
+              "parentBottom": 506
+            },
+            {
+              "name": "buff-choice-preview-lightning",
+              "text": "进化 雷印引爆",
+              "y": 471,
+              "h": 11,
+              "parentBottom": 506
+            },
+            {
+              "name": "buff-choice-usage-force",
+              "text": "强力击退",
+              "y": 542,
+              "h": 12,
+              "parentBottom": 598
+            },
+            {
+              "name": "buff-choice-preview-force",
+              "text": "失去 冰霜导冷",
+              "y": 563,
+              "h": 11,
+              "parentBottom": 598
+            }
+          ],
+          "footer": 676,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "name": "picker-installed",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 35.650000000000006,
+              "y": 126,
+              "w": 101.9,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 145.55,
+              "y": 126,
+              "w": 101.89999999999998,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 255.45,
+              "y": 126,
+              "w": 101.90000000000003,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 35.650000000000006,
+              "y": 182,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 200.5,
+              "y": 182,
+              "w": 156.85000000000002,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 35.650000000000006,
+              "y": 238,
+              "w": 321.70000000000005,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 35.650000000000006,
+              "y": 290,
+              "w": 321.70000000000005,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 35.650000000000006,
+              "y": 342,
+              "w": 321.70000000000005,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 35.650000000000006,
+              "y": 676,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 200.5,
+              "y": 676,
+              "w": 156.85000000000002,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.1/5 · 伤害 +0%\n武器命中 30% 触发 · 冷却 2 秒\n发射弹丸，命中伤害 26；附加 3 秒灼烧。",
+              "y": 398,
+              "h": 51,
+              "parentBottom": 736
+            }
+          ],
+          "footer": 676,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "name": "picker-trigger",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 35.650000000000006,
+              "y": 126,
+              "w": 101.9,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 145.55,
+              "y": 126,
+              "w": 101.89999999999998,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 255.45,
+              "y": 126,
+              "w": 101.90000000000003,
+              "h": 44
+            },
+            {
+              "name": "fragment-hit",
+              "x": 35.650000000000006,
+              "y": 238,
+              "w": 321.70000000000005,
+              "h": 84
+            },
+            {
+              "name": "fragment-dash",
+              "x": 35.650000000000006,
+              "y": 330,
+              "w": 321.70000000000005,
+              "h": 84
+            },
+            {
+              "name": "fragment-kill",
+              "x": 35.650000000000006,
+              "y": 422,
+              "w": 321.70000000000005,
+              "h": 84
+            },
+            {
+              "name": "fragment-hurt",
+              "x": 35.650000000000006,
+              "y": 514,
+              "w": 321.70000000000005,
+              "h": 84
+            },
+            {
+              "name": "buff-back",
+              "x": 35.650000000000006,
+              "y": 676,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 200.5,
+              "y": 676,
+              "w": 156.85000000000002,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-picker-status",
+              "text": "槽1 · 选择触发\n预览替换结果 · 点击已解锁卡片装入",
+              "y": 181,
+              "h": 30,
+              "parentBottom": 736
+            },
+            {
+              "name": "buff-choice-usage-hit",
+              "text": "武器命中 30% 触发 · 基础冷却 2s",
+              "y": 266,
+              "h": 12,
+              "parentBottom": 322
+            },
+            {
+              "name": "buff-choice-preview-hit",
+              "text": "联动保持",
+              "y": 287,
+              "h": 11,
+              "parentBottom": 322
+            },
+            {
+              "name": "buff-choice-usage-dash",
+              "text": "冲刺结束触发 · 基础冷却 1s",
+              "y": 358,
+              "h": 12,
+              "parentBottom": 414
+            },
+            {
+              "name": "buff-choice-preview-dash",
+              "text": "联动保持",
+              "y": 379,
+              "h": 11,
+              "parentBottom": 414
+            },
+            {
+              "name": "buff-choice-usage-kill",
+              "text": "击杀敌人触发 · 基础冷却 2.5s",
+              "y": 450,
+              "h": 12,
+              "parentBottom": 506
+            },
+            {
+              "name": "buff-choice-preview-kill",
+              "text": "联动保持",
+              "y": 471,
+              "h": 11,
+              "parentBottom": 506
+            },
+            {
+              "name": "buff-choice-usage-hurt",
+              "text": "实际受伤且存活时触发 · 基础冷却 4s",
+              "y": 542,
+              "h": 12,
+              "parentBottom": 598
+            },
+            {
+              "name": "buff-choice-preview-hurt",
+              "text": "联动保持",
+              "y": 563,
+              "h": 11,
+              "parentBottom": 598
+            }
+          ],
+          "footer": 676,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "name": "picker-action",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 35.650000000000006,
+              "y": 126,
+              "w": 101.9,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 145.55,
+              "y": 126,
+              "w": 101.89999999999998,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 255.45,
+              "y": 126,
+              "w": 101.90000000000003,
+              "h": 44
+            },
+            {
+              "name": "fragment-bolt",
+              "x": 35.650000000000006,
+              "y": 238,
+              "w": 321.70000000000005,
+              "h": 84
+            },
+            {
+              "name": "fragment-blast",
+              "x": 35.650000000000006,
+              "y": 330,
+              "w": 321.70000000000005,
+              "h": 84
+            },
+            {
+              "name": "fragment-field",
+              "x": 35.650000000000006,
+              "y": 422,
+              "w": 321.70000000000005,
+              "h": 84
+            },
+            {
+              "name": "fragment-orbit",
+              "x": 35.650000000000006,
+              "y": 514,
+              "w": 321.70000000000005,
+              "h": 84
+            },
+            {
+              "name": "buff-back",
+              "x": 35.650000000000006,
+              "y": 676,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 200.5,
+              "y": 676,
+              "w": 156.85000000000002,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-picker-status",
+              "text": "槽1 · 选择行为\n预览替换结果 · 点击已解锁卡片装入",
+              "y": 181,
+              "h": 30,
+              "parentBottom": 736
+            },
+            {
+              "name": "buff-choice-usage-bolt",
+              "text": "发射弹丸，命中造成伤害",
+              "y": 266,
+              "h": 12,
+              "parentBottom": 322
+            },
+            {
+              "name": "buff-choice-preview-bolt",
+              "text": "联动保持",
+              "y": 287,
+              "h": 11,
+              "parentBottom": 322
+            },
+            {
+              "name": "buff-choice-usage-blast",
+              "text": "瞬时范围爆炸",
+              "y": 358,
+              "h": 12,
+              "parentBottom": 414
+            },
+            {
+              "name": "buff-choice-preview-blast",
+              "text": "联动保持",
+              "y": 379,
+              "h": 11,
+              "parentBottom": 414
+            },
+            {
+              "name": "buff-choice-usage-field",
+              "text": "持续区域，定时伤害",
+              "y": 450,
+              "h": 12,
+              "parentBottom": 506
+            },
+            {
+              "name": "buff-choice-preview-field",
+              "text": "进化 火种连线",
+              "y": 471,
+              "h": 11,
+              "parentBottom": 506
+            },
+            {
+              "name": "buff-choice-usage-orbit",
+              "text": "环绕接触，持续伤害",
+              "y": 542,
+              "h": 12,
+              "parentBottom": 598
+            },
+            {
+              "name": "buff-choice-preview-orbit",
+              "text": "联动保持",
+              "y": 563,
+              "h": 11,
+              "parentBottom": 598
+            }
+          ],
+          "footer": 676,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "name": "branch-mastery",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 35.650000000000006,
+              "y": 126,
+              "w": 101.9,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 145.55,
+              "y": 126,
+              "w": 101.89999999999998,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 255.45,
+              "y": 126,
+              "w": 101.90000000000003,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 35.650000000000006,
+              "y": 182,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 200.5,
+              "y": 182,
+              "w": 156.85000000000002,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 35.650000000000006,
+              "y": 238,
+              "w": 321.70000000000005,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 35.650000000000006,
+              "y": 290,
+              "w": 321.70000000000005,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 35.650000000000006,
+              "y": 342,
+              "w": 321.70000000000005,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 35.650000000000006,
+              "y": 676,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 200.5,
+              "y": 676,
+              "w": 156.85000000000002,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.3/5 · 伤害 +10%\n武器命中 30% 触发 · 冷却 1.6 秒\n发射弹丸，命中伤害 23.2；向附近 2 个敌人传导。\n分支 · 蓄雷：改为五印引爆，主目标 300% 伤害，取消引爆溅射；窗口仍为 9 秒。Lv.5 提高至 350%。跨槽冰霜导冷额外一印，每目标 1 秒一次。\n专精 · 疾奏回响 · 伤害 -20% / 冷却 -20%",
+              "y": 398,
+              "h": 119,
+              "parentBottom": 736
+            }
+          ],
+          "footer": 676,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 393,
+          "height": 852,
+          "name": "branch-growth",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 35.650000000000006,
+              "y": 126,
+              "w": 101.9,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 145.55,
+              "y": 126,
+              "w": 101.89999999999998,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 255.45,
+              "y": 126,
+              "w": 101.90000000000003,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 35.650000000000006,
+              "y": 182,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 200.5,
+              "y": 182,
+              "w": 156.85000000000002,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 35.650000000000006,
+              "y": 676,
+              "w": 156.85,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 200.5,
+              "y": 676,
+              "w": 156.85000000000002,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-growth",
+              "text": "命中 → 弹丸 → 雷电 · Lv.3/5\n重复匹配碎片 0/3 → Lv.4\n分支 · 蓄雷\n专精 · 疾奏回响 · 伤害 -20% / 冷却 -20%",
+              "y": 238,
+              "h": 100,
+              "parentBottom": 736
+            }
+          ],
+          "footer": 676,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "name": "fire-recipe",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 202.66666666666666,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 373.3333333333333,
+              "y": 26,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 288,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 32,
+              "y": 138,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 202.66666666666666,
+              "y": 138,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 373.3333333333333,
+              "y": 138,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 32,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 288,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.1/5 · 伤害 +0% · 进化：火种连线\n冲刺 → 区域 → 火焰",
+              "y": 192,
+              "h": 26,
+              "parentBottom": 304
+            }
+          ],
+          "footer": 244,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "name": "fire-links",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 202.66666666666666,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 373.3333333333333,
+              "y": 26,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 288,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 32,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 288,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-link-fire",
+              "text": "火场回拉 · 已搭配 · 槽1 → 槽2\n火场内燃烧目标受跨槽冲击可回拉；1秒/目标，Boss除外。",
+              "y": 138,
+              "h": 24,
+              "parentBottom": 304
+            },
+            {
+              "name": "buff-link-ice",
+              "text": "提前碎裂 · 未搭配\n槽2已有冲击，另一槽需要完整冰霜环绕配方",
+              "y": 172,
+              "h": 24,
+              "parentBottom": 304
+            },
+            {
+              "name": "buff-link-thunder",
+              "text": "冰霜导冷 · 未搭配\n需要 雷电弹丸 ＋ 另一槽冰霜",
+              "y": 206,
+              "h": 24,
+              "parentBottom": 304
+            }
+          ],
+          "footer": 244,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "name": "ice-recipe",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 202.66666666666666,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 373.3333333333333,
+              "y": 26,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 288,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 32,
+              "y": 138,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 202.66666666666666,
+              "y": 138,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 373.3333333333333,
+              "y": 138,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 32,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 288,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.1/5 · 伤害 +0% · 进化：冰层碎裂\n命中 → 环绕 → 冰霜",
+              "y": 192,
+              "h": 26,
+              "parentBottom": 304
+            }
+          ],
+          "footer": 244,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "name": "ice-links",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 202.66666666666666,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 373.3333333333333,
+              "y": 26,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 288,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 32,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 288,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-link-fire",
+              "text": "火场回拉 · 未搭配\n槽2已有冲击，另一槽需要完整火焰区域配方",
+              "y": 138,
+              "h": 24,
+              "parentBottom": 304
+            },
+            {
+              "name": "buff-link-ice",
+              "text": "提前碎裂 · 已搭配 · 槽1 → 槽2\n至少2层冰霜后，跨槽冲击提前碎裂；1秒/目标。",
+              "y": 172,
+              "h": 24,
+              "parentBottom": 304
+            },
+            {
+              "name": "buff-link-thunder",
+              "text": "冰霜导冷 · 未搭配\n槽1已有冰霜，另一槽需要完整雷电弹丸配方",
+              "y": 206,
+              "h": 24,
+              "parentBottom": 304
+            }
+          ],
+          "footer": 244,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "name": "thunder-recipe",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 202.66666666666666,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 373.3333333333333,
+              "y": 26,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 288,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 32,
+              "y": 138,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 202.66666666666666,
+              "y": 138,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 373.3333333333333,
+              "y": 138,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 32,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 288,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.1/5 · 伤害 +0% · 进化：雷印引爆\n命中 → 弹丸 → 雷电",
+              "y": 192,
+              "h": 26,
+              "parentBottom": 304
+            }
+          ],
+          "footer": 244,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "name": "thunder-links",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 202.66666666666666,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 373.3333333333333,
+              "y": 26,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 288,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 32,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 288,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-link-fire",
+              "text": "火场回拉 · 未搭配\n需要 火焰区域 ＋ 另一槽冲击",
+              "y": 138,
+              "h": 24,
+              "parentBottom": 304
+            },
+            {
+              "name": "buff-link-ice",
+              "text": "提前碎裂 · 未搭配\n需要 冰霜环绕 ＋ 另一槽冲击",
+              "y": 172,
+              "h": 24,
+              "parentBottom": 304
+            },
+            {
+              "name": "buff-link-thunder",
+              "text": "冰霜导冷 · 已搭配 · 槽1 → 槽2\n跨槽冰霜减速目标受雷丸命中多加一印；1秒/敌。",
+              "y": 206,
+              "h": 24,
+              "parentBottom": 304
+            }
+          ],
+          "footer": 244,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "name": "growth",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 202.66666666666666,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 373.3333333333333,
+              "y": 26,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 288,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 32,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 288,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-growth",
+              "text": "命中 → 弹丸 → 雷电 · Lv.1/5\n重复匹配碎片 0/1 → Lv.2\nLv.3 二选一：传印 / 蓄雷\n标准探索：4/7 分钟、Lv.3 起可选专精",
+              "y": 138,
+              "h": 56,
+              "parentBottom": 304
+            }
+          ],
+          "footer": 244,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "name": "picker",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 202.66666666666666,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 373.3333333333333,
+              "y": 26,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "fragment-fire",
+              "x": 32,
+              "y": 138,
+              "w": 248,
+              "h": 45
+            },
+            {
+              "name": "fragment-ice",
+              "x": 288,
+              "y": 138,
+              "w": 248,
+              "h": 45
+            },
+            {
+              "name": "fragment-lightning",
+              "x": 32,
+              "y": 191,
+              "w": 248,
+              "h": 45
+            },
+            {
+              "name": "fragment-force",
+              "x": 288,
+              "y": 191,
+              "w": 248,
+              "h": 45
+            },
+            {
+              "name": "buff-back",
+              "x": 32,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 288,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-picker-status",
+              "text": "槽1 · 选择元素\n预览替换结果 · 点击已解锁卡片装入",
+              "y": 81,
+              "h": 30,
+              "parentBottom": 304
+            },
+            {
+              "name": "buff-choice-usage-fire",
+              "text": "附加 3 秒灼烧",
+              "y": 155,
+              "h": 11,
+              "parentBottom": 183
+            },
+            {
+              "name": "buff-choice-preview-fire",
+              "text": "失去 冰霜导冷",
+              "y": 168,
+              "h": 11,
+              "parentBottom": 183
+            },
+            {
+              "name": "buff-choice-usage-ice",
+              "text": "减速 35%，持续 2 秒",
+              "y": 155,
+              "h": 11,
+              "parentBottom": 183
+            },
+            {
+              "name": "buff-choice-preview-ice",
+              "text": "失去 冰霜导冷",
+              "y": 168,
+              "h": 11,
+              "parentBottom": 183
+            },
+            {
+              "name": "buff-choice-usage-lightning",
+              "text": "向附近 2 个敌人传导",
+              "y": 208,
+              "h": 11,
+              "parentBottom": 236
+            },
+            {
+              "name": "buff-choice-preview-lightning",
+              "text": "进化 雷印引爆",
+              "y": 221,
+              "h": 11,
+              "parentBottom": 236
+            },
+            {
+              "name": "buff-choice-usage-force",
+              "text": "强力击退",
+              "y": 208,
+              "h": 11,
+              "parentBottom": 236
+            },
+            {
+              "name": "buff-choice-preview-force",
+              "text": "失去 冰霜导冷",
+              "y": 221,
+              "h": 11,
+              "parentBottom": 236
+            }
+          ],
+          "footer": 244,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "name": "picker-locked",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 202.66666666666666,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 373.3333333333333,
+              "y": 26,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "fragment-fire",
+              "x": 32,
+              "y": 138,
+              "w": 248,
+              "h": 45
+            },
+            {
+              "name": "fragment-ice",
+              "x": 288,
+              "y": 138,
+              "w": 248,
+              "h": 45
+            },
+            {
+              "name": "fragment-lightning",
+              "x": 32,
+              "y": 191,
+              "w": 248,
+              "h": 45
+            },
+            {
+              "name": "fragment-force",
+              "x": 288,
+              "y": 191,
+              "w": 248,
+              "h": 45
+            },
+            {
+              "name": "buff-back",
+              "x": 32,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 288,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-picker-status",
+              "text": "冲击尚未解锁\n收集掉落碎片或领取碎片奖励后可装入",
+              "y": 81,
+              "h": 30,
+              "parentBottom": 304
+            },
+            {
+              "name": "buff-choice-usage-fire",
+              "text": "附加 3 秒灼烧",
+              "y": 155,
+              "h": 11,
+              "parentBottom": 183
+            },
+            {
+              "name": "buff-choice-preview-fire",
+              "text": "失去 冰霜导冷",
+              "y": 168,
+              "h": 11,
+              "parentBottom": 183
+            },
+            {
+              "name": "buff-choice-usage-ice",
+              "text": "减速 35%，持续 2 秒",
+              "y": 155,
+              "h": 11,
+              "parentBottom": 183
+            },
+            {
+              "name": "buff-choice-preview-ice",
+              "text": "失去 冰霜导冷",
+              "y": 168,
+              "h": 11,
+              "parentBottom": 183
+            },
+            {
+              "name": "buff-choice-usage-lightning",
+              "text": "向附近 2 个敌人传导",
+              "y": 208,
+              "h": 11,
+              "parentBottom": 236
+            },
+            {
+              "name": "buff-choice-preview-lightning",
+              "text": "进化 雷印引爆",
+              "y": 221,
+              "h": 11,
+              "parentBottom": 236
+            },
+            {
+              "name": "buff-choice-usage-force",
+              "text": "强力击退",
+              "y": 208,
+              "h": 11,
+              "parentBottom": 236
+            },
+            {
+              "name": "buff-choice-preview-force",
+              "text": "失去 冰霜导冷",
+              "y": 221,
+              "h": 11,
+              "parentBottom": 236
+            }
+          ],
+          "footer": 244,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "name": "picker-installed",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 202.66666666666666,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 373.3333333333333,
+              "y": 26,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 288,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 32,
+              "y": 138,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 202.66666666666666,
+              "y": 138,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 373.3333333333333,
+              "y": 138,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 32,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 288,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.1/5 · 伤害 +0%\n命中 → 弹丸 → 火焰",
+              "y": 192,
+              "h": 26,
+              "parentBottom": 304
+            }
+          ],
+          "footer": 244,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "name": "picker-trigger",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 202.66666666666666,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 373.3333333333333,
+              "y": 26,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "fragment-hit",
+              "x": 32,
+              "y": 138,
+              "w": 248,
+              "h": 45
+            },
+            {
+              "name": "fragment-dash",
+              "x": 288,
+              "y": 138,
+              "w": 248,
+              "h": 45
+            },
+            {
+              "name": "fragment-kill",
+              "x": 32,
+              "y": 191,
+              "w": 248,
+              "h": 45
+            },
+            {
+              "name": "fragment-hurt",
+              "x": 288,
+              "y": 191,
+              "w": 248,
+              "h": 45
+            },
+            {
+              "name": "buff-back",
+              "x": 32,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 288,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-picker-status",
+              "text": "槽1 · 选择触发\n预览替换结果 · 点击已解锁卡片装入",
+              "y": 81,
+              "h": 30,
+              "parentBottom": 304
+            },
+            {
+              "name": "buff-choice-usage-hit",
+              "text": "武器命中 30% 触发 · 基础冷却 2s",
+              "y": 155,
+              "h": 11,
+              "parentBottom": 183
+            },
+            {
+              "name": "buff-choice-preview-hit",
+              "text": "联动保持",
+              "y": 168,
+              "h": 11,
+              "parentBottom": 183
+            },
+            {
+              "name": "buff-choice-usage-dash",
+              "text": "冲刺结束触发 · 基础冷却 1s",
+              "y": 155,
+              "h": 11,
+              "parentBottom": 183
+            },
+            {
+              "name": "buff-choice-preview-dash",
+              "text": "联动保持",
+              "y": 168,
+              "h": 11,
+              "parentBottom": 183
+            },
+            {
+              "name": "buff-choice-usage-kill",
+              "text": "击杀敌人触发 · 基础冷却 2.5s",
+              "y": 208,
+              "h": 11,
+              "parentBottom": 236
+            },
+            {
+              "name": "buff-choice-preview-kill",
+              "text": "联动保持",
+              "y": 221,
+              "h": 11,
+              "parentBottom": 236
+            },
+            {
+              "name": "buff-choice-usage-hurt",
+              "text": "实际受伤且存活时触发 · 基础冷却 4s",
+              "y": 208,
+              "h": 11,
+              "parentBottom": 236
+            },
+            {
+              "name": "buff-choice-preview-hurt",
+              "text": "联动保持",
+              "y": 221,
+              "h": 11,
+              "parentBottom": 236
+            }
+          ],
+          "footer": 244,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "name": "picker-action",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 202.66666666666666,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 373.3333333333333,
+              "y": 26,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "fragment-bolt",
+              "x": 32,
+              "y": 138,
+              "w": 248,
+              "h": 45
+            },
+            {
+              "name": "fragment-blast",
+              "x": 288,
+              "y": 138,
+              "w": 248,
+              "h": 45
+            },
+            {
+              "name": "fragment-field",
+              "x": 32,
+              "y": 191,
+              "w": 248,
+              "h": 45
+            },
+            {
+              "name": "fragment-orbit",
+              "x": 288,
+              "y": 191,
+              "w": 248,
+              "h": 45
+            },
+            {
+              "name": "buff-back",
+              "x": 32,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 288,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-picker-status",
+              "text": "槽1 · 选择行为\n预览替换结果 · 点击已解锁卡片装入",
+              "y": 81,
+              "h": 30,
+              "parentBottom": 304
+            },
+            {
+              "name": "buff-choice-usage-bolt",
+              "text": "发射弹丸，命中造成伤害",
+              "y": 155,
+              "h": 11,
+              "parentBottom": 183
+            },
+            {
+              "name": "buff-choice-preview-bolt",
+              "text": "联动保持",
+              "y": 168,
+              "h": 11,
+              "parentBottom": 183
+            },
+            {
+              "name": "buff-choice-usage-blast",
+              "text": "瞬时范围爆炸",
+              "y": 155,
+              "h": 11,
+              "parentBottom": 183
+            },
+            {
+              "name": "buff-choice-preview-blast",
+              "text": "联动保持",
+              "y": 168,
+              "h": 11,
+              "parentBottom": 183
+            },
+            {
+              "name": "buff-choice-usage-field",
+              "text": "持续区域，定时伤害",
+              "y": 208,
+              "h": 11,
+              "parentBottom": 236
+            },
+            {
+              "name": "buff-choice-preview-field",
+              "text": "进化 火种连线",
+              "y": 221,
+              "h": 11,
+              "parentBottom": 236
+            },
+            {
+              "name": "buff-choice-usage-orbit",
+              "text": "环绕接触，持续伤害",
+              "y": 208,
+              "h": 11,
+              "parentBottom": 236
+            },
+            {
+              "name": "buff-choice-preview-orbit",
+              "text": "联动保持",
+              "y": 221,
+              "h": 11,
+              "parentBottom": 236
+            }
+          ],
+          "footer": 244,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "name": "branch-mastery",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 202.66666666666666,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 373.3333333333333,
+              "y": 26,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 288,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 32,
+              "y": 138,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 202.66666666666666,
+              "y": 138,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 373.3333333333333,
+              "y": 138,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 32,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 288,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.3/5 · 蓄雷 · 命中触发\n五印/9 秒，爆发 300%，取消引爆溅射；Lv.5 为 350%。跨槽冰霜可加印。 · 疾奏回响",
+              "y": 192,
+              "h": 26,
+              "parentBottom": 304
+            }
+          ],
+          "footer": 244,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 568,
+          "height": 320,
+          "name": "branch-growth",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 32,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 202.66666666666666,
+              "y": 26,
+              "w": 162.66666666666666,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 373.3333333333333,
+              "y": 26,
+              "w": 162.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 32,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 288,
+              "y": 82,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 32,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 288,
+              "y": 244,
+              "w": 248,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-growth",
+              "text": "命中 → 弹丸 → 雷电 · Lv.3/5\n重复匹配碎片 0/3 → Lv.4\n分支 · 蓄雷\n专精 · 疾奏回响 · 伤害 -20% / 冷却 -20%",
+              "y": 138,
+              "h": 56,
+              "parentBottom": 304
+            }
+          ],
+          "footer": 244,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "name": "fire-recipe",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 42,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 300.6666666666667,
+              "y": 29.650000000000006,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 559.3333333333334,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 42,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 430,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 42,
+              "y": 141.65,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 300.6666666666667,
+              "y": 141.65,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 559.3333333333334,
+              "y": 141.65,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 42,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 430,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.1/5 · 伤害 +0% · 进化：火种连线\n冲刺 → 区域 → 火焰",
+              "y": 195.65,
+              "h": 26,
+              "parentBottom": 373.35
+            }
+          ],
+          "footer": 313.35,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "name": "fire-links",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 42,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 300.6666666666667,
+              "y": 29.650000000000006,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 559.3333333333334,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 42,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 430,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 42,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 430,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-link-fire",
+              "text": "火场回拉 · 已搭配 · 槽1 → 槽2\n火场内燃烧目标受跨槽冲击可回拉；1秒/目标，Boss除外。",
+              "y": 141.65,
+              "h": 24,
+              "parentBottom": 373.35
+            },
+            {
+              "name": "buff-link-ice",
+              "text": "提前碎裂 · 未搭配\n槽2已有冲击，另一槽需要完整冰霜环绕配方",
+              "y": 197.55,
+              "h": 24,
+              "parentBottom": 373.35
+            },
+            {
+              "name": "buff-link-thunder",
+              "text": "冰霜导冷 · 未搭配\n需要 雷电弹丸 ＋ 另一槽冰霜",
+              "y": 253.45000000000002,
+              "h": 24,
+              "parentBottom": 373.35
+            }
+          ],
+          "footer": 313.35,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "name": "ice-recipe",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 42,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 300.6666666666667,
+              "y": 29.650000000000006,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 559.3333333333334,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 42,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 430,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 42,
+              "y": 141.65,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 300.6666666666667,
+              "y": 141.65,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 559.3333333333334,
+              "y": 141.65,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 42,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 430,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.1/5 · 伤害 +0% · 进化：冰层碎裂\n命中 → 环绕 → 冰霜",
+              "y": 195.65,
+              "h": 26,
+              "parentBottom": 373.35
+            }
+          ],
+          "footer": 313.35,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "name": "ice-links",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 42,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 300.6666666666667,
+              "y": 29.650000000000006,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 559.3333333333334,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 42,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 430,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 42,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 430,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-link-fire",
+              "text": "火场回拉 · 未搭配\n槽2已有冲击，另一槽需要完整火焰区域配方",
+              "y": 141.65,
+              "h": 24,
+              "parentBottom": 373.35
+            },
+            {
+              "name": "buff-link-ice",
+              "text": "提前碎裂 · 已搭配 · 槽1 → 槽2\n至少2层冰霜后，跨槽冲击提前碎裂；1秒/目标。",
+              "y": 197.55,
+              "h": 24,
+              "parentBottom": 373.35
+            },
+            {
+              "name": "buff-link-thunder",
+              "text": "冰霜导冷 · 未搭配\n槽1已有冰霜，另一槽需要完整雷电弹丸配方",
+              "y": 253.45000000000002,
+              "h": 24,
+              "parentBottom": 373.35
+            }
+          ],
+          "footer": 313.35,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "name": "thunder-recipe",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 42,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 300.6666666666667,
+              "y": 29.650000000000006,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 559.3333333333334,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 42,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 430,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 42,
+              "y": 141.65,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 300.6666666666667,
+              "y": 141.65,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 559.3333333333334,
+              "y": 141.65,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 42,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 430,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.1/5 · 伤害 +0% · 进化：雷印引爆\n命中 → 弹丸 → 雷电",
+              "y": 195.65,
+              "h": 26,
+              "parentBottom": 373.35
+            }
+          ],
+          "footer": 313.35,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "name": "thunder-links",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 42,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 300.6666666666667,
+              "y": 29.650000000000006,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 559.3333333333334,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 42,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 430,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 42,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 430,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-link-fire",
+              "text": "火场回拉 · 未搭配\n需要 火焰区域 ＋ 另一槽冲击",
+              "y": 141.65,
+              "h": 24,
+              "parentBottom": 373.35
+            },
+            {
+              "name": "buff-link-ice",
+              "text": "提前碎裂 · 未搭配\n需要 冰霜环绕 ＋ 另一槽冲击",
+              "y": 197.55,
+              "h": 24,
+              "parentBottom": 373.35
+            },
+            {
+              "name": "buff-link-thunder",
+              "text": "冰霜导冷 · 已搭配 · 槽1 → 槽2\n跨槽冰霜减速目标受雷丸命中多加一印；1秒/敌。",
+              "y": 253.45000000000002,
+              "h": 24,
+              "parentBottom": 373.35
+            }
+          ],
+          "footer": 313.35,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "name": "growth",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 42,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 300.6666666666667,
+              "y": 29.650000000000006,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 559.3333333333334,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 42,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 430,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 42,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 430,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-growth",
+              "text": "命中 → 弹丸 → 雷电 · Lv.1/5\n重复匹配碎片 0/1 → Lv.2\nLv.3 二选一：传印 / 蓄雷\n标准探索：4/7 分钟、Lv.3 起可选专精",
+              "y": 141.65,
+              "h": 56,
+              "parentBottom": 373.35
+            }
+          ],
+          "footer": 313.35,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "name": "picker",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 42,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 300.6666666666667,
+              "y": 29.650000000000006,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 559.3333333333334,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "fragment-fire",
+              "x": 42,
+              "y": 141.65,
+              "w": 380,
+              "h": 77.85
+            },
+            {
+              "name": "fragment-ice",
+              "x": 430,
+              "y": 141.65,
+              "w": 380,
+              "h": 77.85
+            },
+            {
+              "name": "fragment-lightning",
+              "x": 42,
+              "y": 227.5,
+              "w": 380,
+              "h": 77.85000000000002
+            },
+            {
+              "name": "fragment-force",
+              "x": 430,
+              "y": 227.5,
+              "w": 380,
+              "h": 77.85000000000002
+            },
+            {
+              "name": "buff-back",
+              "x": 42,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 430,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-picker-status",
+              "text": "槽1 · 选择元素\n预览替换结果 · 点击已解锁卡片装入",
+              "y": 84.65,
+              "h": 30,
+              "parentBottom": 373.35
+            },
+            {
+              "name": "buff-choice-usage-fire",
+              "text": "附加 3 秒灼烧",
+              "y": 169.65,
+              "h": 12,
+              "parentBottom": 219.5
+            },
+            {
+              "name": "buff-choice-preview-fire",
+              "text": "失去 冰霜导冷",
+              "y": 190.65,
+              "h": 11,
+              "parentBottom": 219.5
+            },
+            {
+              "name": "buff-choice-usage-ice",
+              "text": "减速 35%，持续 2 秒",
+              "y": 169.65,
+              "h": 12,
+              "parentBottom": 219.5
+            },
+            {
+              "name": "buff-choice-preview-ice",
+              "text": "失去 冰霜导冷",
+              "y": 190.65,
+              "h": 11,
+              "parentBottom": 219.5
+            },
+            {
+              "name": "buff-choice-usage-lightning",
+              "text": "向附近 2 个敌人传导",
+              "y": 255.5,
+              "h": 12,
+              "parentBottom": 305.35
+            },
+            {
+              "name": "buff-choice-preview-lightning",
+              "text": "进化 雷印引爆",
+              "y": 276.5,
+              "h": 11,
+              "parentBottom": 305.35
+            },
+            {
+              "name": "buff-choice-usage-force",
+              "text": "强力击退",
+              "y": 255.5,
+              "h": 12,
+              "parentBottom": 305.35
+            },
+            {
+              "name": "buff-choice-preview-force",
+              "text": "失去 冰霜导冷",
+              "y": 276.5,
+              "h": 11,
+              "parentBottom": 305.35
+            }
+          ],
+          "footer": 313.35,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "name": "picker-locked",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 42,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 300.6666666666667,
+              "y": 29.650000000000006,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 559.3333333333334,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "fragment-fire",
+              "x": 42,
+              "y": 141.65,
+              "w": 380,
+              "h": 77.85
+            },
+            {
+              "name": "fragment-ice",
+              "x": 430,
+              "y": 141.65,
+              "w": 380,
+              "h": 77.85
+            },
+            {
+              "name": "fragment-lightning",
+              "x": 42,
+              "y": 227.5,
+              "w": 380,
+              "h": 77.85000000000002
+            },
+            {
+              "name": "fragment-force",
+              "x": 430,
+              "y": 227.5,
+              "w": 380,
+              "h": 77.85000000000002
+            },
+            {
+              "name": "buff-back",
+              "x": 42,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 430,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-picker-status",
+              "text": "冲击尚未解锁\n收集掉落碎片或领取碎片奖励后可装入",
+              "y": 84.65,
+              "h": 30,
+              "parentBottom": 373.35
+            },
+            {
+              "name": "buff-choice-usage-fire",
+              "text": "附加 3 秒灼烧",
+              "y": 169.65,
+              "h": 12,
+              "parentBottom": 219.5
+            },
+            {
+              "name": "buff-choice-preview-fire",
+              "text": "失去 冰霜导冷",
+              "y": 190.65,
+              "h": 11,
+              "parentBottom": 219.5
+            },
+            {
+              "name": "buff-choice-usage-ice",
+              "text": "减速 35%，持续 2 秒",
+              "y": 169.65,
+              "h": 12,
+              "parentBottom": 219.5
+            },
+            {
+              "name": "buff-choice-preview-ice",
+              "text": "失去 冰霜导冷",
+              "y": 190.65,
+              "h": 11,
+              "parentBottom": 219.5
+            },
+            {
+              "name": "buff-choice-usage-lightning",
+              "text": "向附近 2 个敌人传导",
+              "y": 255.5,
+              "h": 12,
+              "parentBottom": 305.35
+            },
+            {
+              "name": "buff-choice-preview-lightning",
+              "text": "进化 雷印引爆",
+              "y": 276.5,
+              "h": 11,
+              "parentBottom": 305.35
+            },
+            {
+              "name": "buff-choice-usage-force",
+              "text": "强力击退",
+              "y": 255.5,
+              "h": 12,
+              "parentBottom": 305.35
+            },
+            {
+              "name": "buff-choice-preview-force",
+              "text": "失去 冰霜导冷",
+              "y": 276.5,
+              "h": 11,
+              "parentBottom": 305.35
+            }
+          ],
+          "footer": 313.35,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "name": "picker-installed",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 42,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 300.6666666666667,
+              "y": 29.650000000000006,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 559.3333333333334,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 42,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 430,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 42,
+              "y": 141.65,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 300.6666666666667,
+              "y": 141.65,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 559.3333333333334,
+              "y": 141.65,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 42,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 430,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.1/5 · 伤害 +0%\n命中 → 弹丸 → 火焰",
+              "y": 195.65,
+              "h": 26,
+              "parentBottom": 373.35
+            }
+          ],
+          "footer": 313.35,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "name": "picker-trigger",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 42,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 300.6666666666667,
+              "y": 29.650000000000006,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 559.3333333333334,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "fragment-hit",
+              "x": 42,
+              "y": 141.65,
+              "w": 380,
+              "h": 77.85
+            },
+            {
+              "name": "fragment-dash",
+              "x": 430,
+              "y": 141.65,
+              "w": 380,
+              "h": 77.85
+            },
+            {
+              "name": "fragment-kill",
+              "x": 42,
+              "y": 227.5,
+              "w": 380,
+              "h": 77.85000000000002
+            },
+            {
+              "name": "fragment-hurt",
+              "x": 430,
+              "y": 227.5,
+              "w": 380,
+              "h": 77.85000000000002
+            },
+            {
+              "name": "buff-back",
+              "x": 42,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 430,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-picker-status",
+              "text": "槽1 · 选择触发\n预览替换结果 · 点击已解锁卡片装入",
+              "y": 84.65,
+              "h": 30,
+              "parentBottom": 373.35
+            },
+            {
+              "name": "buff-choice-usage-hit",
+              "text": "武器命中 30% 触发 · 基础冷却 2s",
+              "y": 169.65,
+              "h": 12,
+              "parentBottom": 219.5
+            },
+            {
+              "name": "buff-choice-preview-hit",
+              "text": "联动保持",
+              "y": 190.65,
+              "h": 11,
+              "parentBottom": 219.5
+            },
+            {
+              "name": "buff-choice-usage-dash",
+              "text": "冲刺结束触发 · 基础冷却 1s",
+              "y": 169.65,
+              "h": 12,
+              "parentBottom": 219.5
+            },
+            {
+              "name": "buff-choice-preview-dash",
+              "text": "联动保持",
+              "y": 190.65,
+              "h": 11,
+              "parentBottom": 219.5
+            },
+            {
+              "name": "buff-choice-usage-kill",
+              "text": "击杀敌人触发 · 基础冷却 2.5s",
+              "y": 255.5,
+              "h": 12,
+              "parentBottom": 305.35
+            },
+            {
+              "name": "buff-choice-preview-kill",
+              "text": "联动保持",
+              "y": 276.5,
+              "h": 11,
+              "parentBottom": 305.35
+            },
+            {
+              "name": "buff-choice-usage-hurt",
+              "text": "实际受伤且存活时触发 · 基础冷却 4s",
+              "y": 255.5,
+              "h": 12,
+              "parentBottom": 305.35
+            },
+            {
+              "name": "buff-choice-preview-hurt",
+              "text": "联动保持",
+              "y": 276.5,
+              "h": 11,
+              "parentBottom": 305.35
+            }
+          ],
+          "footer": 313.35,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "name": "picker-action",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 42,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 300.6666666666667,
+              "y": 29.650000000000006,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 559.3333333333334,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "fragment-bolt",
+              "x": 42,
+              "y": 141.65,
+              "w": 380,
+              "h": 77.85
+            },
+            {
+              "name": "fragment-blast",
+              "x": 430,
+              "y": 141.65,
+              "w": 380,
+              "h": 77.85
+            },
+            {
+              "name": "fragment-field",
+              "x": 42,
+              "y": 227.5,
+              "w": 380,
+              "h": 77.85000000000002
+            },
+            {
+              "name": "fragment-orbit",
+              "x": 430,
+              "y": 227.5,
+              "w": 380,
+              "h": 77.85000000000002
+            },
+            {
+              "name": "buff-back",
+              "x": 42,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 430,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-picker-status",
+              "text": "槽1 · 选择行为\n预览替换结果 · 点击已解锁卡片装入",
+              "y": 84.65,
+              "h": 30,
+              "parentBottom": 373.35
+            },
+            {
+              "name": "buff-choice-usage-bolt",
+              "text": "发射弹丸，命中造成伤害",
+              "y": 169.65,
+              "h": 12,
+              "parentBottom": 219.5
+            },
+            {
+              "name": "buff-choice-preview-bolt",
+              "text": "联动保持",
+              "y": 190.65,
+              "h": 11,
+              "parentBottom": 219.5
+            },
+            {
+              "name": "buff-choice-usage-blast",
+              "text": "瞬时范围爆炸",
+              "y": 169.65,
+              "h": 12,
+              "parentBottom": 219.5
+            },
+            {
+              "name": "buff-choice-preview-blast",
+              "text": "联动保持",
+              "y": 190.65,
+              "h": 11,
+              "parentBottom": 219.5
+            },
+            {
+              "name": "buff-choice-usage-field",
+              "text": "持续区域，定时伤害",
+              "y": 255.5,
+              "h": 12,
+              "parentBottom": 305.35
+            },
+            {
+              "name": "buff-choice-preview-field",
+              "text": "进化 火种连线",
+              "y": 276.5,
+              "h": 11,
+              "parentBottom": 305.35
+            },
+            {
+              "name": "buff-choice-usage-orbit",
+              "text": "环绕接触，持续伤害",
+              "y": 255.5,
+              "h": 12,
+              "parentBottom": 305.35
+            },
+            {
+              "name": "buff-choice-preview-orbit",
+              "text": "联动保持",
+              "y": 276.5,
+              "h": 11,
+              "parentBottom": 305.35
+            }
+          ],
+          "footer": 313.35,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "name": "branch-mastery",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 42,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 300.6666666666667,
+              "y": 29.650000000000006,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 559.3333333333334,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 42,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 430,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-part-trigger",
+              "x": 42,
+              "y": 141.65,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-part-action",
+              "x": 300.6666666666667,
+              "y": 141.65,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-part-element",
+              "x": 559.3333333333334,
+              "y": 141.65,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-clear",
+              "x": 42,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 430,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-description",
+              "text": "Lv.3/5 · 蓄雷 · 命中触发\n五印/9 秒，爆发 300%，取消引爆溅射；Lv.5 为 350%。跨槽冰霜可加印。 · 疾奏回响",
+              "y": 195.65,
+              "h": 26,
+              "parentBottom": 373.35
+            }
+          ],
+          "footer": 313.35,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        },
+        {
+          "width": 852,
+          "height": 393,
+          "name": "branch-growth",
+          "buttons": [
+            {
+              "name": "buff-page-recipe",
+              "x": 42,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-page-links",
+              "x": 300.6666666666667,
+              "y": 29.650000000000006,
+              "w": 250.66666666666669,
+              "h": 44
+            },
+            {
+              "name": "buff-page-growth",
+              "x": 559.3333333333334,
+              "y": 29.650000000000006,
+              "w": 250.66666666666663,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-0",
+              "x": 42,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-slot-1",
+              "x": 430,
+              "y": 85.65,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-back",
+              "x": 42,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            },
+            {
+              "name": "buff-close",
+              "x": 430,
+              "y": 313.35,
+              "w": 380,
+              "h": 44
+            }
+          ],
+          "texts": [
+            {
+              "name": "buff-growth",
+              "text": "命中 → 弹丸 → 雷电 · Lv.3/5\n重复匹配碎片 0/3 → Lv.4\n分支 · 蓄雷\n专精 · 疾奏回响 · 伤害 -20% / 冷却 -20%",
+              "y": 141.65,
+              "h": 56,
+              "parentBottom": 373.35
+            }
+          ],
+          "footer": 313.35,
+          "cooldowns": [
+            1.5,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "wechat-package-in-browser",
+      "initial": {
+        "dialog": "start",
+        "stage": [
+          393,
+          852
+        ],
+        "mobile": true,
+        "top": 88,
+        "adapter": true,
+        "canvas": [
+          786,
+          1704
+        ]
+      },
+      "battle": {
+        "mode": "battle",
+        "time": 0.9000000000000011
+      },
+      "dual": {
+        "owner": 7,
+        "dash": 2.2
+      },
+      "paused": {
+        "dialog": "pause",
+        "owner": null,
+        "stick": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      "death": {
+        "dialog": "result",
+        "revival": false
+      },
+      "performance": {
+        "samples": 129,
+        "fps": 59.63938973647711,
+        "frameMs": 16.767441860465116,
+        "p95Ms": 21,
+        "maxMs": 56,
+        "updateMs": 0.12403100775193798,
+        "renderMs": 0.17829457364341086,
+        "simulationSteps": 0.9922480620155039,
+        "maxSimulationSteps": 2,
+        "stepMs": 0.125,
+        "engineSamples": 129,
+        "engineMs": 2.0232558139534884,
+        "drawCalls": 23.7984496124031,
+        "enemies": 1,
+        "shots": 0,
+        "drops": 14,
+        "effects": 0,
+        "enemyAtlasBytes": 8388608,
+        "sceneTextureBytes": 19922944,
+        "enemyAtlasReady": true,
+        "enemyAtlasError": "",
+        "autoPlayEnabled": false,
+        "autoPlayRound": 0,
+        "autoPlayStress": false,
+        "autoPlayDecisions": 0,
+        "autoPlayLastAction": "",
+        "drawCallReport": null,
+        "paused": false,
+        "quality": "标准"
+      },
+      "enemyArt": {
+        "atlas": {
+          "bytes": 8388608,
+          "tiles": 341
+        },
+        "highAtlas": {
+          "quality": "high",
+          "ready": true,
+          "bytes": 8388608,
+          "error": "",
+          "total": 8388608
+        }
+      },
+      "wearables": [
+        {
+          "head": "visor",
+          "armor": "light",
+          "back": "cape",
+          "bytes": 8388608,
+          "ready": true
+        },
+        {
+          "head": "helmet",
+          "armor": "heavy",
+          "back": "thorn",
+          "bytes": 8388608,
+          "ready": true
+        },
+        {
+          "head": "hood",
+          "armor": "energy",
+          "back": "pack",
+          "bytes": 8388608,
+          "ready": true
+        }
+      ],
+      "drawCallProbe": {
+        "active": false,
+        "error": "",
+        "report": {
+          "capturedAt": 1793866251122,
+          "context": {
+            "version": "0.15.5",
+            "seconds": 271.49999999999864,
+            "quality": "精细",
+            "enemies": 235,
+            "shots": 208,
+            "drops": 150,
+            "width": 393,
+            "height": 760
+          },
+          "baseline": 33,
+          "finalBaseline": 33,
+          "stable": true,
+          "rows": [
+            {
+              "group": "enemies",
+              "label": "怪物本体",
+              "without": 33,
+              "saved": 0
+            },
+            {
+              "group": "shots",
+              "label": "弹道",
+              "without": 33,
+              "saved": 0
+            },
+            {
+              "group": "buffs",
+              "label": "Buff 特效",
+              "without": 30,
+              "saved": 3
+            },
+            {
+              "group": "effects",
+              "label": "其他特效",
+              "without": 33,
+              "saved": 0
+            },
+            {
+              "group": "warnings",
+              "label": "血条/预警",
+              "without": 29,
+              "saved": 4
+            },
+            {
+              "group": "drops",
+              "label": "掉落/光柱",
+              "without": 33,
+              "saved": 0
+            },
+            {
+              "group": "labels",
+              "label": "飘字",
+              "without": 30,
+              "saved": 3
+            },
+            {
+              "group": "environment",
+              "label": "地图/柱子",
+              "without": 31,
+              "saved": 2
+            },
+            {
+              "group": "player",
+              "label": "玩家本体",
+              "without": 31,
+              "saved": 2
+            },
+            {
+              "group": "ui",
+              "label": "界面",
+              "without": 16,
+              "saved": 17
+            }
+          ]
+        },
+        "time": 271.49999999999864,
+        "hp": 100,
+        "dialog": "performance"
+      },
+      "probeContext": {
+        "time": 271.49999999999864,
+        "hp": 100,
+        "enemies": 235,
+        "shots": 208,
+        "drops": 150
+      }
+    }
+  ],
+  "mobile": {
+    "passed": true,
+    "directory": "E:\\devtools\\xxgame\\artifacts\\mobile-check-1793866460273",
+    "reports": [
+      {
+        "width": 393,
+        "height": 852,
+        "dpr": 3,
+        "touch": true,
+        "initial": {
+          "dialog": "start",
+          "stickVisible": true,
+          "font": "PingFang SC",
+          "point": {
+            "x": 114.4175,
+            "y": 696.315
+          },
+          "stage": [
+            393,
+            852
+          ]
+        },
+        "battle": {
+          "mode": "battle",
+          "runKind": "standard",
+          "time": 1.9333333333333313,
+          "hp": 100,
+          "enemies": 2,
+          "hero": {
+            "ready": true,
+            "error": ""
+          },
+          "textureBytes": 19922944
+        },
+        "buffBuilds": true
+      },
+      {
+        "width": 852,
+        "height": 393,
+        "dpr": 3,
+        "touch": true,
+        "initial": {
+          "dialog": "start",
+          "stickVisible": true,
+          "font": "PingFang SC",
+          "point": {
+            "x": 233.5,
+            "y": 331.35
+          },
+          "stage": [
+            852,
+            393
+          ]
+        },
+        "battle": {
+          "mode": "battle",
+          "runKind": "standard",
+          "time": 1.816666666666665,
+          "hp": 100,
+          "enemies": 4,
+          "hero": {
+            "ready": true,
+            "error": ""
+          },
+          "textureBytes": 19922944
+        },
+        "buffBuilds": true
+      },
+      {
+        "width": 1280,
+        "height": 720,
+        "dpr": 1,
+        "touch": false,
+        "initial": {
+          "dialog": "start",
+          "stickVisible": false,
+          "font": "system-ui",
+          "point": {
+            "x": 447.5,
+            "y": 628
+          },
+          "stage": [
+            1280,
+            720
+          ]
+        },
+        "battle": {
+          "mode": "battle",
+          "runKind": "standard",
+          "time": 1.7999999999999985,
+          "hp": 100,
+          "enemies": 1,
+          "hero": {
+            "ready": true,
+            "error": ""
+          },
+          "textureBytes": 19922944
+        },
+        "buffBuilds": true
+      }
+    ]
+  }
+}

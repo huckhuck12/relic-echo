@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {buffSynergies,recipeChain} from '../dist/ui/buff-build-view.js';
+import {buffSynergies,fragmentChoicePreview,recipeChain} from '../dist/ui/buff-build-view.js';
 import {setupLayaStub,childrenOf} from './helpers/laya-stub.mjs';
 setupLayaStub();
 const {Game}=await import('../dist/game/game.js');
@@ -25,4 +25,22 @@ test('editor pages reflect actual growth and compatibility without changing cool
  find(ui.root,'buff-page-growth').emit('click');assert.match(find(ui.root,'buff-growth').text,/1\/2 → Lv.3/);assert.match(find(ui.root,'buff-growth').text,/碎冰 \/ 寒牢/);
  find(ui.root,'buff-back').emit('click');assert.ok(find(ui.root,'buff-part-trigger'));
  assert.equal(JSON.stringify(g.buffs.recipes),before);assert.equal(g.buffs.cooldowns[0],1.5);assert.equal(g.gate.paused,true);
+});
+
+test('candidate previews identify gained and lost cross-slot reactions without mutating recipes',()=>{
+ const recipes=[{trigger:'hit',action:'bolt',element:'lightning'},{trigger:'dash',action:'field',element:'fire'}];
+ const before=JSON.stringify(recipes),gain=fragmentChoicePreview(recipes,1,'element','ice');
+ assert.deepEqual(gain.gained,['冰霜导冷']);assert.match(gain.usage,/减速/);
+ const paired=[recipes[0],{...recipes[1],element:'ice'}];const loss=fragmentChoicePreview(paired,0,'element','fire');
+ assert.deepEqual(loss.lost,['冰霜导冷']);assert.match(loss.summary,/失去/);
+ assert.equal(fragmentChoicePreview(recipes,0,'trigger','ice'),null);assert.equal(fragmentChoicePreview(recipes,2,'element','ice'),null);
+ assert.equal(JSON.stringify(recipes),before);
+ const partial=fragmentChoicePreview([{trigger:null,action:null,element:null},recipes[1]],0,'element','ice');assert.match(partial.summary,/尚未完整/);assert.deepEqual(partial.gained,[]);
+});
+
+test('locked picker reports inline feedback while unlocked card installs once and retains cooldown',()=>{
+ setupLayaStub();const g=new Game(),ui=new GameUI(g);g.sound=false;g.start('storm',false,'standard');g.buffs.cooldowns[0]=1.5;g.toggleBuffs();
+ find(ui.root,'buff-part-element').emit('click');const before=JSON.stringify(g.buffs.recipes);find(ui.root,'fragment-ice').emit('click');
+ assert.match(find(ui.root,'buff-picker-status').text,/冰霜尚未解锁/);assert.equal(JSON.stringify(g.buffs.recipes),before);assert.equal(g.buffs.cooldowns[0],1.5);
+ g.buffs.grant('ice');g.flow.refresh();find(ui.root,'fragment-ice').emit('click');assert.equal(g.buffs.recipes[0].element,'ice');assert.ok(find(ui.root,'buff-part-element'));assert.equal(g.buffs.cooldowns[0],1.5);
 });
