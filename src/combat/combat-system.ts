@@ -31,7 +31,7 @@ export interface EnemyDamageState {
     crit: number;
 }
 export interface EnemyDamageHooks {
-    recordDamage(value: number, effective: number, source?: DamageSource): void;
+    recordDamage(value: number, effective: number, source: DamageSource | undefined, enemy: Enemy): void;
     present(enemy: Enemy, result: DamageResult): void;
     /** 敌人已标记 dead。先结算击杀与掉落；返回 true 表示 Boss 终局，停止后续命中派发。 */
     killed(enemy: Enemy, triggerBuffs: boolean): boolean;
@@ -51,7 +51,7 @@ export function damageEnemy(state: EnemyDamageState, hooks: EnemyDamageHooks, en
     const value = round ? Math.max(1, Math.round(base * (critical ? 1.5 : 1))) : base;
     const effective = Math.max(0, Math.min(enemy.hp, value));
     enemy.hp -= value;
-    hooks.recordDamage(value, effective, options.source || feedback?.weapon);
+    hooks.recordDamage(value, effective, options.source || feedback?.weapon, enemy);
     if (impact) {
         const dx = enemy.x - state.player.x, dy = enemy.y - state.player.y;
         const distance = Math.hypot(dx, dy) || 1;
@@ -82,6 +82,8 @@ export interface PlayerDamageState {
     thornDamage?: number;
 }
 export interface PlayerDamageHooks {
+    /** Real HP removed and whether this would have been lethal without stress protection. */
+    recordDamage?(actual: number, lethal: boolean): void;
     present(): void;
     /** 调用方必须先设置反伤冷却再遍历敌人，反伤不得再次触发 Buff。 */
     retaliate(damage: number): void;
@@ -97,7 +99,9 @@ export function damagePlayer(state: PlayerDamageState, hooks: PlayerDamageHooks,
         player.inv = .5;
         return;
     }
-    player.hp = Math.max(state.preventDeath ? 1 : 0, player.hp - Math.max(1, Math.round(damage * (1 - state.reduction))));
+    const before = player.hp, resolved = Math.max(1, Math.round(damage * (1 - state.reduction)));
+    player.hp = Math.max(state.preventDeath ? 1 : 0, player.hp - resolved);
+    hooks.recordDamage?.(before - player.hp, resolved >= before);
     player.inv = .5;
     hooks.present();
     if (state.thornDamage !== undefined)

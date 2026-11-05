@@ -22,6 +22,8 @@ test('WeChat breadcrumbs survive relaunch, preserve errors through sampling and 
  const copied=JSON.parse(f.clipboard());assert.deepEqual(copied.previous,last.current);assert.equal(copied.current.events[0].type,'startup');
  assert.ok(copied.previous.events.some(e=>e.type==='memory-warning'));assert.equal(copied.previous.device.model,'iPhone Air');
  assert.equal(copied.autoPlay.round,3);
+ f.storage.set('relic-auto-play-report',JSON.stringify({schema:4,balance:'x'.repeat(18000)}));next.copy();assert.equal(JSON.parse(f.clipboard()).autoPlay.schema,4);
+ f.storage.set('relic-auto-play-report',JSON.stringify({schema:4,balance:'x'.repeat(66000)}));next.copy();assert.equal(JSON.parse(f.clipboard()).autoPlay,undefined);
  assert.equal(copied.drawCalls.baseline,388);assert.equal(copied.drawCalls.rows[0].saved,120);
  f.storage.set('relic-auto-play-report','{');next.copy();assert.ok(JSON.parse(f.clipboard()).previous,'Corrupt test report never blocks crash diagnostics');
 });

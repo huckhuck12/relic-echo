@@ -127,11 +127,15 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  assert.equal(await evaluate(`wechatTest.app.game.autoPlay.decisions`),decisions,'Manual pause stops automatic input');
  await evaluate(`wechatTest.tap('copy-diagnostics')`);
  assert.equal(await evaluate(`JSON.parse(wechatTest.clipboard()).autoPlay.round`),1,'Copied diagnostics contain the persistent automatic test report');
+ assert.equal(await evaluate(`JSON.parse(wechatTest.clipboard()).autoPlay.schema`),4);
+ assert.equal(await evaluate(`typeof JSON.parse(wechatTest.clipboard()).autoPlay.current.balance.damage.total`),'number');
  await evaluate(`wechatTest.tap('autoplay-toggle')`);
  assert.equal(await evaluate(`wechatTest.app.game.autoPlay.enabled`),false);
  await evaluate(`wechatTest.app.game.close()`);
  const protectedRun=await evaluate(`(()=>{const t=wechatTest,g=t.app.game;g.returnToTitle();t.app.ui.update();t.tap('autoplay-stress');g.player.hp=1;g.player.inv=0;g.hurt(99999);return{stress:g.autoPlay.stress,hp:g.player.hp,mode:g.mode,training:g.training};})()`);
  assert.deepEqual(protectedRun,{stress:true,hp:1,mode:'battle',training:false},'Real engine stress entry keeps lethal-hit protection separate from training');
+ const balance=await evaluate(`(()=>{const t=wechatTest;t.app.game.autoPlay.stop();t.host.__relicDiagnostics.copy();return JSON.parse(t.clipboard()).autoPlay.current.balance;})()`);
+ assert.ok(balance.combat.hitsTaken>=1);assert.ok(balance.combat.lethalExposures>=1);assert.equal(balance.boss.killSeconds,null);
  await screenshot('autoplay-stress');
  await evaluate(`wechatTest.app.game.returnToTitle()`);
  const probeContext=await evaluate(`(async()=>{const t=wechatTest,g=t.app.game,{scenario,seeded,enableBuffs}=await import('/bench/scenario.js');const random=Math.random;Math.random=seeded(20261103);try{g.quality='high';scenario(g,235,'storm');enableBuffs(g);for(let i=0;i<90;i++)g.update(1/60);g.render();g.openPerformance();t.app.ui.update();t.tap('drawcall-measure');return{time:g.time,hp:g.player.hp,enemies:g.enemies.length,shots:g.shots.length,drops:g.drops.length};}finally{Math.random=random;}})()`);
@@ -146,5 +150,5 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  assert.equal(await evaluate(`JSON.parse(wechatTest.clipboard()).drawCalls.rows.length`),10,'Copied diagnostics contain the complete split report');
  await evaluate(`wechatTest.app.game.returnToTitle()`);
  const stress=process.argv.includes('--stress')?await checkWechatStress({evaluate,directory,send}):undefined;
- return {kind:'wechat-package-in-browser',initial,battle,dual,paused,death,performance,enemyArt:{atlas,highAtlas},wearables,drawCallProbe,probeContext,stress};
+ return {kind:'wechat-package-in-browser',initial,battle,dual,paused,death,performance,enemyArt:{atlas,highAtlas},wearables,drawCallProbe,probeContext,balance,stress};
 }

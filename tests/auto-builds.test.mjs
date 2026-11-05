@@ -45,5 +45,5 @@ test('automatic rewards select the current build and branch via real tokens, per
  assert.equal(g.buffs.recipes[0].element,'fire');assert.equal(g.buffs.levelOf(g.buffs.recipes[0]),1);
  g.buffs.receiveFragment('field');g.buffs.receiveFragment('field');g.update(1/60);g.autoPlay.frame(2000);g.autoPlay.frame(2700);
  assert.equal(g.buffs.branchOf(g.buffs.recipes[0]),'trail');assert.equal(g.buffs.levelOf(g.buffs.recipes[0]),3);
- g.autoPlay.stop();const report=JSON.parse(storage.get(AUTO_PLAY_KEY));assert.equal(report.schema,3);assert.equal(report.build.branch,'trail');assert.equal(report.equipped[0].branch,'trail');assert.equal(report.equipped[0].level,3);assert.equal(report.enabled,false);
+ g.autoPlay.stop();const report=JSON.parse(storage.get(AUTO_PLAY_KEY));assert.equal(report.schema,4);assert.equal(report.build.branch,'trail');assert.equal(report.equipped[0].branch,'trail');assert.equal(report.equipped[0].level,3);assert.equal(report.enabled,false);
 });

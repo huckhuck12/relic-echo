@@ -135,7 +135,7 @@ export function createWechatDiagnostics(api: DiagnosticsAPI, version: string, ti
                 let extra = {};
                 try {
                     const autoPlay = api.getStorageSync('relic-auto-play-report');
-                    if (typeof autoPlay === 'string' && autoPlay.length <= 16384)
+                    if (typeof autoPlay === 'string' && autoPlay.length <= 65536)
                         extra = { autoPlay: JSON.parse(autoPlay) };
                 }
                 catch { }

@@ -36,7 +36,7 @@ test('autoplay restarts with rotating weapons, excludes test scores and keeps bo
  }
  assert.equal(a.rounds,23);assert.equal(g.loadout.weapon.id,'flame');
  assert.equal(storage.has(STORAGE.records),false);
- const report=JSON.parse(storage.get(AUTO_PLAY_KEY));assert.equal(report.results.length,18);assert.ok(report.actions.length<=24);assert.ok(storage.get(AUTO_PLAY_KEY).length<16384);
+ const report=JSON.parse(storage.get(AUTO_PLAY_KEY));assert.equal(report.results.length,18);assert.ok(report.actions.length<=24);assert.ok(storage.get(AUTO_PLAY_KEY).length<65536);
  a.stop();g.finish(false,'stopped test');assert.equal(storage.has(STORAGE.records),false,'Stopping does not turn an existing test run into a real score');
  const next=new Game();assert.equal(next.autoPlay.enabled,false,'Reopening never starts unattended play automatically');
  g.start('storm');g.finish(false,'normal');assert.equal(JSON.parse(storage.get(STORAGE.records)).length,1);
@@ -53,6 +53,21 @@ test('steering avoids enemies, projectiles, boss zones, pillars and world edges 
  assert.ok(autoPlayIntent({x:1100,y:0,hp:100},empty,0).x<0);
  const overlap=autoPlayIntent(p,{...empty,enemies:[{...enemy,x:0}]},0);assert.ok(Number.isFinite(overlap.x)&&Number.isFinite(overlap.y));
  const seek=autoPlayIntent(p,{...empty,drops:[{x:0,y:150,xp:1}]},0);assert.ok(seek.y>0);
+});
+
+test('rich source reports trim old history to fit diagnostics export while retaining the latest result',()=>{
+ setupLayaStub();const storage=new Map();localStorage.setItem=(k,v)=>storage.set(k,v);localStorage.getItem=k=>storage.get(k)||null;
+ const g=new Game();g.autoPlay.start('storm',true);const a=g.autoPlay;
+ for(let i=0;i<22;i++){
+  for(const kind of ['bolt','blast','field','orbit'])for(const element of ['fire','ice','lightning','force']){
+   const source={kind,element};g.damageRanking.record(123456789.1234567,source);a.metrics.recordBossDamage(123456789.1234567,source);
+  }
+  a.frame(i*4000);g.finish(false,'bounded test');a.frame(i*4000+200);a.frame(i*4000+2100);
+ }
+ const serialized=storage.get(AUTO_PLAY_KEY),report=JSON.parse(serialized);
+ assert.ok(serialized.length<=65536);assert.ok(report.results.length>0&&report.results.length<=18);
+ assert.equal(report.results.at(-1).round,22);assert.equal(report.results.at(-1).balance.damage.sources.length,16);
+ assert.equal(report.schema,4);
 });
 
 test('autoplay controls fit start and pause dialogs on portrait and landscape phones',()=>{

@@ -1,4 +1,5 @@
 import {mkdir,writeFile} from 'node:fs/promises';
+import assert from 'node:assert/strict';
 import {setupLayaStub} from '../tests/helpers/laya-stub.mjs';
 setupLayaStub();
 const {Game}=await import('../dist/game/game.js');
@@ -25,12 +26,15 @@ try{
    const original=g.mapEventHooks[action];g.mapEventHooks[action]=site=>{events.push({time:+g.time.toFixed(2),type:'seal-'+action,id:site.id});return original(site);};
   }
   const reactions={reforges:0,shatters:0,detonations:0};
-  // Count once at the damage hook, before nested hit-triggered Buff callbacks. Cap overkill.
-  let currentEnemy,buffDepth=0;
-  const hit=g.hit.bind(g);g.hit=(enemy,...args)=>{const parent=currentEnemy;currentEnemy=enemy;try{hit(enemy,...args);}finally{currentEnemy=parent;}};
-  const record=g.enemyDamageHooks.recordDamage;g.enemyDamageHooks.recordDamage=value=>{const actual=Math.min(value,Math.max(0,currentEnemy.hp+value));totalDamage+=actual;if(buffDepth){buffDamage+=actual;if(currentEnemy.kind===4)bossBuffDamage+=actual;}record(value);};
+  // Share the authoritative effective-damage event and preserve every forwarded argument.
+  const record=g.enemyDamageHooks.recordDamage;
+  g.enemyDamageHooks.recordDamage=(value,actual,source,enemy)=>{
+   totalDamage+=actual;
+   if(source && typeof source==='object'){buffDamage+=actual;if(enemy.kind===4)bossBuffDamage+=actual;}
+   record(value,actual,source,enemy);
+  };
   const killed=g.enemyDamageHooks.killed;g.enemyDamageHooks.killed=(enemy,...args)=>{if(enemy.kind>=3)events.push({time:+g.time.toFixed(2),type:enemy.kind===4?'boss-kill':'elite-kill'});return killed(enemy,...args);};
-  const damage=g.buffs.host.damage;g.buffs.host.damage=(...args)=>{if(legacyContact&&args[3]===true)args[2]=true;buffDepth++;try{damage(...args);}finally{buffDepth--;}};
+  const damage=g.buffs.host.damage;g.buffs.host.damage=(...args)=>{if(legacyContact&&args[3]===true)args[2]=true;damage(...args);};
   const burst=g.buffs.evolutions.hooks.burst;g.buffs.evolutions.hooks.burst=(kind,...args)=>{reactions[kind==='shatter'?'shatters':'detonations']++;burst(kind,...args);};
   const hurt=g.hurt.bind(g);g.hurt=value=>{if(g.player.inv<=0&&g.mode==='battle'){pressureHits++;if(Math.max(1,Math.round(value*(1-g.stats.reduction)))>=g.player.hp){protectedHits++;lethalContext={time:+g.time.toFixed(2),hp:g.player.hp,maxHP:g.stats.hp,damage:value,reduction:g.stats.reduction,enemies:g.enemies.length,shots:g.shots.length,site:g.mapEvents.active()?.id||null};}}hurt(value);};
   const claim=g.claimReward.bind(g);g.claimReward=(token,choice)=>{
@@ -64,9 +68,14 @@ try{
    if(g.time>=nextCheckpoint){checkpoints.push({time:nextCheckpoint,hp:g.player.hp,maxHP:g.stats.hp,enemies:g.enemies.length,shots:g.shots.length,pressureHits,protectedHits,kills:g.kills,level:g.level,buffLevel:level,buffDamage:Math.round(buffDamage),procs:g.buffs.procs,...reactions});nextCheckpoint+=60;}
   }
   const boss=g.enemies.find(e=>e.kind===4);
-  rows.push({weapon,seed,build,branch,mode,peak,lethalContext,seals:g.mapEvents.sites.map(s=>({id:s.id,state:s.state,progress:+s.progress.toFixed(2)})),protected:protectedRun,seconds:+g.time.toFixed(2),win:g.dialog?.win||false,kills:g.kills,firstBranch,maxLevelAt,buffLevel:g.buffs.levelOf(g.buffs.recipes[0]),buffDamage:Math.round(buffDamage),totalDamage:Math.round(totalDamage),bossBuffDamage:Math.round(bossBuffDamage),bossRemaining:boss?+Math.max(0,boss.hp).toFixed(1):null,bossStartHP,pressureHits,protectedHits,procs:g.buffs.procs,...reactions,checkpoints,events});
+  const balance=g.autoPlay.balanceReport();
+  assert.ok(Math.abs(balance.damage.total-totalDamage)<.001,'Damage script must agree with the runtime ledger.');
+  assert.ok(Math.abs(balance.damage.buff-buffDamage)<.001,'Buff damage must agree with the runtime ledger.');
+  assert.ok(Math.abs(balance.boss.damage.buff-bossBuffDamage)<.001,'Boss Buff damage must agree with the runtime ledger.');
+  assert.equal(balance.combat.hitsTaken,pressureHits,'Hurt event count must agree.');
+  rows.push({weapon,seed,build,branch,mode,balance:g.autoPlay.balanceReport(),peak,lethalContext,seals:g.mapEvents.sites.map(s=>({id:s.id,state:s.state,progress:+s.progress.toFixed(2)})),protected:protectedRun,seconds:+g.time.toFixed(2),win:g.dialog?.win||false,kills:g.kills,firstBranch,maxLevelAt,buffLevel:g.buffs.levelOf(g.buffs.recipes[0]),buffDamage:Math.round(buffDamage),totalDamage:Math.round(totalDamage),bossBuffDamage:Math.round(bossBuffDamage),bossRemaining:boss?+Math.max(0,boss.hp).toFixed(1):null,bossStartHP,pressureHits,protectedHits,procs:g.buffs.procs,...reactions,checkpoints,events});
   console.log(JSON.stringify(rows.at(-1)));g.autoPlay.stop();g.returnToTitle();
  }
 }finally{Math.random=originalRandom;}
 await mkdir('artifacts',{recursive:true});
-await writeFile(arg('out')||'artifacts/build-balance.json',JSON.stringify({schema:1,version:JSON.parse(await (await import('node:fs/promises')).readFile('package.json','utf8')).version,legacyContact,kind:'Seeded Node logic, real rewards and build-aware autopilot; NOT human balance, survival rate, WebGL or native performance. Damage caps overkill and excludes nested double counting; reaction totals survive Boss clearing. Protected runs count lethal exposures rather than die. Divergent combats consume different RNG sequences.',rows},null,2));
+await writeFile(arg('out')||'artifacts/build-balance.json',JSON.stringify({schema:2,version:JSON.parse(await (await import('node:fs/promises')).readFile('package.json','utf8')).version,legacyContact,kind:'Seeded Node logic, real rewards and build-aware autopilot; NOT human balance, survival rate, WebGL or native performance. Damage uses the shared effective-HP ledger, including per-source Boss damage; reaction totals survive Boss clearing. Protected runs count lethal exposures rather than die. Divergent combats consume different RNG sequences.',rows},null,2));

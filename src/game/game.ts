@@ -745,8 +745,10 @@ export class Game {
     }
     /** 接回容量替换/Boss 清场的新数组，以及波次计时和精英进度，再进入攻击阶段。 */
     private applySpawnState(state: EnemySpawner.SpawnState): void {
-        if (state.bossSpawned && !this.bossSpawned && this.autoPlay.enabled)
+        if (state.bossSpawned && !this.bossSpawned && this.autoPlay.enabled) {
             this.performanceMonitor.reset();
+            this.autoPlay.metrics.bossAppearedAt = this.time;
+        }
         this.enemies = state.enemies;
         this.shots = state.shots;
         this.fields = state.fields;
@@ -861,9 +863,11 @@ export class Game {
         kick: (...args) => this.kick(...args), freeze: duration => this.freeze(duration),
     };
     private readonly enemyDamageHooks: EnemyDamageHooks = {
-        recordDamage: (value, effective, source) => {
+        recordDamage: (value, effective, source, enemy) => {
             this.damage += value;
             this.damageRanking.record(effective, source);
+            if (this.autoPlay.enabled && enemy.kind === 4)
+                this.autoPlay.metrics.recordBossDamage(effective, source);
         },
         // 按调用时读取当前 labels 和画质；重开会替换数组，不能在构造时绑定旧引用。
         present: (enemy, result) => presentEnemyHit({ enemyCount: this.enemies.length, labels: this.labels, visuals: this.visuals }, this.combatFeedbackHooks, enemy, result),
@@ -887,6 +891,8 @@ export class Game {
         }
         this.deathBurst(e);
         if (e.kind === 4) {
+            if (this.autoPlay.enabled)
+                this.autoPlay.metrics.bossKilledAt = this.time;
             this.finish(true, '遗迹核心已摧毁，回响重新归于宁静。');
             return true;
         }
@@ -917,6 +923,10 @@ export class Game {
     }
     /** 无敌/训练免伤先拦截；受击 Buff 只在实际扣血且存活时触发，反伤禁止递归。 */
     private readonly playerDamageHooks: PlayerDamageHooks = {
+        recordDamage: (actual, lethal) => {
+            if (this.autoPlay.enabled)
+                this.autoPlay.metrics.recordHurt(actual, lethal);
+        },
         present: () => {
             this.kick(6, .12);
             this.beep(100, .09, .04);

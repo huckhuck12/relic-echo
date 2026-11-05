@@ -7,6 +7,8 @@ import { platform } from '../platform/runtime.js';
 import { autoBuildProfile, buildTactics } from './auto-builds.js';
 import type { BuildTactics } from './auto-builds.js';
 import { pursueAutoSeal, safeAutoDash } from './auto-navigation.js';
+import { BuildRunMetrics } from './build-run-metrics.js';
+import { GAME_VERSION } from '../shared/version.js';
 export interface AutoPlayWorld {
     enemies: readonly Enemy[];
     shots: readonly Shot[];
@@ -16,6 +18,7 @@ export interface AutoPlayWorld {
 export const AUTO_PLAY_KEY = 'relic-auto-play-report';
 /** Uses normal input/reward actions; explicit stress mode alone enables lethal-damage protection. */
 export class AutoPlay {
+    metrics = new BuildRunMetrics();
     enabled = false;
     stress = false;
     rounds = 0;
@@ -51,12 +54,14 @@ export class AutoPlay {
         this.begin(weapon);
     }
     stop(): void {
+        this.observeBuild();
         this.enabled = false;
         this.game.setStick(0, 0);
         this.note('stop');
         this.save();
     }
     private begin(weapon: Weapon): void {
+        this.metrics = new BuildRunMetrics();
         this.weapon = weapon;
         this.rounds++;
         this.run = {
@@ -76,6 +81,7 @@ export class AutoPlay {
             return;
         this.nextDecision = now + 150;
         const g = this.game, dialog = g.dialog;
+        this.observeBuild();
         if (dialog) {
             g.setStick(0, 0);
             if (g.flow.dialogId !== this.dialogId) {
@@ -86,7 +92,7 @@ export class AutoPlay {
                 this.trackBoss();
                 this.recordedResult = this.dialogId;
                 this.results.push({
-                    round: this.rounds, runKind: g.runKind, weapon: this.weapon, build: autoBuildProfile(this.rounds), equipped: this.equipped(), stress: this.stress, win: dialog.win, reason: dialog.reason, seconds: Math.round(g.time), kills: g.kills, ...this.run
+                    round: this.rounds, runKind: g.runKind, weapon: this.weapon, build: autoBuildProfile(this.rounds), equipped: this.equipped(), stress: this.stress, win: dialog.win, reason: dialog.reason, seconds: Math.round(g.time), kills: g.kills, ...this.run, balance: this.balanceReport()
                 });
                 if (this.results.length > 18)
                     this.results.shift();
@@ -182,28 +188,43 @@ export class AutoPlay {
         }
     }
     private note(action: string): void {
+        this.observeBuild();
         this.lastAction = action;
         this.actions.push({ time: Math.round(this.game.time * 10) / 10, action });
         if (this.actions.length > 24)
             this.actions.shift();
     }
     private trackBoss(): void {
-        if (this.game.time < this.game.run.bossAt)
+        if (this.metrics.bossAppearedAt === null)
             return;
         if (!this.run.reachedBoss) {
             this.run.reachedBoss = true;
             this.note('boss:entered');
         }
-        this.run.bossSeconds = Math.max(0, this.game.time - this.game.run.bossAt);
+        this.run.bossSeconds = Math.max(0, (this.metrics.bossKilledAt ?? this.game.time) - this.metrics.bossAppearedAt);
+    }
+    private observeBuild(): void {
+        const g = this.game, active = g.buffs.recipes.filter(r => r.trigger && r.action && r.element);
+        this.metrics.observe(g.time, g.buffs.starterChosen && active.length === 2, active.some(r => !!g.buffs.branchOf(r)), active.some(r => g.buffs.levelOf(r) >= 5), g.buffs.reforges > 0 || g.buffs.evolutions.shatters > 0 || g.buffs.evolutions.detonations > 0 || g.buffs.evolutions.links.length > 0);
+    }
+    balanceReport() {
+        this.observeBuild();
+        return this.metrics.snapshot(this.game.time, this.game.damageRanking);
     }
     private equipped() {
         return this.game.buffs.recipes.map(recipe => ({ ...recipe, level: this.game.buffs.levelOf(recipe), branch: this.game.buffs.branchOf(recipe) || null, mastery: this.game.buffs.mastery.of(recipe) || null }));
     }
     private save(): void {
         try {
-            platform().writeStorage(AUTO_PLAY_KEY, JSON.stringify({
-                schema: 3, runKind: this.game.runKind, startedAt: this.startedAt, savedAt: Date.now(), enabled: this.enabled, stress: this.stress, round: this.rounds, seconds: this.game.time, weapon: this.weapon, build: autoBuildProfile(this.rounds), equipped: this.equipped(), decisions: this.decisions, current: this.run, results: this.results, actions: this.actions
-            }));
+            const report = {
+                schema: 4, version: GAME_VERSION, runKind: this.game.runKind, startedAt: this.startedAt, savedAt: Date.now(), enabled: this.enabled, stress: this.stress, round: this.rounds, seconds: this.game.time, weapon: this.weapon, build: autoBuildProfile(this.rounds), equipped: this.equipped(), decisions: this.decisions, current: { ...this.run, balance: this.balanceReport() }, results: this.results, actions: this.actions
+            };
+            let serialized = JSON.stringify(report);
+            while (serialized.length > 65536 && this.results.length > 1) {
+                this.results.shift();
+                serialized = JSON.stringify(report);
+            }
+            platform().writeStorage(AUTO_PLAY_KEY, serialized);
         }
         catch { /* Test reporting must never interrupt combat. */ }
     }
