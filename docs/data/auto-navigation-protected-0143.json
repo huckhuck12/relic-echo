@@ -1,0 +1,7672 @@
+{
+  "schema": 1,
+  "version": "0.14.3",
+  "legacyContact": false,
+  "kind": "Seeded Node logic, real rewards and build-aware autopilot; NOT human balance, survival rate, WebGL or native performance. Damage caps overkill and excludes nested double counting; reaction totals survive Boss clearing. Protected runs count lethal exposures rather than die. Divergent combats consume different RNG sequences.",
+  "rows": [
+    {
+      "weapon": "storm",
+      "seed": 1104,
+      "build": "fire",
+      "branch": "trail",
+      "mode": "standard",
+      "peak": {
+        "enemies": 240,
+        "shots": 208
+      },
+      "lethalContext": {
+        "time": 633.28,
+        "hp": 1,
+        "maxHP": 195,
+        "damage": 76.80000000000001,
+        "reduction": 0.21,
+        "enemies": 4,
+        "shots": 24,
+        "site": null
+      },
+      "seals": [
+        {
+          "id": "grove",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "court",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "spring",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "gate",
+          "state": "expired",
+          "progress": 0.97
+        }
+      ],
+      "protected": true,
+      "seconds": 633.32,
+      "win": true,
+      "kills": 5453,
+      "firstBranch": 101.33,
+      "maxLevelAt": 325.03,
+      "buffLevel": 5,
+      "buffDamage": 55973,
+      "totalDamage": 523154,
+      "bossBuffDamage": 1022,
+      "bossRemaining": 0,
+      "bossStartHP": 8400,
+      "pressureHits": 41,
+      "protectedHits": 13,
+      "procs": 434,
+      "reforges": 7,
+      "shatters": 0,
+      "detonations": 0,
+      "checkpoints": [
+        {
+          "time": 60,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 2,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 144,
+          "level": 9,
+          "buffLevel": 2,
+          "buffDamage": 16,
+          "procs": 24,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 120,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 0,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 289,
+          "level": 13,
+          "buffLevel": 3,
+          "buffDamage": 48,
+          "procs": 55,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 180,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 17,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 554,
+          "level": 17,
+          "buffLevel": 3,
+          "buffDamage": 104,
+          "procs": 87,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 240,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 4,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 967,
+          "level": 18,
+          "buffLevel": 4,
+          "buffDamage": 286,
+          "procs": 116,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 300,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 29,
+          "shots": 3,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 1361,
+          "level": 28,
+          "buffLevel": 4,
+          "buffDamage": 673,
+          "procs": 154,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 360,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 4,
+          "shots": 0,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 1926,
+          "level": 28,
+          "buffLevel": 5,
+          "buffDamage": 1897,
+          "procs": 200,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 420,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 10,
+          "shots": 20,
+          "pressureHits": 4,
+          "protectedHits": 0,
+          "kills": 2579,
+          "level": 31,
+          "buffLevel": 5,
+          "buffDamage": 3757,
+          "procs": 250,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 480,
+          "hp": 112,
+          "maxHP": 160,
+          "enemies": 68,
+          "shots": 144,
+          "pressureHits": 10,
+          "protectedHits": 0,
+          "kills": 3369,
+          "level": 44,
+          "buffLevel": 5,
+          "buffDamage": 10278,
+          "procs": 298,
+          "reforges": 2,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 540,
+          "hp": 16,
+          "maxHP": 160,
+          "enemies": 144,
+          "shots": 206,
+          "pressureHits": 23,
+          "protectedHits": 4,
+          "kills": 4467,
+          "level": 45,
+          "buffLevel": 5,
+          "buffDamage": 36282,
+          "procs": 354,
+          "reforges": 2,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 600,
+          "hp": 195,
+          "maxHP": 195,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 34,
+          "protectedHits": 9,
+          "kills": 5434,
+          "level": 53,
+          "buffLevel": 5,
+          "buffDamage": 54678,
+          "procs": 406,
+          "reforges": 4,
+          "shatters": 0,
+          "detonations": 0
+        }
+      ],
+      "events": [
+        {
+          "time": 3.13,
+          "type": "build",
+          "id": "fire"
+        },
+        {
+          "time": 61.38,
+          "type": "elite-kill"
+        },
+        {
+          "time": 61.38,
+          "type": "fragment",
+          "id": "dash"
+        },
+        {
+          "time": 82.17,
+          "type": "seal-start",
+          "id": "grove"
+        },
+        {
+          "time": 83.85,
+          "type": "elite-kill"
+        },
+        {
+          "time": 101.32,
+          "type": "seal-complete",
+          "id": "grove"
+        },
+        {
+          "time": 101.32,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 101.32,
+          "type": "fragment",
+          "id": "fire"
+        },
+        {
+          "time": 101.33,
+          "type": "branch",
+          "id": "trail",
+          "pair": "field/fire"
+        },
+        {
+          "time": 151,
+          "type": "elite-kill"
+        },
+        {
+          "time": 214.58,
+          "type": "seal-start",
+          "id": "court"
+        },
+        {
+          "time": 215.32,
+          "type": "elite-kill"
+        },
+        {
+          "time": 233.28,
+          "type": "seal-complete",
+          "id": "court"
+        },
+        {
+          "time": 233.28,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 233.28,
+          "type": "fragment",
+          "id": "dash"
+        },
+        {
+          "time": 240,
+          "type": "mastery",
+          "id": "power",
+          "pair": "field/fire"
+        },
+        {
+          "time": 241.17,
+          "type": "elite-kill"
+        },
+        {
+          "time": 278.3,
+          "type": "elite-kill"
+        },
+        {
+          "time": 302.02,
+          "type": "elite-kill"
+        },
+        {
+          "time": 323.48,
+          "type": "elite-kill"
+        },
+        {
+          "time": 331.88,
+          "type": "elite-kill"
+        },
+        {
+          "time": 346.82,
+          "type": "elite-kill"
+        },
+        {
+          "time": 365.2,
+          "type": "seal-start",
+          "id": "spring"
+        },
+        {
+          "time": 366.28,
+          "type": "elite-kill"
+        },
+        {
+          "time": 370.42,
+          "type": "elite-kill"
+        },
+        {
+          "time": 392.42,
+          "type": "elite-kill"
+        },
+        {
+          "time": 395.58,
+          "type": "seal-complete",
+          "id": "spring"
+        },
+        {
+          "time": 395.58,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 395.58,
+          "type": "fragment",
+          "id": "ice"
+        },
+        {
+          "time": 417.9,
+          "type": "elite-kill"
+        },
+        {
+          "time": 420.02,
+          "type": "mastery",
+          "id": "power",
+          "pair": "blast/force"
+        },
+        {
+          "time": 422.83,
+          "type": "elite-kill"
+        },
+        {
+          "time": 440.97,
+          "type": "elite-kill"
+        },
+        {
+          "time": 458.47,
+          "type": "elite-kill"
+        },
+        {
+          "time": 504.85,
+          "type": "seal-start",
+          "id": "gate"
+        },
+        {
+          "time": 506.47,
+          "type": "elite-kill"
+        },
+        {
+          "time": 574.73,
+          "type": "elite-kill"
+        },
+        {
+          "time": 576.6,
+          "type": "elite-kill"
+        },
+        {
+          "time": 578.33,
+          "type": "elite-kill"
+        },
+        {
+          "time": 581.13,
+          "type": "elite-kill"
+        },
+        {
+          "time": 633.32,
+          "type": "boss-kill"
+        }
+      ]
+    },
+    {
+      "weapon": "storm",
+      "seed": 1104,
+      "build": "fire",
+      "branch": "furnace",
+      "mode": "standard",
+      "peak": {
+        "enemies": 240,
+        "shots": 208
+      },
+      "lethalContext": {
+        "time": 553.38,
+        "hp": 1,
+        "maxHP": 160,
+        "damage": 44.39474999998794,
+        "reduction": 0.21,
+        "enemies": 223,
+        "shots": 208,
+        "site": null
+      },
+      "seals": [
+        {
+          "id": "grove",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "court",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "spring",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "gate",
+          "state": "expired",
+          "progress": 2.35
+        }
+      ],
+      "protected": true,
+      "seconds": 632.02,
+      "win": true,
+      "kills": 5284,
+      "firstBranch": 101.33,
+      "maxLevelAt": 344.85,
+      "buffLevel": 5,
+      "buffDamage": 34292,
+      "totalDamage": 499615,
+      "bossBuffDamage": 770,
+      "bossRemaining": 0,
+      "bossStartHP": 8400,
+      "pressureHits": 34,
+      "protectedHits": 4,
+      "procs": 409,
+      "reforges": 1,
+      "shatters": 0,
+      "detonations": 0,
+      "checkpoints": [
+        {
+          "time": 60,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 2,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 144,
+          "level": 9,
+          "buffLevel": 2,
+          "buffDamage": 16,
+          "procs": 24,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 120,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 0,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 289,
+          "level": 13,
+          "buffLevel": 3,
+          "buffDamage": 48,
+          "procs": 55,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 180,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 17,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 554,
+          "level": 17,
+          "buffLevel": 3,
+          "buffDamage": 112,
+          "procs": 87,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 240,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 3,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 968,
+          "level": 18,
+          "buffLevel": 3,
+          "buffDamage": 380,
+          "procs": 124,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 300,
+          "hp": 154,
+          "maxHP": 160,
+          "enemies": 28,
+          "shots": 0,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 1362,
+          "level": 28,
+          "buffLevel": 4,
+          "buffDamage": 787,
+          "procs": 159,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 360,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 4,
+          "shots": 0,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 1926,
+          "level": 32,
+          "buffLevel": 5,
+          "buffDamage": 1375,
+          "procs": 200,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 420,
+          "hp": 142,
+          "maxHP": 160,
+          "enemies": 11,
+          "shots": 1,
+          "pressureHits": 4,
+          "protectedHits": 0,
+          "kills": 2582,
+          "level": 39,
+          "buffLevel": 5,
+          "buffDamage": 2744,
+          "procs": 243,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 480,
+          "hp": 141,
+          "maxHP": 160,
+          "enemies": 87,
+          "shots": 146,
+          "pressureHits": 11,
+          "protectedHits": 0,
+          "kills": 3354,
+          "level": 44,
+          "buffLevel": 5,
+          "buffDamage": 7559,
+          "procs": 290,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 540,
+          "hp": 126,
+          "maxHP": 160,
+          "enemies": 129,
+          "shots": 204,
+          "pressureHits": 22,
+          "protectedHits": 0,
+          "kills": 4348,
+          "level": 49,
+          "buffLevel": 5,
+          "buffDamage": 20325,
+          "procs": 339,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 600,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 32,
+          "protectedHits": 4,
+          "kills": 5267,
+          "level": 53,
+          "buffLevel": 5,
+          "buffDamage": 33384,
+          "procs": 386,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        }
+      ],
+      "events": [
+        {
+          "time": 3.13,
+          "type": "build",
+          "id": "fire"
+        },
+        {
+          "time": 61.38,
+          "type": "elite-kill"
+        },
+        {
+          "time": 61.38,
+          "type": "fragment",
+          "id": "dash"
+        },
+        {
+          "time": 82.17,
+          "type": "seal-start",
+          "id": "grove"
+        },
+        {
+          "time": 83.85,
+          "type": "elite-kill"
+        },
+        {
+          "time": 101.32,
+          "type": "seal-complete",
+          "id": "grove"
+        },
+        {
+          "time": 101.32,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 101.32,
+          "type": "fragment",
+          "id": "fire"
+        },
+        {
+          "time": 101.33,
+          "type": "branch",
+          "id": "furnace",
+          "pair": "field/fire"
+        },
+        {
+          "time": 151,
+          "type": "elite-kill"
+        },
+        {
+          "time": 213.78,
+          "type": "seal-start",
+          "id": "court"
+        },
+        {
+          "time": 214.73,
+          "type": "elite-kill"
+        },
+        {
+          "time": 233.13,
+          "type": "seal-complete",
+          "id": "court"
+        },
+        {
+          "time": 233.13,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 233.13,
+          "type": "fragment",
+          "id": "dash"
+        },
+        {
+          "time": 240,
+          "type": "mastery",
+          "id": "power",
+          "pair": "field/fire"
+        },
+        {
+          "time": 241.58,
+          "type": "elite-kill"
+        },
+        {
+          "time": 278.2,
+          "type": "elite-kill"
+        },
+        {
+          "time": 301.13,
+          "type": "elite-kill"
+        },
+        {
+          "time": 325,
+          "type": "elite-kill"
+        },
+        {
+          "time": 331,
+          "type": "elite-kill"
+        },
+        {
+          "time": 350.73,
+          "type": "elite-kill"
+        },
+        {
+          "time": 363.08,
+          "type": "seal-start",
+          "id": "spring"
+        },
+        {
+          "time": 364.2,
+          "type": "elite-kill"
+        },
+        {
+          "time": 369.4,
+          "type": "elite-kill"
+        },
+        {
+          "time": 386.97,
+          "type": "seal-complete",
+          "id": "spring"
+        },
+        {
+          "time": 386.97,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 386.97,
+          "type": "fragment",
+          "id": "bolt"
+        },
+        {
+          "time": 390.48,
+          "type": "elite-kill"
+        },
+        {
+          "time": 410.08,
+          "type": "elite-kill"
+        },
+        {
+          "time": 420.02,
+          "type": "mastery",
+          "id": "power",
+          "pair": "blast/force"
+        },
+        {
+          "time": 422.75,
+          "type": "elite-kill"
+        },
+        {
+          "time": 438.62,
+          "type": "elite-kill"
+        },
+        {
+          "time": 452.48,
+          "type": "elite-kill"
+        },
+        {
+          "time": 472.08,
+          "type": "elite-kill"
+        },
+        {
+          "time": 502.43,
+          "type": "seal-start",
+          "id": "gate"
+        },
+        {
+          "time": 503.55,
+          "type": "elite-kill"
+        },
+        {
+          "time": 532.53,
+          "type": "elite-kill"
+        },
+        {
+          "time": 558.93,
+          "type": "elite-kill"
+        },
+        {
+          "time": 590.35,
+          "type": "elite-kill"
+        },
+        {
+          "time": 591.42,
+          "type": "elite-kill"
+        },
+        {
+          "time": 594.75,
+          "type": "elite-kill"
+        },
+        {
+          "time": 632.02,
+          "type": "boss-kill"
+        }
+      ]
+    },
+    {
+      "weapon": "storm",
+      "seed": 1104,
+      "build": "ice",
+      "branch": "shards",
+      "mode": "standard",
+      "peak": {
+        "enemies": 240,
+        "shots": 208
+      },
+      "lethalContext": {
+        "time": 566.35,
+        "hp": 18,
+        "maxHP": 190,
+        "damage": 48.10024285713308,
+        "reduction": 0,
+        "enemies": 219,
+        "shots": 208,
+        "site": null
+      },
+      "seals": [
+        {
+          "id": "grove",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "court",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "spring",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "gate",
+          "state": "expired",
+          "progress": 2.35
+        }
+      ],
+      "protected": true,
+      "seconds": 629.6,
+      "win": true,
+      "kills": 5398,
+      "firstBranch": 99.33,
+      "maxLevelAt": 351.23,
+      "buffLevel": 5,
+      "buffDamage": 6209,
+      "totalDamage": 520541,
+      "bossBuffDamage": 360,
+      "bossRemaining": 0,
+      "bossStartHP": 8400,
+      "pressureHits": 28,
+      "protectedHits": 1,
+      "procs": 381,
+      "reforges": 0,
+      "shatters": 3,
+      "detonations": 0,
+      "checkpoints": [
+        {
+          "time": 60,
+          "hp": 100,
+          "maxHP": 100,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 145,
+          "level": 7,
+          "buffLevel": 1,
+          "buffDamage": 3,
+          "procs": 19,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 120,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 286,
+          "level": 13,
+          "buffLevel": 3,
+          "buffDamage": 17,
+          "procs": 42,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 180,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 18,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 555,
+          "level": 19,
+          "buffLevel": 3,
+          "buffDamage": 17,
+          "procs": 70,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 240,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 4,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 957,
+          "level": 20,
+          "buffLevel": 4,
+          "buffDamage": 68,
+          "procs": 98,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 300,
+          "hp": 146,
+          "maxHP": 160,
+          "enemies": 29,
+          "shots": 0,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 1363,
+          "level": 29,
+          "buffLevel": 4,
+          "buffDamage": 264,
+          "procs": 134,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 360,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 4,
+          "shots": 0,
+          "pressureHits": 3,
+          "protectedHits": 0,
+          "kills": 1928,
+          "level": 35,
+          "buffLevel": 5,
+          "buffDamage": 264,
+          "procs": 171,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 420,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 10,
+          "shots": 8,
+          "pressureHits": 3,
+          "protectedHits": 0,
+          "kills": 2555,
+          "level": 38,
+          "buffLevel": 5,
+          "buffDamage": 407,
+          "procs": 205,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 480,
+          "hp": 158,
+          "maxHP": 190,
+          "enemies": 47,
+          "shots": 71,
+          "pressureHits": 6,
+          "protectedHits": 0,
+          "kills": 3366,
+          "level": 40,
+          "buffLevel": 5,
+          "buffDamage": 1006,
+          "procs": 248,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 540,
+          "hp": 119,
+          "maxHP": 190,
+          "enemies": 150,
+          "shots": 207,
+          "pressureHits": 18,
+          "protectedHits": 0,
+          "kills": 4440,
+          "level": 48,
+          "buffLevel": 5,
+          "buffDamage": 3216,
+          "procs": 300,
+          "reforges": 0,
+          "shatters": 1,
+          "detonations": 0
+        },
+        {
+          "time": 600,
+          "hp": 29,
+          "maxHP": 190,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 28,
+          "protectedHits": 1,
+          "kills": 5379,
+          "level": 51,
+          "buffLevel": 5,
+          "buffDamage": 5824,
+          "procs": 355,
+          "reforges": 0,
+          "shatters": 1,
+          "detonations": 0
+        }
+      ],
+      "events": [
+        {
+          "time": 3.13,
+          "type": "build",
+          "id": "ice"
+        },
+        {
+          "time": 60.85,
+          "type": "elite-kill"
+        },
+        {
+          "time": 60.85,
+          "type": "fragment",
+          "id": "blast"
+        },
+        {
+          "time": 79.95,
+          "type": "seal-start",
+          "id": "grove"
+        },
+        {
+          "time": 82.12,
+          "type": "elite-kill"
+        },
+        {
+          "time": 97.95,
+          "type": "seal-complete",
+          "id": "grove"
+        },
+        {
+          "time": 97.95,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 97.95,
+          "type": "fragment",
+          "id": "orbit"
+        },
+        {
+          "time": 99.33,
+          "type": "branch",
+          "id": "shards",
+          "pair": "orbit/ice"
+        },
+        {
+          "time": 151.67,
+          "type": "elite-kill"
+        },
+        {
+          "time": 210.92,
+          "type": "seal-start",
+          "id": "court"
+        },
+        {
+          "time": 212.18,
+          "type": "elite-kill"
+        },
+        {
+          "time": 229.85,
+          "type": "seal-complete",
+          "id": "court"
+        },
+        {
+          "time": 229.85,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 229.85,
+          "type": "fragment",
+          "id": "ice"
+        },
+        {
+          "time": 240,
+          "type": "mastery",
+          "id": "power",
+          "pair": "orbit/ice"
+        },
+        {
+          "time": 241.03,
+          "type": "elite-kill"
+        },
+        {
+          "time": 280.27,
+          "type": "elite-kill"
+        },
+        {
+          "time": 303.3,
+          "type": "elite-kill"
+        },
+        {
+          "time": 332.63,
+          "type": "elite-kill"
+        },
+        {
+          "time": 344.9,
+          "type": "elite-kill"
+        },
+        {
+          "time": 354.63,
+          "type": "elite-kill"
+        },
+        {
+          "time": 362.83,
+          "type": "seal-start",
+          "id": "spring"
+        },
+        {
+          "time": 363.97,
+          "type": "elite-kill"
+        },
+        {
+          "time": 368.13,
+          "type": "elite-kill"
+        },
+        {
+          "time": 385.43,
+          "type": "seal-complete",
+          "id": "spring"
+        },
+        {
+          "time": 385.43,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 385.43,
+          "type": "fragment",
+          "id": "fire"
+        },
+        {
+          "time": 408.82,
+          "type": "elite-kill"
+        },
+        {
+          "time": 420.02,
+          "type": "mastery",
+          "id": "power",
+          "pair": "blast/force"
+        },
+        {
+          "time": 421.2,
+          "type": "elite-kill"
+        },
+        {
+          "time": 430.53,
+          "type": "elite-kill"
+        },
+        {
+          "time": 452.13,
+          "type": "elite-kill"
+        },
+        {
+          "time": 473.33,
+          "type": "elite-kill"
+        },
+        {
+          "time": 483.28,
+          "type": "seal-start",
+          "id": "gate"
+        },
+        {
+          "time": 484.13,
+          "type": "elite-kill"
+        },
+        {
+          "time": 490,
+          "type": "elite-kill"
+        },
+        {
+          "time": 498.43,
+          "type": "elite-kill"
+        },
+        {
+          "time": 512.2,
+          "type": "elite-kill"
+        },
+        {
+          "time": 587.5,
+          "type": "elite-kill"
+        },
+        {
+          "time": 598.97,
+          "type": "elite-kill"
+        },
+        {
+          "time": 629.6,
+          "type": "boss-kill"
+        }
+      ]
+    },
+    {
+      "weapon": "storm",
+      "seed": 1104,
+      "build": "ice",
+      "branch": "prison",
+      "mode": "standard",
+      "peak": {
+        "enemies": 240,
+        "shots": 208
+      },
+      "lethalContext": {
+        "time": 630.08,
+        "hp": 1,
+        "maxHP": 160,
+        "damage": 76.80000000000001,
+        "reduction": 0.21,
+        "enemies": 1,
+        "shots": 26,
+        "site": null
+      },
+      "seals": [
+        {
+          "id": "grove",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "court",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "spring",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "gate",
+          "state": "expired",
+          "progress": 4.55
+        }
+      ],
+      "protected": true,
+      "seconds": 631.6,
+      "win": true,
+      "kills": 5259,
+      "firstBranch": 99.33,
+      "maxLevelAt": 347.1,
+      "buffLevel": 5,
+      "buffDamage": 11323,
+      "totalDamage": 503135,
+      "bossBuffDamage": 666,
+      "bossRemaining": 0,
+      "bossStartHP": 8400,
+      "pressureHits": 37,
+      "protectedHits": 14,
+      "procs": 374,
+      "reforges": 0,
+      "shatters": 1,
+      "detonations": 0,
+      "checkpoints": [
+        {
+          "time": 60,
+          "hp": 100,
+          "maxHP": 100,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 145,
+          "level": 7,
+          "buffLevel": 1,
+          "buffDamage": 3,
+          "procs": 19,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 120,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 286,
+          "level": 13,
+          "buffLevel": 3,
+          "buffDamage": 17,
+          "procs": 42,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 180,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 18,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 555,
+          "level": 19,
+          "buffLevel": 3,
+          "buffDamage": 17,
+          "procs": 70,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 240,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 4,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 957,
+          "level": 20,
+          "buffLevel": 4,
+          "buffDamage": 65,
+          "procs": 98,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 300,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 32,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 1360,
+          "level": 29,
+          "buffLevel": 4,
+          "buffDamage": 133,
+          "procs": 127,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 360,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 4,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 1928,
+          "level": 34,
+          "buffLevel": 5,
+          "buffDamage": 133,
+          "procs": 159,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 420,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 8,
+          "shots": 3,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 2583,
+          "level": 38,
+          "buffLevel": 5,
+          "buffDamage": 245,
+          "procs": 203,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 480,
+          "hp": 1,
+          "maxHP": 160,
+          "enemies": 69,
+          "shots": 103,
+          "pressureHits": 11,
+          "protectedHits": 3,
+          "kills": 3368,
+          "level": 44,
+          "buffLevel": 5,
+          "buffDamage": 1317,
+          "procs": 247,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 540,
+          "hp": 73,
+          "maxHP": 160,
+          "enemies": 165,
+          "shots": 206,
+          "pressureHits": 18,
+          "protectedHits": 3,
+          "kills": 4345,
+          "level": 49,
+          "buffLevel": 5,
+          "buffDamage": 3626,
+          "procs": 297,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 600,
+          "hp": 64,
+          "maxHP": 160,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 29,
+          "protectedHits": 7,
+          "kills": 5240,
+          "level": 52,
+          "buffLevel": 5,
+          "buffDamage": 10551,
+          "procs": 345,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        }
+      ],
+      "events": [
+        {
+          "time": 3.13,
+          "type": "build",
+          "id": "ice"
+        },
+        {
+          "time": 60.85,
+          "type": "elite-kill"
+        },
+        {
+          "time": 60.85,
+          "type": "fragment",
+          "id": "blast"
+        },
+        {
+          "time": 79.95,
+          "type": "seal-start",
+          "id": "grove"
+        },
+        {
+          "time": 82.12,
+          "type": "elite-kill"
+        },
+        {
+          "time": 97.95,
+          "type": "seal-complete",
+          "id": "grove"
+        },
+        {
+          "time": 97.95,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 97.95,
+          "type": "fragment",
+          "id": "orbit"
+        },
+        {
+          "time": 99.33,
+          "type": "branch",
+          "id": "prison",
+          "pair": "orbit/ice"
+        },
+        {
+          "time": 151.67,
+          "type": "elite-kill"
+        },
+        {
+          "time": 210.92,
+          "type": "seal-start",
+          "id": "court"
+        },
+        {
+          "time": 212.18,
+          "type": "elite-kill"
+        },
+        {
+          "time": 229.85,
+          "type": "seal-complete",
+          "id": "court"
+        },
+        {
+          "time": 229.85,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 229.85,
+          "type": "fragment",
+          "id": "ice"
+        },
+        {
+          "time": 240,
+          "type": "mastery",
+          "id": "power",
+          "pair": "orbit/ice"
+        },
+        {
+          "time": 241.03,
+          "type": "elite-kill"
+        },
+        {
+          "time": 280.05,
+          "type": "elite-kill"
+        },
+        {
+          "time": 302.82,
+          "type": "elite-kill"
+        },
+        {
+          "time": 325.08,
+          "type": "elite-kill"
+        },
+        {
+          "time": 331.35,
+          "type": "elite-kill"
+        },
+        {
+          "time": 352.68,
+          "type": "elite-kill"
+        },
+        {
+          "time": 364.2,
+          "type": "seal-start",
+          "id": "spring"
+        },
+        {
+          "time": 365,
+          "type": "elite-kill"
+        },
+        {
+          "time": 372.87,
+          "type": "elite-kill"
+        },
+        {
+          "time": 387.58,
+          "type": "seal-complete",
+          "id": "spring"
+        },
+        {
+          "time": 387.58,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 18
+        },
+        {
+          "time": 387.58,
+          "type": "fragment",
+          "id": "hurt"
+        },
+        {
+          "time": 405.42,
+          "type": "elite-kill"
+        },
+        {
+          "time": 412.75,
+          "type": "elite-kill"
+        },
+        {
+          "time": 420.02,
+          "type": "mastery",
+          "id": "power",
+          "pair": "blast/force"
+        },
+        {
+          "time": 424.35,
+          "type": "elite-kill"
+        },
+        {
+          "time": 433.58,
+          "type": "elite-kill"
+        },
+        {
+          "time": 454.77,
+          "type": "elite-kill"
+        },
+        {
+          "time": 473.7,
+          "type": "elite-kill"
+        },
+        {
+          "time": 475.03,
+          "type": "elite-kill"
+        },
+        {
+          "time": 491.7,
+          "type": "elite-kill"
+        },
+        {
+          "time": 521.83,
+          "type": "elite-kill"
+        },
+        {
+          "time": 528.25,
+          "type": "seal-start",
+          "id": "gate"
+        },
+        {
+          "time": 529.38,
+          "type": "elite-kill"
+        },
+        {
+          "time": 539.92,
+          "type": "elite-kill"
+        },
+        {
+          "time": 542.45,
+          "type": "elite-kill"
+        },
+        {
+          "time": 562.85,
+          "type": "elite-kill"
+        },
+        {
+          "time": 565.25,
+          "type": "elite-kill"
+        },
+        {
+          "time": 631.6,
+          "type": "boss-kill"
+        }
+      ]
+    },
+    {
+      "weapon": "storm",
+      "seed": 1104,
+      "build": "thunder",
+      "branch": "spread",
+      "mode": "standard",
+      "peak": {
+        "enemies": 240,
+        "shots": 208
+      },
+      "lethalContext": {
+        "time": 614.05,
+        "hp": 59,
+        "maxHP": 190,
+        "damage": 76.80000000000001,
+        "reduction": 0,
+        "enemies": 3,
+        "shots": 38,
+        "site": null
+      },
+      "seals": [
+        {
+          "id": "grove",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "court",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "spring",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "gate",
+          "state": "expired",
+          "progress": 0.55
+        }
+      ],
+      "protected": true,
+      "seconds": 623.15,
+      "win": true,
+      "kills": 5381,
+      "firstBranch": 99.9,
+      "maxLevelAt": 317.12,
+      "buffLevel": 5,
+      "buffDamage": 30559,
+      "totalDamage": 521701,
+      "bossBuffDamage": 996,
+      "bossRemaining": 0,
+      "bossStartHP": 8400,
+      "pressureHits": 39,
+      "protectedHits": 16,
+      "procs": 416,
+      "reforges": 0,
+      "shatters": 0,
+      "detonations": 3,
+      "checkpoints": [
+        {
+          "time": 60,
+          "hp": 100,
+          "maxHP": 100,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 145,
+          "level": 10,
+          "buffLevel": 1,
+          "buffDamage": 39,
+          "procs": 24,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 120,
+          "hp": 125,
+          "maxHP": 125,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 285,
+          "level": 15,
+          "buffLevel": 3,
+          "buffDamage": 235,
+          "procs": 50,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 180,
+          "hp": 145,
+          "maxHP": 145,
+          "enemies": 17,
+          "shots": 0,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 555,
+          "level": 19,
+          "buffLevel": 3,
+          "buffDamage": 362,
+          "procs": 79,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 240,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 2,
+          "shots": 0,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 970,
+          "level": 21,
+          "buffLevel": 3,
+          "buffDamage": 451,
+          "procs": 112,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 300,
+          "hp": 160,
+          "maxHP": 185,
+          "enemies": 30,
+          "shots": 0,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 1361,
+          "level": 23,
+          "buffLevel": 4,
+          "buffDamage": 995,
+          "procs": 158,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 360,
+          "hp": 185,
+          "maxHP": 185,
+          "enemies": 5,
+          "shots": 6,
+          "pressureHits": 2,
+          "protectedHits": 0,
+          "kills": 1926,
+          "level": 35,
+          "buffLevel": 5,
+          "buffDamage": 1685,
+          "procs": 208,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 420,
+          "hp": 190,
+          "maxHP": 190,
+          "enemies": 16,
+          "shots": 9,
+          "pressureHits": 2,
+          "protectedHits": 0,
+          "kills": 2548,
+          "level": 39,
+          "buffLevel": 5,
+          "buffDamage": 3067,
+          "procs": 251,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 480,
+          "hp": 47,
+          "maxHP": 190,
+          "enemies": 62,
+          "shots": 111,
+          "pressureHits": 8,
+          "protectedHits": 0,
+          "kills": 3344,
+          "level": 42,
+          "buffLevel": 5,
+          "buffDamage": 8022,
+          "procs": 297,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 540,
+          "hp": 112,
+          "maxHP": 190,
+          "enemies": 158,
+          "shots": 206,
+          "pressureHits": 24,
+          "protectedHits": 10,
+          "kills": 4432,
+          "level": 48,
+          "buffLevel": 5,
+          "buffDamage": 19717,
+          "procs": 348,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 600,
+          "hp": 59,
+          "maxHP": 190,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 38,
+          "protectedHits": 15,
+          "kills": 5368,
+          "level": 52,
+          "buffLevel": 5,
+          "buffDamage": 29536,
+          "procs": 399,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        }
+      ],
+      "events": [
+        {
+          "time": 3.13,
+          "type": "build",
+          "id": "thunder"
+        },
+        {
+          "time": 61.52,
+          "type": "elite-kill"
+        },
+        {
+          "time": 61.52,
+          "type": "fragment",
+          "id": "lightning"
+        },
+        {
+          "time": 79.53,
+          "type": "seal-start",
+          "id": "grove"
+        },
+        {
+          "time": 81.9,
+          "type": "elite-kill"
+        },
+        {
+          "time": 98.78,
+          "type": "seal-complete",
+          "id": "grove"
+        },
+        {
+          "time": 98.78,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 18.75
+        },
+        {
+          "time": 98.78,
+          "type": "fragment",
+          "id": "hit"
+        },
+        {
+          "time": 99.9,
+          "type": "branch",
+          "id": "spread",
+          "pair": "bolt/lightning"
+        },
+        {
+          "time": 150.85,
+          "type": "elite-kill"
+        },
+        {
+          "time": 214.42,
+          "type": "seal-start",
+          "id": "court"
+        },
+        {
+          "time": 215.4,
+          "type": "elite-kill"
+        },
+        {
+          "time": 233.57,
+          "type": "seal-complete",
+          "id": "court"
+        },
+        {
+          "time": 233.57,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 233.57,
+          "type": "fragment",
+          "id": "bolt"
+        },
+        {
+          "time": 240,
+          "type": "mastery",
+          "id": "power",
+          "pair": "bolt/lightning"
+        },
+        {
+          "time": 240.92,
+          "type": "elite-kill"
+        },
+        {
+          "time": 281.02,
+          "type": "elite-kill"
+        },
+        {
+          "time": 302.17,
+          "type": "elite-kill"
+        },
+        {
+          "time": 331.03,
+          "type": "elite-kill"
+        },
+        {
+          "time": 331.9,
+          "type": "elite-kill"
+        },
+        {
+          "time": 352.17,
+          "type": "elite-kill"
+        },
+        {
+          "time": 362.7,
+          "type": "seal-start",
+          "id": "spring"
+        },
+        {
+          "time": 363.55,
+          "type": "elite-kill"
+        },
+        {
+          "time": 370.57,
+          "type": "elite-kill"
+        },
+        {
+          "time": 385.83,
+          "type": "seal-complete",
+          "id": "spring"
+        },
+        {
+          "time": 385.83,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 385.83,
+          "type": "fragment",
+          "id": "hurt"
+        },
+        {
+          "time": 408.95,
+          "type": "elite-kill"
+        },
+        {
+          "time": 420.02,
+          "type": "mastery",
+          "id": "power",
+          "pair": "field/ice"
+        },
+        {
+          "time": 425.22,
+          "type": "elite-kill"
+        },
+        {
+          "time": 428.82,
+          "type": "elite-kill"
+        },
+        {
+          "time": 451.38,
+          "type": "elite-kill"
+        },
+        {
+          "time": 480.55,
+          "type": "seal-start",
+          "id": "gate"
+        },
+        {
+          "time": 482.17,
+          "type": "elite-kill"
+        },
+        {
+          "time": 485.37,
+          "type": "elite-kill"
+        },
+        {
+          "time": 486.7,
+          "type": "elite-kill"
+        },
+        {
+          "time": 505.5,
+          "type": "elite-kill"
+        },
+        {
+          "time": 505.77,
+          "type": "elite-kill"
+        },
+        {
+          "time": 512.43,
+          "type": "elite-kill"
+        },
+        {
+          "time": 562.83,
+          "type": "elite-kill"
+        },
+        {
+          "time": 567.77,
+          "type": "elite-kill"
+        },
+        {
+          "time": 587.23,
+          "type": "elite-kill"
+        },
+        {
+          "time": 623.15,
+          "type": "boss-kill"
+        }
+      ]
+    },
+    {
+      "weapon": "storm",
+      "seed": 1104,
+      "build": "thunder",
+      "branch": "charge",
+      "mode": "standard",
+      "peak": {
+        "enemies": 240,
+        "shots": 208
+      },
+      "lethalContext": {
+        "time": 614.08,
+        "hp": 1,
+        "maxHP": 190,
+        "damage": 76.80000000000001,
+        "reduction": 0,
+        "enemies": 4,
+        "shots": 45,
+        "site": null
+      },
+      "seals": [
+        {
+          "id": "grove",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "court",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "spring",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "gate",
+          "state": "expired",
+          "progress": 0.55
+        }
+      ],
+      "protected": true,
+      "seconds": 626.12,
+      "win": true,
+      "kills": 5383,
+      "firstBranch": 99.9,
+      "maxLevelAt": 317.12,
+      "buffLevel": 5,
+      "buffDamage": 30981,
+      "totalDamage": 522119,
+      "bossBuffDamage": 1337,
+      "bossRemaining": 0,
+      "bossStartHP": 8400,
+      "pressureHits": 40,
+      "protectedHits": 17,
+      "procs": 418,
+      "reforges": 0,
+      "shatters": 0,
+      "detonations": 2,
+      "checkpoints": [
+        {
+          "time": 60,
+          "hp": 100,
+          "maxHP": 100,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 145,
+          "level": 10,
+          "buffLevel": 1,
+          "buffDamage": 39,
+          "procs": 24,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 120,
+          "hp": 125,
+          "maxHP": 125,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 285,
+          "level": 15,
+          "buffLevel": 3,
+          "buffDamage": 235,
+          "procs": 50,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 180,
+          "hp": 145,
+          "maxHP": 145,
+          "enemies": 17,
+          "shots": 0,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 555,
+          "level": 19,
+          "buffLevel": 3,
+          "buffDamage": 362,
+          "procs": 79,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 240,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 2,
+          "shots": 0,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 970,
+          "level": 21,
+          "buffLevel": 3,
+          "buffDamage": 451,
+          "procs": 112,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 300,
+          "hp": 160,
+          "maxHP": 185,
+          "enemies": 30,
+          "shots": 0,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 1361,
+          "level": 23,
+          "buffLevel": 4,
+          "buffDamage": 995,
+          "procs": 158,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 360,
+          "hp": 185,
+          "maxHP": 185,
+          "enemies": 5,
+          "shots": 6,
+          "pressureHits": 2,
+          "protectedHits": 0,
+          "kills": 1926,
+          "level": 35,
+          "buffLevel": 5,
+          "buffDamage": 1685,
+          "procs": 208,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 420,
+          "hp": 190,
+          "maxHP": 190,
+          "enemies": 16,
+          "shots": 9,
+          "pressureHits": 2,
+          "protectedHits": 0,
+          "kills": 2548,
+          "level": 39,
+          "buffLevel": 5,
+          "buffDamage": 3067,
+          "procs": 251,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 480,
+          "hp": 47,
+          "maxHP": 190,
+          "enemies": 62,
+          "shots": 111,
+          "pressureHits": 8,
+          "protectedHits": 0,
+          "kills": 3344,
+          "level": 42,
+          "buffLevel": 5,
+          "buffDamage": 8022,
+          "procs": 297,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 540,
+          "hp": 112,
+          "maxHP": 190,
+          "enemies": 158,
+          "shots": 206,
+          "pressureHits": 24,
+          "protectedHits": 10,
+          "kills": 4432,
+          "level": 48,
+          "buffLevel": 5,
+          "buffDamage": 19717,
+          "procs": 348,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 600,
+          "hp": 59,
+          "maxHP": 190,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 38,
+          "protectedHits": 15,
+          "kills": 5368,
+          "level": 52,
+          "buffLevel": 5,
+          "buffDamage": 29536,
+          "procs": 399,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        }
+      ],
+      "events": [
+        {
+          "time": 3.13,
+          "type": "build",
+          "id": "thunder"
+        },
+        {
+          "time": 61.52,
+          "type": "elite-kill"
+        },
+        {
+          "time": 61.52,
+          "type": "fragment",
+          "id": "lightning"
+        },
+        {
+          "time": 79.53,
+          "type": "seal-start",
+          "id": "grove"
+        },
+        {
+          "time": 81.9,
+          "type": "elite-kill"
+        },
+        {
+          "time": 98.78,
+          "type": "seal-complete",
+          "id": "grove"
+        },
+        {
+          "time": 98.78,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 18.75
+        },
+        {
+          "time": 98.78,
+          "type": "fragment",
+          "id": "hit"
+        },
+        {
+          "time": 99.9,
+          "type": "branch",
+          "id": "charge",
+          "pair": "bolt/lightning"
+        },
+        {
+          "time": 150.85,
+          "type": "elite-kill"
+        },
+        {
+          "time": 214.42,
+          "type": "seal-start",
+          "id": "court"
+        },
+        {
+          "time": 215.4,
+          "type": "elite-kill"
+        },
+        {
+          "time": 233.57,
+          "type": "seal-complete",
+          "id": "court"
+        },
+        {
+          "time": 233.57,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 233.57,
+          "type": "fragment",
+          "id": "bolt"
+        },
+        {
+          "time": 240,
+          "type": "mastery",
+          "id": "power",
+          "pair": "bolt/lightning"
+        },
+        {
+          "time": 240.92,
+          "type": "elite-kill"
+        },
+        {
+          "time": 281.02,
+          "type": "elite-kill"
+        },
+        {
+          "time": 302.17,
+          "type": "elite-kill"
+        },
+        {
+          "time": 331.03,
+          "type": "elite-kill"
+        },
+        {
+          "time": 331.9,
+          "type": "elite-kill"
+        },
+        {
+          "time": 352.17,
+          "type": "elite-kill"
+        },
+        {
+          "time": 362.7,
+          "type": "seal-start",
+          "id": "spring"
+        },
+        {
+          "time": 363.55,
+          "type": "elite-kill"
+        },
+        {
+          "time": 370.57,
+          "type": "elite-kill"
+        },
+        {
+          "time": 385.83,
+          "type": "seal-complete",
+          "id": "spring"
+        },
+        {
+          "time": 385.83,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 385.83,
+          "type": "fragment",
+          "id": "hurt"
+        },
+        {
+          "time": 408.95,
+          "type": "elite-kill"
+        },
+        {
+          "time": 420.02,
+          "type": "mastery",
+          "id": "power",
+          "pair": "field/ice"
+        },
+        {
+          "time": 425.22,
+          "type": "elite-kill"
+        },
+        {
+          "time": 428.82,
+          "type": "elite-kill"
+        },
+        {
+          "time": 451.38,
+          "type": "elite-kill"
+        },
+        {
+          "time": 480.55,
+          "type": "seal-start",
+          "id": "gate"
+        },
+        {
+          "time": 482.17,
+          "type": "elite-kill"
+        },
+        {
+          "time": 485.37,
+          "type": "elite-kill"
+        },
+        {
+          "time": 486.7,
+          "type": "elite-kill"
+        },
+        {
+          "time": 505.5,
+          "type": "elite-kill"
+        },
+        {
+          "time": 505.77,
+          "type": "elite-kill"
+        },
+        {
+          "time": 512.43,
+          "type": "elite-kill"
+        },
+        {
+          "time": 562.83,
+          "type": "elite-kill"
+        },
+        {
+          "time": 567.77,
+          "type": "elite-kill"
+        },
+        {
+          "time": 587.23,
+          "type": "elite-kill"
+        },
+        {
+          "time": 626.12,
+          "type": "boss-kill"
+        }
+      ]
+    },
+    {
+      "weapon": "flame",
+      "seed": 1104,
+      "build": "fire",
+      "branch": "trail",
+      "mode": "standard",
+      "peak": {
+        "enemies": 96,
+        "shots": 158
+      },
+      "lethalContext": {
+        "time": 600.68,
+        "hp": 45.5,
+        "maxHP": 195,
+        "damage": 76.80000000000001,
+        "reduction": 0,
+        "enemies": 1,
+        "shots": 17,
+        "site": null
+      },
+      "seals": [
+        {
+          "id": "grove",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "court",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "spring",
+          "state": "expired",
+          "progress": 5.4
+        },
+        {
+          "id": "gate",
+          "state": "expired",
+          "progress": 7.23
+        }
+      ],
+      "protected": true,
+      "seconds": 616.75,
+      "win": true,
+      "kills": 5647,
+      "firstBranch": 74.87,
+      "maxLevelAt": 294.68,
+      "buffLevel": 5,
+      "buffDamage": 25650,
+      "totalDamage": 547669,
+      "bossBuffDamage": 763,
+      "bossRemaining": 0,
+      "bossStartHP": 8400,
+      "pressureHits": 59,
+      "protectedHits": 10,
+      "procs": 512,
+      "reforges": 3,
+      "shatters": 0,
+      "detonations": 0,
+      "checkpoints": [
+        {
+          "time": 60,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 3,
+          "shots": 3,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 143,
+          "level": 11,
+          "buffLevel": 2,
+          "buffDamage": 326,
+          "procs": 41,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 120,
+          "hp": 140,
+          "maxHP": 140,
+          "enemies": 9,
+          "shots": 6,
+          "pressureHits": 4,
+          "protectedHits": 0,
+          "kills": 283,
+          "level": 16,
+          "buffLevel": 3,
+          "buffDamage": 554,
+          "procs": 78,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 180,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 2,
+          "shots": 3,
+          "pressureHits": 8,
+          "protectedHits": 0,
+          "kills": 560,
+          "level": 21,
+          "buffLevel": 3,
+          "buffDamage": 965,
+          "procs": 128,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 240,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 5,
+          "shots": 6,
+          "pressureHits": 10,
+          "protectedHits": 0,
+          "kills": 959,
+          "level": 26,
+          "buffLevel": 4,
+          "buffDamage": 1507,
+          "procs": 179,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 300,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 9,
+          "shots": 16,
+          "pressureHits": 12,
+          "protectedHits": 0,
+          "kills": 1347,
+          "level": 31,
+          "buffLevel": 5,
+          "buffDamage": 2440,
+          "procs": 232,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 360,
+          "hp": 135,
+          "maxHP": 160,
+          "enemies": 2,
+          "shots": 8,
+          "pressureHits": 22,
+          "protectedHits": 0,
+          "kills": 1917,
+          "level": 35,
+          "buffLevel": 5,
+          "buffDamage": 4832,
+          "procs": 288,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 420,
+          "hp": 137,
+          "maxHP": 160,
+          "enemies": 27,
+          "shots": 45,
+          "pressureHits": 26,
+          "protectedHits": 0,
+          "kills": 2679,
+          "level": 40,
+          "buffLevel": 5,
+          "buffDamage": 7683,
+          "procs": 343,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 480,
+          "hp": 88,
+          "maxHP": 160,
+          "enemies": 33,
+          "shots": 64,
+          "pressureHits": 35,
+          "protectedHits": 0,
+          "kills": 3515,
+          "level": 44,
+          "buffLevel": 5,
+          "buffDamage": 11134,
+          "procs": 393,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 540,
+          "hp": 41.5,
+          "maxHP": 195,
+          "enemies": 14,
+          "shots": 41,
+          "pressureHits": 48,
+          "protectedHits": 2,
+          "kills": 4713,
+          "level": 50,
+          "buffLevel": 5,
+          "buffDamage": 18181,
+          "procs": 447,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 600,
+          "hp": 45.5,
+          "maxHP": 195,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 58,
+          "protectedHits": 9,
+          "kills": 5638,
+          "level": 52,
+          "buffLevel": 5,
+          "buffDamage": 24845,
+          "procs": 499,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        }
+      ],
+      "events": [
+        {
+          "time": 2.43,
+          "type": "build",
+          "id": "fire"
+        },
+        {
+          "time": 61.37,
+          "type": "elite-kill"
+        },
+        {
+          "time": 61.37,
+          "type": "fragment",
+          "id": "field"
+        },
+        {
+          "time": 74.87,
+          "type": "branch",
+          "id": "trail",
+          "pair": "field/fire"
+        },
+        {
+          "time": 77.32,
+          "type": "seal-start",
+          "id": "grove"
+        },
+        {
+          "time": 78.82,
+          "type": "elite-kill"
+        },
+        {
+          "time": 95.75,
+          "type": "seal-complete",
+          "id": "grove"
+        },
+        {
+          "time": 95.75,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 19
+        },
+        {
+          "time": 95.75,
+          "type": "fragment",
+          "id": "force"
+        },
+        {
+          "time": 150.87,
+          "type": "elite-kill"
+        },
+        {
+          "time": 213.45,
+          "type": "seal-start",
+          "id": "court"
+        },
+        {
+          "time": 214.5,
+          "type": "elite-kill"
+        },
+        {
+          "time": 234.85,
+          "type": "seal-complete",
+          "id": "court"
+        },
+        {
+          "time": 234.85,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 234.85,
+          "type": "fragment",
+          "id": "dash"
+        },
+        {
+          "time": 240,
+          "type": "mastery",
+          "id": "power",
+          "pair": "field/fire"
+        },
+        {
+          "time": 243.57,
+          "type": "elite-kill"
+        },
+        {
+          "time": 280.47,
+          "type": "elite-kill"
+        },
+        {
+          "time": 302.05,
+          "type": "elite-kill"
+        },
+        {
+          "time": 329.58,
+          "type": "elite-kill"
+        },
+        {
+          "time": 333.45,
+          "type": "elite-kill"
+        },
+        {
+          "time": 351.33,
+          "type": "elite-kill"
+        },
+        {
+          "time": 361.6,
+          "type": "seal-start",
+          "id": "spring"
+        },
+        {
+          "time": 362.83,
+          "type": "elite-kill"
+        },
+        {
+          "time": 369.45,
+          "type": "elite-kill"
+        },
+        {
+          "time": 411.48,
+          "type": "elite-kill"
+        },
+        {
+          "time": 420.02,
+          "type": "mastery",
+          "id": "power",
+          "pair": "blast/force"
+        },
+        {
+          "time": 421.3,
+          "type": "elite-kill"
+        },
+        {
+          "time": 424.35,
+          "type": "elite-kill"
+        },
+        {
+          "time": 430.3,
+          "type": "elite-kill"
+        },
+        {
+          "time": 454.03,
+          "type": "elite-kill"
+        },
+        {
+          "time": 472.62,
+          "type": "elite-kill"
+        },
+        {
+          "time": 474.6,
+          "type": "elite-kill"
+        },
+        {
+          "time": 485.27,
+          "type": "seal-start",
+          "id": "gate"
+        },
+        {
+          "time": 486.58,
+          "type": "elite-kill"
+        },
+        {
+          "time": 491.6,
+          "type": "elite-kill"
+        },
+        {
+          "time": 496.02,
+          "type": "elite-kill"
+        },
+        {
+          "time": 509.65,
+          "type": "elite-kill"
+        },
+        {
+          "time": 511.38,
+          "type": "elite-kill"
+        },
+        {
+          "time": 513.27,
+          "type": "elite-kill"
+        },
+        {
+          "time": 526.97,
+          "type": "elite-kill"
+        },
+        {
+          "time": 536.97,
+          "type": "elite-kill"
+        },
+        {
+          "time": 544.1,
+          "type": "elite-kill"
+        },
+        {
+          "time": 552.12,
+          "type": "elite-kill"
+        },
+        {
+          "time": 561.68,
+          "type": "elite-kill"
+        },
+        {
+          "time": 563.23,
+          "type": "elite-kill"
+        },
+        {
+          "time": 616.75,
+          "type": "boss-kill"
+        }
+      ]
+    },
+    {
+      "weapon": "flame",
+      "seed": 1104,
+      "build": "fire",
+      "branch": "furnace",
+      "mode": "standard",
+      "peak": {
+        "enemies": 97,
+        "shots": 208
+      },
+      "lethalContext": {
+        "time": 592.23,
+        "hp": 1,
+        "maxHP": 160,
+        "damage": 31.394214285704606,
+        "reduction": 0,
+        "enemies": 3,
+        "shots": 11,
+        "site": null
+      },
+      "seals": [
+        {
+          "id": "grove",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "court",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "spring",
+          "state": "expired",
+          "progress": 14.52
+        },
+        {
+          "id": "gate",
+          "state": "expired",
+          "progress": 3.38
+        }
+      ],
+      "protected": true,
+      "seconds": 615.63,
+      "win": true,
+      "kills": 5641,
+      "firstBranch": 74.87,
+      "maxLevelAt": 346.3,
+      "buffLevel": 5,
+      "buffDamage": 19181,
+      "totalDamage": 543419,
+      "bossBuffDamage": 180,
+      "bossRemaining": 0,
+      "bossStartHP": 8400,
+      "pressureHits": 64,
+      "protectedHits": 15,
+      "procs": 502,
+      "reforges": 1,
+      "shatters": 0,
+      "detonations": 0,
+      "checkpoints": [
+        {
+          "time": 60,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 3,
+          "shots": 3,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 143,
+          "level": 11,
+          "buffLevel": 2,
+          "buffDamage": 326,
+          "procs": 41,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 120,
+          "hp": 121,
+          "maxHP": 140,
+          "enemies": 10,
+          "shots": 6,
+          "pressureHits": 6,
+          "protectedHits": 0,
+          "kills": 282,
+          "level": 16,
+          "buffLevel": 3,
+          "buffDamage": 608,
+          "procs": 78,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 180,
+          "hp": 122,
+          "maxHP": 160,
+          "enemies": 3,
+          "shots": 2,
+          "pressureHits": 11,
+          "protectedHits": 0,
+          "kills": 559,
+          "level": 21,
+          "buffLevel": 3,
+          "buffDamage": 1073,
+          "procs": 126,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 240,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 5,
+          "shots": 5,
+          "pressureHits": 13,
+          "protectedHits": 0,
+          "kills": 965,
+          "level": 26,
+          "buffLevel": 3,
+          "buffDamage": 2006,
+          "procs": 175,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 300,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 10,
+          "shots": 10,
+          "pressureHits": 15,
+          "protectedHits": 0,
+          "kills": 1346,
+          "level": 30,
+          "buffLevel": 4,
+          "buffDamage": 3124,
+          "procs": 228,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 360,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 5,
+          "shots": 8,
+          "pressureHits": 22,
+          "protectedHits": 0,
+          "kills": 1914,
+          "level": 35,
+          "buffLevel": 5,
+          "buffDamage": 4981,
+          "procs": 287,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 420,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 31,
+          "shots": 52,
+          "pressureHits": 27,
+          "protectedHits": 0,
+          "kills": 2667,
+          "level": 39,
+          "buffLevel": 5,
+          "buffDamage": 7136,
+          "procs": 337,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 480,
+          "hp": 145,
+          "maxHP": 160,
+          "enemies": 39,
+          "shots": 105,
+          "pressureHits": 34,
+          "protectedHits": 0,
+          "kills": 3501,
+          "level": 41,
+          "buffLevel": 5,
+          "buffDamage": 11260,
+          "procs": 389,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 540,
+          "hp": 16,
+          "maxHP": 160,
+          "enemies": 14,
+          "shots": 22,
+          "pressureHits": 45,
+          "protectedHits": 3,
+          "kills": 4705,
+          "level": 43,
+          "buffLevel": 5,
+          "buffDamage": 15395,
+          "procs": 439,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 600,
+          "hp": 31,
+          "maxHP": 160,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 63,
+          "protectedHits": 15,
+          "kills": 5632,
+          "level": 53,
+          "buffLevel": 5,
+          "buffDamage": 18956,
+          "procs": 491,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        }
+      ],
+      "events": [
+        {
+          "time": 2.43,
+          "type": "build",
+          "id": "fire"
+        },
+        {
+          "time": 61.37,
+          "type": "elite-kill"
+        },
+        {
+          "time": 61.37,
+          "type": "fragment",
+          "id": "field"
+        },
+        {
+          "time": 74.87,
+          "type": "branch",
+          "id": "furnace",
+          "pair": "field/fire"
+        },
+        {
+          "time": 77.32,
+          "type": "seal-start",
+          "id": "grove"
+        },
+        {
+          "time": 78.82,
+          "type": "elite-kill"
+        },
+        {
+          "time": 95.75,
+          "type": "seal-complete",
+          "id": "grove"
+        },
+        {
+          "time": 95.75,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 19
+        },
+        {
+          "time": 95.75,
+          "type": "fragment",
+          "id": "force"
+        },
+        {
+          "time": 151.55,
+          "type": "elite-kill"
+        },
+        {
+          "time": 213.85,
+          "type": "seal-start",
+          "id": "court"
+        },
+        {
+          "time": 214.58,
+          "type": "elite-kill"
+        },
+        {
+          "time": 236.63,
+          "type": "seal-complete",
+          "id": "court"
+        },
+        {
+          "time": 236.63,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 2
+        },
+        {
+          "time": 236.63,
+          "type": "fragment",
+          "id": "dash"
+        },
+        {
+          "time": 240,
+          "type": "mastery",
+          "id": "power",
+          "pair": "field/fire"
+        },
+        {
+          "time": 240.82,
+          "type": "elite-kill"
+        },
+        {
+          "time": 284.45,
+          "type": "elite-kill"
+        },
+        {
+          "time": 309.37,
+          "type": "elite-kill"
+        },
+        {
+          "time": 328.12,
+          "type": "elite-kill"
+        },
+        {
+          "time": 333.28,
+          "type": "elite-kill"
+        },
+        {
+          "time": 349.1,
+          "type": "elite-kill"
+        },
+        {
+          "time": 364.32,
+          "type": "seal-start",
+          "id": "spring"
+        },
+        {
+          "time": 364.95,
+          "type": "elite-kill"
+        },
+        {
+          "time": 370.43,
+          "type": "elite-kill"
+        },
+        {
+          "time": 391.25,
+          "type": "elite-kill"
+        },
+        {
+          "time": 412.38,
+          "type": "elite-kill"
+        },
+        {
+          "time": 420.02,
+          "type": "mastery",
+          "id": "power",
+          "pair": "blast/force"
+        },
+        {
+          "time": 422.62,
+          "type": "elite-kill"
+        },
+        {
+          "time": 432.28,
+          "type": "elite-kill"
+        },
+        {
+          "time": 454.38,
+          "type": "elite-kill"
+        },
+        {
+          "time": 474.37,
+          "type": "elite-kill"
+        },
+        {
+          "time": 483.88,
+          "type": "elite-kill"
+        },
+        {
+          "time": 489.5,
+          "type": "elite-kill"
+        },
+        {
+          "time": 493.05,
+          "type": "elite-kill"
+        },
+        {
+          "time": 497.35,
+          "type": "seal-start",
+          "id": "gate"
+        },
+        {
+          "time": 498,
+          "type": "elite-kill"
+        },
+        {
+          "time": 509.2,
+          "type": "elite-kill"
+        },
+        {
+          "time": 512.57,
+          "type": "elite-kill"
+        },
+        {
+          "time": 515.45,
+          "type": "elite-kill"
+        },
+        {
+          "time": 525.88,
+          "type": "elite-kill"
+        },
+        {
+          "time": 527.5,
+          "type": "elite-kill"
+        },
+        {
+          "time": 544.45,
+          "type": "elite-kill"
+        },
+        {
+          "time": 562.13,
+          "type": "elite-kill"
+        },
+        {
+          "time": 575.22,
+          "type": "elite-kill"
+        },
+        {
+          "time": 575.52,
+          "type": "elite-kill"
+        },
+        {
+          "time": 615.63,
+          "type": "boss-kill"
+        }
+      ]
+    },
+    {
+      "weapon": "flame",
+      "seed": 1104,
+      "build": "ice",
+      "branch": "shards",
+      "mode": "standard",
+      "peak": {
+        "enemies": 96,
+        "shots": 157
+      },
+      "lethalContext": {
+        "time": 563.23,
+        "hp": 1,
+        "maxHP": 160,
+        "damage": 45.107785714273,
+        "reduction": 0,
+        "enemies": 49,
+        "shots": 101,
+        "site": null
+      },
+      "seals": [
+        {
+          "id": "grove",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "court",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "spring",
+          "state": "expired",
+          "progress": 12.68
+        },
+        {
+          "id": "gate",
+          "state": "expired",
+          "progress": 3.2
+        }
+      ],
+      "protected": true,
+      "seconds": 610.43,
+      "win": true,
+      "kills": 5632,
+      "firstBranch": 77.03,
+      "maxLevelAt": 234.28,
+      "buffLevel": 5,
+      "buffDamage": 7864,
+      "totalDamage": 547877,
+      "bossBuffDamage": 78,
+      "bossRemaining": 0,
+      "bossStartHP": 8400,
+      "pressureHits": 32,
+      "protectedHits": 11,
+      "procs": 371,
+      "reforges": 0,
+      "shatters": 0,
+      "detonations": 0,
+      "checkpoints": [
+        {
+          "time": 60,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 9,
+          "shots": 3,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 137,
+          "level": 11,
+          "buffLevel": 2,
+          "buffDamage": 60,
+          "procs": 19,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 120,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 7,
+          "shots": 7,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 288,
+          "level": 16,
+          "buffLevel": 3,
+          "buffDamage": 90,
+          "procs": 40,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 180,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 1,
+          "shots": 1,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 564,
+          "level": 21,
+          "buffLevel": 4,
+          "buffDamage": 191,
+          "procs": 72,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 240,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 4,
+          "shots": 5,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 960,
+          "level": 26,
+          "buffLevel": 5,
+          "buffDamage": 428,
+          "procs": 105,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 300,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 18,
+          "shots": 37,
+          "pressureHits": 3,
+          "protectedHits": 0,
+          "kills": 1341,
+          "level": 30,
+          "buffLevel": 5,
+          "buffDamage": 781,
+          "procs": 132,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 360,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 7,
+          "shots": 7,
+          "pressureHits": 4,
+          "protectedHits": 0,
+          "kills": 1915,
+          "level": 34,
+          "buffLevel": 5,
+          "buffDamage": 1423,
+          "procs": 174,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 420,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 27,
+          "shots": 64,
+          "pressureHits": 5,
+          "protectedHits": 0,
+          "kills": 2674,
+          "level": 38,
+          "buffLevel": 5,
+          "buffDamage": 1871,
+          "procs": 222,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 480,
+          "hp": 94,
+          "maxHP": 160,
+          "enemies": 25,
+          "shots": 15,
+          "pressureHits": 10,
+          "protectedHits": 0,
+          "kills": 3518,
+          "level": 43,
+          "buffLevel": 5,
+          "buffDamage": 3793,
+          "procs": 268,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 540,
+          "hp": 131,
+          "maxHP": 160,
+          "enemies": 21,
+          "shots": 76,
+          "pressureHits": 24,
+          "protectedHits": 7,
+          "kills": 4701,
+          "level": 50,
+          "buffLevel": 5,
+          "buffDamage": 6231,
+          "procs": 316,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 600,
+          "hp": 79,
+          "maxHP": 160,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 32,
+          "protectedHits": 11,
+          "kills": 5626,
+          "level": 52,
+          "buffLevel": 5,
+          "buffDamage": 7786,
+          "procs": 362,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        }
+      ],
+      "events": [
+        {
+          "time": 2.43,
+          "type": "build",
+          "id": "ice"
+        },
+        {
+          "time": 71,
+          "type": "elite-kill"
+        },
+        {
+          "time": 71,
+          "type": "fragment",
+          "id": "ice"
+        },
+        {
+          "time": 75.38,
+          "type": "seal-start",
+          "id": "grove"
+        },
+        {
+          "time": 76.88,
+          "type": "elite-kill"
+        },
+        {
+          "time": 77.03,
+          "type": "branch",
+          "id": "shards",
+          "pair": "orbit/ice"
+        },
+        {
+          "time": 93.57,
+          "type": "seal-complete",
+          "id": "grove"
+        },
+        {
+          "time": 93.57,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 28.5
+        },
+        {
+          "time": 93.57,
+          "type": "fragment",
+          "id": "ice"
+        },
+        {
+          "time": 152.18,
+          "type": "elite-kill"
+        },
+        {
+          "time": 214.63,
+          "type": "seal-start",
+          "id": "court"
+        },
+        {
+          "time": 215.4,
+          "type": "elite-kill"
+        },
+        {
+          "time": 234.27,
+          "type": "seal-complete",
+          "id": "court"
+        },
+        {
+          "time": 234.27,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 14
+        },
+        {
+          "time": 234.27,
+          "type": "fragment",
+          "id": "hit"
+        },
+        {
+          "time": 240,
+          "type": "mastery",
+          "id": "power",
+          "pair": "orbit/ice"
+        },
+        {
+          "time": 241.18,
+          "type": "elite-kill"
+        },
+        {
+          "time": 278.88,
+          "type": "elite-kill"
+        },
+        {
+          "time": 303.77,
+          "type": "elite-kill"
+        },
+        {
+          "time": 326.48,
+          "type": "elite-kill"
+        },
+        {
+          "time": 330.52,
+          "type": "elite-kill"
+        },
+        {
+          "time": 347.1,
+          "type": "elite-kill"
+        },
+        {
+          "time": 362.98,
+          "type": "seal-start",
+          "id": "spring"
+        },
+        {
+          "time": 363.85,
+          "type": "elite-kill"
+        },
+        {
+          "time": 368.72,
+          "type": "elite-kill"
+        },
+        {
+          "time": 390.85,
+          "type": "elite-kill"
+        },
+        {
+          "time": 415.82,
+          "type": "elite-kill"
+        },
+        {
+          "time": 420.02,
+          "type": "mastery",
+          "id": "power",
+          "pair": "blast/force"
+        },
+        {
+          "time": 421.37,
+          "type": "elite-kill"
+        },
+        {
+          "time": 429.42,
+          "type": "elite-kill"
+        },
+        {
+          "time": 457.25,
+          "type": "elite-kill"
+        },
+        {
+          "time": 471.77,
+          "type": "elite-kill"
+        },
+        {
+          "time": 472.52,
+          "type": "elite-kill"
+        },
+        {
+          "time": 485.1,
+          "type": "seal-start",
+          "id": "gate"
+        },
+        {
+          "time": 485.75,
+          "type": "elite-kill"
+        },
+        {
+          "time": 490.72,
+          "type": "elite-kill"
+        },
+        {
+          "time": 495.72,
+          "type": "elite-kill"
+        },
+        {
+          "time": 509.43,
+          "type": "elite-kill"
+        },
+        {
+          "time": 511.5,
+          "type": "elite-kill"
+        },
+        {
+          "time": 514.65,
+          "type": "elite-kill"
+        },
+        {
+          "time": 525.68,
+          "type": "elite-kill"
+        },
+        {
+          "time": 545.97,
+          "type": "elite-kill"
+        },
+        {
+          "time": 546.9,
+          "type": "elite-kill"
+        },
+        {
+          "time": 556.25,
+          "type": "elite-kill"
+        },
+        {
+          "time": 561.18,
+          "type": "elite-kill"
+        },
+        {
+          "time": 562.92,
+          "type": "elite-kill"
+        },
+        {
+          "time": 610.43,
+          "type": "boss-kill"
+        }
+      ]
+    },
+    {
+      "weapon": "flame",
+      "seed": 1104,
+      "build": "ice",
+      "branch": "prison",
+      "mode": "standard",
+      "peak": {
+        "enemies": 96,
+        "shots": 208
+      },
+      "lethalContext": {
+        "time": 617.72,
+        "hp": 1,
+        "maxHP": 160,
+        "damage": 76.80000000000001,
+        "reduction": 0,
+        "enemies": 1,
+        "shots": 10,
+        "site": null
+      },
+      "seals": [
+        {
+          "id": "grove",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "court",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "spring",
+          "state": "expired",
+          "progress": 10.78
+        },
+        {
+          "id": "gate",
+          "state": "expired",
+          "progress": 0
+        }
+      ],
+      "protected": true,
+      "seconds": 617.75,
+      "win": true,
+      "kills": 5648,
+      "firstBranch": 77.03,
+      "maxLevelAt": 233.17,
+      "buffLevel": 5,
+      "buffDamage": 8869,
+      "totalDamage": 546100,
+      "bossBuffDamage": 320,
+      "bossRemaining": 0,
+      "bossStartHP": 8400,
+      "pressureHits": 58,
+      "protectedHits": 29,
+      "procs": 404,
+      "reforges": 0,
+      "shatters": 0,
+      "detonations": 0,
+      "checkpoints": [
+        {
+          "time": 60,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 9,
+          "shots": 3,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 137,
+          "level": 11,
+          "buffLevel": 2,
+          "buffDamage": 60,
+          "procs": 19,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 120,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 7,
+          "shots": 7,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 288,
+          "level": 16,
+          "buffLevel": 3,
+          "buffDamage": 90,
+          "procs": 40,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 180,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 1,
+          "shots": 1,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 564,
+          "level": 21,
+          "buffLevel": 4,
+          "buffDamage": 175,
+          "procs": 72,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 240,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 4,
+          "shots": 5,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 957,
+          "level": 26,
+          "buffLevel": 5,
+          "buffDamage": 391,
+          "procs": 106,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 300,
+          "hp": 126,
+          "maxHP": 160,
+          "enemies": 26,
+          "shots": 12,
+          "pressureHits": 3,
+          "protectedHits": 0,
+          "kills": 1357,
+          "level": 30,
+          "buffLevel": 5,
+          "buffDamage": 580,
+          "procs": 142,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 360,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 9,
+          "shots": 7,
+          "pressureHits": 5,
+          "protectedHits": 0,
+          "kills": 1910,
+          "level": 34,
+          "buffLevel": 5,
+          "buffDamage": 1237,
+          "procs": 186,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 420,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 31,
+          "shots": 24,
+          "pressureHits": 12,
+          "protectedHits": 0,
+          "kills": 2675,
+          "level": 38,
+          "buffLevel": 5,
+          "buffDamage": 2487,
+          "procs": 236,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 480,
+          "hp": 1,
+          "maxHP": 160,
+          "enemies": 35,
+          "shots": 46,
+          "pressureHits": 21,
+          "protectedHits": 2,
+          "kills": 3513,
+          "level": 44,
+          "buffLevel": 5,
+          "buffDamage": 3975,
+          "procs": 286,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 540,
+          "hp": 66,
+          "maxHP": 160,
+          "enemies": 17,
+          "shots": 42,
+          "pressureHits": 34,
+          "protectedHits": 10,
+          "kills": 4705,
+          "level": 50,
+          "buffLevel": 5,
+          "buffDamage": 6427,
+          "procs": 337,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 600,
+          "hp": 1,
+          "maxHP": 160,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 52,
+          "protectedHits": 23,
+          "kills": 5638,
+          "level": 52,
+          "buffLevel": 5,
+          "buffDamage": 8523,
+          "procs": 390,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        }
+      ],
+      "events": [
+        {
+          "time": 2.43,
+          "type": "build",
+          "id": "ice"
+        },
+        {
+          "time": 71,
+          "type": "elite-kill"
+        },
+        {
+          "time": 71,
+          "type": "fragment",
+          "id": "ice"
+        },
+        {
+          "time": 75.38,
+          "type": "seal-start",
+          "id": "grove"
+        },
+        {
+          "time": 76.88,
+          "type": "elite-kill"
+        },
+        {
+          "time": 77.03,
+          "type": "branch",
+          "id": "prison",
+          "pair": "orbit/ice"
+        },
+        {
+          "time": 93.57,
+          "type": "seal-complete",
+          "id": "grove"
+        },
+        {
+          "time": 93.57,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 28.5
+        },
+        {
+          "time": 93.57,
+          "type": "fragment",
+          "id": "ice"
+        },
+        {
+          "time": 152.18,
+          "type": "elite-kill"
+        },
+        {
+          "time": 214.63,
+          "type": "seal-start",
+          "id": "court"
+        },
+        {
+          "time": 215.4,
+          "type": "elite-kill"
+        },
+        {
+          "time": 233.15,
+          "type": "seal-complete",
+          "id": "court"
+        },
+        {
+          "time": 233.15,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 233.15,
+          "type": "fragment",
+          "id": "hit"
+        },
+        {
+          "time": 240,
+          "type": "mastery",
+          "id": "power",
+          "pair": "orbit/ice"
+        },
+        {
+          "time": 245,
+          "type": "elite-kill"
+        },
+        {
+          "time": 278.72,
+          "type": "elite-kill"
+        },
+        {
+          "time": 304.73,
+          "type": "elite-kill"
+        },
+        {
+          "time": 323.9,
+          "type": "elite-kill"
+        },
+        {
+          "time": 333.25,
+          "type": "elite-kill"
+        },
+        {
+          "time": 346.13,
+          "type": "elite-kill"
+        },
+        {
+          "time": 364.53,
+          "type": "seal-start",
+          "id": "spring"
+        },
+        {
+          "time": 365.3,
+          "type": "elite-kill"
+        },
+        {
+          "time": 368.2,
+          "type": "elite-kill"
+        },
+        {
+          "time": 391.23,
+          "type": "elite-kill"
+        },
+        {
+          "time": 410.77,
+          "type": "elite-kill"
+        },
+        {
+          "time": 420.02,
+          "type": "mastery",
+          "id": "power",
+          "pair": "blast/force"
+        },
+        {
+          "time": 424.43,
+          "type": "elite-kill"
+        },
+        {
+          "time": 433.02,
+          "type": "elite-kill"
+        },
+        {
+          "time": 454.75,
+          "type": "elite-kill"
+        },
+        {
+          "time": 470.73,
+          "type": "elite-kill"
+        },
+        {
+          "time": 473.65,
+          "type": "elite-kill"
+        },
+        {
+          "time": 489.48,
+          "type": "elite-kill"
+        },
+        {
+          "time": 496.53,
+          "type": "elite-kill"
+        },
+        {
+          "time": 509.97,
+          "type": "elite-kill"
+        },
+        {
+          "time": 514.08,
+          "type": "elite-kill"
+        },
+        {
+          "time": 527.8,
+          "type": "elite-kill"
+        },
+        {
+          "time": 534.45,
+          "type": "elite-kill"
+        },
+        {
+          "time": 535.75,
+          "type": "elite-kill"
+        },
+        {
+          "time": 546.98,
+          "type": "elite-kill"
+        },
+        {
+          "time": 547.15,
+          "type": "elite-kill"
+        },
+        {
+          "time": 568.5,
+          "type": "elite-kill"
+        },
+        {
+          "time": 580.87,
+          "type": "elite-kill"
+        },
+        {
+          "time": 617.75,
+          "type": "boss-kill"
+        }
+      ]
+    },
+    {
+      "weapon": "flame",
+      "seed": 1104,
+      "build": "thunder",
+      "branch": "spread",
+      "mode": "standard",
+      "peak": {
+        "enemies": 89,
+        "shots": 158
+      },
+      "lethalContext": {
+        "time": 607.53,
+        "hp": 1,
+        "maxHP": 190,
+        "damage": 76.80000000000001,
+        "reduction": 0,
+        "enemies": 1,
+        "shots": 27,
+        "site": null
+      },
+      "seals": [
+        {
+          "id": "grove",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "court",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "spring",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "gate",
+          "state": "expired",
+          "progress": 3
+        }
+      ],
+      "protected": true,
+      "seconds": 611.72,
+      "win": true,
+      "kills": 5499,
+      "firstBranch": 99.78,
+      "maxLevelAt": 232.58,
+      "buffLevel": 5,
+      "buffDamage": 21946,
+      "totalDamage": 531895,
+      "bossBuffDamage": 520,
+      "bossRemaining": 0,
+      "bossStartHP": 8400,
+      "pressureHits": 53,
+      "protectedHits": 16,
+      "procs": 499,
+      "reforges": 0,
+      "shatters": 0,
+      "detonations": 1,
+      "checkpoints": [
+        {
+          "time": 60,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 5,
+          "shots": 1,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 141,
+          "level": 11,
+          "buffLevel": 1,
+          "buffDamage": 365,
+          "procs": 42,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 120,
+          "hp": 111,
+          "maxHP": 120,
+          "enemies": 4,
+          "shots": 3,
+          "pressureHits": 3,
+          "protectedHits": 0,
+          "kills": 283,
+          "level": 15,
+          "buffLevel": 3,
+          "buffDamage": 626,
+          "procs": 81,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 180,
+          "hp": 149,
+          "maxHP": 160,
+          "enemies": 20,
+          "shots": 2,
+          "pressureHits": 4,
+          "protectedHits": 0,
+          "kills": 553,
+          "level": 21,
+          "buffLevel": 3,
+          "buffDamage": 1563,
+          "procs": 127,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 240,
+          "hp": 177,
+          "maxHP": 190,
+          "enemies": 9,
+          "shots": 2,
+          "pressureHits": 8,
+          "protectedHits": 0,
+          "kills": 961,
+          "level": 26,
+          "buffLevel": 5,
+          "buffDamage": 2535,
+          "procs": 177,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 300,
+          "hp": 190,
+          "maxHP": 190,
+          "enemies": 45,
+          "shots": 33,
+          "pressureHits": 12,
+          "protectedHits": 0,
+          "kills": 1347,
+          "level": 30,
+          "buffLevel": 5,
+          "buffDamage": 4114,
+          "procs": 228,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 360,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 8,
+          "shots": 15,
+          "pressureHits": 13,
+          "protectedHits": 0,
+          "kills": 1924,
+          "level": 35,
+          "buffLevel": 5,
+          "buffDamage": 5933,
+          "procs": 284,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 420,
+          "hp": 118,
+          "maxHP": 160,
+          "enemies": 9,
+          "shots": 16,
+          "pressureHits": 19,
+          "protectedHits": 0,
+          "kills": 2557,
+          "level": 39,
+          "buffLevel": 5,
+          "buffDamage": 8283,
+          "procs": 336,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 480,
+          "hp": 61,
+          "maxHP": 160,
+          "enemies": 20,
+          "shots": 54,
+          "pressureHits": 24,
+          "protectedHits": 0,
+          "kills": 3380,
+          "level": 43,
+          "buffLevel": 5,
+          "buffDamage": 11675,
+          "procs": 387,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 540,
+          "hp": 1,
+          "maxHP": 190,
+          "enemies": 18,
+          "shots": 24,
+          "pressureHits": 38,
+          "protectedHits": 4,
+          "kills": 4561,
+          "level": 47,
+          "buffLevel": 5,
+          "buffDamage": 17513,
+          "procs": 438,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 600,
+          "hp": 1,
+          "maxHP": 190,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 51,
+          "protectedHits": 14,
+          "kills": 5492,
+          "level": 49,
+          "buffLevel": 5,
+          "buffDamage": 21426,
+          "procs": 490,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        }
+      ],
+      "events": [
+        {
+          "time": 2.43,
+          "type": "build",
+          "id": "thunder"
+        },
+        {
+          "time": 61.3,
+          "type": "elite-kill"
+        },
+        {
+          "time": 61.3,
+          "type": "fragment",
+          "id": "lightning"
+        },
+        {
+          "time": 79.28,
+          "type": "seal-start",
+          "id": "grove"
+        },
+        {
+          "time": 80.43,
+          "type": "elite-kill"
+        },
+        {
+          "time": 97.48,
+          "type": "seal-complete",
+          "id": "grove"
+        },
+        {
+          "time": 97.48,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 97.48,
+          "type": "fragment",
+          "id": "bolt"
+        },
+        {
+          "time": 99.78,
+          "type": "branch",
+          "id": "spread",
+          "pair": "bolt/lightning"
+        },
+        {
+          "time": 154.2,
+          "type": "elite-kill"
+        },
+        {
+          "time": 213.2,
+          "type": "seal-start",
+          "id": "court"
+        },
+        {
+          "time": 213.98,
+          "type": "elite-kill"
+        },
+        {
+          "time": 232.57,
+          "type": "seal-complete",
+          "id": "court"
+        },
+        {
+          "time": 232.57,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 28.5
+        },
+        {
+          "time": 232.57,
+          "type": "fragment",
+          "id": "bolt"
+        },
+        {
+          "time": 240,
+          "type": "mastery",
+          "id": "power",
+          "pair": "bolt/lightning"
+        },
+        {
+          "time": 240.85,
+          "type": "elite-kill"
+        },
+        {
+          "time": 279.07,
+          "type": "elite-kill"
+        },
+        {
+          "time": 302.22,
+          "type": "elite-kill"
+        },
+        {
+          "time": 326.6,
+          "type": "elite-kill"
+        },
+        {
+          "time": 331.67,
+          "type": "elite-kill"
+        },
+        {
+          "time": 354.72,
+          "type": "elite-kill"
+        },
+        {
+          "time": 361.23,
+          "type": "seal-start",
+          "id": "spring"
+        },
+        {
+          "time": 362.05,
+          "type": "elite-kill"
+        },
+        {
+          "time": 368.73,
+          "type": "elite-kill"
+        },
+        {
+          "time": 391.5,
+          "type": "elite-kill"
+        },
+        {
+          "time": 400.7,
+          "type": "seal-complete",
+          "id": "spring"
+        },
+        {
+          "time": 400.7,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 400.7,
+          "type": "fragment",
+          "id": "force"
+        },
+        {
+          "time": 420.02,
+          "type": "mastery",
+          "id": "power",
+          "pair": "field/ice"
+        },
+        {
+          "time": 423.93,
+          "type": "elite-kill"
+        },
+        {
+          "time": 435.28,
+          "type": "elite-kill"
+        },
+        {
+          "time": 456.62,
+          "type": "elite-kill"
+        },
+        {
+          "time": 472.23,
+          "type": "elite-kill"
+        },
+        {
+          "time": 479.73,
+          "type": "elite-kill"
+        },
+        {
+          "time": 485.58,
+          "type": "seal-start",
+          "id": "gate"
+        },
+        {
+          "time": 487.13,
+          "type": "elite-kill"
+        },
+        {
+          "time": 492.08,
+          "type": "elite-kill"
+        },
+        {
+          "time": 498.62,
+          "type": "elite-kill"
+        },
+        {
+          "time": 509.35,
+          "type": "elite-kill"
+        },
+        {
+          "time": 511.33,
+          "type": "elite-kill"
+        },
+        {
+          "time": 523.33,
+          "type": "elite-kill"
+        },
+        {
+          "time": 526.15,
+          "type": "elite-kill"
+        },
+        {
+          "time": 532.25,
+          "type": "elite-kill"
+        },
+        {
+          "time": 545.13,
+          "type": "elite-kill"
+        },
+        {
+          "time": 548.28,
+          "type": "elite-kill"
+        },
+        {
+          "time": 560.83,
+          "type": "elite-kill"
+        },
+        {
+          "time": 568.53,
+          "type": "elite-kill"
+        },
+        {
+          "time": 611.72,
+          "type": "boss-kill"
+        }
+      ]
+    },
+    {
+      "weapon": "flame",
+      "seed": 1104,
+      "build": "thunder",
+      "branch": "charge",
+      "mode": "standard",
+      "peak": {
+        "enemies": 89,
+        "shots": 158
+      },
+      "lethalContext": {
+        "time": 609.37,
+        "hp": 1,
+        "maxHP": 190,
+        "damage": 76.80000000000001,
+        "reduction": 0,
+        "enemies": 4,
+        "shots": 33,
+        "site": null
+      },
+      "seals": [
+        {
+          "id": "grove",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "court",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "spring",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "gate",
+          "state": "expired",
+          "progress": 3
+        }
+      ],
+      "protected": true,
+      "seconds": 611.02,
+      "win": true,
+      "kills": 5499,
+      "firstBranch": 99.78,
+      "maxLevelAt": 232.58,
+      "buffLevel": 5,
+      "buffDamage": 22122,
+      "totalDamage": 531895,
+      "bossBuffDamage": 696,
+      "bossRemaining": 0,
+      "bossStartHP": 8400,
+      "pressureHits": 54,
+      "protectedHits": 17,
+      "procs": 498,
+      "reforges": 0,
+      "shatters": 0,
+      "detonations": 1,
+      "checkpoints": [
+        {
+          "time": 60,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 5,
+          "shots": 1,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 141,
+          "level": 11,
+          "buffLevel": 1,
+          "buffDamage": 365,
+          "procs": 42,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 120,
+          "hp": 111,
+          "maxHP": 120,
+          "enemies": 4,
+          "shots": 3,
+          "pressureHits": 3,
+          "protectedHits": 0,
+          "kills": 283,
+          "level": 15,
+          "buffLevel": 3,
+          "buffDamage": 626,
+          "procs": 81,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 180,
+          "hp": 149,
+          "maxHP": 160,
+          "enemies": 20,
+          "shots": 2,
+          "pressureHits": 4,
+          "protectedHits": 0,
+          "kills": 553,
+          "level": 21,
+          "buffLevel": 3,
+          "buffDamage": 1563,
+          "procs": 127,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 240,
+          "hp": 177,
+          "maxHP": 190,
+          "enemies": 9,
+          "shots": 2,
+          "pressureHits": 8,
+          "protectedHits": 0,
+          "kills": 961,
+          "level": 26,
+          "buffLevel": 5,
+          "buffDamage": 2535,
+          "procs": 177,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 300,
+          "hp": 190,
+          "maxHP": 190,
+          "enemies": 45,
+          "shots": 33,
+          "pressureHits": 12,
+          "protectedHits": 0,
+          "kills": 1347,
+          "level": 30,
+          "buffLevel": 5,
+          "buffDamage": 4114,
+          "procs": 228,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 360,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 8,
+          "shots": 15,
+          "pressureHits": 13,
+          "protectedHits": 0,
+          "kills": 1924,
+          "level": 35,
+          "buffLevel": 5,
+          "buffDamage": 5933,
+          "procs": 284,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 420,
+          "hp": 118,
+          "maxHP": 160,
+          "enemies": 9,
+          "shots": 16,
+          "pressureHits": 19,
+          "protectedHits": 0,
+          "kills": 2557,
+          "level": 39,
+          "buffLevel": 5,
+          "buffDamage": 8283,
+          "procs": 336,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 480,
+          "hp": 61,
+          "maxHP": 160,
+          "enemies": 20,
+          "shots": 54,
+          "pressureHits": 24,
+          "protectedHits": 0,
+          "kills": 3380,
+          "level": 43,
+          "buffLevel": 5,
+          "buffDamage": 11675,
+          "procs": 387,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 540,
+          "hp": 1,
+          "maxHP": 190,
+          "enemies": 18,
+          "shots": 24,
+          "pressureHits": 38,
+          "protectedHits": 4,
+          "kills": 4561,
+          "level": 47,
+          "buffLevel": 5,
+          "buffDamage": 17513,
+          "procs": 438,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 600,
+          "hp": 1,
+          "maxHP": 190,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 51,
+          "protectedHits": 14,
+          "kills": 5492,
+          "level": 49,
+          "buffLevel": 5,
+          "buffDamage": 21426,
+          "procs": 490,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        }
+      ],
+      "events": [
+        {
+          "time": 2.43,
+          "type": "build",
+          "id": "thunder"
+        },
+        {
+          "time": 61.3,
+          "type": "elite-kill"
+        },
+        {
+          "time": 61.3,
+          "type": "fragment",
+          "id": "lightning"
+        },
+        {
+          "time": 79.28,
+          "type": "seal-start",
+          "id": "grove"
+        },
+        {
+          "time": 80.43,
+          "type": "elite-kill"
+        },
+        {
+          "time": 97.48,
+          "type": "seal-complete",
+          "id": "grove"
+        },
+        {
+          "time": 97.48,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 97.48,
+          "type": "fragment",
+          "id": "bolt"
+        },
+        {
+          "time": 99.78,
+          "type": "branch",
+          "id": "charge",
+          "pair": "bolt/lightning"
+        },
+        {
+          "time": 154.2,
+          "type": "elite-kill"
+        },
+        {
+          "time": 213.2,
+          "type": "seal-start",
+          "id": "court"
+        },
+        {
+          "time": 213.98,
+          "type": "elite-kill"
+        },
+        {
+          "time": 232.57,
+          "type": "seal-complete",
+          "id": "court"
+        },
+        {
+          "time": 232.57,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 28.5
+        },
+        {
+          "time": 232.57,
+          "type": "fragment",
+          "id": "bolt"
+        },
+        {
+          "time": 240,
+          "type": "mastery",
+          "id": "power",
+          "pair": "bolt/lightning"
+        },
+        {
+          "time": 240.85,
+          "type": "elite-kill"
+        },
+        {
+          "time": 279.07,
+          "type": "elite-kill"
+        },
+        {
+          "time": 302.22,
+          "type": "elite-kill"
+        },
+        {
+          "time": 326.6,
+          "type": "elite-kill"
+        },
+        {
+          "time": 331.67,
+          "type": "elite-kill"
+        },
+        {
+          "time": 354.72,
+          "type": "elite-kill"
+        },
+        {
+          "time": 361.23,
+          "type": "seal-start",
+          "id": "spring"
+        },
+        {
+          "time": 362.05,
+          "type": "elite-kill"
+        },
+        {
+          "time": 368.73,
+          "type": "elite-kill"
+        },
+        {
+          "time": 391.5,
+          "type": "elite-kill"
+        },
+        {
+          "time": 400.7,
+          "type": "seal-complete",
+          "id": "spring"
+        },
+        {
+          "time": 400.7,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 400.7,
+          "type": "fragment",
+          "id": "force"
+        },
+        {
+          "time": 420.02,
+          "type": "mastery",
+          "id": "power",
+          "pair": "field/ice"
+        },
+        {
+          "time": 423.93,
+          "type": "elite-kill"
+        },
+        {
+          "time": 435.28,
+          "type": "elite-kill"
+        },
+        {
+          "time": 456.62,
+          "type": "elite-kill"
+        },
+        {
+          "time": 472.23,
+          "type": "elite-kill"
+        },
+        {
+          "time": 479.73,
+          "type": "elite-kill"
+        },
+        {
+          "time": 485.58,
+          "type": "seal-start",
+          "id": "gate"
+        },
+        {
+          "time": 487.13,
+          "type": "elite-kill"
+        },
+        {
+          "time": 492.08,
+          "type": "elite-kill"
+        },
+        {
+          "time": 498.62,
+          "type": "elite-kill"
+        },
+        {
+          "time": 509.35,
+          "type": "elite-kill"
+        },
+        {
+          "time": 511.33,
+          "type": "elite-kill"
+        },
+        {
+          "time": 523.33,
+          "type": "elite-kill"
+        },
+        {
+          "time": 526.15,
+          "type": "elite-kill"
+        },
+        {
+          "time": 532.25,
+          "type": "elite-kill"
+        },
+        {
+          "time": 545.13,
+          "type": "elite-kill"
+        },
+        {
+          "time": 548.28,
+          "type": "elite-kill"
+        },
+        {
+          "time": 560.83,
+          "type": "elite-kill"
+        },
+        {
+          "time": 568.53,
+          "type": "elite-kill"
+        },
+        {
+          "time": 611.02,
+          "type": "boss-kill"
+        }
+      ]
+    },
+    {
+      "weapon": "blade",
+      "seed": 1104,
+      "build": "fire",
+      "branch": "trail",
+      "mode": "standard",
+      "peak": {
+        "enemies": 240,
+        "shots": 208
+      },
+      "lethalContext": {
+        "time": 624.15,
+        "hp": 53,
+        "maxHP": 160,
+        "damage": 76.80000000000001,
+        "reduction": 0,
+        "enemies": 5,
+        "shots": 35,
+        "site": null
+      },
+      "seals": [
+        {
+          "id": "grove",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "court",
+          "state": "expired",
+          "progress": 13
+        },
+        {
+          "id": "spring",
+          "state": "expired",
+          "progress": 3.38
+        },
+        {
+          "id": "gate",
+          "state": "expired",
+          "progress": 3.23
+        }
+      ],
+      "protected": true,
+      "seconds": 625.73,
+      "win": true,
+      "kills": 5281,
+      "firstBranch": 94.7,
+      "maxLevelAt": 300.52,
+      "buffLevel": 5,
+      "buffDamage": 120951,
+      "totalDamage": 503767,
+      "bossBuffDamage": 1330,
+      "bossRemaining": 0,
+      "bossStartHP": 8400,
+      "pressureHits": 71,
+      "protectedHits": 20,
+      "procs": 544,
+      "reforges": 20,
+      "shatters": 0,
+      "detonations": 0,
+      "checkpoints": [
+        {
+          "time": 60,
+          "hp": 100,
+          "maxHP": 100,
+          "enemies": 4,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 142,
+          "level": 11,
+          "buffLevel": 2,
+          "buffDamage": 393,
+          "procs": 48,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 120,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 5,
+          "shots": 1,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 294,
+          "level": 16,
+          "buffLevel": 3,
+          "buffDamage": 756,
+          "procs": 96,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 180,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 19,
+          "shots": 1,
+          "pressureHits": 1,
+          "protectedHits": 0,
+          "kills": 555,
+          "level": 21,
+          "buffLevel": 4,
+          "buffDamage": 1918,
+          "procs": 149,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 240,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 38,
+          "shots": 24,
+          "pressureHits": 4,
+          "protectedHits": 0,
+          "kills": 957,
+          "level": 27,
+          "buffLevel": 4,
+          "buffDamage": 5284,
+          "procs": 207,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 300,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 93,
+          "shots": 163,
+          "pressureHits": 7,
+          "protectedHits": 0,
+          "kills": 1372,
+          "level": 31,
+          "buffLevel": 4,
+          "buffDamage": 10021,
+          "procs": 264,
+          "reforges": 2,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 360,
+          "hp": 118,
+          "maxHP": 160,
+          "enemies": 73,
+          "shots": 202,
+          "pressureHits": 17,
+          "protectedHits": 0,
+          "kills": 1931,
+          "level": 35,
+          "buffLevel": 5,
+          "buffDamage": 23105,
+          "procs": 315,
+          "reforges": 3,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 420,
+          "hp": 109,
+          "maxHP": 160,
+          "enemies": 137,
+          "shots": 206,
+          "pressureHits": 32,
+          "protectedHits": 0,
+          "kills": 2642,
+          "level": 41,
+          "buffLevel": 5,
+          "buffDamage": 40116,
+          "procs": 369,
+          "reforges": 3,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 480,
+          "hp": 136,
+          "maxHP": 160,
+          "enemies": 227,
+          "shots": 208,
+          "pressureHits": 36,
+          "protectedHits": 0,
+          "kills": 3398,
+          "level": 45,
+          "buffLevel": 5,
+          "buffDamage": 63442,
+          "procs": 423,
+          "reforges": 6,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 540,
+          "hp": 43,
+          "maxHP": 160,
+          "enemies": 205,
+          "shots": 206,
+          "pressureHits": 58,
+          "protectedHits": 10,
+          "kills": 4595,
+          "level": 50,
+          "buffLevel": 5,
+          "buffDamage": 94783,
+          "procs": 472,
+          "reforges": 9,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 600,
+          "hp": 53,
+          "maxHP": 160,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 70,
+          "protectedHits": 19,
+          "kills": 5266,
+          "level": 53,
+          "buffLevel": 5,
+          "buffDamage": 119356,
+          "procs": 521,
+          "reforges": 14,
+          "shatters": 0,
+          "detonations": 0
+        }
+      ],
+      "events": [
+        {
+          "time": 1.75,
+          "type": "build",
+          "id": "fire"
+        },
+        {
+          "time": 61.75,
+          "type": "elite-kill"
+        },
+        {
+          "time": 61.75,
+          "type": "fragment",
+          "id": "field"
+        },
+        {
+          "time": 77.43,
+          "type": "seal-start",
+          "id": "grove"
+        },
+        {
+          "time": 78.35,
+          "type": "elite-kill"
+        },
+        {
+          "time": 94.7,
+          "type": "branch",
+          "id": "trail",
+          "pair": "field/fire"
+        },
+        {
+          "time": 105.55,
+          "type": "seal-complete",
+          "id": "grove"
+        },
+        {
+          "time": 105.55,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 105.55,
+          "type": "fragment",
+          "id": "field"
+        },
+        {
+          "time": 160.87,
+          "type": "elite-kill"
+        },
+        {
+          "time": 214.2,
+          "type": "seal-start",
+          "id": "court"
+        },
+        {
+          "time": 215.27,
+          "type": "elite-kill"
+        },
+        {
+          "time": 240,
+          "type": "mastery",
+          "id": "power",
+          "pair": "field/fire"
+        },
+        {
+          "time": 241.28,
+          "type": "elite-kill"
+        },
+        {
+          "time": 300.25,
+          "type": "elite-kill"
+        },
+        {
+          "time": 325.85,
+          "type": "elite-kill"
+        },
+        {
+          "time": 333.37,
+          "type": "elite-kill"
+        },
+        {
+          "time": 333.47,
+          "type": "elite-kill"
+        },
+        {
+          "time": 367.45,
+          "type": "elite-kill"
+        },
+        {
+          "time": 369.28,
+          "type": "seal-start",
+          "id": "spring"
+        },
+        {
+          "time": 370.35,
+          "type": "elite-kill"
+        },
+        {
+          "time": 388.45,
+          "type": "elite-kill"
+        },
+        {
+          "time": 397.15,
+          "type": "elite-kill"
+        },
+        {
+          "time": 420.02,
+          "type": "mastery",
+          "id": "power",
+          "pair": "blast/force"
+        },
+        {
+          "time": 427.55,
+          "type": "elite-kill"
+        },
+        {
+          "time": 428.85,
+          "type": "elite-kill"
+        },
+        {
+          "time": 452.38,
+          "type": "elite-kill"
+        },
+        {
+          "time": 470.58,
+          "type": "elite-kill"
+        },
+        {
+          "time": 472.98,
+          "type": "elite-kill"
+        },
+        {
+          "time": 483.78,
+          "type": "seal-start",
+          "id": "gate"
+        },
+        {
+          "time": 484.88,
+          "type": "elite-kill"
+        },
+        {
+          "time": 489.98,
+          "type": "elite-kill"
+        },
+        {
+          "time": 490.17,
+          "type": "elite-kill"
+        },
+        {
+          "time": 493.98,
+          "type": "elite-kill"
+        },
+        {
+          "time": 570.03,
+          "type": "elite-kill"
+        },
+        {
+          "time": 572.47,
+          "type": "elite-kill"
+        },
+        {
+          "time": 625.73,
+          "type": "boss-kill"
+        }
+      ]
+    },
+    {
+      "weapon": "blade",
+      "seed": 1104,
+      "build": "fire",
+      "branch": "furnace",
+      "mode": "standard",
+      "peak": {
+        "enemies": 240,
+        "shots": 208
+      },
+      "lethalContext": {
+        "time": 655.78,
+        "hp": 1,
+        "maxHP": 190,
+        "damage": 76.80000000000001,
+        "reduction": 0.18,
+        "enemies": 2,
+        "shots": 43,
+        "site": null
+      },
+      "seals": [
+        {
+          "id": "grove",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "court",
+          "state": "expired",
+          "progress": 16.57
+        },
+        {
+          "id": "spring",
+          "state": "expired",
+          "progress": 2.83
+        },
+        {
+          "id": "gate",
+          "state": "expired",
+          "progress": 1.95
+        }
+      ],
+      "protected": true,
+      "seconds": 661.12,
+      "win": true,
+      "kills": 5000,
+      "firstBranch": 94.7,
+      "maxLevelAt": 241.75,
+      "buffLevel": 5,
+      "buffDamage": 83317,
+      "totalDamage": 471909,
+      "bossBuffDamage": 1626,
+      "bossRemaining": 0,
+      "bossStartHP": 8400,
+      "pressureHits": 104,
+      "protectedHits": 32,
+      "procs": 555,
+      "reforges": 4,
+      "shatters": 0,
+      "detonations": 0,
+      "checkpoints": [
+        {
+          "time": 60,
+          "hp": 100,
+          "maxHP": 100,
+          "enemies": 4,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 142,
+          "level": 11,
+          "buffLevel": 2,
+          "buffDamage": 393,
+          "procs": 48,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 120,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 5,
+          "shots": 2,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 294,
+          "level": 16,
+          "buffLevel": 3,
+          "buffDamage": 676,
+          "procs": 96,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 180,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 21,
+          "shots": 2,
+          "pressureHits": 4,
+          "protectedHits": 0,
+          "kills": 553,
+          "level": 21,
+          "buffLevel": 4,
+          "buffDamage": 1782,
+          "procs": 149,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 240,
+          "hp": 140,
+          "maxHP": 140,
+          "enemies": 29,
+          "shots": 22,
+          "pressureHits": 6,
+          "protectedHits": 0,
+          "kills": 966,
+          "level": 27,
+          "buffLevel": 4,
+          "buffDamage": 4821,
+          "procs": 207,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 300,
+          "hp": 176,
+          "maxHP": 190,
+          "enemies": 71,
+          "shots": 86,
+          "pressureHits": 9,
+          "protectedHits": 0,
+          "kills": 1394,
+          "level": 31,
+          "buffLevel": 5,
+          "buffDamage": 10545,
+          "procs": 261,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 360,
+          "hp": 157,
+          "maxHP": 190,
+          "enemies": 17,
+          "shots": 53,
+          "pressureHits": 23,
+          "protectedHits": 0,
+          "kills": 1987,
+          "level": 36,
+          "buffLevel": 5,
+          "buffDamage": 18197,
+          "procs": 314,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 420,
+          "hp": 35,
+          "maxHP": 190,
+          "enemies": 189,
+          "shots": 205,
+          "pressureHits": 44,
+          "protectedHits": 0,
+          "kills": 2590,
+          "level": 40,
+          "buffLevel": 5,
+          "buffDamage": 28707,
+          "procs": 364,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 480,
+          "hp": 104,
+          "maxHP": 190,
+          "enemies": 237,
+          "shots": 206,
+          "pressureHits": 52,
+          "protectedHits": 0,
+          "kills": 3126,
+          "level": 43,
+          "buffLevel": 5,
+          "buffDamage": 41136,
+          "procs": 415,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 540,
+          "hp": 1,
+          "maxHP": 190,
+          "enemies": 145,
+          "shots": 207,
+          "pressureHits": 75,
+          "protectedHits": 9,
+          "kills": 4026,
+          "level": 48,
+          "buffLevel": 5,
+          "buffDamage": 61696,
+          "procs": 460,
+          "reforges": 1,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 600,
+          "hp": 73,
+          "maxHP": 190,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 95,
+          "protectedHits": 24,
+          "kills": 4964,
+          "level": 52,
+          "buffLevel": 5,
+          "buffDamage": 80637,
+          "procs": 510,
+          "reforges": 2,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 660,
+          "hp": 1,
+          "maxHP": 190,
+          "enemies": 2,
+          "shots": 36,
+          "pressureHits": 104,
+          "protectedHits": 32,
+          "kills": 4999,
+          "level": 52,
+          "buffLevel": 5,
+          "buffDamage": 83317,
+          "procs": 554,
+          "reforges": 4,
+          "shatters": 0,
+          "detonations": 0
+        }
+      ],
+      "events": [
+        {
+          "time": 1.75,
+          "type": "build",
+          "id": "fire"
+        },
+        {
+          "time": 61.75,
+          "type": "elite-kill"
+        },
+        {
+          "time": 61.75,
+          "type": "fragment",
+          "id": "field"
+        },
+        {
+          "time": 77.43,
+          "type": "seal-start",
+          "id": "grove"
+        },
+        {
+          "time": 78.35,
+          "type": "elite-kill"
+        },
+        {
+          "time": 94.7,
+          "type": "branch",
+          "id": "furnace",
+          "pair": "field/fire"
+        },
+        {
+          "time": 105.55,
+          "type": "seal-complete",
+          "id": "grove"
+        },
+        {
+          "time": 105.55,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 105.55,
+          "type": "fragment",
+          "id": "field"
+        },
+        {
+          "time": 160.63,
+          "type": "elite-kill"
+        },
+        {
+          "time": 215.02,
+          "type": "seal-start",
+          "id": "court"
+        },
+        {
+          "time": 216.17,
+          "type": "elite-kill"
+        },
+        {
+          "time": 240,
+          "type": "mastery",
+          "id": "power",
+          "pair": "field/fire"
+        },
+        {
+          "time": 242.28,
+          "type": "elite-kill"
+        },
+        {
+          "time": 298.57,
+          "type": "elite-kill"
+        },
+        {
+          "time": 302.27,
+          "type": "elite-kill"
+        },
+        {
+          "time": 332.97,
+          "type": "elite-kill"
+        },
+        {
+          "time": 336.57,
+          "type": "elite-kill"
+        },
+        {
+          "time": 355.17,
+          "type": "elite-kill"
+        },
+        {
+          "time": 374.48,
+          "type": "elite-kill"
+        },
+        {
+          "time": 380.55,
+          "type": "seal-start",
+          "id": "spring"
+        },
+        {
+          "time": 389.08,
+          "type": "elite-kill"
+        },
+        {
+          "time": 420.02,
+          "type": "mastery",
+          "id": "power",
+          "pair": "blast/force"
+        },
+        {
+          "time": 494.17,
+          "type": "elite-kill"
+        },
+        {
+          "time": 494.67,
+          "type": "elite-kill"
+        },
+        {
+          "time": 499.53,
+          "type": "elite-kill"
+        },
+        {
+          "time": 524.4,
+          "type": "seal-start",
+          "id": "gate"
+        },
+        {
+          "time": 526.48,
+          "type": "elite-kill"
+        },
+        {
+          "time": 540.68,
+          "type": "elite-kill"
+        },
+        {
+          "time": 549.88,
+          "type": "elite-kill"
+        },
+        {
+          "time": 550.98,
+          "type": "elite-kill"
+        },
+        {
+          "time": 555.02,
+          "type": "elite-kill"
+        },
+        {
+          "time": 560.88,
+          "type": "elite-kill"
+        },
+        {
+          "time": 565.68,
+          "type": "elite-kill"
+        },
+        {
+          "time": 661.12,
+          "type": "boss-kill"
+        }
+      ]
+    },
+    {
+      "weapon": "blade",
+      "seed": 1104,
+      "build": "ice",
+      "branch": "shards",
+      "mode": "standard",
+      "peak": {
+        "enemies": 240,
+        "shots": 208
+      },
+      "lethalContext": {
+        "time": 646.23,
+        "hp": 1,
+        "maxHP": 160,
+        "damage": 76.80000000000001,
+        "reduction": 0,
+        "enemies": 2,
+        "shots": 44,
+        "site": null
+      },
+      "seals": [
+        {
+          "id": "grove",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "court",
+          "state": "expired",
+          "progress": 9.52
+        },
+        {
+          "id": "spring",
+          "state": "expired",
+          "progress": 3.78
+        },
+        {
+          "id": "gate",
+          "state": "expired",
+          "progress": 1.78
+        }
+      ],
+      "protected": true,
+      "seconds": 648.1,
+      "win": true,
+      "kills": 5318,
+      "firstBranch": 60.77,
+      "maxLevelAt": 254.6,
+      "buffLevel": 5,
+      "buffDamage": 8505,
+      "totalDamage": 507757,
+      "bossBuffDamage": 420,
+      "bossRemaining": 0,
+      "bossStartHP": 8400,
+      "pressureHits": 125,
+      "protectedHits": 67,
+      "procs": 481,
+      "reforges": 0,
+      "shatters": 2,
+      "detonations": 0,
+      "checkpoints": [
+        {
+          "time": 60,
+          "hp": 100,
+          "maxHP": 100,
+          "enemies": 6,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 140,
+          "level": 11,
+          "buffLevel": 2,
+          "buffDamage": 35,
+          "procs": 19,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 120,
+          "hp": 100,
+          "maxHP": 100,
+          "enemies": 7,
+          "shots": 2,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 281,
+          "level": 15,
+          "buffLevel": 3,
+          "buffDamage": 89,
+          "procs": 48,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 180,
+          "hp": 145,
+          "maxHP": 145,
+          "enemies": 23,
+          "shots": 9,
+          "pressureHits": 2,
+          "protectedHits": 0,
+          "kills": 551,
+          "level": 21,
+          "buffLevel": 4,
+          "buffDamage": 89,
+          "procs": 90,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 240,
+          "hp": 149,
+          "maxHP": 185,
+          "enemies": 38,
+          "shots": 38,
+          "pressureHits": 6,
+          "protectedHits": 0,
+          "kills": 957,
+          "level": 27,
+          "buffLevel": 4,
+          "buffDamage": 114,
+          "procs": 139,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 300,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 43,
+          "shots": 50,
+          "pressureHits": 10,
+          "protectedHits": 0,
+          "kills": 1422,
+          "level": 32,
+          "buffLevel": 5,
+          "buffDamage": 549,
+          "procs": 198,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 360,
+          "hp": 89,
+          "maxHP": 185,
+          "enemies": 63,
+          "shots": 200,
+          "pressureHits": 24,
+          "protectedHits": 0,
+          "kills": 1941,
+          "level": 36,
+          "buffLevel": 5,
+          "buffDamage": 1154,
+          "procs": 249,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 420,
+          "hp": 48.5,
+          "maxHP": 185,
+          "enemies": 133,
+          "shots": 207,
+          "pressureHits": 53,
+          "protectedHits": 16,
+          "kills": 2646,
+          "level": 41,
+          "buffLevel": 5,
+          "buffDamage": 2227,
+          "procs": 292,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 480,
+          "hp": 1,
+          "maxHP": 160,
+          "enemies": 138,
+          "shots": 192,
+          "pressureHits": 83,
+          "protectedHits": 37,
+          "kills": 3487,
+          "level": 45,
+          "buffLevel": 5,
+          "buffDamage": 3858,
+          "procs": 336,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 540,
+          "hp": 19,
+          "maxHP": 160,
+          "enemies": 182,
+          "shots": 207,
+          "pressureHits": 95,
+          "protectedHits": 43,
+          "kills": 4416,
+          "level": 50,
+          "buffLevel": 5,
+          "buffDamage": 5666,
+          "procs": 386,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 600,
+          "hp": 16,
+          "maxHP": 160,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 113,
+          "protectedHits": 55,
+          "kills": 5291,
+          "level": 53,
+          "buffLevel": 5,
+          "buffDamage": 8050,
+          "procs": 437,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        }
+      ],
+      "events": [
+        {
+          "time": 1.75,
+          "type": "build",
+          "id": "ice"
+        },
+        {
+          "time": 60.75,
+          "type": "elite-kill"
+        },
+        {
+          "time": 60.75,
+          "type": "fragment",
+          "id": "hit"
+        },
+        {
+          "time": 60.77,
+          "type": "branch",
+          "id": "shards",
+          "pair": "orbit/ice"
+        },
+        {
+          "time": 77.02,
+          "type": "seal-start",
+          "id": "grove"
+        },
+        {
+          "time": 77.85,
+          "type": "elite-kill"
+        },
+        {
+          "time": 96.72,
+          "type": "seal-complete",
+          "id": "grove"
+        },
+        {
+          "time": 96.72,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 96.72,
+          "type": "fragment",
+          "id": "ice"
+        },
+        {
+          "time": 160.53,
+          "type": "elite-kill"
+        },
+        {
+          "time": 213.47,
+          "type": "seal-start",
+          "id": "court"
+        },
+        {
+          "time": 214.37,
+          "type": "elite-kill"
+        },
+        {
+          "time": 240,
+          "type": "mastery",
+          "id": "power",
+          "pair": "orbit/ice"
+        },
+        {
+          "time": 267.17,
+          "type": "elite-kill"
+        },
+        {
+          "time": 280.47,
+          "type": "elite-kill"
+        },
+        {
+          "time": 340.42,
+          "type": "elite-kill"
+        },
+        {
+          "time": 348.52,
+          "type": "elite-kill"
+        },
+        {
+          "time": 348.92,
+          "type": "elite-kill"
+        },
+        {
+          "time": 349.92,
+          "type": "elite-kill"
+        },
+        {
+          "time": 370.13,
+          "type": "seal-start",
+          "id": "spring"
+        },
+        {
+          "time": 371.22,
+          "type": "elite-kill"
+        },
+        {
+          "time": 385.23,
+          "type": "elite-kill"
+        },
+        {
+          "time": 387.73,
+          "type": "elite-kill"
+        },
+        {
+          "time": 408.88,
+          "type": "elite-kill"
+        },
+        {
+          "time": 420.02,
+          "type": "mastery",
+          "id": "power",
+          "pair": "blast/force"
+        },
+        {
+          "time": 452.28,
+          "type": "elite-kill"
+        },
+        {
+          "time": 455.18,
+          "type": "elite-kill"
+        },
+        {
+          "time": 471.33,
+          "type": "elite-kill"
+        },
+        {
+          "time": 471.73,
+          "type": "elite-kill"
+        },
+        {
+          "time": 480.83,
+          "type": "elite-kill"
+        },
+        {
+          "time": 510.42,
+          "type": "elite-kill"
+        },
+        {
+          "time": 511.92,
+          "type": "elite-kill"
+        },
+        {
+          "time": 512.42,
+          "type": "elite-kill"
+        },
+        {
+          "time": 513.17,
+          "type": "elite-kill"
+        },
+        {
+          "time": 530.63,
+          "type": "elite-kill"
+        },
+        {
+          "time": 532.83,
+          "type": "elite-kill"
+        },
+        {
+          "time": 539.78,
+          "type": "seal-start",
+          "id": "gate"
+        },
+        {
+          "time": 542.6,
+          "type": "elite-kill"
+        },
+        {
+          "time": 545.93,
+          "type": "elite-kill"
+        },
+        {
+          "time": 547.93,
+          "type": "elite-kill"
+        },
+        {
+          "time": 648.1,
+          "type": "boss-kill"
+        }
+      ]
+    },
+    {
+      "weapon": "blade",
+      "seed": 1104,
+      "build": "ice",
+      "branch": "prison",
+      "mode": "standard",
+      "peak": {
+        "enemies": 240,
+        "shots": 208
+      },
+      "lethalContext": {
+        "time": 636.73,
+        "hp": 1,
+        "maxHP": 160,
+        "damage": 76.80000000000001,
+        "reduction": 0,
+        "enemies": 4,
+        "shots": 47,
+        "site": null
+      },
+      "seals": [
+        {
+          "id": "grove",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "court",
+          "state": "expired",
+          "progress": 6.25
+        },
+        {
+          "id": "spring",
+          "state": "expired",
+          "progress": 3.93
+        },
+        {
+          "id": "gate",
+          "state": "expired",
+          "progress": 1.05
+        }
+      ],
+      "protected": true,
+      "seconds": 638.57,
+      "win": true,
+      "kills": 4542,
+      "firstBranch": 60.77,
+      "maxLevelAt": 240.82,
+      "buffLevel": 5,
+      "buffDamage": 5378,
+      "totalDamage": 421310,
+      "bossBuffDamage": 252,
+      "bossRemaining": 0,
+      "bossStartHP": 8400,
+      "pressureHits": 74,
+      "protectedHits": 21,
+      "procs": 457,
+      "reforges": 0,
+      "shatters": 0,
+      "detonations": 0,
+      "checkpoints": [
+        {
+          "time": 60,
+          "hp": 100,
+          "maxHP": 100,
+          "enemies": 6,
+          "shots": 0,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 140,
+          "level": 11,
+          "buffLevel": 2,
+          "buffDamage": 35,
+          "procs": 19,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 120,
+          "hp": 100,
+          "maxHP": 100,
+          "enemies": 7,
+          "shots": 2,
+          "pressureHits": 0,
+          "protectedHits": 0,
+          "kills": 281,
+          "level": 15,
+          "buffLevel": 3,
+          "buffDamage": 85,
+          "procs": 48,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 180,
+          "hp": 145,
+          "maxHP": 145,
+          "enemies": 23,
+          "shots": 9,
+          "pressureHits": 2,
+          "protectedHits": 0,
+          "kills": 551,
+          "level": 21,
+          "buffLevel": 4,
+          "buffDamage": 85,
+          "procs": 90,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 240,
+          "hp": 165,
+          "maxHP": 165,
+          "enemies": 46,
+          "shots": 31,
+          "pressureHits": 4,
+          "protectedHits": 0,
+          "kills": 949,
+          "level": 27,
+          "buffLevel": 4,
+          "buffDamage": 155,
+          "procs": 138,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 300,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 52,
+          "shots": 29,
+          "pressureHits": 8,
+          "protectedHits": 0,
+          "kills": 1413,
+          "level": 32,
+          "buffLevel": 5,
+          "buffDamage": 334,
+          "procs": 185,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 360,
+          "hp": 69,
+          "maxHP": 160,
+          "enemies": 108,
+          "shots": 204,
+          "pressureHits": 24,
+          "protectedHits": 0,
+          "kills": 1896,
+          "level": 36,
+          "buffLevel": 5,
+          "buffDamage": 852,
+          "procs": 235,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 420,
+          "hp": 49,
+          "maxHP": 160,
+          "enemies": 218,
+          "shots": 207,
+          "pressureHits": 35,
+          "protectedHits": 2,
+          "kills": 2400,
+          "level": 39,
+          "buffLevel": 5,
+          "buffDamage": 1330,
+          "procs": 286,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 480,
+          "hp": 59,
+          "maxHP": 160,
+          "enemies": 238,
+          "shots": 205,
+          "pressureHits": 44,
+          "protectedHits": 2,
+          "kills": 3016,
+          "level": 43,
+          "buffLevel": 5,
+          "buffDamage": 1914,
+          "procs": 333,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 540,
+          "hp": 1,
+          "maxHP": 160,
+          "enemies": 190,
+          "shots": 207,
+          "pressureHits": 60,
+          "protectedHits": 12,
+          "kills": 3635,
+          "level": 46,
+          "buffLevel": 5,
+          "buffDamage": 3515,
+          "procs": 379,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 600,
+          "hp": 17,
+          "maxHP": 160,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 70,
+          "protectedHits": 17,
+          "kills": 4521,
+          "level": 50,
+          "buffLevel": 5,
+          "buffDamage": 5068,
+          "procs": 426,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        }
+      ],
+      "events": [
+        {
+          "time": 1.75,
+          "type": "build",
+          "id": "ice"
+        },
+        {
+          "time": 60.75,
+          "type": "elite-kill"
+        },
+        {
+          "time": 60.75,
+          "type": "fragment",
+          "id": "hit"
+        },
+        {
+          "time": 60.77,
+          "type": "branch",
+          "id": "prison",
+          "pair": "orbit/ice"
+        },
+        {
+          "time": 77.02,
+          "type": "seal-start",
+          "id": "grove"
+        },
+        {
+          "time": 77.85,
+          "type": "elite-kill"
+        },
+        {
+          "time": 96.72,
+          "type": "seal-complete",
+          "id": "grove"
+        },
+        {
+          "time": 96.72,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 0
+        },
+        {
+          "time": 96.72,
+          "type": "fragment",
+          "id": "ice"
+        },
+        {
+          "time": 160.53,
+          "type": "elite-kill"
+        },
+        {
+          "time": 213.47,
+          "type": "seal-start",
+          "id": "court"
+        },
+        {
+          "time": 214.37,
+          "type": "elite-kill"
+        },
+        {
+          "time": 240,
+          "type": "mastery",
+          "id": "power",
+          "pair": "orbit/ice"
+        },
+        {
+          "time": 241.37,
+          "type": "elite-kill"
+        },
+        {
+          "time": 291.7,
+          "type": "elite-kill"
+        },
+        {
+          "time": 324.72,
+          "type": "elite-kill"
+        },
+        {
+          "time": 339.62,
+          "type": "elite-kill"
+        },
+        {
+          "time": 367.87,
+          "type": "elite-kill"
+        },
+        {
+          "time": 415.73,
+          "type": "seal-start",
+          "id": "spring"
+        },
+        {
+          "time": 416.7,
+          "type": "elite-kill"
+        },
+        {
+          "time": 420.02,
+          "type": "mastery",
+          "id": "power",
+          "pair": "blast/force"
+        },
+        {
+          "time": 444.8,
+          "type": "elite-kill"
+        },
+        {
+          "time": 445.4,
+          "type": "elite-kill"
+        },
+        {
+          "time": 446.5,
+          "type": "elite-kill"
+        },
+        {
+          "time": 449.9,
+          "type": "elite-kill"
+        },
+        {
+          "time": 471.2,
+          "type": "elite-kill"
+        },
+        {
+          "time": 491.03,
+          "type": "seal-start",
+          "id": "gate"
+        },
+        {
+          "time": 492.3,
+          "type": "elite-kill"
+        },
+        {
+          "time": 509.83,
+          "type": "elite-kill"
+        },
+        {
+          "time": 513.23,
+          "type": "elite-kill"
+        },
+        {
+          "time": 528.33,
+          "type": "elite-kill"
+        },
+        {
+          "time": 545.33,
+          "type": "elite-kill"
+        },
+        {
+          "time": 554.03,
+          "type": "elite-kill"
+        },
+        {
+          "time": 561.23,
+          "type": "elite-kill"
+        },
+        {
+          "time": 567.83,
+          "type": "elite-kill"
+        },
+        {
+          "time": 585.85,
+          "type": "elite-kill"
+        },
+        {
+          "time": 638.57,
+          "type": "boss-kill"
+        }
+      ]
+    },
+    {
+      "weapon": "blade",
+      "seed": 1104,
+      "build": "thunder",
+      "branch": "spread",
+      "mode": "standard",
+      "peak": {
+        "enemies": 240,
+        "shots": 208
+      },
+      "lethalContext": {
+        "time": 633.05,
+        "hp": 1,
+        "maxHP": 160,
+        "damage": 32,
+        "reduction": 0.18,
+        "enemies": 3,
+        "shots": 9,
+        "site": null
+      },
+      "seals": [
+        {
+          "id": "grove",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "court",
+          "state": "expired",
+          "progress": 8.92
+        },
+        {
+          "id": "spring",
+          "state": "expired",
+          "progress": 3.08
+        },
+        {
+          "id": "gate",
+          "state": "expired",
+          "progress": 0
+        }
+      ],
+      "protected": true,
+      "seconds": 639.22,
+      "win": true,
+      "kills": 4751,
+      "firstBranch": 81.4,
+      "maxLevelAt": 303.92,
+      "buffLevel": 5,
+      "buffDamage": 72361,
+      "totalDamage": 442773,
+      "bossBuffDamage": 1212,
+      "bossRemaining": 0,
+      "bossStartHP": 8400,
+      "pressureHits": 68,
+      "protectedHits": 13,
+      "procs": 550,
+      "reforges": 0,
+      "shatters": 0,
+      "detonations": 3,
+      "checkpoints": [
+        {
+          "time": 60,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 7,
+          "shots": 0,
+          "pressureHits": 3,
+          "protectedHits": 0,
+          "kills": 139,
+          "level": 11,
+          "buffLevel": 2,
+          "buffDamage": 534,
+          "procs": 45,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 120,
+          "hp": 185,
+          "maxHP": 185,
+          "enemies": 6,
+          "shots": 3,
+          "pressureHits": 4,
+          "protectedHits": 0,
+          "kills": 279,
+          "level": 16,
+          "buffLevel": 3,
+          "buffDamage": 1091,
+          "procs": 91,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 180,
+          "hp": 185,
+          "maxHP": 185,
+          "enemies": 22,
+          "shots": 1,
+          "pressureHits": 5,
+          "protectedHits": 0,
+          "kills": 549,
+          "level": 21,
+          "buffLevel": 3,
+          "buffDamage": 2397,
+          "procs": 150,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 240,
+          "hp": 147,
+          "maxHP": 160,
+          "enemies": 49,
+          "shots": 27,
+          "pressureHits": 7,
+          "protectedHits": 0,
+          "kills": 943,
+          "level": 27,
+          "buffLevel": 4,
+          "buffDamage": 4998,
+          "procs": 206,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 300,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 86,
+          "shots": 105,
+          "pressureHits": 10,
+          "protectedHits": 0,
+          "kills": 1376,
+          "level": 31,
+          "buffLevel": 4,
+          "buffDamage": 8840,
+          "procs": 263,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 360,
+          "hp": 114,
+          "maxHP": 160,
+          "enemies": 92,
+          "shots": 206,
+          "pressureHits": 18,
+          "protectedHits": 0,
+          "kills": 1909,
+          "level": 35,
+          "buffLevel": 5,
+          "buffDamage": 17308,
+          "procs": 316,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 420,
+          "hp": 161.5,
+          "maxHP": 185,
+          "enemies": 173,
+          "shots": 206,
+          "pressureHits": 25,
+          "protectedHits": 0,
+          "kills": 2603,
+          "level": 40,
+          "buffLevel": 5,
+          "buffDamage": 27492,
+          "procs": 372,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 480,
+          "hp": 56.5,
+          "maxHP": 185,
+          "enemies": 175,
+          "shots": 207,
+          "pressureHits": 41,
+          "protectedHits": 3,
+          "kills": 3399,
+          "level": 45,
+          "buffLevel": 5,
+          "buffDamage": 40297,
+          "procs": 418,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 540,
+          "hp": 49,
+          "maxHP": 160,
+          "enemies": 183,
+          "shots": 208,
+          "pressureHits": 52,
+          "protectedHits": 5,
+          "kills": 4204,
+          "level": 49,
+          "buffLevel": 5,
+          "buffDamage": 60553,
+          "procs": 469,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 600,
+          "hp": 1,
+          "maxHP": 160,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 64,
+          "protectedHits": 9,
+          "kills": 4729,
+          "level": 51,
+          "buffLevel": 5,
+          "buffDamage": 70974,
+          "procs": 520,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        }
+      ],
+      "events": [
+        {
+          "time": 1.75,
+          "type": "build",
+          "id": "thunder"
+        },
+        {
+          "time": 64.83,
+          "type": "elite-kill"
+        },
+        {
+          "time": 64.83,
+          "type": "fragment",
+          "id": "hit"
+        },
+        {
+          "time": 79.65,
+          "type": "seal-start",
+          "id": "grove"
+        },
+        {
+          "time": 81.35,
+          "type": "elite-kill"
+        },
+        {
+          "time": 81.4,
+          "type": "branch",
+          "id": "spread",
+          "pair": "bolt/lightning"
+        },
+        {
+          "time": 99.68,
+          "type": "seal-complete",
+          "id": "grove"
+        },
+        {
+          "time": 99.68,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 24.75
+        },
+        {
+          "time": 99.68,
+          "type": "fragment",
+          "id": "bolt"
+        },
+        {
+          "time": 152.67,
+          "type": "elite-kill"
+        },
+        {
+          "time": 214.58,
+          "type": "seal-start",
+          "id": "court"
+        },
+        {
+          "time": 215.6,
+          "type": "elite-kill"
+        },
+        {
+          "time": 240,
+          "type": "mastery",
+          "id": "power",
+          "pair": "bolt/lightning"
+        },
+        {
+          "time": 265.93,
+          "type": "elite-kill"
+        },
+        {
+          "time": 279.02,
+          "type": "elite-kill"
+        },
+        {
+          "time": 303.82,
+          "type": "elite-kill"
+        },
+        {
+          "time": 337.22,
+          "type": "elite-kill"
+        },
+        {
+          "time": 357.92,
+          "type": "elite-kill"
+        },
+        {
+          "time": 360.93,
+          "type": "seal-start",
+          "id": "spring"
+        },
+        {
+          "time": 362.22,
+          "type": "elite-kill"
+        },
+        {
+          "time": 368.62,
+          "type": "elite-kill"
+        },
+        {
+          "time": 380.52,
+          "type": "elite-kill"
+        },
+        {
+          "time": 389.72,
+          "type": "elite-kill"
+        },
+        {
+          "time": 420.02,
+          "type": "mastery",
+          "id": "power",
+          "pair": "field/ice"
+        },
+        {
+          "time": 446.03,
+          "type": "elite-kill"
+        },
+        {
+          "time": 447.63,
+          "type": "elite-kill"
+        },
+        {
+          "time": 471.87,
+          "type": "elite-kill"
+        },
+        {
+          "time": 490.68,
+          "type": "elite-kill"
+        },
+        {
+          "time": 498.07,
+          "type": "elite-kill"
+        },
+        {
+          "time": 509.05,
+          "type": "elite-kill"
+        },
+        {
+          "time": 532.02,
+          "type": "elite-kill"
+        },
+        {
+          "time": 569.32,
+          "type": "elite-kill"
+        },
+        {
+          "time": 570.6,
+          "type": "elite-kill"
+        },
+        {
+          "time": 595.9,
+          "type": "elite-kill"
+        },
+        {
+          "time": 639.22,
+          "type": "boss-kill"
+        }
+      ]
+    },
+    {
+      "weapon": "blade",
+      "seed": 1104,
+      "build": "thunder",
+      "branch": "charge",
+      "mode": "standard",
+      "peak": {
+        "enemies": 240,
+        "shots": 208
+      },
+      "lethalContext": {
+        "time": 643.07,
+        "hp": 1,
+        "maxHP": 160,
+        "damage": 76.80000000000001,
+        "reduction": 0.18,
+        "enemies": 2,
+        "shots": 44,
+        "site": null
+      },
+      "seals": [
+        {
+          "id": "grove",
+          "state": "completed",
+          "progress": 18
+        },
+        {
+          "id": "court",
+          "state": "expired",
+          "progress": 8.92
+        },
+        {
+          "id": "spring",
+          "state": "expired",
+          "progress": 3.08
+        },
+        {
+          "id": "gate",
+          "state": "expired",
+          "progress": 0
+        }
+      ],
+      "protected": true,
+      "seconds": 643.22,
+      "win": true,
+      "kills": 4753,
+      "firstBranch": 81.4,
+      "maxLevelAt": 303.92,
+      "buffLevel": 5,
+      "buffDamage": 72396,
+      "totalDamage": 443109,
+      "bossBuffDamage": 1053,
+      "bossRemaining": 0,
+      "bossStartHP": 8400,
+      "pressureHits": 68,
+      "protectedHits": 13,
+      "procs": 552,
+      "reforges": 0,
+      "shatters": 0,
+      "detonations": 0,
+      "checkpoints": [
+        {
+          "time": 60,
+          "hp": 120,
+          "maxHP": 120,
+          "enemies": 7,
+          "shots": 0,
+          "pressureHits": 3,
+          "protectedHits": 0,
+          "kills": 139,
+          "level": 11,
+          "buffLevel": 2,
+          "buffDamage": 534,
+          "procs": 45,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 120,
+          "hp": 185,
+          "maxHP": 185,
+          "enemies": 6,
+          "shots": 3,
+          "pressureHits": 4,
+          "protectedHits": 0,
+          "kills": 279,
+          "level": 16,
+          "buffLevel": 3,
+          "buffDamage": 1091,
+          "procs": 91,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 180,
+          "hp": 185,
+          "maxHP": 185,
+          "enemies": 22,
+          "shots": 1,
+          "pressureHits": 5,
+          "protectedHits": 0,
+          "kills": 549,
+          "level": 21,
+          "buffLevel": 3,
+          "buffDamage": 2397,
+          "procs": 150,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 240,
+          "hp": 147,
+          "maxHP": 160,
+          "enemies": 49,
+          "shots": 27,
+          "pressureHits": 7,
+          "protectedHits": 0,
+          "kills": 943,
+          "level": 27,
+          "buffLevel": 4,
+          "buffDamage": 4998,
+          "procs": 206,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 300,
+          "hp": 160,
+          "maxHP": 160,
+          "enemies": 86,
+          "shots": 105,
+          "pressureHits": 10,
+          "protectedHits": 0,
+          "kills": 1376,
+          "level": 31,
+          "buffLevel": 4,
+          "buffDamage": 8840,
+          "procs": 263,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 360,
+          "hp": 114,
+          "maxHP": 160,
+          "enemies": 92,
+          "shots": 206,
+          "pressureHits": 18,
+          "protectedHits": 0,
+          "kills": 1909,
+          "level": 35,
+          "buffLevel": 5,
+          "buffDamage": 17308,
+          "procs": 316,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 420,
+          "hp": 161.5,
+          "maxHP": 185,
+          "enemies": 173,
+          "shots": 206,
+          "pressureHits": 25,
+          "protectedHits": 0,
+          "kills": 2603,
+          "level": 40,
+          "buffLevel": 5,
+          "buffDamage": 27492,
+          "procs": 372,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 480,
+          "hp": 56.5,
+          "maxHP": 185,
+          "enemies": 175,
+          "shots": 207,
+          "pressureHits": 41,
+          "protectedHits": 3,
+          "kills": 3399,
+          "level": 45,
+          "buffLevel": 5,
+          "buffDamage": 40297,
+          "procs": 418,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 540,
+          "hp": 49,
+          "maxHP": 160,
+          "enemies": 183,
+          "shots": 208,
+          "pressureHits": 52,
+          "protectedHits": 5,
+          "kills": 4204,
+          "level": 49,
+          "buffLevel": 5,
+          "buffDamage": 60553,
+          "procs": 469,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        },
+        {
+          "time": 600,
+          "hp": 1,
+          "maxHP": 160,
+          "enemies": 1,
+          "shots": 0,
+          "pressureHits": 64,
+          "protectedHits": 9,
+          "kills": 4729,
+          "level": 51,
+          "buffLevel": 5,
+          "buffDamage": 70974,
+          "procs": 520,
+          "reforges": 0,
+          "shatters": 0,
+          "detonations": 0
+        }
+      ],
+      "events": [
+        {
+          "time": 1.75,
+          "type": "build",
+          "id": "thunder"
+        },
+        {
+          "time": 64.83,
+          "type": "elite-kill"
+        },
+        {
+          "time": 64.83,
+          "type": "fragment",
+          "id": "hit"
+        },
+        {
+          "time": 79.65,
+          "type": "seal-start",
+          "id": "grove"
+        },
+        {
+          "time": 81.35,
+          "type": "elite-kill"
+        },
+        {
+          "time": 81.4,
+          "type": "branch",
+          "id": "charge",
+          "pair": "bolt/lightning"
+        },
+        {
+          "time": 99.68,
+          "type": "seal-complete",
+          "id": "grove"
+        },
+        {
+          "time": 99.68,
+          "type": "seal-reward",
+          "id": "fragment",
+          "healed": 24.75
+        },
+        {
+          "time": 99.68,
+          "type": "fragment",
+          "id": "bolt"
+        },
+        {
+          "time": 152.67,
+          "type": "elite-kill"
+        },
+        {
+          "time": 214.58,
+          "type": "seal-start",
+          "id": "court"
+        },
+        {
+          "time": 215.6,
+          "type": "elite-kill"
+        },
+        {
+          "time": 240,
+          "type": "mastery",
+          "id": "power",
+          "pair": "bolt/lightning"
+        },
+        {
+          "time": 265.93,
+          "type": "elite-kill"
+        },
+        {
+          "time": 279.02,
+          "type": "elite-kill"
+        },
+        {
+          "time": 303.82,
+          "type": "elite-kill"
+        },
+        {
+          "time": 337.22,
+          "type": "elite-kill"
+        },
+        {
+          "time": 357.92,
+          "type": "elite-kill"
+        },
+        {
+          "time": 360.93,
+          "type": "seal-start",
+          "id": "spring"
+        },
+        {
+          "time": 362.22,
+          "type": "elite-kill"
+        },
+        {
+          "time": 368.62,
+          "type": "elite-kill"
+        },
+        {
+          "time": 380.52,
+          "type": "elite-kill"
+        },
+        {
+          "time": 389.72,
+          "type": "elite-kill"
+        },
+        {
+          "time": 420.02,
+          "type": "mastery",
+          "id": "power",
+          "pair": "field/ice"
+        },
+        {
+          "time": 446.03,
+          "type": "elite-kill"
+        },
+        {
+          "time": 447.63,
+          "type": "elite-kill"
+        },
+        {
+          "time": 471.87,
+          "type": "elite-kill"
+        },
+        {
+          "time": 490.68,
+          "type": "elite-kill"
+        },
+        {
+          "time": 498.07,
+          "type": "elite-kill"
+        },
+        {
+          "time": 509.05,
+          "type": "elite-kill"
+        },
+        {
+          "time": 532.02,
+          "type": "elite-kill"
+        },
+        {
+          "time": 569.32,
+          "type": "elite-kill"
+        },
+        {
+          "time": 570.6,
+          "type": "elite-kill"
+        },
+        {
+          "time": 595.9,
+          "type": "elite-kill"
+        },
+        {
+          "time": 643.22,
+          "type": "boss-kill"
+        }
+      ]
+    }
+  ]
+}

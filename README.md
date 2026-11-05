@@ -1,6 +1,6 @@
 # 遗迹回响 · Relic Echo
 
-LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 **`0.14.2`**。采用手绘幻想风格：玩家、可穿戴装备、怪物与元素特效使用仓库内的透明图片和共享图集，场景、伤害边界与 UI 结合程序绘图，由 LayaAir 显示节点统一渲染。
+LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 **`0.14.3`**。采用手绘幻想风格：玩家、可穿戴装备、怪物与元素特效使用仓库内的透明图片和共享图集，场景、伤害边界与 UI 结合程序绘图，由 LayaAir 显示节点统一渲染。
 
 当前优化计划、优先级和真机验收状态见[优化清单](docs/优化清单.md)。
 
@@ -17,6 +17,11 @@ LayaAir + TypeScript 开发的 2.5D 肉鸽生存原型，当前版本 **`0.14.2`
 项目已包含 [GitHub Pages 工作流](.github/workflows/pages.yml)。上传到自己的 GitHub 仓库，在 **Settings → Pages → Source** 选择 **GitHub Actions**；向 main/master 推送或手动运行工作流，构建和测试通过后自动发布。所有资源使用相对路径，支持 `https://用户名.github.io/仓库名/` 和账号主页站点。
 
 本地生成发布包：`npm run build:pages`。模拟仓库子路径：`npm run preview:pages -- --port 8081`，访问 `http://localhost:8081/relic-echo/`。详见[开发与发布说明](docs/开发与发布.md)。仓库为 `huckhuck12/relic-echo`，本地修改需推送后等待 GitHub Actions 部署成功才会更新线上站点。
+
+## 0.14.3 自动试玩导航
+
+- 飞刃按实际射程接近敌人，冲刺检查沿途障碍与弹道，封印目标考虑生命、期限和敌群压力；寻药按最大生命比例判断。
+- 314 项测试通过。相同种子与构筑的 36 局普通样本平均存活由 448 增至 483 秒，3 局到达 Boss、无通关；封印完成数减少，尚不能代表真人平衡。见[本轮对照](docs/auto-navigation-0143.md)。
 
 ## 0.14.2 标准压力与封印补给
 

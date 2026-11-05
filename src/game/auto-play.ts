@@ -1,11 +1,12 @@
 import type { Game } from './game.js';
 import type { Enemy, Shot, Drop, Point } from '../shared/entities.js';
-import { gear, Weapon } from '../progression/config.js';
+import { gear, Weapon, WEAPONS } from '../progression/config.js';
 import { project } from '../shared/model.js';
 import { WORLD_RULES } from './game-config.js';
 import { platform } from '../platform/runtime.js';
 import { autoBuildProfile, buildTactics } from './auto-builds.js';
 import type { BuildTactics } from './auto-builds.js';
+import { pursueAutoSeal, safeAutoDash } from './auto-navigation.js';
 export interface AutoPlayWorld {
     enemies: readonly Enemy[];
     shots: readonly Shot[];
@@ -144,8 +145,10 @@ export class AutoPlay {
             return;
         this.trackBoss();
         const world = this.world(), tactics = buildTactics(g.buffs, g.player, world.enemies);
+        tactics.attackRange = WEAPONS[this.weapon].range * (this.weapon === 'blade' ? 1 + .2 * (g.levels.orbit || 0) : 1);
+        tactics.maxHp = g.stats.hp;
         const site = g.mapEvents.active();
-        if (site) {
+        if (site && pursueAutoSeal(g.player, g.stats.hp, 240 * (1 + g.stats.speed), site, g.time, world)) {
             tactics.waypoint = site;
             tactics.dashTarget = undefined;
         }
@@ -222,7 +225,7 @@ export function autoPlayIntent(player: Point & {
     for (const d of world.drops) {
         if (d.collecting)
             continue;
-        const distance = Math.hypot(player.x - d.x, player.y - d.y) / (d.xp < 0 && player.hp < 70 ? 3 : d.item || d.fragment ? 1.5 : 1);
+        const distance = Math.hypot(player.x - d.x, player.y - d.y) / (d.xp < 0 && player.hp < (tactics?.maxHp || 100) * .7 ? 3 : d.item || d.fragment ? 1.5 : 1);
         if (distance < best) {
             best = distance;
             target = d;
@@ -239,7 +242,7 @@ export function autoPlayIntent(player: Point & {
         const d = Math.hypot(player.x - e.x, player.y - e.y);
         if (d < e.radius + 55)
             danger = true;
-        repel(e.x, e.y, e.radius + (tactics?.orbit ? 60 : 125), 3);
+        repel(e.x, e.y, e.radius + (tactics?.orbit || (tactics?.attackRange ?? 490) < 220 ? 60 : 125), 3);
         if (e.kind === 4 && e.wind > 0 && e.charge === 1) {
             repel(e.dx, e.dy, 210, 9);
             if (Math.hypot(player.x - e.dx, player.y - e.dy) < 180)
@@ -266,7 +269,7 @@ export function autoPlayIntent(player: Point & {
     }
     else if (!danger && tactics?.focus) {
         const dx = tactics.focus.x - player.x, dy = tactics.focus.y - player.y, d = Math.hypot(dx, dy) || 1;
-        const desired = tactics.orbit ? 105 : 220;
+        const desired = Math.min(tactics.orbit ? 105 : 220, (tactics.attackRange ?? 490) * .75);
         const approach = Math.max(-1, Math.min(1, (d - desired) / 80));
         // Emergency avoidance takes precedence over approaching the contact band.
         x += (dx / d * approach - dy / d * .55) * 3;
@@ -281,15 +284,19 @@ export function autoPlayIntent(player: Point & {
         y -= Math.sign(player.y) * 4;
     if (!danger && tactics?.dashTarget) {
         const dx = tactics.dashTarget.x - player.x, dy = tactics.dashTarget.y - player.y, d = Math.hypot(dx, dy);
-        const landingX = player.x + dx / (d || 1) * 180, landingY = player.y + dy / (d || 1) * 180;
-        const safe = Math.abs(landingX) < WORLD_RULES.limit - 40 && Math.abs(landingY) < WORLD_RULES.limit - 40
-            && !world.pillars.some(p => Math.hypot(landingX - p.x, landingY - p.y) < WORLD_RULES.playerPillarRadius + 25)
-            && !world.shots.some(s => s.hostile && Math.hypot(landingX - s.x - s.vx * .16, landingY - s.y - s.vy * .16) < 50)
-            && !world.enemies.some(e => !e.dead && e.kind === 4 && e.wind > 0 && e.charge === 1 && Math.hypot(landingX - e.dx, landingY - e.dy) < 210)
-            && !world.enemies.some(e => !e.dead && (e.wind > 0 || e.charge > 0) && Math.hypot(landingX - e.x, landingY - e.y) < e.radius + 100);
+        const safe = safeAutoDash(player, { x: dx / (d || 1), y: dy / (d || 1) }, world);
         if (d > 1 && safe)
             return { x: dx / d, y: dy / d, dash: true };
     }
     const length = Math.hypot(x, y) || 1;
-    return { x: x / length, y: y / length, dash: danger };
+    const direction = { x: x / length, y: y / length };
+    if (danger) {
+        // Fixed candidate budget: prefer current escape heading, then nearby alternatives.
+        for (const angle of [0, Math.PI / 4, -Math.PI / 4, Math.PI / 2, -Math.PI / 2]) {
+            const candidate = { x: direction.x * Math.cos(angle) - direction.y * Math.sin(angle), y: direction.x * Math.sin(angle) + direction.y * Math.cos(angle) };
+            if (safeAutoDash(player, candidate, world))
+                return { ...candidate, dash: true };
+        }
+    }
+    return { ...direction, dash: false };
 }

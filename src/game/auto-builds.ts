@@ -14,6 +14,8 @@ export function autoBuildProfile(round: number) {
 }
 export interface BuildTactics {
     orbit: boolean;
+    attackRange?: number;
+    maxHp?: number;
     waypoint?: Point;
     focus?: Point;
     dashTarget?: Point;
