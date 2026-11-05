@@ -271,7 +271,7 @@ export class BattleHUD {
         this.set('event', site ? site.state === 'active'
             ? site.name + ' · 圈内 ' + site.progress.toFixed(0) + '/' + SEAL_RULES.holdSeconds + ' 秒 · 余 ' + Math.max(0, Math.ceil(site.startedAt + SEAL_RULES.challengeSeconds - s.time)) + ' 秒'
             : site.name + ' · ' + this.siteDirection(site.x - this.game.player.x, site.y - this.game.player.y) + ' · 距离 ' + Math.round(Math.hypot(site.x - this.game.player.x, site.y - this.game.player.y))
-            : s.time >= run.bossAt ? '最终封印 · ' + clock(run.duration) + ' 合拢' : beat.name + ' · 下次' + (run.eliteTimes.find(t => t > s.time) ? '精英' : '核心') + ' ' + clock(run.eliteTimes.find(t => t > s.time) ?? run.bossAt));
+            : s.time >= run.bossAt ? '最终封印 · ' + clock(run.duration) + ' 合拢' : s.time < this.game.mapEvents.reliefUntil ? '封印整备 · 余 ' + Math.ceil(this.game.mapEvents.reliefUntil - s.time) + ' 秒 · 新怪减缓' : beat.name + ' · 下次' + (run.eliteTimes.find(t => t > s.time) ? '精英' : '核心') + ' ' + clock(run.eliteTimes.find(t => t > s.time) ?? run.bossAt));
         if (this.mobile && this.labels.event)
             this.labels.event.visible = !s.boss && this.game.runKind === 'standard';
         this.set('combo', s.overdrive > 0 ? `狂热 ${s.overdrive.toFixed(1)}s · ${s.combo} 连杀` : s.combo > 0 ? `${s.combo} 连杀 · 狂热 ${s.momentum} / ${COMBAT.frenzyKills}` : '');

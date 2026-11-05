@@ -13,6 +13,7 @@ import { enemyDirection } from './enemy-facing.js';
 export interface SpawnState {
     time: number;
     run?: RunPace;
+    reliefUntil?: number;
     player: Readonly<Pick<Player, 'x' | 'y'>>;
     enemies: Enemy[];
     shots: Shot[];
@@ -113,20 +114,24 @@ export function spawnBoss(state: SpawnState, hooks: SpawnHooks): void {
 export function updateSpawns(state: SpawnState, hooks: SpawnHooks, dt: number): void {
     const difficulty = difficultyAt(state.time, state.run);
     const run = state.run || RUN, beat = encounterBeat(state.time, run), eliteTimes = run.eliteTimes;
+    const relief = run.id === 'standard' && state.time < (state.reliefUntil || 0) && state.time < run.bossAt;
     state.spawnTimer -= dt;
     if (state.time < run.bossAt && state.spawnTimer <= 0) {
-        state.spawnTimer = difficulty.spawnInterval * (beat.recovery ? 3 : 1);
+        state.spawnTimer = difficulty.spawnInterval * (beat.recovery ? 3 : relief ? 2 : 1);
         for (let i = 0; i < difficulty.batch; i++)
             spawnEnemy(state, hooks, enemyKind(state.time, Math.random(), state.run));
     }
-    if (state.time < run.bossAt - 10 && state.time >= state.nextSurge && !beat.recovery) {
-        state.nextSurge += difficulty.surgeInterval;
+    if (state.time < run.bossAt - 10 && state.time >= state.nextSurge && !beat.recovery && !relief) {
+        state.nextSurge = run.id === 'standard' ? state.time + difficulty.surgeInterval : state.nextSurge + difficulty.surgeInterval;
         const direction = Math.random() * Math.PI * 2;
         for (let i = 0; i < difficulty.pack; i++)
             spawnEnemy(state, hooks, enemyKind(state.time, Math.random(), state.run), 340 + (i % 4) * 30, direction + i / difficulty.pack * Math.PI * 2);
         if (progressionTime(state.time, state.run) >= 240) {
-            spawnEnemy(state, hooks, 3, 460, direction);
-            if (progressionTime(state.time, state.run) >= 420)
+            const eliteCount = state.enemies.filter(enemy => !enemy.dead && enemy.kind === 3).length;
+            const room = run.id === 'standard' ? Math.max(0, 3 - eliteCount) : 2;
+            if (room > 0)
+                spawnEnemy(state, hooks, 3, 460, direction);
+            if (room > 1 && progressionTime(state.time, state.run) >= 420)
                 spawnEnemy(state, hooks, 3, 460, direction + Math.PI);
         }
         hooks.onToast(progressionTime(state.time, state.run) >= 240 ? '围攻怪潮 · 优先躲避远程与冲锋' : '怪潮涌入 · 连续击杀积蓄狂热');

@@ -732,7 +732,7 @@ export class Game {
     /** 每次读取本局引用，重开会替换玩家和数组；不能跨步缓存此视图。 */
     private spawnState(): EnemySpawner.SpawnState {
         return {
-            time: this.time, run: this.run, player: this.player, enemies: this.enemies, shots: this.shots, fields: this.fields, grid: this.grid,
+            time: this.time, run: this.run, reliefUntil: this.mapEvents.reliefUntil, player: this.player, enemies: this.enemies, shots: this.shots, fields: this.fields, grid: this.grid,
             spawnTimer: this.spawnTimer, nextSurge: this.nextSurge, eliteIndex: this.eliteIndex, bossSpawned: this.bossSpawned
         };
     }

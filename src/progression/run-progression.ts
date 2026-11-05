@@ -11,6 +11,7 @@ import type { BuffBranch } from '../buffs/buff-types.js';
 import { FRAGMENTS, BuffRuntime } from '../buffs/buffs.js';
 import { fragmentChoices, fragmentRewardText } from './fragment-rewards.js';
 import type { Dialog } from '../game/run-flow.js';
+import { SEAL_REWARDS } from '../game/map-events.js';
 /** 只共享成长所需的局内数据；渲染节点、输入、帧时钟不进入奖励事务。 */
 export interface ProgressionState {
     readonly dialog: Dialog;
@@ -97,13 +98,15 @@ export class RunProgression {
             return null;
         if (choice.type === 'event' && dialog.type === 'event') {
             if (choice.id === 'fragment') {
+                const before = state.player.hp;
+                state.player.hp = Math.min(state.stats.hp, before + state.stats.hp * SEAL_REWARDS.fragmentHeal);
                 this.hooks.show({ type: 'fragment', choices: [] });
-                return { message: '封印奖励 · 选择一枚碎片' };
+                return { message: `封印奖励 · 恢复 ${Math.round(state.player.hp - before)} 生命，选择一枚碎片` };
             }
             if (choice.id !== 'heal')
                 return null;
             const before = state.player.hp;
-            state.player.hp = Math.min(state.stats.hp, before + state.stats.hp * .3);
+            state.player.hp = Math.min(state.stats.hp, before + state.stats.hp * SEAL_REWARDS.heal);
             return { message: state.player.hp > before ? '封印奖励 · 已恢复生命' : '生命已满，本次奖励已领取' };
         }
         if (choice.type === 'mastery' && dialog.type === 'mastery') {

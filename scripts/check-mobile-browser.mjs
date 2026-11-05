@@ -167,10 +167,10 @@ try{
   if(touch){
    for(const choice of ['heal','fragment']){
     const card=await evaluate(`import('/dist/main.js').then(({game,ui})=>{
-     game.player.hp=50;game.show({type:'event',site:'苔庭封印'});
+     game.player.hp=50;game.mapEvents.reliefUntil=game.time+20;game.show({type:'event',site:'苔庭封印'});
      const find=n=>{if(n.name==='event-${choice}')return n;for(let i=0;i<n.numChildren;i++){const r=find(n.getChildAt(i));if(r)return r;}};
      const n=find(ui.root),p=n.localToGlobal(new Laya.Point(n.width*.5,n.height*.6));
-     return {x:p.x,y:p.y,token:game.flow.dialogId,expectedHP:Math.min(game.stats.hp,50+game.stats.hp*.3)};
+     return {x:p.x,y:p.y,token:game.flow.dialogId,expectedHP:Math.min(game.stats.hp,50+game.stats.hp*.45)};
     })`);
     assert.ok(card.y>0&&card.y<height,'Event card stays inside viewport');
     if(choice==='heal'){

@@ -21,7 +21,8 @@ test('run modes preserve quick timing and map the same combat difficulty without
  assert.equal(RUN.bossAt,300);assert.equal(RUN.duration,360);
  assert.equal(RUNS.standard.bossAt,600);assert.equal(RUNS.standard.duration,720);
  assert.equal(progressionTime(300),progressionTime(600,RUNS.standard));
- assert.deepEqual(difficultyAt(150),difficultyAt(300,RUNS.standard));
+ assert.equal(difficultyAt(150).late,difficultyAt(300,RUNS.standard).late);
+ assert.ok(difficultyAt(300,RUNS.standard).damage<difficultyAt(150).damage);
  for(const t of [80,170,260,350,440,530,570,599])assert.equal(encounterBeat(t,RUNS.standard).recovery,true);
  for(const t of [0,90,180,360,540,600])assert.equal(encounterBeat(t,RUNS.standard).recovery,false);
  const a=new Game(),b=new Game();a.start('storm',true,'standard');b.start('blade',true,'quick');

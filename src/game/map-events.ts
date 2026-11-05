@@ -26,11 +26,14 @@ export interface SealEvent {
 export const SEAL_RULES = {
     activateRadius: 95, holdRadius: 160, holdSeconds: 18, availableSeconds: 65, challengeSeconds: 45
 } as const;
+export const SEAL_REWARDS = { fragmentHeal: .15, heal: .45, reliefSeconds: 20 } as const;
 /** Simulation-only optional encounters. Leaving the circle pauses progress; it never resets the clock. */
 export class MapEvents {
     readonly sites: SealEvent[] = [];
+    reliefUntil = 0;
     reset(run: RunPace): void {
         this.sites.length = 0;
+        this.reliefUntil = 0;
         if (run.id === 'standard')
             this.sites.push(...SEAL_SITES.map(site => ({ ...site, state: 'locked' as const, progress: 0, startedAt: 0 })));
     }
@@ -53,7 +56,7 @@ export class MapEvents {
                 if (time < site.at)
                     continue;
                 site.state = 'available';
-                hooks.announce(`${site.name}已显现 · 前往守住封印，赢取碎片或治疗`);
+                hooks.announce(`${site.name}已显现 · 守住可获碎片补给或 45% 治疗`);
             }
             const distance = Math.hypot(player.x - site.x, player.y - site.y);
             if (site.state === 'available') {
@@ -80,6 +83,8 @@ export class MapEvents {
                 site.progress = Math.min(SEAL_RULES.holdSeconds, site.progress + Math.max(0, dt));
             if (site.progress >= SEAL_RULES.holdSeconds - 1e-8) {
                 site.state = 'completed';
+                this.reliefUntil = Math.min(run.bossAt, time + SEAL_REWARDS.reliefSeconds);
+                hooks.announce(`${site.name}已稳定 · ${Math.ceil(this.reliefUntil - time)} 秒内新怪减缓，已有敌人仍会攻击`);
                 hooks.complete(site);
             }
         }
