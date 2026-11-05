@@ -633,7 +633,7 @@ export class Game {
             this.dashTrail -= dt;
             if (this.dashTrail <= 0) {
                 this.dashTrail = .025;
-                this.effect('dash', p.x, p.y, '#a9e9cd', .22);
+                this.effect('dash', p.x, p.y, '#a9e9cd', .22, Math.atan2(p.dy, p.dx));
             }
         }
         else if (dx || dy) {

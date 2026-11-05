@@ -112,7 +112,7 @@ export interface Effect extends Point {
     life: number;
     max: number;
     color: string;
-    /** death: tx=散裂半径、ty=敌人种类；cast: tx=世界瞄准角、ty=雷杖0/炎炮1/环刃2；weaponHit: tx=屏幕方向角、ty=相同武器编号；slash: tx=御刃范围、ty=释放相位。只参与绘图。 */
+    /** death: tx=散裂半径、ty=敌人种类；dash: tx=世界冲刺方向角；cast: tx=世界瞄准角、ty=雷杖0/炎炮1/环刃2；weaponHit: tx=屏幕方向角、ty=相同武器编号；slash: tx=御刃范围、ty=释放相位。只参与绘图。 */
     kind: 'line' | 'ring' | 'burst' | 'impact' | 'blast' | 'slash' | 'dash' | 'death' | 'cast' | 'weaponHit';
 }
 export interface DamageLabel extends Point {

@@ -16,9 +16,8 @@ export function drawHitFeedback(g: any, effect: Effect): void {
         return;
     const dx = Math.cos(effect.tx), dy = Math.sin(effect.tx), x = q.x, y = q.y - 26;
     const element = effect.ty === 1 ? 'fire' : 'lightning';
-    if (paintVfx(g, effect.ty === 2 ? 'focus' : 'impact', element, x, y, effect.ty === 2 ? 34 : 29 + t * 9, effect.ty === 2 ? 22 : 29 + t * 9, effect.ty === 2 ? effect.tx : 0, 1 - t)) {
-        if (effect.ty === 2)
-            g.drawLine(x - dx * 17, y - dy * 17, x + dx * 17, y + dy * 17, '#f0e5ff', 1.5 * (1 - t) + .5);
+    // Blade hits use their own crisp cut, rather than a lightning rune stretched sideways.
+    if (effect.ty !== 2 && paintVfx(g, 'impact', element, x, y, 22 + t * 6, 22 + t * 6, 0, (1 - t) * (1 - t))) {
         return;
     }
     if (effect.ty === 0) {
@@ -27,7 +26,7 @@ export function drawHitFeedback(g: any, effect: Effect): void {
         for (const side of [-1, 1])
             g.drawLines(x, y, [side * 4, -16, side * (12 + phase), -7, side * 7, 1, side * (16 - phase), 10, side * 5, 17], t < .5 ? '#b9f8ff' : '#608cab', 2 * (1 - t) + .5);
         if (t < .35)
-            g.drawRect(x - 3, y - 5, 6, 10, '#f0ffff');
+            g.drawPoly(x, y - 2, [0, -7, 3, 0, 0, 7, -3, 0], '#f0ffff');
     }
     else if (effect.ty === 1) {
         // 爆炸本体已有焰冠；此处只画每个受击点的短亮芯和向外飞散余烬。
@@ -35,7 +34,7 @@ export function drawHitFeedback(g: any, effect: Effect): void {
             g.drawPoly(x, y, [0, -9, 7, 0, 0, 9, -7, 0], '#fff2bb');
         for (let i = 0; i < 3; i++) {
             const a = effect.tx + (i - 1) * .7, d = 5 + 22 * t, size = 3 * (1 - t) + 1;
-            g.drawRect(x + Math.cos(a) * d, y + Math.sin(a) * d - 10 * t, size, size, t < .4 ? '#ffd084' : '#bd6545');
+            g.drawPoly(x + Math.cos(a) * d, y + Math.sin(a) * d - 10 * t, [-size, 0, 0, -size * .6, size, 0, 0, size * .6], t < .4 ? '#ffd084' : '#bd6545');
         }
     }
     else {
@@ -44,6 +43,6 @@ export function drawHitFeedback(g: any, effect: Effect): void {
         g.drawLines(0, 0, points, '#59416d', 5 * (1 - t) + 1);
         g.drawLines(0, 0, points, t < .4 ? '#fff0ff' : '#b399d1', 2 * (1 - t) + .5);
         for (const side of [-1, 1])
-            g.drawRect(x + dx * reach * side - dy * 8 * t, y + dy * reach * side + dx * 8 * t, 3 * (1 - t) + 1, 2, '#c3abd9');
+            g.drawPoly(x + dx * reach * side - dy * 8 * t, y + dy * reach * side + dx * 8 * t, [-3 * (1 - t), 0, 0, -1, 3 * (1 - t), 0, 0, 1], '#c3abd9');
     }
 }

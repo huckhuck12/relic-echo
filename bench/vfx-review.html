@@ -11,6 +11,9 @@ import {project,emptyLoadout} from '/dist/shared/model.js';
 import {heroArt} from '/dist/rendering/hero-art.js';
 import {PlayerAtlas} from '/dist/rendering/player-atlas.js';
 import {routeVfx,vfxAtlas} from '/dist/rendering/vfx-atlas.js';
+import {CombatAccentBudget,dashWake,impactFlecks} from '/dist/rendering/combat-accents.js';
+import {drawHitFeedback} from '/dist/rendering/hit-feedback.js';
+import {paintHostileShot} from '/dist/rendering/projectile-presentation.js';
 Laya.init(1024,960,Laya.WebGL);Laya.stage.bgColor='#526b50';
 await new Promise(resolve=>heroArt().whenReady(resolve));
 const floorArt=new Laya.Sprite(),floor=new Laya.Sprite(),actors=new Laya.Sprite(),overlayArt=new Laya.Sprite(),overlay=new Laya.Sprite(),labels=new Laya.Sprite();
@@ -38,6 +41,21 @@ window.vfxReview={paint(mode='buffs',age=.08,level=3,detail=5){
   place(g=>flameBurst(g,0,0,105,Math.min(1,age/.25),detail),800,220);label('flame / shot and burst',570,290);
   place(g=>burningGround(g,0,0,85,age,detail),220,600,floor);label('flame / ground',150,680);
   place(g=>{drawBladeOrbit(g,0,0,age,.22*(1-Math.min(1,age/.22)),150,5,0);bladePulse(g,0,0,150,0,Math.min(1,age/.22));},700,650);person(700,650);label('blade / orbit and release',590,770);
+ }
+ else if(mode==='accents'){
+  const place=(fn,x,y)=>{const n=new Laya.Sprite();n.pos(x,y);overlay.addChild(n);const raster=new Laya.Sprite();raster.pos(x,y);overlayArt.addChild(raster);routeVfx(n.graphics,raster.graphics);fn(n.graphics);};
+  for(let i=0;i<4;i++){
+   const t=i*.23;place(g=>dashWake(g,{x:0,y:0,life:1-t,max:1,tx:0}),135+i*245,150);person(135+i*245,150);
+  }label('dash / tapered wake, age 0 to .69',70,210);
+  for(let i=0;i<3;i++)for(let ty=0;ty<3;ty++)place(g=>drawHitFeedback(g,{x:0,y:0,life:1-i*.3,max:1,tx:.4,ty}),200+i*300,310+ty*100);
+  label('storm / flame / blade: independent impact silhouettes',70,580);
+  for(let i=0;i<4;i++){
+   place(g=>paintHostileShot(g,Math.cos(i*Math.PI/2)*600,Math.sin(i*Math.PI/2)*600,'#c99bef'),140+i*240,650);
+   place(g=>paintFlameShot(g,Math.cos(i*Math.PI/2)*600,Math.sin(i*Math.PI/2)*600),140+i*240,710);
+  }label('hostile arrowheads / friendly amber flames',70,755);
+  const budget=new CombatAccentBudget();budget.reset(detail,60,100);let shown=0;
+  for(let i=0;i<60;i++)if(budget.take('impact')){shown++;place(g=>impactFlecks(g,{x:0,y:0,life:.6,max:1,tx:24,color:'#dfbc86',kind:'impact'},budget.detail),120+i*110,855);}
+  label('dense combat: '+shown+' / 60 repeated generic impact accents',70,920);
  }
  else {
   const target={x:0,y:0,dead:false},state={links:[{a:{x:-80,y:0},b:{x:80,y:0},level}],seeds:[{x:-80,y:0,level},{x:80,y:0,level}],thunder:new Map([[target,{stacks:2,life:2}]]),frost:new Map([[{x:240,y:-240,dead:false},{stacks:3,life:2}]])};

@@ -1,0 +1,871 @@
+{
+  "version": "0.15.0",
+  "before": {
+    "scope": "Real Laya WebGL VFX board on desktop; not native iPhone or a gameplay FPS measurement.",
+    "rows": [
+      {
+        "mode": "buffs",
+        "age": 0.08,
+        "level": 1,
+        "detail": 3,
+        "atlas": {
+          "ready": true,
+          "bytes": 1048576,
+          "error": ""
+        },
+        "dc": 6,
+        "min": 6,
+        "max": 6
+      },
+      {
+        "mode": "buffs",
+        "age": 0.08,
+        "level": 3,
+        "detail": 5,
+        "atlas": {
+          "ready": true,
+          "bytes": 1048576,
+          "error": ""
+        },
+        "dc": 6,
+        "min": 6,
+        "max": 6
+      },
+      {
+        "mode": "buffs",
+        "age": 0.18,
+        "level": 5,
+        "detail": 8,
+        "atlas": {
+          "ready": true,
+          "bytes": 1048576,
+          "error": ""
+        },
+        "dc": 6,
+        "min": 6,
+        "max": 6
+      },
+      {
+        "mode": "buffs",
+        "age": 1.8,
+        "level": 5,
+        "detail": 8,
+        "atlas": {
+          "ready": true,
+          "bytes": 1048576,
+          "error": ""
+        },
+        "dc": 6,
+        "min": 6,
+        "max": 6
+      },
+      {
+        "mode": "weapons",
+        "age": 0.08,
+        "level": 3,
+        "detail": 5,
+        "atlas": {
+          "ready": true,
+          "bytes": 1048576,
+          "error": ""
+        },
+        "dc": 7,
+        "min": 7,
+        "max": 7
+      },
+      {
+        "mode": "evolutions",
+        "age": 0.08,
+        "level": 3,
+        "detail": 5,
+        "atlas": {
+          "ready": true,
+          "bytes": 1048576,
+          "error": ""
+        },
+        "dc": 6,
+        "min": 6,
+        "max": 6
+      },
+      {
+        "mode": "evolutions",
+        "age": 0.18,
+        "level": 5,
+        "detail": 8,
+        "atlas": {
+          "ready": true,
+          "bytes": 1048576,
+          "error": ""
+        },
+        "dc": 6,
+        "min": 6,
+        "max": 6
+      }
+    ]
+  },
+  "after": {
+    "scope": "Real Laya WebGL VFX board on desktop; not native iPhone or a gameplay FPS measurement.",
+    "rows": [
+      {
+        "mode": "buffs",
+        "age": 0.08,
+        "level": 1,
+        "detail": 3,
+        "atlas": {
+          "ready": true,
+          "bytes": 1048576,
+          "error": ""
+        },
+        "dc": 6,
+        "min": 6,
+        "max": 6
+      },
+      {
+        "mode": "buffs",
+        "age": 0.08,
+        "level": 3,
+        "detail": 5,
+        "atlas": {
+          "ready": true,
+          "bytes": 1048576,
+          "error": ""
+        },
+        "dc": 6,
+        "min": 6,
+        "max": 6
+      },
+      {
+        "mode": "buffs",
+        "age": 0.18,
+        "level": 5,
+        "detail": 8,
+        "atlas": {
+          "ready": true,
+          "bytes": 1048576,
+          "error": ""
+        },
+        "dc": 6,
+        "min": 6,
+        "max": 6
+      },
+      {
+        "mode": "buffs",
+        "age": 1.8,
+        "level": 5,
+        "detail": 8,
+        "atlas": {
+          "ready": true,
+          "bytes": 1048576,
+          "error": ""
+        },
+        "dc": 6,
+        "min": 6,
+        "max": 6
+      },
+      {
+        "mode": "weapons",
+        "age": 0.08,
+        "level": 3,
+        "detail": 5,
+        "atlas": {
+          "ready": true,
+          "bytes": 1048576,
+          "error": ""
+        },
+        "dc": 7,
+        "min": 7,
+        "max": 7
+      },
+      {
+        "mode": "weapons",
+        "age": 0.19,
+        "level": 3,
+        "detail": 3,
+        "atlas": {
+          "ready": true,
+          "bytes": 1048576,
+          "error": ""
+        },
+        "dc": 7,
+        "min": 7,
+        "max": 7
+      },
+      {
+        "mode": "accents",
+        "age": 0.08,
+        "level": 3,
+        "detail": 5,
+        "atlas": {
+          "ready": true,
+          "bytes": 1048576,
+          "error": ""
+        },
+        "dc": 4,
+        "min": 4,
+        "max": 4
+      },
+      {
+        "mode": "evolutions",
+        "age": 0.08,
+        "level": 3,
+        "detail": 5,
+        "atlas": {
+          "ready": true,
+          "bytes": 1048576,
+          "error": ""
+        },
+        "dc": 6,
+        "min": 6,
+        "max": 6
+      },
+      {
+        "mode": "evolutions",
+        "age": 0.18,
+        "level": 5,
+        "detail": 8,
+        "atlas": {
+          "ready": true,
+          "bytes": 1048576,
+          "error": ""
+        },
+        "dc": 6,
+        "min": 6,
+        "max": 6
+      }
+    ]
+  },
+  "density": {
+    "scope": "Frozen real Laya WebGL, desktop browser; all enemies visible; no projectiles, drops or gameplay updates. Not native iPhone performance.",
+    "hero": [
+      {
+        "mode": "idle",
+        "frame": 0,
+        "ready": true,
+        "bytes": [
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608
+        ]
+      },
+      {
+        "mode": "walk",
+        "frame": 1,
+        "ready": true,
+        "bytes": [
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608
+        ]
+      },
+      {
+        "mode": "cast",
+        "frame": 0,
+        "ready": true,
+        "bytes": [
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608
+        ]
+      },
+      {
+        "mode": "cast",
+        "frame": 5,
+        "ready": true,
+        "bytes": [
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608
+        ]
+      },
+      {
+        "mode": "cast",
+        "frame": 11,
+        "ready": true,
+        "bytes": [
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608
+        ]
+      },
+      {
+        "mode": "walk-cast",
+        "frame": 2,
+        "ready": true,
+        "bytes": [
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608,
+          8388608
+        ]
+      }
+    ],
+    "guardian": {
+      "ready": true,
+      "bytes": 8388608,
+      "error": "",
+      "revision": 1
+    },
+    "rows": [
+      {
+        "count": 25,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 25,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 25,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 25,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 100,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 100,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 100,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 100,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 200,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 200,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 200,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 200,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 400,
+        "kind": 0,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": 0,
+        "wind": 0,
+        "flash": true,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": 1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": 1,
+        "wind": 0.12,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 400,
+        "kind": 2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": -1,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 400,
+        "kind": -2,
+        "wind": 0.2,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 400,
+        "dc": 19,
+        "min": 19,
+        "max": 19
+      },
+      {
+        "count": 5,
+        "kind": 3,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 5,
+        "visible": 5,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 20,
+        "kind": 3,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 20,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      },
+      {
+        "count": 50,
+        "kind": 3,
+        "wind": 0,
+        "flash": false,
+        "facingVariants": 8,
+        "visible": 50,
+        "dc": 18,
+        "min": 18,
+        "max": 18
+      }
+    ]
+  },
+  "wechat": {
+    "drawCallProbe": {
+      "active": false,
+      "error": "",
+      "report": {
+        "capturedAt": 1793850021299,
+        "context": {
+          "version": "0.15.0",
+          "seconds": 271.49999999999864,
+          "quality": "精细",
+          "enemies": 235,
+          "shots": 208,
+          "drops": 150,
+          "width": 393,
+          "height": 760
+        },
+        "baseline": 28,
+        "finalBaseline": 28,
+        "stable": true,
+        "rows": [
+          {
+            "group": "enemies",
+            "label": "怪物本体",
+            "without": 28,
+            "saved": 0
+          },
+          {
+            "group": "shots",
+            "label": "弹道",
+            "without": 28,
+            "saved": 0
+          },
+          {
+            "group": "buffs",
+            "label": "Buff 特效",
+            "without": 25,
+            "saved": 3
+          },
+          {
+            "group": "effects",
+            "label": "其他特效",
+            "without": 28,
+            "saved": 0
+          },
+          {
+            "group": "warnings",
+            "label": "血条/预警",
+            "without": 24,
+            "saved": 4
+          },
+          {
+            "group": "drops",
+            "label": "掉落/光柱",
+            "without": 28,
+            "saved": 0
+          },
+          {
+            "group": "labels",
+            "label": "飘字",
+            "without": 27,
+            "saved": 1
+          },
+          {
+            "group": "environment",
+            "label": "地图/柱子",
+            "without": 26,
+            "saved": 2
+          },
+          {
+            "group": "player",
+            "label": "玩家本体",
+            "without": 26,
+            "saved": 2
+          },
+          {
+            "group": "ui",
+            "label": "界面",
+            "without": 14,
+            "saved": 14
+          }
+        ]
+      },
+      "time": 271.49999999999864,
+      "hp": 100,
+      "dialog": "performance"
+    },
+    "probeContext": {
+      "time": 271.49999999999864,
+      "hp": 100,
+      "enemies": 235,
+      "shots": 208,
+      "drops": 150
+    }
+  }
+}

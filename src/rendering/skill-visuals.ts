@@ -39,10 +39,10 @@ export function directionalShape(g: any, x: number, y: number, dx: number, dy: n
 /** 火球在发射时画一次，后续仅平移节点。尾焰长度固定，不增加逐帧重绘或子节点。 */
 export function paintFlameShot(g: any, vx: number, vy: number): void {
     const d = project(vx, vy);
-    directionalShape(g, 0, -18, d.x, d.y, [-40, 2, -27, -2, -32, -7, -15, -5, -18, -11, -2, -8, 7, -9, 15, -4, 18, 1, 13, 7, 3, 10, -12, 8, -27, 10, -21, 4], '#946047');
-    directionalShape(g, 0, -18, d.x, d.y, [-33, 2, -16, -1, -18, -7, -4, -5, 7, -7, 14, -2, 15, 2, 9, 6, -4, 8, -18, 6], '#eaa05a');
-    directionalShape(g, 0, -18, d.x, d.y, [-23, 2, -10, -1, 0, -5, 10, -3, 13, 1, 6, 5, -9, 5], '#f5cc84');
-    directionalShape(g, 0, -18, d.x, d.y, [-9, 2, -1, -1, 8, -2, 10, 1, 4, 3], '#fff1ca');
+    directionalShape(g, 0, -18, d.x, d.y, [-34, 0, -15, -4, -21, -7, -2, -6, 9, -5, 15, 0, 8, 6, -4, 7, -20, 4], '#795445');
+    directionalShape(g, 0, -18, d.x, d.y, [-27, 0, -9, -2, -13, -5, 2, -4, 10, -3, 13, 0, 6, 4, -7, 5], '#df8c4e');
+    directionalShape(g, 0, -18, d.x, d.y, [-17, 0, -3, -3, 8, -2, 11, 0, 5, 3, -7, 3], '#f2c476');
+    directionalShape(g, 0, -18, d.x, d.y, [-6, 0, 4, -1.5, 9, 0, 3, 1.5], '#fff0c6');
 }
 /** 短促的施放亮芯先于尾迹消失；不延迟命中、不扩大真实攻击范围。 */
 export function castFlash(g: any, x: number, y: number, angle: number, variant: number, t: number, color: string, mounted = false): void {
@@ -90,8 +90,6 @@ export function slashRibbon(g: any, x: number, y: number, radius: number, angle:
 /** 环刃本体沿轨道切线摆放，刀尖/背刃/刃脊各有独立轮廓，替代旋转十字。 */
 export function orbitBlade(g: any, x: number, y: number, angle: number): void {
     const d = project(-Math.sin(angle), Math.cos(angle));
-    if (paintVfx(g, 'focus', 'lightning', x, y, 35, 35, Math.atan2(d.y, d.x)))
-        return;
     directionalShape(g, x, y, d.x, d.y, [-14, -2, 11, -6, 24, 0, 9, 3, -4, 6], '#675094');
     directionalShape(g, x, y, d.x, d.y, [-9, -2, 11, -5, 24, 0, 8, 1, -1, 3], '#c6bbf4');
     directionalShape(g, x, y, d.x, d.y, [-4, -1, 12, -3, 23, 0, 10, 0], '#f4f0ff');
@@ -125,15 +123,16 @@ export function drawBladeOrbit(g: any, x: number, y: number, time: number, castT
 /** 火焰爆炸：先亮芯，后焰冠与外抛火星；数值预算仅控制装饰数量。 */
 export function flameBurst(g: any, x: number, y: number, radius: number, progress: number, detail: number): void {
     const q = project(x, y), t = clamp(progress, 0, 1), expand = 1 - Math.pow(1 - t, 3);
-    const size = 46 + radius * .65 * expand;
+    // Compact flame crown: the exact damage radius remains on the ground layer.
+    const size = 28 + Math.min(radius, 160) * .3 * expand;
     if (paintVfx(g, 'impact', 'fire', q.x, q.y - 19 - Math.sin(t * Math.PI) * 8, size, size, 0, 1 - t)) {
-        for (let i = 0; i < Math.min(3, detail); i++) {
-            const a = i * Math.PI * 2 / 3, v = project(x + Math.cos(a) * radius * .65 * expand, y + Math.sin(a) * radius * .65 * expand);
-            paintVfx(g, 'focus', 'fire', v.x, v.y - 8 - Math.sin(t * Math.PI) * 10, 18 * (1 - t) + 4, 18 * (1 - t) + 4, a * .3, 1 - t);
+        for (let i = 0; i < Math.min(2, detail); i++) {
+            const a = i * Math.PI + .5, v = project(x + Math.cos(a) * radius * .5 * expand, y + Math.sin(a) * radius * .5 * expand);
+            paintVfx(g, 'projectile', 'fire', v.x, v.y - 8 - Math.sin(t * Math.PI) * 10, 12 * (1 - t) + 4, 8 * (1 - t) + 3, a * .3, (1 - t) * .7);
         }
         return;
     }
-    const count = Math.min(8, Math.max(3, detail));
+    const count = Math.min(5, Math.max(3, detail));
     for (let i = 0; i < count; i++) {
         const a = i * Math.PI * 2 / count, v = project(Math.cos(a) * radius * .62 * expand, Math.sin(a) * radius * .62 * expand);
         const w = (13 + radius * .08) * (1 - t) + 2, h = (28 + radius * .22) * (1 - t) + 4;

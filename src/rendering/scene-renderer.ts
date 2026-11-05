@@ -16,6 +16,7 @@ import { castFrame } from './player-pose.js';
 import { walkFrame } from './hero-motion.js';
 import { enemyArtPose } from '../enemies/enemy-actions.js';
 import { drawHitFeedback } from './hit-feedback.js';
+import { CombatAccentBudget, dashWake, impactFlecks } from './combat-accents.js';
 import { lootPose } from './loot-presentation.js';
 import { cameraZoom } from '../ui/layout.js';
 import type { SealEvent } from '../game/map-events.js';
@@ -83,6 +84,7 @@ export class SceneRenderer {
     private enemyRevision = 0;
     private readonly enemyFramePaint = new WeakMap<Enemy, string>();
     private lastAvatar = '';
+    private readonly combatAccents = new CombatAccentBudget();
     private readonly enemyShapeCache = new Map<string, Shape[]>();
     readonly enemyAtlas = new EnemyAtlas();
     get avatarKey(): string { return this.lastAvatar; }
@@ -331,13 +333,19 @@ export class SceneRenderer {
     }
     /** 武器表现遵循画质粒子预算；这里只按剩余寿命绘图，不做碰撞或伤害结算。 */
     private drawCombatEffects(state: SceneFrame, g: any): void {
-        for (const effect of state.fx) {
+        this.combatAccents.reset(state.visuals.debris, state.fx.length, state.shots.length);
+        const detail = this.combatAccents.detail;
+        // Prefer the latest hit when simultaneous impacts exceed the decoration budget.
+        for (let index = state.fx.length - 1; index >= 0; index--) {
+            const effect = state.fx[index];
+            if (!this.combatAccents.take(effect.kind))
+                continue;
             const q = project(effect.x, effect.y), progress = 1 - effect.life / effect.max;
             if (effect.kind === 'weaponHit') {
                 drawHitFeedback(g, effect);
             }
             else if (effect.kind === 'death') {
-                drawEnemyDeath(g, effect, state.visuals.debris);
+                drawEnemyDeath(g, effect, detail);
             }
             else if (effect.kind === 'cast') {
                 castFlash(g, effect.x, effect.y, effect.tx, effect.ty, progress, effect.color, true);
@@ -349,8 +357,7 @@ export class SceneRenderer {
             else if (effect.kind === 'ring')
                 this.ellipse(g, effect.x, effect.y, 20 + progress * 80, null, effect.color);
             else if (effect.kind === 'dash') {
-                g.drawRect(q.x - 13, q.y - 44, 26, 27, null, effect.color, 2 * (1 - progress));
-                g.drawRect(q.x - 12, q.y - 69, 24, 23, null, effect.color, 2 * (1 - progress));
+                dashWake(g, effect);
             }
             else if (effect.kind === 'slash') {
                 // 保留 slash 数据契约，但改为跟随施法者的御刃轨迹，和当前环绕刃共享中心。
@@ -358,14 +365,10 @@ export class SceneRenderer {
                     bladePulse(g, state.player.x, state.player.y, effect.tx, effect.ty, progress);
             }
             else if (effect.kind === 'blast') {
-                flameBurst(g, effect.x, effect.y, effect.tx, progress, state.visuals.debris);
+                flameBurst(g, effect.x, effect.y, effect.tx, progress, detail);
             }
             else {
-                const count = effect.kind === 'impact' ? Math.min(5, state.visuals.debris) : state.visuals.debris;
-                for (let i = 0; i < count; i++) {
-                    const a = i * Math.PI * 2 / count, d = progress * (effect.tx || 45);
-                    g.drawRect(Math.round(q.x + Math.cos(a) * d), Math.round(q.y - 24 + Math.sin(a) * d), 4 * (1 - progress) + 1, 4 * (1 - progress) + 1, effect.color);
-                }
+                impactFlecks(g, effect, detail);
             }
         }
     }
