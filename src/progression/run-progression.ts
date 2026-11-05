@@ -4,6 +4,8 @@ import type { Player, Enemy } from '../shared/entities.js';
 import { gear, UPGRADES } from './config.js';
 import type { Item } from './config.js';
 import { weaponOf } from '../rendering/appearance.js';
+import { MASTERY } from '../buffs/buff-mastery.js';
+import type { Mastery } from '../buffs/buff-mastery.js';
 import { BRANCH_TEXT } from '../buffs/buff-branches.js';
 import type { BuffBranch } from '../buffs/buff-types.js';
 import { FRAGMENTS, BuffRuntime } from '../buffs/buffs.js';
@@ -12,6 +14,7 @@ import type { Dialog } from '../game/run-flow.js';
 /** 只共享成长所需的局内数据；渲染节点、输入、帧时钟不进入奖励事务。 */
 export interface ProgressionState {
     readonly dialog: Dialog;
+    readonly runKind?: 'quick' | 'standard';
     readonly buffs: BuffRuntime<Enemy>;
     player: Player;
     loadout: Loadout;
@@ -40,7 +43,7 @@ export type RewardChoice = {
     type: 'fragment';
     id: string;
 } | {
-    type: 'build' | 'branch' | 'event';
+    type: 'build' | 'branch' | 'event' | 'mastery';
     id: string;
 } | {
     type: 'drop';
@@ -102,6 +105,11 @@ export class RunProgression {
             const before = state.player.hp;
             state.player.hp = Math.min(state.stats.hp, before + state.stats.hp * .3);
             return { message: state.player.hp > before ? '封印奖励 · 已恢复生命' : '生命已满，本次奖励已领取' };
+        }
+        if (choice.type === 'mastery' && dialog.type === 'mastery') {
+            if (!dialog.choices.includes(choice.id) || !state.buffs.mastery.choose(dialog.pair, choice.id))
+                return null;
+            return { message: `专精已生效 · ${MASTERY[choice.id as Mastery].name}` };
         }
         if (choice.type === 'build' && dialog.type === 'build') {
             if (!dialog.choices.includes(choice.id) || !state.buffs.chooseStarter(choice.id))
@@ -178,8 +186,8 @@ export class RunProgression {
     addXP(amount: number): void {
         const state = this.state();
         state.xp += amount;
-        while (state.xp >= nextXP(state.level)) {
-            state.xp -= nextXP(state.level);
+        while (state.xp >= nextXP(state.level, state.runKind === 'standard')) {
+            state.xp -= nextXP(state.level, state.runKind === 'standard');
             state.level++;
             this.hooks.show(state.buffs.requestStarter() ? { type: 'build', choices: ['fire', 'ice', 'thunder', 'free'] } : { type: 'upgrade', choices: candidates(state.levels, weaponOf(state.loadout)) });
             this.hooks.beep(930, .13);

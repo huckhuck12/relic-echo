@@ -119,6 +119,10 @@ export class AutoPlay {
                     if (id && g.claimReward(this.dialogId, { type: dialog.type, id }))
                         this.note(dialog.type + ':' + id);
                 }
+                else if (dialog.type === 'mastery') {
+                    if (g.claimReward(this.dialogId, { type: 'mastery', id: this.rounds % 2 ? 'power' : 'tempo' }))
+                        this.note('mastery:' + dialog.pair);
+                }
                 else if (dialog.type === 'event') {
                     g.claimReward(this.dialogId, { type: 'event', id: g.player.hp < g.stats.hp * .65 ? 'heal' : 'fragment' });
                 }
@@ -190,7 +194,7 @@ export class AutoPlay {
         this.run.bossSeconds = Math.max(0, this.game.time - this.game.run.bossAt);
     }
     private equipped() {
-        return this.game.buffs.recipes.map(recipe => ({ ...recipe, level: this.game.buffs.levelOf(recipe), branch: this.game.buffs.branchOf(recipe) || null }));
+        return this.game.buffs.recipes.map(recipe => ({ ...recipe, level: this.game.buffs.levelOf(recipe), branch: this.game.buffs.branchOf(recipe) || null, mastery: this.game.buffs.mastery.of(recipe) || null }));
     }
     private save(): void {
         try {

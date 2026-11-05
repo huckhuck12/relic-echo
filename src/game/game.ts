@@ -315,6 +315,7 @@ export class Game {
         this.labels = [];
         this.grid.rebuild([]);
         this.buffs.reset();
+        this.buffs.configureGrowth(this.runKind === 'standard');
         this.buffs.install(0, 'trigger', 'hit');
         this.buffs.install(0, 'action', 'blast');
         this.buffs.install(0, 'element', 'fire');
@@ -569,7 +570,7 @@ export class Game {
     /** HUD 只查询当前状态，不通过此接口修改战斗；大型实体数组不传给 UI。 */
     snapshot(): Snapshot {
         return {
-            time: this.time, hp: this.player.hp, maxHp: this.stats.hp, level: this.level, xp: this.xp, need: nextXP(this.level), kills: this.kills, dash: this.player.dash, dashMax: this.dashCooldown(), loadout: this.loadout, levels: this.levels, stats: this.stats, weapon: weaponOf(this.loadout), boss: this.enemies.find(e => e.kind === 4 && !e.dead), fps: this.loop.fps, enemies: this.enemies.length, damage: this.damage, mode: this.mode, combo: this.combo, momentum: this.momentum, overdrive: this.overdrive
+            time: this.time, hp: this.player.hp, maxHp: this.stats.hp, level: this.level, xp: this.xp, need: nextXP(this.level, this.runKind === 'standard'), kills: this.kills, dash: this.player.dash, dashMax: this.dashCooldown(), loadout: this.loadout, levels: this.levels, stats: this.stats, weapon: weaponOf(this.loadout), boss: this.enemies.find(e => e.kind === 4 && !e.dead), fps: this.loop.fps, enemies: this.enemies.length, damage: this.damage, mode: this.mode, combo: this.combo, momentum: this.momentum, overdrive: this.overdrive
         };
     }
     togglePerformance(): void {
@@ -688,6 +689,11 @@ export class Game {
         const branchReward = this.buffs.takeBranchReward();
         if (branchReward)
             this.show(branchReward);
+        if (this.runKind === 'standard') {
+            const pair = this.buffs.mastery.take(this.time, this.buffs.recipes, recipe => this.buffs.levelOf(recipe));
+            if (pair)
+                this.show({ type: 'mastery', pair, choices: ['power', 'tempo'] });
+        }
         if (this.mode !== 'battle')
             return;
         this.updateDrops(dt);

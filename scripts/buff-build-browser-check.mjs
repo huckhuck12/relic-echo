@@ -13,7 +13,7 @@ export async function checkBuffBuildBrowser({send,evaluate,directory,wechat=fals
  else if(touch){await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[point]});await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});}
  else{await send('Input.dispatchMouseEvent',{type:'mousePressed',...point,button:'left',clickCount:1});await send('Input.dispatchMouseEvent',{type:'mouseReleased',...point,button:'left',clickCount:1});}
  assert.deepEqual(await run(`return {dialog:g.dialog?.type||null,action:g.buffs.recipes[0].action,element:g.buffs.recipes[1].element};`),{dialog:null,action:'field',element:'force'});
- await run(`g.buffs.receiveFragment('fire');g.buffs.receiveFragment('fire');if(!g.buffs.takeBranchRequest())throw Error('Missing branch');g.show({type:'branch',choices:['trail','furnace']});ui.update();`);
+ await run(`for(let i=0;i<3&&g.buffs.levelOf(g.buffs.recipes[0])<3;i++)g.buffs.receiveFragment('fire');if(!g.buffs.takeBranchRequest())throw Error('Missing branch');g.show({type:'branch',choices:['trail','furnace']});ui.update();`);
  const branchShot=await send('Page.captureScreenshot',{format:'png'});
  await writeFile(resolve(directory,`${wechat?'wechat-':''}buff-branch-${touch?'touch':'mouse'}.png`),Buffer.from(branchShot.data,'base64'));
  if(wechat){
@@ -34,7 +34,7 @@ export async function checkBuffBuildBrowser({send,evaluate,directory,wechat=fals
   else{await send('Input.dispatchMouseEvent',{type:'mousePressed',...p,button:'left',clickCount:1});await send('Input.dispatchMouseEvent',{type:'mouseReleased',...p,button:'left',clickCount:1});}
  };
  await tapCard('build-ice');
- await run(`g.buffs.receiveFragment('ice');g.buffs.receiveFragment('ice');g.show(g.buffs.takeBranchReward());ui.update();`);
+ await run(`for(let i=0;i<3&&g.buffs.levelOf(g.buffs.recipes[0])<3;i++)g.buffs.receiveFragment('ice');g.show(g.buffs.takeBranchReward());ui.update();`);
  const iceShot=await send('Page.captureScreenshot',{format:'png'});
  await writeFile(resolve(directory,`buff-ice-branch-${touch?'touch':'mouse'}.png`),Buffer.from(iceShot.data,'base64'));
  await tapCard('branch-prison');
@@ -45,7 +45,7 @@ export async function checkBuffBuildBrowser({send,evaluate,directory,wechat=fals
  // Third family: the actual starter, branch and compact editor description.
  await run(`g.start('storm',true);g.addXP(10);ui.update();`);
  await tapCard('build-thunder');
- await run(`g.buffs.receiveFragment('lightning');g.buffs.receiveFragment('lightning');g.show(g.buffs.takeBranchReward());ui.update();`);
+ await run(`for(let i=0;i<3&&g.buffs.levelOf(g.buffs.recipes[0])<3;i++)g.buffs.receiveFragment('lightning');g.show(g.buffs.takeBranchReward());ui.update();`);
  const thunderShot=await send('Page.captureScreenshot',{format:'png'});
  await writeFile(resolve(directory,`buff-thunder-branch-${touch?'touch':'mouse'}.png`),Buffer.from(thunderShot.data,'base64'));
  await tapCard('branch-charge');

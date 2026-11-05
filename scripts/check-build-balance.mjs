@@ -9,6 +9,8 @@ const arg=name=>process.argv.find(a=>a.startsWith('--'+name+'='))?.split('=')[1]
 const seeds=(arg('seeds')||'627,1104').split(',').map(Number);
 const weapons=(arg('weapons')||'storm').split(',');
 const mode=arg('mode')||'quick';
+const mastery=arg('mastery');
+if(mastery&&!['power','tempo'].includes(mastery))throw Error('Use --mastery=power or --mastery=tempo.');
 if(!['quick','standard'].includes(mode))throw Error('Use --mode=quick or --mode=standard.');
 if(seeds.some(s=>!Number.isInteger(s))||weapons.some(w=>!Object.hasOwn(WEAPONS,w)))throw Error('Use integer seeds and weapons storm,flame,blade.');
 const protectedRun=!process.argv.includes('--normal');
@@ -31,6 +33,7 @@ try{
    const d=g.dialog;if(!d)return false;
    if(d.type==='build')choice={type:'build',id:build};
    if(d.type==='branch')choice={type:'branch',id:d.choices.includes(branch)?branch:d.choices[0]};
+   if(d.type==='mastery'&&mastery)choice={type:'mastery',id:mastery};
    if(d.type==='fragment'){
     const sorted=[...d.choices].sort((a,b)=>{
      const score=id=>{const p=g.buffs.upgradePreview(id);return p?(p.slot===0?20:10)-p.level:0;};return score(b)-score(a);
@@ -39,7 +42,7 @@ try{
    // Keep the initial weapon: this comparison measures the same weapon for every build.
    if(d.type==='drop'&&gear(d.item).slot==='weapon')choice={type:'drop',accept:d.item.id===weapon};
    const ok=claim(token,choice);
-   if(ok&&['build','branch','fragment'].includes(choice.type))events.push({time:+g.time.toFixed(2),type:choice.type,id:choice.id});
+   if(ok&&['build','branch','fragment','mastery'].includes(choice.type))events.push({time:+g.time.toFixed(2),type:choice.type,id:choice.id,pair:d.pair});
    if(ok&&choice.type==='branch'&&firstBranch===null)firstBranch=+g.time.toFixed(2);
    return ok;
   };

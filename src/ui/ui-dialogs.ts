@@ -4,6 +4,7 @@ import { renderSystemDialog } from './system-dialogs.js';
 import { renderBuffPanel } from './buff-panel.js';
 import type { BuffEditorState } from './buff-panel.js';
 import { BRANCH_TEXT, BUFF_BRANCHES } from '../buffs/buff-branches.js';
+import { MASTERY } from '../buffs/buff-mastery.js';
 import { fragment, PART_NAMES } from '../buffs/buffs.js';
 import { fragmentRouteHint } from '../progression/fragment-rewards.js';
 import type { Game } from '../game/game.js';
@@ -89,7 +90,7 @@ export class GameDialogs {
             renderSystemDialog(dialog.type, p, w, h, this.game, this.controls);
             return;
         }
-        if (dialog.type === 'build' || dialog.type === 'branch') {
+        if (dialog.type === 'build' || dialog.type === 'branch' || dialog.type === 'mastery') {
             this.buildDialog(p, dialog, w, h);
             return;
         }
@@ -125,18 +126,19 @@ export class GameDialogs {
         this.text(p, '领取后按 B / Buff 组合装入配方，不自动替换。', pad, h - pad - 23, inner, 11, C.muted);
     }
     private buildDialog(p: LayaSprite, dialog: Extract<NonNullable<Dialog>, {
-        type: 'build' | 'branch';
+        type: 'build' | 'branch' | 'mastery';
     }>, w: number, h: number): void {
         const pad = 16, gap = 10, inner = w - pad * 2, short = h < 360;
         const columns = w >= 480 ? 2 : 1, rows = Math.ceil(dialog.choices.length / columns);
         const top = short ? 66 : 88, cardW = (inner - gap * (columns - 1)) / columns;
         const cardH = Math.min(140, (h - top - pad - 26 - gap * (rows - 1)) / rows);
-        this.text(p, dialog.type === 'build' ? '选择起始组合' : `${BUFF_BRANCHES.find(b => b.pair === (dialog.pair || 'field/fire'))?.name || '配方'} · 选择成长分支`, pad, 14, inner, short ? 19 : 23, C.gold);
-        this.text(p, dialog.type === 'build' ? '一次装好两槽，之后可自由换碎片。' : '本局二选一；换触发方式保留分支。', pad, short ? 40 : 49, inner, 11, C.muted);
+        this.text(p, dialog.type === 'mastery' ? (dialog.pair || '').split('/').map(id => fragment(id)?.name || id).join(' · ') + ' · 专精' : dialog.type === 'build' ? '选择起始组合' : `${BUFF_BRANCHES.find(b => b.pair === (dialog.pair || 'field/fire'))?.name || '配方'} · 选择成长分支`, pad, 14, inner, short ? 19 : 23, C.gold);
+        this.text(p, dialog.type === 'mastery' ? '二选一，本局绑定此行为＋元素；仅影响后续释放。' : dialog.type === 'build' ? '一次装好两槽，之后可自由换碎片。' : '本局二选一；换触发方式保留分支。', pad, short ? 40 : 49, inner, 11, C.muted);
         const entries: Record<string, [
             string,
             string
         ]> = {
+            ...Object.fromEntries(Object.entries(MASTERY).map(([id, m]) => [id, [m.name, m.note]])),
             fire: ['冲刺布场', '冲刺留火＋命中冲击。\n燃烧目标在火场内被另一槽冲击命中，回拉至火场；每目标 1 秒一次。'],
             ice: ['冰冻碎裂', '命中生成冰环＋冲刺冲击。\n冰环叠至少 2 层后，另一槽冲击可提前引爆；每目标 1 秒一次。'],
             thunder: ['雷印引爆', '命中雷丸＋冲刺冰场。\n跨槽冰霜导冷加一印，每敌 1 秒一次；Lv.3 选传印或蓄雷。'],
@@ -192,7 +194,7 @@ export class GameDialogs {
         return `${this.game.upgradeFeedback ? this.game.upgradeFeedback + ' · ' : ''}待领取 ${remaining} 份奖励`;
     }
     private standardDialog(p: LayaSprite, dialog: Exclude<NonNullable<Dialog>, {
-        type: 'revive' | 'performance' | 'build' | 'branch' | 'event';
+        type: 'revive' | 'performance' | 'build' | 'branch' | 'event' | 'mastery';
     }>, w: number, h: number): void {
         const dialogId = this.game.flow.dialogId;
         if (dialog.type === 'fragment') {

@@ -3,6 +3,7 @@ import { complete, emptyRecipe, fragment, recipeDamage } from './buff-recipes.js
 import { BuffEvolutions } from './buff-evolutions.js';
 import { BUFF_BRANCHES, branchPair } from './buff-branches.js';
 import { BuffUpgrades } from './buff-upgrades.js';
+import { BuffMastery, MASTERY } from './buff-mastery.js';
 import { createBuffEffect, updateBuffEffects } from './buff-effects.js';
 import { applyBuffElement, applyBuffSlow, updateBuffStatuses } from './buff-status.js';
 import { enqueueBuffFeedback, updateBuffFeedback } from './buff-feedback.js';
@@ -22,6 +23,8 @@ export class BuffRuntime<T extends BuffTarget> {
     readonly effects: BuffEffect[] = [];
     readonly evolutions: BuffEvolutions<T>;
     private readonly upgrades = new BuffUpgrades();
+    readonly mastery = new BuffMastery();
+    configureGrowth(standard: boolean): void { this.upgrades.gradual = standard; }
     private feedback: BuffFeedback[] = [];
     private visualBudget: number = BUFF_FEEDBACK.defaultBudget;
     private visualTime = 0;
@@ -98,6 +101,7 @@ export class BuffRuntime<T extends BuffTarget> {
         });
     }
     levelOf(recipe: Recipe): number { return this.upgrades.level(recipe); }
+    growthOf(recipe: Recipe) { return this.upgrades.growth(recipe); }
     upgradePreview(id: string) { return this.upgrades.target(id, this.recipes); }
     /** grant 仅解锁，供初始化/练习；正式奖励必须调用 receiveFragment。 */
     grant(id: string): boolean {
@@ -112,7 +116,9 @@ export class BuffRuntime<T extends BuffTarget> {
         if (this.grant(id))
             return { kind: 'unlock' };
         const target = this.upgrades.apply(id, this.recipes);
-        return target ? { kind: 'upgrade', slot: target.slot, level: target.nextLevel } : { kind: 'xp', amount: BUFF_RULES.duplicateXP };
+        return target ? target.progress !== undefined ? {
+            kind: 'progress', slot: target.slot, level: target.level, progress: target.progress, required: target.required!
+        } : { kind: 'upgrade', slot: target.slot, level: target.nextLevel } : { kind: 'xp', amount: BUFF_RULES.duplicateXP };
     }
     /** 清场只清瞬态；重开才清配方、解锁、等级和触发计数。 */
     reset(): void {
@@ -122,6 +128,7 @@ export class BuffRuntime<T extends BuffTarget> {
         for (const id of START_FRAGMENTS)
             this.owned.add(id);
         this.upgrades.clear();
+        this.mastery.reset();
         this.cooldowns.fill(0);
         this.clearTransient();
         this.procs = 0;
@@ -164,7 +171,8 @@ export class BuffRuntime<T extends BuffTarget> {
                 if (event === 'hit' && random() >= BUFF_RULES.hitChance)
                     continue;
                 const level = this.levelOf(recipe);
-                const effect = createBuffEffect(this.host, recipe, event, x, y, recipeDamage(recipe, scale, level), level, target => {
+                const mastery = this.mastery.of(recipe), tuning = mastery ? MASTERY[mastery] : undefined;
+                const effect = createBuffEffect(this.host, recipe, event, x, y, recipeDamage(recipe, scale, level) * (tuning?.damage || 1), level, target => {
                     if (recipe.element !== 'lightning')
                         return 0;
                     const mark = this.evolutions.thunder.get(target);
@@ -174,7 +182,7 @@ export class BuffRuntime<T extends BuffTarget> {
                 const refresh = branch === 'furnace' ? this.effects.find(e => e.slot === slot && e.branch === branch && Math.hypot(e.x - effect.x, e.y - effect.y) < 32) : undefined;
                 if (!refresh && this.effects.filter(e => e.kind === recipe.action).length >= BUFF_LIMITS[recipe.action])
                     continue;
-                this.cooldowns[slot] = TRIGGERS.find(trigger => trigger.id === event)!.cooldown;
+                this.cooldowns[slot] = TRIGGERS.find(trigger => trigger.id === event)!.cooldown * (tuning?.cooldown || 1);
                 effect.slot = slot;
                 effect.cast = ++this.castSequence;
                 effect.branch = this.branchOf(recipe);

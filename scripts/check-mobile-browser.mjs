@@ -185,6 +185,22 @@ try{
     else {assert.equal(result.dialog,'fragment');await evaluate(`import('/dist/main.js').then(({game})=>game.claimReward(game.flow.dialogId,{type:'fragment',id:game.dialog.choices[0]}))`);}
    }
   }
+  if(touch)for(const choice of ['power','tempo']){
+   const card=await evaluate(`import('/dist/main.js').then(({game,ui})=>{
+    const r=game.buffs;r.reset();r.configureGrowth(false);r.chooseStarter('fire');r.receiveFragment('fire');r.receiveFragment('fire');r.configureGrowth(true);
+    const pair=r.mastery.take(240,r.recipes,x=>r.levelOf(x));game.show({type:'mastery',pair,choices:['power','tempo']});
+    const find=n=>{if(n.name==='mastery-${choice}')return n;for(let i=0;i<n.numChildren;i++){const r=find(n.getChildAt(i));if(r)return r;}};
+    const n=find(ui.root),p=n.localToGlobal(new Laya.Point(n.width*.5,n.height*.65));return {x:p.x,y:p.y,token:game.flow.dialogId};
+   })`);
+   if(choice==='power'){
+    const shot=await send('Page.captureScreenshot',{format:'png'});
+    await writeFile(resolve(directory,`${width}x${height}-mastery.png`),Buffer.from(shot.data,'base64'));
+   }
+   await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:card.x,y:card.y}]});
+   await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+   const result=await evaluate(`import('/dist/main.js').then(({game})=>({mastery:game.buffs.mastery.of(game.buffs.recipes[0]),stale:game.claimReward(${card.token},{type:'mastery',id:'${choice}'})}))`);
+   assert.equal(result.mastery,choice);assert.equal(result.stale,false);
+  }
   await evaluate(`import('/dist/main.js').then(({game})=>{game.gate.remove('browser-card-fixture');game.toggleInventory();})`);
   const inventoryShot=await send('Page.captureScreenshot',{format:'png'});
   await writeFile(resolve(directory,`${width}x${height}-inventory.png`),Buffer.from(inventoryShot.data,'base64'));

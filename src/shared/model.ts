@@ -48,7 +48,7 @@ export function equip(loadout: Loadout, item: Item, hp: number, levels: Record<s
     return { loadout: next, hp: Math.min(hp, resolveStats(next, levels).hp), xp: old ? salvage(old.quality) : 0 };
 }
 export const salvage = (q: Quality): number => [5, 10, 20][q];
-export const nextXP = (level: number): number => 10 + 4 * (level - 1);
+export const nextXP = (level: number, standard = false): number => 10 + 4 * (level - 1) + (standard ? Math.floor((level - 1) ** 2 / 4) : 0);
 export const project = (x: number, y: number): {
     x: number;
     y: number;

@@ -14,6 +14,12 @@ export interface CompleteRecipe {
 export type FragmentReward = {
     kind: 'unlock';
 } | {
+    kind: 'progress';
+    slot: number;
+    level: number;
+    progress: number;
+    required: number;
+} | {
     kind: 'upgrade';
     slot: number;
     level: number;

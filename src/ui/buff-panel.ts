@@ -5,6 +5,7 @@ import type { Enemy } from '../shared/entities.js';
 import type { Stats } from '../shared/model.js';
 import { C, UIControls } from './ui-controls.js';
 import { evolutionOf } from '../buffs/buff-evolutions.js';
+import { MASTERY } from '../buffs/buff-mastery.js';
 /** 由 GameUI 持有，重绘保留选择；不存放战斗属性、配方或运行时冷却。 */
 export interface BuffEditorState {
     slot: number;
@@ -12,7 +13,7 @@ export interface BuffEditorState {
 }
 /** 当前渲染所需的最小视图。面板不保存 Game，也不接触暂停/奖励队列。 */
 export interface BuffPanelState {
-    buffs: Pick<BuffRuntime<Enemy>, 'recipes' | 'owned' | 'levelOf' | 'branchOf'>;
+    buffs: Pick<BuffRuntime<Enemy>, 'recipes' | 'owned' | 'levelOf' | 'branchOf' | 'mastery' | 'growthOf'>;
     stats: Pick<Stats, 'damage' | 'element'>;
     training: boolean;
 }
@@ -57,7 +58,7 @@ export function renderBuffPanel(p: LayaSprite, w: number, h: number, editor: Buf
         });
         const infoY = 103 + Math.ceil(pool.length / columns) * 52 + 4;
         if (infoY + 40 < footer)
-            controls.text(p, '重复碎片强化匹配的完整配方，最高 Lv.5；满级或无匹配时转 5 经验。', pad, infoY, inner, 12, C.muted);
+            controls.text(p, '重复碎片强化匹配的完整配方，标准探索需累计；最高 Lv.5，无匹配时转 5 经验。', pad, infoY, inner, 12, C.muted);
         controls.button(p, '返回配方', pad, footer, (inner - gap) / 2, 44, () => {
             editor.picker = null;
             refresh();
@@ -71,7 +72,10 @@ export function renderBuffPanel(p: LayaSprite, w: number, h: number, editor: Buf
                 refresh();
             }, false, `buff-part-${part}`);
         });
-        const descriptionY = narrow ? 263 : 158, description = recipeDescription(recipe, 1 + state.stats.damage + state.stats.element, state.buffs.levelOf(recipe), state.buffs.branchOf(recipe), short);
+        const mastery = state.buffs.mastery.of(recipe), tuning = mastery ? MASTERY[mastery] : undefined;
+        const progress = state.buffs.growthOf(recipe);
+        const growth = progress ? `\n强化碎片 ${progress.progress}/${progress.required} → Lv.${progress.nextLevel}` : '';
+        const descriptionY = narrow ? 263 : 158, description = recipeDescription(recipe, 1 + state.stats.damage + state.stats.element, state.buffs.levelOf(recipe), state.buffs.branchOf(recipe), short || h < 620, tuning?.cooldown, tuning?.damage) + growth + (tuning ? '\n专精 · ' + tuning.name + '\n' + tuning.brief : '');
         const unlock = state.training && descriptionY + 184 < footer, contentBottom = footer - (unlock ? 64 : 8);
         // 进化说明增加行数后，按保守字符宽度预留高度，不能仍用固定的 +78 放次级说明。
         let fontSize = short ? 11 : 13;
@@ -87,7 +91,7 @@ export function renderBuffPanel(p: LayaSprite, w: number, h: number, editor: Buf
         }
         const noteY = descriptionY + height + 8;
         if (noteY + 62 < contentBottom)
-            controls.text(p, '行为＋元素共享成长；Lv.2/4 伤害 +10%，最高 +20%。\n火场/冰环/雷丸 Lv.3 选分支，Lv.5 强化；跨槽回炉/碎冰/导冷。', pad, noteY, inner, 11, C.muted);
+            controls.text(p, '行为＋元素共享成长；Lv.2/4 伤害 +10%，最高 +20%。\n标准探索高等级需要累计碎片；4/7 分钟后可选两次配方专精。', pad, noteY, inner, 11, C.muted);
         if (unlock)
             controls.button(p, '练习：解锁全部碎片', pad, footer - 56, Math.min(inner, 240), 44, () => hooks.unlockFragments(), false, 'buff-unlock');
         controls.button(p, '清空当前配方', pad, footer, (inner - gap) / 2, 44, () => {

@@ -19,7 +19,7 @@ export function fragmentChoices(owned: ReadonlySet<string>, ground: ReadonlySet<
 /** 说明以当前持有集合为准，明确“解锁可组合”和“已经装入配方”的区别。 */
 export function fragmentRouteHint(id: string, owned: ReadonlySet<string>, upgrade?: BuffUpgradeTarget | null): string {
     if (owned.has(id))
-        return upgrade ? `强化配方 ${upgrade.slot + 1}：Lv.${upgrade.level} → ${upgrade.nextLevel}\nLv.2/4 提升伤害；火场/冰环/雷丸 Lv.3 选分支` : '已解锁：领取转为 5 经验';
+        return upgrade ? `强化配方 ${upgrade.slot + 1}：Lv.${upgrade.level} → ${upgrade.nextLevel}${upgrade.required ? ` · 碎片 ${(upgrade.progress || 0) + 1}/${upgrade.required}` : ''}\nLv.2/4 提升伤害；火场/冰环/雷丸 Lv.3 选分支` : '已解锁：领取转为 5 经验';
     const routes = EVOLUTIONS.filter(e => e.action === id || e.element === id);
     if (!routes.length)
         return '改变释放时机，可搭配三条进化路线';
@@ -32,6 +32,8 @@ export function fragmentRouteHint(id: string, owned: ReadonlySet<string>, upgrad
 export function fragmentRewardText(id: string, reward: FragmentReward): string {
     if (reward.kind === 'unlock')
         return `解锁 ${fragment(id)!.name} 碎片 · 按 B / Buff 组合装入配方`;
+    if (reward.kind === 'progress')
+        return `配方 ${reward.slot + 1} · Lv.${reward.level} 强化碎片 ${reward.progress}/${reward.required}`;
     if (reward.kind === 'upgrade')
         return `配方 ${reward.slot + 1} 升至 Lv.${reward.level} · 伤害 +${Math.round((buffLevelMultiplier(reward.level) - 1) * 100)}%`;
     return '重复碎片无可强化配方 · 转为 5 经验';

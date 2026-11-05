@@ -12,12 +12,12 @@ export function fragment(id: string) { return FRAGMENTS.find(f => f.id === id); 
 export function recipeDamage(recipe: Recipe, scale = 1, level = 1): number {
     return Math.round(BUFF_ACTIONS[recipe.action || 'blast'].damage * scale * buffLevelMultiplier(level));
 }
-export function recipeDescription(recipe: Recipe, scale = 1, level = 1, branch?: BuffBranch, compact = false): string {
+export function recipeDescription(recipe: Recipe, scale = 1, level = 1, branch?: BuffBranch, compact = false, cooldown = 1, damageScale = 1): string {
     if (!complete(recipe))
         return '选择触发、行为、元素，组成完整配方。\n进化路线：雷电弹丸 / 火焰区域 / 冰霜环绕。';
     const trigger = TRIGGERS.find(t => t.id === recipe.trigger)!;
     const element = ELEMENTS.find(e => e.id === recipe.element)!;
-    const damage = Number((recipeDamage(recipe, scale, level) * (branch === 'prison' ? .8 : 1)).toFixed(1));
+    const damage = Number((recipeDamage(recipe, scale, level) * damageScale * (branch === 'prison' ? .8 : 1)).toFixed(1));
     if (branch && compact)
         return `Lv.${level}/${BUFF_UPGRADES.maxLevel} · ${BRANCH_TEXT[branch].name} · ${trigger.name}触发\n${BRANCH_COMPACT[branch]}`;
     const action = {
@@ -27,6 +27,6 @@ export function recipeDescription(recipe: Recipe, scale = 1, level = 1, branch?:
         orbit: `双环绕物持续 ${BUFF_ACTIONS.orbit.life} 秒，每 ${BUFF_RULES.orbit.tick} 秒接触伤害 ${damage}`,
     }[recipe.action];
     const evolution = evolutionOf(recipe);
-    return `Lv.${level}/${BUFF_UPGRADES.maxLevel} · 伤害 +${Math.round((buffLevelMultiplier(level) - 1) * 100)}%\n${trigger.note} · 冷却 ${trigger.cooldown} 秒\n${action}；${element.note}。`
+    return `Lv.${level}/${BUFF_UPGRADES.maxLevel} · 伤害 +${Math.round((buffLevelMultiplier(level) - 1) * 100)}%\n${trigger.note} · 冷却 ${Number((trigger.cooldown * cooldown).toFixed(2))} 秒\n${action}；${element.note}。`
         + (branch ? `\n分支 · ${BRANCH_TEXT[branch].name}：${BRANCH_TEXT[branch].note}` : evolution ? `\n进化 · ${evolution.name}：${evolution.note}` : '');
 }
