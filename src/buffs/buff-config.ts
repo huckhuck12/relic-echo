@@ -39,7 +39,9 @@ export const BUFF_ACTIONS = {
 } as const;
 export const BUFF_RULES = {
     hitChance: .3, duplicateXP: 5, slots: 2,
-    bolt: { seek: 500, speed: 480, queryPadding: 40, hitRadius: 32 },
+    bolt: {
+        seek: 500, speed: 480, queryPadding: 40, hitRadius: 32, thunderTurnSpeed: 8
+    },
     blast: { radius: 110, tick: 1 },
     field: { radius: 90, tick: .5 },
     orbit: {

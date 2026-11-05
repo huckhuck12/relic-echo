@@ -18,7 +18,8 @@ import { platform } from '../platform/runtime.js';
 import { renderMapEventReward } from './map-event-dialog.js';
 import { RUNS } from '../game/pace.js';
 import type { RunKind } from '../game/pace.js';
-import { autoBuildProfile } from '../game/auto-builds.js';
+import { renderAutoPlaySettings } from './auto-play-dialog.js';
+import type { AutoPlayDraft } from './auto-play-dialog.js';
 export interface DialogHooks {
     /** 使原有弹窗缓存失效，保留编辑槽位；绘制层不自行推进战斗。 */
     invalidate(): void;
@@ -34,6 +35,9 @@ export class GameDialogs {
     private rankingPage = 0;
     private selected: Weapon = 'storm';
     private selectedRun: RunKind = 'standard';
+    private autoOpen = false;
+    private autoDraft: AutoPlayDraft = { runKind: 'standard' };
+    private entranceKey = '';
     constructor(private readonly game: Game, private readonly dialogs: LayaSprite, private readonly controls: UIControls, private readonly buffEditor: BuffEditorState, private readonly hooks: DialogHooks) { }
     private clear(...args: Parameters<UIControls['clear']>) { return this.controls.clear(...args); }
     private block(...args: Parameters<UIControls['block']>) { return this.controls.block(...args); }
@@ -79,8 +83,10 @@ export class GameDialogs {
     render(dialog: Dialog, layout: ScreenLayout, _mobile: boolean): void {
         this.clear(this.dialogs);
         this.dialogs.mouseEnabled = !!dialog;
-        if (!dialog)
+        if (!dialog) {
+            this.entranceKey = '';
             return;
+        }
         const { width, height, dialogWidth: w, dialogHeight: h } = layout;
         const shade = this.panel(this.dialogs, 0, 0, width, height, '#14291f', '#14291f');
         shade.name = 'modal-shade';
@@ -94,6 +100,25 @@ export class GameDialogs {
             this.rankingDialogId = this.game.flow.dialogId;
             this.rankingOpen = false;
             this.rankingPage = 0;
+            this.autoOpen = false;
+        }
+        const entranceKey = `${this.game.flow.dialogId}:${this.autoOpen ? 'auto' : this.rankingOpen ? 'ranking' : dialog.type}`;
+        if (entranceKey !== this.entranceKey)
+            this.controls.effects.enter(p, shade);
+        this.entranceKey = entranceKey;
+        if (this.autoOpen && (dialog.type === 'start' || dialog.type === 'pause')) {
+            const dialogId = this.game.flow.dialogId;
+            renderAutoPlaySettings(p, w, h, this.controls, this.autoDraft, () => this.autoOpen && this.game.flow.dialogId === dialogId, draft => {
+                this.autoDraft = draft;
+                this.hooks.refresh();
+            }, stress => {
+                this.game.runKind = this.autoDraft.runKind;
+                this.game.toggleAutoPlay(this.autoDraft.weapon || this.selected, stress, { branch: this.autoDraft.branch, rotateWeapons: !this.autoDraft.weapon });
+            }, () => {
+                this.autoOpen = false;
+                this.hooks.refresh();
+            });
+            return;
         }
         if (dialog.type === 'damage' || this.rankingOpen && (dialog.type === 'pause' || dialog.type === 'result')) {
             const dialogId = this.game.flow.dialogId;
@@ -293,9 +318,10 @@ export class GameDialogs {
                 }
             });
             const autoW = (inner - gap) / 2;
-            this.button(p, '自动试玩', pad, footer - 50, autoW, 44, () => {
-                this.game.runKind = this.selectedRun;
-                this.game.toggleAutoPlay(this.selected);
+            this.button(p, '自动试玩设置', pad, footer - 50, autoW, 44, () => {
+                this.autoDraft.runKind = this.selectedRun;
+                this.autoOpen = true;
+                this.hooks.refresh();
             }, false, 'autoplay-start');
             this.button(p, '自动压测·保命', pad + autoW + gap, footer - 50, autoW, 44, () => {
                 this.game.runKind = this.selectedRun;
@@ -388,11 +414,19 @@ export class GameDialogs {
             }, false, 'shake');
             this.visualQualityButton(p, columns === 3 ? pad + 2 * (settingW + gap) : pad, columns === 3 ? body : body + 50, settingW);
             this.performanceButton(p, columns === 3 ? pad : pad + settingW + gap, body + 50, settingW);
-            this.button(p, this.game.autoPlay.enabled ? '停止自动测试' : '自动压测新局', columns === 3 ? pad + settingW + gap : pad, columns === 3 ? body + 50 : body + 100, settingW, 44, () => this.game.toggleAutoPlay(undefined, true), false, 'autoplay-toggle');
+            this.button(p, this.game.autoPlay.enabled ? '停止自动测试' : '自动试玩设置', columns === 3 ? pad + settingW + gap : pad, columns === 3 ? body + 50 : body + 100, settingW, 44, () => {
+                if (this.game.autoPlay.enabled)
+                    this.game.toggleAutoPlay();
+                else {
+                    this.autoDraft.runKind = this.game.runKind;
+                    this.autoOpen = true;
+                    this.hooks.refresh();
+                }
+            }, false, 'autoplay-toggle');
             if (copyDiagnostics)
                 this.button(p, '复制运行诊断', pad + (columns === 3 ? 2 : 1) * (settingW + gap), columns === 3 ? body + 50 : body + 100, settingW, 44, copyDiagnostics, false, 'copy-diagnostics');
             if (footer - body > 225)
-                this.text(p, this.game.autoPlay.enabled ? `${this.game.autoPlay.stress ? '保命压测' : '正常试玩'}第 ${this.game.autoPlay.rounds} 局 · ${autoBuildProfile(this.game.autoPlay.rounds).name}路线\n${this.game.autoPlay.stress ? '致命伤保留 1 血，覆盖五分钟 Boss 与结算重开。' : '正常扣血与死亡重开，不保证到达 Boss。'}\n每条分支轮换三武器，18 局覆盖六分支；测试局不计战绩。` : '自动压测保留 1 血，走完整局怪潮和 Boss。\n按构筑移动、冲刺、选卡，18 局轮换六分支与三武器。\n测试局不计战绩；触摸操作仍需手动测试。', pad, body + 156, inner, 12, C.muted);
+                this.text(p, this.game.autoPlay.enabled ? `${this.game.autoPlay.stress ? '保命压测' : '正常试玩'}第 ${this.game.autoPlay.rounds} 局 · ${this.game.autoPlay.profile.name}路线\n${this.game.autoPlay.stress ? '致命伤保留 1 血，覆盖 Boss 与结算重开。' : '正常扣血与死亡重开，不保证到达 Boss。'}\n${this.game.autoPlay.selection.branch ? '固定分支' : '轮换六分支'} · ${this.game.autoPlay.selection.rotateWeapons ? '轮换三武器' : '固定武器'}；测试局不计战绩。` : '可指定构筑、武器与时长，或保留全部轮换。\n正常试玩会死亡；保命压测可覆盖 Boss。\n启动会开启新局；触摸操作仍需手动测试。', pad, body + 156, inner, 12, C.muted);
             pair('继续探索 →', () => this.game.close(), 'resume', '结束本局', () => this.game.finish(false, '本次探索已主动结束。'), 'quit');
         }
         if (dialog.type === 'result') {

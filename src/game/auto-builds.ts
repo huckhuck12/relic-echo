@@ -10,8 +10,14 @@ export const AUTO_BUILDS = [
     { build: 'thunder', branch: 'spread', name: '传印' },
     { build: 'thunder', branch: 'charge', name: '蓄雷' },
 ] as const;
-export function autoBuildProfile(round: number) {
-    return AUTO_BUILDS[Math.floor(Math.max(0, round - 1) / 3) % AUTO_BUILDS.length];
+export type AutoBuildBranch = typeof AUTO_BUILDS[number]['branch'];
+export interface AutoPlaySelection {
+    branch?: AutoBuildBranch;
+    rotateWeapons?: boolean;
+}
+export function autoBuildProfile(round: number, selection: AutoPlaySelection = {}) {
+    const fixed = AUTO_BUILDS.find(profile => profile.branch === selection.branch);
+    return fixed || AUTO_BUILDS[Math.floor(Math.max(0, round - 1) / (selection.rotateWeapons === false ? 1 : 3)) % AUTO_BUILDS.length];
 }
 export interface BuildTactics {
     orbit: boolean;

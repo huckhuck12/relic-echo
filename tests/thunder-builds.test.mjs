@@ -64,6 +64,22 @@ test('charge needs five direct marks, deals 300 or 350 percent and has no evolut
  const {host,targets,hits}=fixture(),r=new BuffRuntime(host);for(let i=0;i<5;i++)r.apply(targets[0],{...effect('lightning'),branch:'charge'});
  assert.equal(r.evolutions.detonations,1);assert.ok(hits.filter(h=>h.t===targets[1]).every(h=>h.d===5.5),'ordinary elemental chain is retained');
 });
+
+test('charge survives a sustained sequence beyond nine seconds but expires after nine seconds without a direct hit',()=>{
+ const {e,targets,hits}=fixture(1),t=targets[0];
+ for(let i=0;i<4;i++){e.hit(t,bolt('charge'));e.update(3);}
+ assert.equal(e.thunder.get(t).stacks,4);assert.equal(e.detonations,0);
+ e.hit(t,bolt('charge'));assert.equal(e.detonations,1);assert.equal(hits[0].d,30);
+ e.hit(t,bolt('charge'));assert.equal(e.thunder.get(t).life,1,'locked hits must not extend the lock');
+ e.update(1.01);e.hit(t,bolt('charge'));e.update(9.01);assert.equal(e.thunder.has(t),false);
+});
+
+test('spread propagation cannot refresh a charge window or detonate stored charge',()=>{
+ const {e,targets}=fixture(2),[a,b]=targets;e.hit(b,bolt('charge'));e.update(8);
+ for(let i=0;i<3;i++)e.hit(a,bolt('spread'));
+ assert.equal(e.thunder.get(b).stacks,2);assert.equal(e.thunder.get(b).life,1);assert.equal(e.detonations,1);
+ e.update(1.01);assert.equal(e.thunder.has(b),false);
+});
 test('thunder burst budget rejects without consuming marks or reserving either lock, then permits retry',()=>{
  const {host}=fixture(0),e=new BuffEvolutions(host,{slow(){},burst(){},arc(){}});
  const targets=Array.from({length:40},(_,i)=>({x:i,y:0,dead:false,hp:1000}));

@@ -45,3 +45,23 @@ test('bolt resolves earliest circle entry, including off-axis targets and overla
   updateBuffEffects([e],host,.5,t=>hits.push(t));assert.equal(hits[0],targets[1]);assert.equal(hits.length,1);
  }
 });
+
+test('lightning follows its moving cast target at 30, 60 and 120Hz while other bolts stay ballistic',()=>{
+ for(const hz of [30,60,120])for(const element of ['lightning','fire']){
+  const target=enemy(220,0),{host,hits}=fixture([target]);
+  const bolt=createBuffEffect(host,{trigger:'hit',action:'bolt',element},'hit',0,0,26,1),effects=[bolt];
+  for(let i=0;i<hz&&effects.length;i++){target.y+=120/hz;updateBuffEffects(effects,host,1/hz,t=>hits.push(t));}
+  assert.equal(hits.length,element==='lightning'?1:0,`${hz}Hz ${element}`);
+ }
+});
+
+test('lightning turning is bounded, keeps speed and drops dead targets without reacquisition or extra queries',()=>{
+ const target=enemy(220,0),other=enemy(0,100),{host,hits}=fixture([target,other]);
+ const bolt=createBuffEffect(host,{trigger:'hit',action:'bolt',element:'lightning'},'hit',0,0,26,1,t=>t===target?1:0),effects=[bolt];
+ target.y=500;
+ host.query=(x,y,r)=>{assert.ok(r<100,'flight must query the swept contact region, not reacquire distant enemies');return [];};
+ updateBuffEffects(effects,host,.01,t=>hits.push(t));
+ assert.ok(Math.abs(Math.hypot(bolt.vx,bolt.vy)-480)<1e-9);assert.ok(Math.atan2(bolt.vy,bolt.vx)<=.08+1e-9);
+ const velocity=[bolt.vx,bolt.vy];target.dead=true;updateBuffEffects(effects,host,.01,t=>hits.push(t));
+ assert.deepEqual([bolt.vx,bolt.vy],velocity);assert.equal(hits.length,0);
+});

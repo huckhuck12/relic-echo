@@ -37,6 +37,7 @@ import { difficultyAt } from './difficulty.js';
 import { QUALITY_PRESETS, VisualQuality } from '../rendering/quality.js';
 import { profileEngine } from './engine-profiler.js';
 import { AutoPlay } from './auto-play.js';
+import type { AutoPlaySelection } from './auto-builds.js';
 import { DrawCallProbe, DRAW_CALL_KEY } from './draw-call-probe.js';
 import { DamageRanking } from '../combat/damage-ranking.js';
 import { GAME_VERSION } from '../shared/version.js';
@@ -253,12 +254,12 @@ export class Game {
         this.onChange();
     }
     setStick(x: number, y: number): void { this.input.setStick(x, y); }
-    toggleAutoPlay(weapon: Weapon = weaponOf(this.loadout), stress = false): void {
+    toggleAutoPlay(weapon: Weapon = weaponOf(this.loadout), stress = false, selection: AutoPlaySelection = {}): void {
         this.input.reset();
         if (this.autoPlay.enabled)
             this.autoPlay.stop();
         else
-            this.autoPlay.start(weapon, stress);
+            this.autoPlay.start(weapon, stress, selection);
         this.flow.refresh();
     }
     /** 只在用户交互入口尝试恢复音频，浏览器拒绝或小游戏尚未适配时静默降级。 */

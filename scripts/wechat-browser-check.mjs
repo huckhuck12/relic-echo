@@ -112,10 +112,22 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  await evaluate(`wechatTest.tap('copy-diagnostics');wechatTest.app.game.close();wechatTest.resize(393,760)`);
  const death=await evaluate(`(()=>{const g=wechatTest.app.game;g.training=false;g.player.inv=0;g.hurt(999999);return{dialog:g.dialog?.type,revival:g.revival.provider.available};})()`);
  assert.equal(death.dialog,'result');assert.equal(death.revival,false);
- await evaluate(`(()=>{const t=wechatTest,g=t.app.game;g.flow.title();t.app.ui.update();t.tap('autoplay-start');t.root.Laya.timer.frameLoop(1,g.loop,g.loop.frame);})()`);
+ await evaluate(`(()=>{const t=wechatTest,g=t.app.game;g.flow.title();t.app.ui.update();t.tap('autoplay-start');for(let i=0;i<6;i++)t.tap('autoplay-build');for(let i=0;i<3;i++)t.tap('autoplay-weapon');})()`);
+ await screenshot('autoplay-settings-portrait');
+ for(const [w,h]of [[393,760],[852,393]]){
+  await send('Emulation.setDeviceMetricsOverride',{width:w,height:h,deviceScaleFactor:3,mobile:true});
+  await evaluate(`wechatTest.resize(${w},${h})`);await new Promise(r=>setTimeout(r,100));
+  const layout=await evaluate(`(()=>{const t=wechatTest;return ['autoplay-build','autoplay-weapon','autoplay-mode','autoplay-back','autoplay-run','autoplay-run-stress'].map(name=>{const b=t.find(t.app.ui.root,name);return{name,x:b.x,y:b.y,w:b.width,h:b.height,pw:b.parent.width,ph:b.parent.height};});})()`);
+  assert.ok(layout.every(b=>b.w>=44&&b.h>=44&&b.x>=0&&b.y>=0&&b.x+b.w<=b.pw+.01&&b.y+b.h<=b.ph+.01),'Autoplay settings fit real engine '+w+'x'+h);
+ }
+ await screenshot('autoplay-settings-landscape');
+ await send('Emulation.setDeviceMetricsOverride',{width:393,height:760,deviceScaleFactor:3,mobile:true});
+ await evaluate(`wechatTest.resize(393,760)`);await new Promise(r=>setTimeout(r,200));
+ await evaluate(`(()=>{const t=wechatTest,g=t.app.game;t.tap('autoplay-run');t.root.Laya.timer.frameLoop(1,g.loop,g.loop.frame);})()`);
  await new Promise(r=>setTimeout(r,2200));
- const auto=await evaluate(`(()=>{const g=wechatTest.app.game;return{enabled:g.autoPlay.enabled,decisions:g.autoPlay.decisions,time:g.time,training:g.training};})()`);
- assert.equal(auto.enabled,true);assert.equal(auto.training,false);assert.ok(auto.decisions>5&&auto.time>.5,'Automatic play advances on the real engine loop');
+ const auto=await evaluate(`(()=>{const g=wechatTest.app.game;return{enabled:g.autoPlay.enabled,decisions:g.autoPlay.decisions,time:g.time,training:g.training,branch:g.autoPlay.profile.branch,weapon:g.loadout.weapon.id,rotate:g.autoPlay.selection.rotateWeapons};})()`);
+ assert.equal(auto.enabled,true,JSON.stringify(auto));assert.equal(auto.training,false);assert.ok(auto.decisions>5&&auto.time>.5,'Automatic play advances on the real engine loop');
+ assert.equal(auto.branch,'charge');assert.equal(auto.weapon,'blade');assert.equal(auto.rotate,false);
  await screenshot('autoplay');
  let autoPaused=false;
  for(let i=0;i<40&&!autoPaused;i++){
@@ -128,6 +140,7 @@ export async function checkWechatBrowser({send,evaluate,origin,directory}){
  await evaluate(`wechatTest.tap('copy-diagnostics')`);
  assert.equal(await evaluate(`JSON.parse(wechatTest.clipboard()).autoPlay.round`),1,'Copied diagnostics contain the persistent automatic test report');
  assert.equal(await evaluate(`JSON.parse(wechatTest.clipboard()).autoPlay.schema`),4);
+ assert.equal(await evaluate(`JSON.parse(wechatTest.clipboard()).autoPlay.selection.branch`),'charge');
  assert.equal(await evaluate(`typeof JSON.parse(wechatTest.clipboard()).autoPlay.current.balance.damage.total`),'number');
  await evaluate(`wechatTest.tap('autoplay-toggle')`);
  assert.equal(await evaluate(`wechatTest.app.game.autoPlay.enabled`),false);

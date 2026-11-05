@@ -21,7 +21,7 @@ export function recipeDescription(recipe: Recipe, scale = 1, level = 1, branch?:
     if (branch && compact)
         return `Lv.${level}/${BUFF_UPGRADES.maxLevel} · ${BRANCH_TEXT[branch].name} · ${trigger.name}触发\n${BRANCH_COMPACT[branch]}`;
     const action = {
-        bolt: `发射弹丸，命中伤害 ${damage}`,
+        bolt: `发射${recipe.element === 'lightning' ? '有限追踪雷丸' : '弹丸'}，命中伤害 ${damage}`,
         blast: `半径 ${BUFF_RULES.blast.radius} 爆炸，伤害 ${damage}`,
         field: `半径 ${BUFF_RULES.field.radius} 区域，持续 ${BUFF_ACTIONS.field.life} 秒，每 ${BUFF_RULES.field.tick} 秒伤害 ${damage}`,
         orbit: `双环绕物持续 ${BUFF_ACTIONS.orbit.life} 秒，每 ${BUFF_RULES.orbit.tick} 秒接触伤害 ${damage}`,

@@ -75,7 +75,7 @@ test('autoplay controls fit start and pause dialogs on portrait and landscape ph
   setupLayaStub();const g=new Game(),ui=new GameUI(g);ui.mobile=w<1000;Laya.stage.width=w;Laya.stage.height=h;Laya.stage.emit('resize');
   const button=find(ui.root,'autoplay-start'),start=find(ui.root,'start');assert.ok(button&&button.y+button.height<=start.y);
   const card=find(ui.root,'select-blade');assert.ok(card.y+card.height<=button.y,'Weapon card must not overlap autoplay at '+w+'x'+h);
-  button.emit('click');assert.equal(g.autoPlay.enabled,true);assert.equal(g.mode,'battle');
+  button.emit('click');assert.equal(g.autoPlay.enabled,false);find(ui.root,'autoplay-run').emit('click');assert.equal(g.autoPlay.enabled,true);assert.equal(g.mode,'battle');
   assert.equal(g.autoPlay.stress,false);
   g.togglePause();const toggle=find(ui.root,'autoplay-toggle'),resume=find(ui.root,'resume');assert.ok(toggle.y+toggle.height<=resume.y);
   toggle.emit('click');assert.equal(g.autoPlay.enabled,false);assert.equal(g.dialog.type,'pause');
@@ -84,6 +84,37 @@ test('autoplay controls fit start and pause dialogs on portrait and landscape ph
   stress.emit('click');assert.equal(g.autoPlay.stress,true);assert.equal(g.training,false);
   g.player.inv=0;g.player.hp=1;g.hurt(99999);assert.equal(g.player.hp,1);assert.equal(g.mode,'battle');
   g.toggleAutoPlay();g.player.inv=0;g.hurt(99999);assert.notEqual(g.mode,'battle','Stopping stress disables protection immediately');
+ }
+});
+
+test('selected autoplay build uses real rewards, survives restart and records the selected route and fixed weapon',()=>{
+ setupLayaStub();const storage=new Map();localStorage.getItem=k=>storage.get(k)||null;localStorage.setItem=(k,v)=>storage.set(k,v);
+ const g=new Game();g.sound=false;g.autoPlay.start('blade',true,{branch:'charge',rotateWeapons:false});const a=g.autoPlay;
+ g.addXP(10);a.frame(1000);a.frame(1700);assert.equal(g.buffs.recipes[0].element,'lightning');assert.equal(g.buffs.levelOf(g.buffs.recipes[0]),1);
+ g.buffs.receiveFragment('lightning');g.buffs.receiveFragment('lightning');g.update(1/60);a.frame(2000);a.frame(2700);assert.equal(g.buffs.branchOf(g.buffs.recipes[0]),'charge');
+ g.finish(false,'test');a.frame(3000);a.frame(5000);assert.equal(a.rounds,2);assert.equal(g.loadout.weapon.id,'blade');assert.equal(a.profile.branch,'charge');
+ const report=JSON.parse(storage.get(AUTO_PLAY_KEY));assert.equal(report.selection.branch,'charge');assert.equal(report.selection.rotateWeapons,false);assert.equal(report.results[0].build.branch,'charge');
+ a.stop();a.start('storm',false,{branch:'prison'});g.finish(false,'test');a.frame(6000);a.frame(8000);
+ assert.equal(a.profile.branch,'prison');assert.equal(g.loadout.weapon.id,'flame');
+ a.stop();a.start('blade',false,{rotateWeapons:false});g.finish(false,'test');a.frame(9000);a.frame(11000);
+ assert.equal(a.profile.branch,'furnace');assert.equal(g.loadout.weapon.id,'blade');
+});
+
+test('autoplay settings fit phone layouts, preserve a paused run on back and reject hidden launch buttons',()=>{
+ for(const [w,h]of [[320,568],[393,852],[568,320],[852,393],[1280,720]]){
+  setupLayaStub();const g=new Game(),ui=new GameUI(g);Laya.stage.width=w;Laya.stage.height=h;Laya.stage.emit('resize');
+  find(ui.root,'autoplay-start').emit('click');const panel=find(ui.root,'dialog-panel');
+  for(const name of ['autoplay-build','autoplay-weapon','autoplay-mode','autoplay-back','autoplay-run','autoplay-run-stress']){
+   const b=find(ui.root,name);assert.ok(b.width>=44&&b.height>=44);assert.ok(b.x>=0&&b.y>=0&&b.x+b.width<=panel.width+.01&&b.y+b.height<=panel.height+.01,`${w}x${h}: ${name}`);
+  }
+  for(let i=0;i<6;i++)find(ui.root,'autoplay-build').emit('click'); // charge
+  for(let i=0;i<3;i++)find(ui.root,'autoplay-weapon').emit('click'); // blade
+  find(ui.root,'autoplay-mode').emit('click');
+  find(ui.root,'autoplay-run-stress').emit('click');assert.equal(g.autoPlay.profile.branch,'charge');assert.equal(g.loadout.weapon.id,'blade');assert.equal(g.runKind,'quick');assert.equal(g.autoPlay.stress,true);
+  g.togglePause();find(ui.root,'autoplay-toggle').emit('click'); // stop
+  const before={time:g.time,hp:g.player.hp,weapon:g.loadout.weapon.id};find(ui.root,'autoplay-toggle').emit('click');
+  const stale=find(ui.root,'autoplay-run');find(ui.root,'autoplay-back').emit('click');stale.emit('click');
+  assert.equal(g.dialog.type,'pause');assert.equal(g.autoPlay.enabled,false);assert.deepEqual({time:g.time,hp:g.player.hp,weapon:g.loadout.weapon.id},before);
  }
 });
 

@@ -5,7 +5,7 @@ import { project } from '../shared/model.js';
 import { WORLD_RULES } from './game-config.js';
 import { platform } from '../platform/runtime.js';
 import { autoBuildProfile, buildTactics } from './auto-builds.js';
-import type { BuildTactics } from './auto-builds.js';
+import type { AutoPlaySelection, BuildTactics } from './auto-builds.js';
 import { pursueAutoSeal, safeAutoDash } from './auto-navigation.js';
 import { BuildRunMetrics } from './build-run-metrics.js';
 import { GAME_VERSION } from '../shared/version.js';
@@ -24,6 +24,8 @@ export class AutoPlay {
     rounds = 0;
     decisions = 0;
     lastAction = '';
+    selection: Readonly<AutoPlaySelection> = { rotateWeapons: true };
+    get profile() { return autoBuildProfile(this.rounds, this.selection); }
     private nextDecision = 0;
     private nextSample = 0;
     private nextSave = 0;
@@ -42,7 +44,8 @@ export class AutoPlay {
         action: string;
     }[] = [];
     constructor(private readonly game: Game, private readonly world: () => AutoPlayWorld) { }
-    start(weapon: Weapon, stress = false): void {
+    start(weapon: Weapon, stress = false, selection: AutoPlaySelection = {}): void {
+        this.selection = { branch: selection.branch, rotateWeapons: selection.rotateWeapons !== false };
         this.enabled = true;
         this.stress = stress;
         this.rounds = 0;
@@ -92,7 +95,7 @@ export class AutoPlay {
                 this.trackBoss();
                 this.recordedResult = this.dialogId;
                 this.results.push({
-                    round: this.rounds, runKind: g.runKind, weapon: this.weapon, build: autoBuildProfile(this.rounds), equipped: this.equipped(), stress: this.stress, win: dialog.win, reason: dialog.reason, seconds: Math.round(g.time), kills: g.kills, ...this.run, balance: this.balanceReport()
+                    round: this.rounds, runKind: g.runKind, weapon: this.weapon, build: this.profile, selection: this.selection, equipped: this.equipped(), stress: this.stress, win: dialog.win, reason: dialog.reason, seconds: Math.round(g.time), kills: g.kills, ...this.run, balance: this.balanceReport()
                 });
                 if (this.results.length > 18)
                     this.results.shift();
@@ -102,11 +105,11 @@ export class AutoPlay {
             const delay = now - this.dialogSince;
             if (dialog.type === 'result' && delay >= 1800) {
                 const weapons: Weapon[] = ['storm', 'flame', 'blade'];
-                this.begin(weapons[(weapons.indexOf(this.weapon) + 1) % weapons.length]);
+                this.begin(this.selection.rotateWeapons ? weapons[(weapons.indexOf(this.weapon) + 1) % weapons.length] : this.weapon);
             }
             else if (delay >= 650) {
                 if (dialog.type === 'upgrade' || dialog.type === 'fragment' || dialog.type === 'build' || dialog.type === 'branch') {
-                    const profile = autoBuildProfile(this.rounds);
+                    const profile = this.profile;
                     let id = dialog.type === 'upgrade' && g.player.hp < g.stats.hp * .65 && dialog.choices.includes('heal') ? 'heal' : dialog.choices[this.rounds % dialog.choices.length];
                     if (dialog.type === 'build' && dialog.choices.includes(profile.build))
                         id = profile.build;
@@ -217,7 +220,7 @@ export class AutoPlay {
     private save(): void {
         try {
             const report = {
-                schema: 4, version: GAME_VERSION, runKind: this.game.runKind, startedAt: this.startedAt, savedAt: Date.now(), enabled: this.enabled, stress: this.stress, round: this.rounds, seconds: this.game.time, weapon: this.weapon, build: autoBuildProfile(this.rounds), equipped: this.equipped(), decisions: this.decisions, current: { ...this.run, balance: this.balanceReport() }, results: this.results, actions: this.actions
+                schema: 4, version: GAME_VERSION, runKind: this.game.runKind, startedAt: this.startedAt, savedAt: Date.now(), enabled: this.enabled, stress: this.stress, round: this.rounds, seconds: this.game.time, weapon: this.weapon, build: this.profile, selection: this.selection, equipped: this.equipped(), decisions: this.decisions, current: { ...this.run, balance: this.balanceReport() }, results: this.results, actions: this.actions
             };
             let serialized = JSON.stringify(report);
             while (serialized.length > 65536 && this.results.length > 1) {

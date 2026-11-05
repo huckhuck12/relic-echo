@@ -192,8 +192,13 @@ export class BuffEvolutions<T extends BuffTarget> {
             this.thunderRejected++;
             return;
         }
-        mark.source = { ...source };
+        mark.source = {
+            kind: source.kind, element: source.element, damage: source.damage, level: source.level, slot: source.slot, branch: source.branch
+        };
         mark.stacks = stacks;
+        // 蓄雷靠持续直击保留积累；导冷/传播不能独立续期，也不穿过爆发锁。
+        if (source.branch === 'charge')
+            mark.life = 9;
         if (extra)
             mark.conductiveLock = 1;
         if (stacks < threshold)
@@ -218,7 +223,7 @@ export class BuffEvolutions<T extends BuffTarget> {
                 if (next?.lock || !next && this.thunder.size >= EVOLUTION_LIMITS.targets)
                     continue;
                 if (!next) {
-                    next = { stacks: 0, life: 9, lock: 0, source: { ...source } };
+                    next = { stacks: 0, life: 9, lock: 0, source: { ...mark.source } };
                     this.thunder.set(other, next);
                 }
                 const limit = next.source?.branch === 'charge' ? 5 : 3;

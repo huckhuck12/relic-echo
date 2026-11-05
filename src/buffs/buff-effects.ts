@@ -1,10 +1,12 @@
 import { BUFF_ACTIONS, BUFF_LIMITS, BUFF_RULES } from './buff-config.js';
 import type { BuffEffect, BuffHost, BuffTarget, CompleteRecipe, Trigger } from './buff-types.js';
+// Flight ownership stays out of serializable damage/visual snapshots and expires with the cast.
+const thunderTargets = new WeakMap<BuffEffect, BuffTarget>();
 /** 决定释放原点和弹道，不接触 UI、节点或随机源。damage/level 由编排层一起快照。 */
 export function createBuffEffect<T extends BuffTarget>(host: BuffHost<T>, recipe: CompleteRecipe, event: Trigger, x: number, y: number, damage: number, level: number, priority: (target: T) => number = () => 0): BuffEffect {
     const player = host.player;
     const origin = recipe.action === 'bolt' || recipe.action === 'orbit' ? player : event === 'hit' || event === 'kill' ? { x, y } : player;
-    let vx = 0, vy = 0;
+    let vx = 0, vy = 0, tracked: T | undefined;
     if (recipe.action === 'bolt') {
         let target: T | undefined, bestPriority = -Infinity, bestDistance = Infinity;
         for (const enemy of host.query(origin.x, origin.y, BUFF_RULES.bolt.seek)) {
@@ -22,12 +24,17 @@ export function createBuffEffect<T extends BuffTarget>(host: BuffHost<T>, recipe
         const distance = Math.hypot(dx, dy) || 1;
         vx = dx / distance * BUFF_RULES.bolt.speed;
         vy = dy / distance * BUFF_RULES.bolt.speed;
+        if (recipe.element === 'lightning')
+            tracked = target;
     }
-    return {
+    const effect: BuffEffect = {
         kind: recipe.action, x: recipe.action === 'orbit' ? player.x : origin.x,
         y: recipe.action === 'orbit' ? player.y : origin.y, vx, vy,
         life: BUFF_ACTIONS[recipe.action].life, tick: 0, age: 0, damage, element: recipe.element, level
     };
+    if (tracked)
+        thunderTargets.set(effect, tracked);
+    return effect;
 }
 // Weak ownership releases contact history when a cast expires or the scene clears.
 const orbitContacts = new WeakMap<BuffEffect, Map<BuffTarget, number>>();
@@ -113,6 +120,16 @@ export function updateBuffEffects<T extends BuffTarget>(effects: BuffEffect[], h
         }
         else if (effect.kind === 'bolt') {
             const oldX = effect.x, oldY = effect.y;
+            const tracked = thunderTargets.get(effect);
+            if (effect.element === 'lightning' && tracked && !tracked.dead) {
+                const heading = Math.atan2(effect.vy, effect.vx), desired = Math.atan2(tracked.y - oldY, tracked.x - oldX);
+                const delta = Math.atan2(Math.sin(desired - heading), Math.cos(desired - heading));
+                const turn = Math.max(-BUFF_RULES.bolt.thunderTurnSpeed * elapsed, Math.min(BUFF_RULES.bolt.thunderTurnSpeed * elapsed, delta));
+                effect.vx = Math.cos(heading + turn) * BUFF_RULES.bolt.speed;
+                effect.vy = Math.sin(heading + turn) * BUFF_RULES.bolt.speed;
+            }
+            else if (tracked?.dead)
+                thunderTargets.delete(effect);
             effect.x += effect.vx * elapsed;
             effect.y += effect.vy * elapsed;
             const radius = BUFF_RULES.bolt.queryPadding + BUFF_RULES.bolt.speed * elapsed * .5;
