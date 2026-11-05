@@ -78,6 +78,30 @@ test('lightning joins exact endpoints with at most ten segments even on a long c
  assert.deepEqual(paths[0].args[2],paths[2].args[2]);
 });
 
+test('discharge sheds bright layers before expiring and weapon chains do not duplicate impact sprites',()=>{
+ const counts=[];
+ for(const power of [1,.5,.2,0]){
+  const out=recorder();lightningStroke(out.g,10,20,5000,-30,.08,power,'#d6b0ff',false);finite(out.calls);
+  assert.ok(out.calls.every(c=>c.name==='drawLines'));
+  for(const c of out.calls.slice(0,power>.6?3:power>.35?2:1)){
+   assert.deepEqual(c.args[2].slice(0,2),[10,20]);assert.deepEqual(c.args[2].slice(-2),[5000,-30]);
+  }
+  counts.push(out.calls.length);
+ }
+ assert.ok(counts[0]>counts[1]&&counts[1]>counts[2]);assert.equal(counts[3],0);
+ const expired=recorder();flameBurst(expired.g,0,0,105,1,5);bladePulse(expired.g,0,0,210,0,1);assert.equal(expired.calls.length,0);
+});
+
+test('blade wakes follow the orbit within the attack radius at every direction and casting stage',()=>{
+ for(const time of [0,.1,.4,1])for(const cast of [0,.05,.22]){
+  const out=recorder();drawBladeOrbit(out.g,0,0,time,cast,210,7);
+  for(const c of out.calls.filter(c=>c.name==='drawLines')){
+   const p=c.args[2];assert.ok(p.length<=10);
+   for(let i=0;i<p.length;i+=2){const sx=p[i],sy=p[i+1]+18,x=sx/(2*.7071)+sy/(2*.3536),y=sy/(2*.3536)-sx/(2*.7071);assert.ok(Math.hypot(x,y)<=210+.001);}
+  }
+ }
+});
+
 test('blade sweep stays within its world attack radius and has a filled taper plus bright edge',()=>{
  const out=recorder(),radius=150;slashRibbon(out.g,0,0,radius,.8,.1);
  const fill=out.calls.find(c=>c.name==='drawPoly'),points=fill.args[2];

@@ -6,6 +6,8 @@ import {vfxAtlas,paintVfx,routeVfx} from '../dist/rendering/vfx-atlas.js';
 import {drawBuffEffect} from '../dist/buffs/buff-visuals.js';
 import {drawEvolutionBurst} from '../dist/buffs/buff-evolution-visuals.js';
 import {project} from '../dist/shared/model.js';
+import {drawHitFeedback} from '../dist/rendering/hit-feedback.js';
+import {flameBurst,lightningStroke} from '../dist/rendering/skill-visuals.js';
 function engine(){
  setupLayaStub();const images=[],uploads=[],slices=[];
  Laya.Browser={createElement:()=>{const i={src:'',width:512,height:512};images.push(i);return i;}};
@@ -65,6 +67,21 @@ test('painted evolution bursts fade out rather than leave a persistent opaque sp
   drawEvolutionBurst(late.g,floor.g,project,kind,0,0,1,5,8);
   assert.ok(early.calls.some(c=>c.name==='drawTexture'));assert.equal(late.calls.filter(c=>c.name==='drawTexture').length,0);
  }
+});
+
+test('player impacts retain residual arcs and directional embers after the shared raster core fades',()=>{
+ const f=engine();vfxAtlas();f.images[0].onload();
+ for(const ty of [0,1,2])for(const t of [0,.3,.7,1]){
+  const out=recorder(),effect=Object.freeze({x:0,y:0,life:1-t,max:1,tx:.4,ty});drawHitFeedback(out.g,effect);
+  assert.ok(out.calls.length<=6);
+  if(t===.7){assert.ok(out.calls.some(c=>c.name==='drawLines'||c.name==='drawPoly'));assert.equal(out.calls.filter(c=>c.name==='drawTexture').length,0);}
+  if(t===1)assert.equal(out.calls.length,0);
+ }
+ const burst=recorder();flameBurst(burst.g,0,0,105,.8,10);
+ assert.equal(burst.calls.filter(c=>c.name==='drawTexture').length,2,'Only two shrinking embers remain, not an opaque crown');
+ const chain=recorder();lightningStroke(chain.g,0,0,200,0,0,1,'#d6b0ff',false);
+ assert.equal(chain.calls.filter(c=>c.name==='drawTexture').length,0);
+ assert.equal(f.uploads.length,1);assert.equal(f.uploads[0].w*f.uploads[0].h*4,1048576);
 });
 test('normalized VFX package records sixteen alpha-checked sprites and no chroma-key leftovers',async()=>{
  const meta=JSON.parse(await readFile(new URL('../assets/vfx/elements.json',import.meta.url),'utf8'));

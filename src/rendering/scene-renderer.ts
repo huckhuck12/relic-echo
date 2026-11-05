@@ -352,7 +352,7 @@ export class SceneRenderer {
             }
             else if (effect.kind === 'line') {
                 const end = project(effect.tx, effect.ty);
-                lightningStroke(g, q.x, q.y - (effect.sourceLift ?? 26), end.x, end.y - 26, progress * .17, 1 - progress, effect.color);
+                lightningStroke(g, q.x, q.y - (effect.sourceLift ?? 26), end.x, end.y - 26, progress * .17, 1 - progress, effect.color, false);
             }
             else if (effect.kind === 'ring')
                 this.ellipse(g, effect.x, effect.y, 20 + progress * 80, null, effect.color);

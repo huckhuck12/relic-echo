@@ -36,11 +36,28 @@ window.vfxReview={paint(mode='buffs',age=.08,level=3,detail=5){
  else if(mode==='weapons'){
   const place=(fn,x,y,parent=overlay)=>{const n=new Laya.Sprite();n.pos(x,y);parent.addChild(n);const raster=new Laya.Sprite();raster.pos(x,y);(parent===floor?floorArt:overlayArt).addChild(raster);routeVfx(n.graphics,raster.graphics);fn(n.graphics);};
   person(150,230);place(g=>castFlash(g,0,0,0,0,age/.3,'#d6b0ff',true),150,175);
-  lightningStroke(overlay.graphics,165,180,430,180,age,.9,'#d6b0ff');label('storm / chain and impact',70,290);
+  lightningStroke(overlay.graphics,165,180,430,180,age,Math.max(0,1-age/.17),'#d6b0ff',false);
+  place(g=>drawHitFeedback(g,{x:0,y:0,life:Math.max(0,.18-age),max:.18,tx:0,ty:0}),430,206);label('storm / chain and impact',70,290);
   const shot=new Laya.Sprite();paintFlameShot(shot.graphics,680,0);shot.pos(650,180);actors.addChild(shot);
   place(g=>flameBurst(g,0,0,105,Math.min(1,age/.25),detail),800,220);label('flame / shot and burst',570,290);
   place(g=>burningGround(g,0,0,85,age,detail),220,600,floor);label('flame / ground',150,680);
   place(g=>{drawBladeOrbit(g,0,0,age,.22*(1-Math.min(1,age/.22)),150,5,0);bladePulse(g,0,0,150,0,Math.min(1,age/.22));},700,650);person(700,650);label('blade / orbit and release',590,770);
+ }
+ else if(mode==='player-stages'){
+  const place=(fn,x,y)=>{const n=new Laya.Sprite(),raster=new Laya.Sprite();n.pos(x,y);raster.pos(x,y);overlay.addChild(n);overlayArt.addChild(raster);routeVfx(n.graphics,raster.graphics);fn(n.graphics);};
+  for(const [i,t]of [0,.3,.7,1].entries()){
+   const cx=128+i*256;label('lifetime '+Math.round(t*100)+'%',cx-65,70);
+   place(g=>{lightningStroke(g,-90,-26,85,-26,t*.17,1-t,'#d6b0ff',false);},cx,190);
+   place(g=>drawHitFeedback(g,{x:0,y:0,life:1-t,max:1,tx:0,ty:0}),cx+85,190);
+   label('storm',cx-25,265);
+   if(t<1)place(g=>paintFlameShot(g,680,0),cx-65,410);
+   place(g=>flameBurst(g,0,0,105,t,detail),cx+45,430);
+   place(g=>drawHitFeedback(g,{x:0,y:0,life:1-t,max:1,tx:.4,ty:1}),cx+45,510);
+   label('flame / burst + embers',cx-90,570);
+   place(g=>{drawBladeOrbit(g,0,0,t*.22,.22*(1-t),72,3);bladePulse(g,0,0,72,0,t);},cx,760);
+   person(cx,760);place(g=>drawHitFeedback(g,{x:0,y:0,life:1-t,max:1,tx:.4,ty:2}),cx,845);
+   label('blade / orbit + cut',cx-80,905);
+  }
  }
  else if(mode==='accents'){
   const place=(fn,x,y)=>{const n=new Laya.Sprite();n.pos(x,y);overlay.addChild(n);const raster=new Laya.Sprite();raster.pos(x,y);overlayArt.addChild(raster);routeVfx(n.graphics,raster.graphics);fn(n.graphics);};

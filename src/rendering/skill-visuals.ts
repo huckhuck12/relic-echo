@@ -10,24 +10,31 @@ export function spark(g: any, x: number, y: number, r: number, color: string): v
     g.drawPoly(x, y, [0, -r, r * .22, -r * .22, r, 0, r * .22, r * .22, 0, r, -r * .22, r * .22, -r, 0, -r * .22, -r * .22], color);
 }
 /** 有限段数的折线电弧：远距离也最多 10 段，外缘/主色/亮芯共用同一条路径。 */
-export function lightningStroke(g: any, ax: number, ay: number, bx: number, by: number, phase: number, strength = 1, color = '#d6b0ff'): void {
+export function lightningStroke(g: any, ax: number, ay: number, bx: number, by: number, phase: number, strength = 1, color = '#d6b0ff', endpoint = true): void {
+    const power = clamp(strength, 0, 1);
+    if (power <= 0)
+        return;
     const dx = bx - ax, dy = by - ay, distance = Math.hypot(dx, dy) || 1;
     const steps = Math.max(3, Math.min(10, Math.ceil(distance / 28))), points: number[] = [];
     for (let i = 0; i <= steps; i++) {
-        const t = i / steps, jitter = i === 0 || i === steps ? 0 : Math.sin(i * 8.17 + Math.floor(phase * 30)) * Math.min(11, distance * .08);
+        const t = i / steps, jitter = i === 0 || i === steps ? 0 : Math.sin(i * 8.17 + Math.floor(phase * 18)) * Math.min(9, distance * .07);
         points.push(ax + dx * t - dy / distance * jitter, ay + dy * t + dx / distance * jitter);
     }
-    const power = clamp(strength, .08, 1);
-    g.drawLines(0, 0, points, '#3d5b54', 5 * power + 1);
-    g.drawLines(0, 0, points, color, 2.8 * power + 1);
-    g.drawLines(0, 0, points, '#fff4d9', 1.2 * power + .5);
+    // A brief bright discharge gives way to a thin residual arc, rather than a solid beam.
+    if (power > .35)
+        g.drawLines(0, 0, points, '#3d5b54', 4 * power + 1);
+    g.drawLines(0, 0, points, power > .35 ? color : '#817c9c', 2.8 * power + .2);
+    if (power > .6)
+        g.drawLines(0, 0, points, '#fff4d9', 1.2 * power);
     // 次级分叉只保留一条，避免连锁数量上升后线条数成倍扩张。
-    if (power > .45) {
+    if (power > .65) {
         const mid = Math.floor(steps / 2) * 2;
-        g.drawLines(0, 0, [points[mid], points[mid + 1], points[mid] + dx * .08 - dy * .13, points[mid + 1] + dy * .08 + dx * .13, points[mid] + dx * .16 - dy * .08, points[mid + 1] + dy * .16 + dx * .08], color, 1.5);
+        const side = Math.min(15, distance * .08);
+        g.drawLines(0, 0, [points[mid], points[mid + 1], points[mid] + dx * .06 - dy / distance * side, points[mid + 1] + dy * .06 + dx / distance * side, points[mid] + dx * .12 - dy / distance * side * .65, points[mid + 1] + dy * .12 + dx / distance * side * .65], color, 1.2 * power);
     }
-    if (!paintVfx(g, 'impact', 'lightning', bx, by, 17 + 17 * power, 17 + 17 * power, 0, power))
-        spark(g, bx, by, 5 + 6 * power, '#edffff');
+    // Weapon hits already own one impact snapshot: do not duplicate it on every chain edge.
+    if (endpoint && power > .25 && !paintVfx(g, 'impact', 'lightning', bx, by, 14 + 12 * power, 14 + 12 * power, 0, power * power))
+        spark(g, bx, by, 3 + 5 * power, '#edffff');
 }
 /** 定向叶片/弹头轮廓，用屏幕方向构造，保持等距投影后仍有明确的前后关系。 */
 export function directionalShape(g: any, x: number, y: number, dx: number, dy: number, points: readonly number[], color: string): void {
@@ -38,11 +45,12 @@ export function directionalShape(g: any, x: number, y: number, dx: number, dy: n
 }
 /** 火球在发射时画一次，后续仅平移节点。尾焰长度固定，不增加逐帧重绘或子节点。 */
 export function paintFlameShot(g: any, vx: number, vy: number): void {
-    const d = project(vx, vy);
-    directionalShape(g, 0, -18, d.x, d.y, [-34, 0, -15, -4, -21, -7, -2, -6, 9, -5, 15, 0, 8, 6, -4, 7, -20, 4], '#795445');
-    directionalShape(g, 0, -18, d.x, d.y, [-27, 0, -9, -2, -13, -5, 2, -4, 10, -3, 13, 0, 6, 4, -7, 5], '#df8c4e');
-    directionalShape(g, 0, -18, d.x, d.y, [-17, 0, -3, -3, 8, -2, 11, 0, 5, 3, -7, 3], '#f2c476');
-    directionalShape(g, 0, -18, d.x, d.y, [-6, 0, 4, -1.5, 9, 0, 3, 1.5], '#fff0c6');
+    const projected = project(vx, vy), d = Math.hypot(projected.x, projected.y) > .001 ? projected : { x: 1, y: 0 };
+    // Detached forked wake and a round leading core distinguish fire from hostile arrowheads.
+    directionalShape(g, 0, -18, d.x, d.y, [-31, -3, -19, -6, -11, -4, -15, 0, -10, 3, -19, 5, -27, 3, -20, 1], '#ad6546');
+    directionalShape(g, 0, -18, d.x, d.y, [-12, -1, -6, -7, 4, -9, 11, -6, 15, 0, 11, 6, 4, 8, -5, 6, -9, 3, -17, 2], '#df8345');
+    directionalShape(g, 0, -18, d.x, d.y, [-6, -1, 0, -5, 7, -6, 12, -2, 13, 1, 8, 5, 1, 4, -3, 2, -10, 2], '#f6c56d');
+    directionalShape(g, 0, -18, d.x, d.y, [1, -1, 6, -3, 10, -1, 11, 1, 6, 2, 3, 1], '#fff1c8');
 }
 /** 短促的施放亮芯先于尾迹消失；不延迟命中、不扩大真实攻击范围。 */
 export function castFlash(g: any, x: number, y: number, angle: number, variant: number, t: number, color: string, mounted = false): void {
@@ -97,6 +105,8 @@ export function orbitBlade(g: any, x: number, y: number, angle: number): void {
 /** 三段断开的御刃轨迹，保持范围圆轮廓，避免整块近战扫切面盖住怪群。 */
 export function bladePulse(g: any, x: number, y: number, radius: number, angle: number, progress: number): void {
     const q = project(x, y), t = clamp(progress, 0, 1);
+    if (t >= 1)
+        return;
     for (let blade = 0; blade < 3; blade++) {
         const points: number[] = [];
         for (let i = 0; i <= 8; i++) {
@@ -108,14 +118,19 @@ export function bladePulse(g: any, x: number, y: number, radius: number, angle: 
             g.drawLines(0, 0, points, '#eee5ff', .8);
     }
 }
-/** 正式场景和预览共用同一轨道绘制，最多 7 枚飞刃，每枚 3 个面片及 1 根短尾迹。 */
+/** 正式场景和预览共用同一轨道绘制，最多 7 枚飞刃，每枚 3 个面片及 1 条短弧尾迹。 */
 export function drawBladeOrbit(g: any, x: number, y: number, time: number, castTime: number, radius: number, count: number, spin = 0): void {
     const orbit = bladeOrbit(time, castTime, radius, spin), blades = Math.min(7, Math.max(3, count));
     for (let i = 0; i < blades; i++) {
         const a = orbit.phase + i / blades * Math.PI * 2, q = project(x + Math.cos(a) * orbit.radius, y + Math.sin(a) * orbit.radius);
         if (orbit.power > .05) {
-            const tail = project(x + Math.cos(a - .32) * orbit.radius, y + Math.sin(a - .32) * orbit.radius);
-            g.drawLine(tail.x, tail.y - 18, q.x, q.y - 18, '#9581bb', 1 + orbit.power);
+            const tail: number[] = [];
+            for (let j = 0; j <= 4; j++) {
+                const behind = a - (1 - j / 4) * (.18 + orbit.power * .3);
+                const point = project(x + Math.cos(behind) * orbit.radius, y + Math.sin(behind) * orbit.radius);
+                tail.push(point.x, point.y - 18);
+            }
+            g.drawLines(0, 0, tail, '#9581bb', .5 + orbit.power * 1.5);
         }
         orbitBlade(g, q.x, q.y - 18, a);
     }
@@ -123,22 +138,27 @@ export function drawBladeOrbit(g: any, x: number, y: number, time: number, castT
 /** 火焰爆炸：先亮芯，后焰冠与外抛火星；数值预算仅控制装饰数量。 */
 export function flameBurst(g: any, x: number, y: number, radius: number, progress: number, detail: number): void {
     const q = project(x, y), t = clamp(progress, 0, 1), expand = 1 - Math.pow(1 - t, 3);
+    if (t >= 1)
+        return;
     // Compact flame crown: the exact damage radius remains on the ground layer.
-    const size = 28 + Math.min(radius, 160) * .3 * expand;
-    if (paintVfx(g, 'impact', 'fire', q.x, q.y - 19 - Math.sin(t * Math.PI) * 8, size, size, 0, 1 - t)) {
+    const crown = Math.max(0, 1 - t / .65), size = (28 + Math.min(radius, 160) * .3 * expand) * (.75 + crown * .25);
+    if (paintVfx(g, 'impact', 'fire', q.x, q.y - 19 - Math.sin(t * Math.PI) * 8, size, size * (1 + .2 * expand), 0, crown * crown)) {
         for (let i = 0; i < Math.min(2, detail); i++) {
             const a = i * Math.PI + .5, v = project(x + Math.cos(a) * radius * .5 * expand, y + Math.sin(a) * radius * .5 * expand);
-            paintVfx(g, 'projectile', 'fire', v.x, v.y - 8 - Math.sin(t * Math.PI) * 10, 12 * (1 - t) + 4, 8 * (1 - t) + 3, a * .3, (1 - t) * .7);
+            paintVfx(g, 'projectile', 'fire', v.x, v.y - 8 - Math.sin(t * Math.PI) * 16, 12 * (1 - t) + 2, 6 * (1 - t) + 2, a + t * .7, (1 - t) * (1 - t) * .7);
         }
         return;
     }
     const count = Math.min(5, Math.max(3, detail));
     for (let i = 0; i < count; i++) {
         const a = i * Math.PI * 2 / count, v = project(Math.cos(a) * radius * .62 * expand, Math.sin(a) * radius * .62 * expand);
-        const w = (13 + radius * .08) * (1 - t) + 2, h = (28 + radius * .22) * (1 - t) + 4;
+        const w = (13 + radius * .08) * crown + 2, h = (28 + radius * .22) * crown + 4;
         const px = q.x + v.x, py = q.y + v.y - 10 - Math.sin(t * Math.PI) * 18;
-        g.drawPoly(px, py, [-w, 0, -w * .7, -h * .5, -w * .2, -h * .35, w * .15, -h, w * .7, -h * .4, w, 0], '#e76e36');
-        if (i % 2 === 0)
+        if (crown > 0)
+            g.drawPoly(px, py, [-w, 0, -w * .7, -h * .5, -w * .2, -h * .35, w * .15, -h, w * .7, -h * .4, w, 0], '#e76e36');
+        else
+            directionalShape(g, px, py, Math.cos(a), Math.sin(a), [-4 * (1 - t), 0, 0, -2 * (1 - t), 3 * (1 - t), 0, 0, 2 * (1 - t)], '#bd6545');
+        if (crown > 0 && i % 2 === 0)
             g.drawPoly(px, py, [-w * .45, 0, 0, -h * .62, w * .4, 0], '#ffda78');
     }
     if (t < .24)
