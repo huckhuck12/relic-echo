@@ -28,7 +28,10 @@ try{
   for(const action of ['start','complete']){
    const original=g.mapEventHooks[action];g.mapEventHooks[action]=site=>{events.push({time:+g.time.toFixed(2),type:'seal-'+action,id:site.id});return original(site);};
   }
-  const reactions={reforges:0,shatters:0,detonations:0,inheritances:0};
+  const reactions={reforges:0,shatters:0,detonations:0,inheritances:0,weaponCharges:0};
+  const phaseReactions={early:0,growth:0,formed:0,boss:0},targetReactions={ordinary:0,elite:0,boss:0};
+  const weaponContact=g.buffs.evolutions.weaponHit.bind(g.buffs.evolutions);
+  g.buffs.evolutions.weaponHit=(...args)=>{const before=g.buffs.evolutions.weaponCharges;weaponContact(...args);reactions.weaponCharges+=g.buffs.evolutions.weaponCharges-before;};
   const inheritedDeath=g.buffs.evolutions.killed.bind(g.buffs.evolutions);
   g.buffs.evolutions.killed=(...args)=>{const transferred=inheritedDeath(...args);if(transferred)reactions.inheritances++;return transferred;};
   // Bounded diagnostics: 16 action/element pairs, weak cast ownership shared by trail pieces.
@@ -60,7 +63,7 @@ try{
   };
   const killed=g.enemyDamageHooks.killed;g.enemyDamageHooks.killed=(enemy,...args)=>{if(enemy.kind>=3)events.push({time:+g.time.toFixed(2),type:enemy.kind===4?'boss-kill':'elite-kill'});return killed(enemy,...args);};
   const damage=g.buffs.host.damage;g.buffs.host.damage=(...args)=>{if(legacyContact&&args[3]===true)args[2]=true;damage(...args);};
-  const burst=g.buffs.evolutions.hooks.burst;g.buffs.evolutions.hooks.burst=(kind,...args)=>{reactions[kind==='shatter'?'shatters':'detonations']++;burst(kind,...args);};
+  const burst=g.buffs.evolutions.hooks.burst;g.buffs.evolutions.hooks.burst=(kind,...args)=>{reactions[kind==='shatter'?'shatters':'detonations']++;if(kind==='detonate'){phaseReactions[g.time<120?'early':g.time<300?'growth':g.time<g.run.bossAt?'formed':'boss']++;const t=g.enemies.find(e=>!e.dead&&e.x===args[0]&&e.y===args[1]);targetReactions[t?.kind===4?'boss':t?.kind===3?'elite':'ordinary']++;}burst(kind,...args);};
   const hurt=g.hurt.bind(g);g.hurt=value=>{if(g.player.inv<=0&&g.mode==='battle'){pressureHits++;if(Math.max(1,Math.round(value*(1-g.stats.reduction)))>=g.player.hp){protectedHits++;lethalContext={time:+g.time.toFixed(2),hp:g.player.hp,maxHP:g.stats.hp,damage:value,reduction:g.stats.reduction,enemies:g.enemies.length,shots:g.shots.length,site:g.mapEvents.active()?.id||null};}}hurt(value);};
   const claim=g.claimReward.bind(g);g.claimReward=(token,choice)=>{
    const d=g.dialog;if(!d)return false;
@@ -98,7 +101,7 @@ try{
   assert.ok(Math.abs(balance.damage.buff-buffDamage)<.001,'Buff damage must agree with the runtime ledger.');
   assert.ok(Math.abs(balance.boss.damage.buff-bossBuffDamage)<.001,'Boss Buff damage must agree with the runtime ledger.');
   assert.equal(balance.combat.hitsTaken,pressureHits,'Hurt event count must agree.');
-  rows.push({weapon,seed,build,branch,mode,balance:g.autoPlay.balanceReport(),contacts:[...contacts.values()],phases,peak,lethalContext,seals:g.mapEvents.sites.map(s=>({id:s.id,state:s.state,progress:+s.progress.toFixed(2)})),protected:protectedRun,seconds:+g.time.toFixed(2),win:g.dialog?.win||false,kills:g.kills,firstBranch,maxLevelAt,buffLevel:g.buffs.levelOf(g.buffs.recipes[0]),buffDamage:Math.round(buffDamage),totalDamage:Math.round(totalDamage),bossBuffDamage:Math.round(bossBuffDamage),bossRemaining:boss?+Math.max(0,boss.hp).toFixed(1):null,bossStartHP,pressureHits,protectedHits,procs:g.buffs.procs,...reactions,checkpoints,events});
+  rows.push({weapon,seed,build,branch,mode,balance:g.autoPlay.balanceReport(),contacts:[...contacts.values()],phases,phaseReactions,targetReactions,peak,lethalContext,seals:g.mapEvents.sites.map(s=>({id:s.id,state:s.state,progress:+s.progress.toFixed(2)})),protected:protectedRun,seconds:+g.time.toFixed(2),win:g.dialog?.win||false,kills:g.kills,firstBranch,maxLevelAt,buffLevel:g.buffs.levelOf(g.buffs.recipes[0]),buffDamage:Math.round(buffDamage),totalDamage:Math.round(totalDamage),bossBuffDamage:Math.round(bossBuffDamage),bossRemaining:boss?+Math.max(0,boss.hp).toFixed(1):null,bossStartHP,pressureHits,protectedHits,procs:g.buffs.procs,...reactions,checkpoints,events});
   console.log(JSON.stringify(rows.at(-1)));g.autoPlay.stop();g.returnToTitle();
  }
 }finally{Math.random=originalRandom;}

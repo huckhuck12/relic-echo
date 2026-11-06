@@ -164,8 +164,8 @@ export class BuffRuntime<T extends BuffTarget> {
         // 编辑不重置冷却，切换配方不能刷免费释放。
         return true;
     }
-    /** 保留槽序、概率判定和容量检查顺序；只有命中触发消耗概率随机数。 */
-    trigger(event: Trigger, x: number, y: number, scale: number, random = Math.random): void {
+    /** Cooldown-ready contact is reliable; the optional callback remains for old tooling callers. */
+    trigger(event: Trigger, x: number, y: number, scale: number, _random?: () => number): void {
         if (this.dispatching)
             return;
         this.dispatching = true;
@@ -174,20 +174,27 @@ export class BuffRuntime<T extends BuffTarget> {
                 const recipe = this.recipes[slot];
                 if (!complete(recipe) || recipe.trigger !== event || this.cooldowns[slot] > 0)
                     continue;
-                if (event === 'hit' && random() >= BUFF_RULES.hitChance)
-                    continue;
                 const level = this.levelOf(recipe);
+                const branch = this.branchOf(recipe);
                 const mastery = this.mastery.of(recipe), tuning = mastery ? MASTERY[mastery] : undefined;
-                const effect = createBuffEffect(this.host, recipe, event, x, y, recipeDamage(recipe, scale, level) * (tuning?.damage || 1), level, target => {
+                let effect = createBuffEffect(this.host, recipe, event, x, y, recipeDamage(recipe, scale, level) * (tuning?.damage || 1), level, target => {
                     if (recipe.element !== 'lightning')
                         return 0;
                     const mark = this.evolutions.thunder.get(target);
-                    return mark && mark.life > 0 && mark.lock <= 0 && mark.stacks > 0 ? mark.stacks : 0;
+                    const rank = mark && mark.life > 0 && mark.lock <= 0 && mark.stacks > 0 ? mark.stacks : 0;
+                    return branch === 'charge' ? (target.kind === 4 ? 100 : target.kind === 3 ? 50 : 0) + rank : rank;
                 });
-                const branch = this.branchOf(recipe);
                 const refresh = branch === 'furnace' ? this.effects.find(e => e.slot === slot && e.branch === branch && Math.hypot(e.x - effect.x, e.y - effect.y) < 32) : undefined;
-                if (!refresh && this.effects.filter(e => e.kind === recipe.action).length >= BUFF_LIMITS[recipe.action])
+                const oldOrbit = recipe.action === 'orbit' ? this.effects.find(e => e.kind === 'orbit' && e.slot === slot) : undefined;
+                if (!refresh && !oldOrbit && this.effects.filter(e => e.kind === recipe.action).length >= BUFF_LIMITS[recipe.action])
                     continue;
+                if (oldOrbit) {
+                    // Replace damage snapshot, but continue the orbit phase instead of stacking rings.
+                    effect.age = oldOrbit.age;
+                    Object.assign(oldOrbit, effect);
+                    effect = oldOrbit;
+                    this.effects.splice(this.effects.indexOf(oldOrbit), 1);
+                }
                 this.cooldowns[slot] = TRIGGERS.find(trigger => trigger.id === event)!.cooldown * (tuning?.cooldown || 1);
                 effect.slot = slot;
                 effect.cast = ++this.castSequence;

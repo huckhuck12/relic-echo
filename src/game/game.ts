@@ -883,6 +883,7 @@ export class Game {
         present: (enemy, result) => presentEnemyHit({ enemyCount: this.enemies.length, labels: this.labels, visuals: this.visuals }, this.combatFeedbackHooks, enemy, result),
         killed: (enemy, triggerBuffs) => this.onEnemyKilled(enemy, triggerBuffs),
         triggerHit: (x, y) => this.triggerBuff('hit', x, y),
+        weaponContact: enemy => this.buffs.evolutions.weaponHit(enemy),
     };
     /** 每次读取当前玩家/暴击率，换装和重开后不沿用旧快照；规则见 combat-system。 */
     private hit(enemy: Enemy, base: number, options: DamageOptions = {}): void {

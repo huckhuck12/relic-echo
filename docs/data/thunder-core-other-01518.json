@@ -1,0 +1,1181 @@
+{
+  "schema": 1,
+  "version": "0.15.18",
+  "seed": 1104,
+  "kind": "Fire/ice regression samples without paired baseline; seeded Node logic, not native performance or human balance.",
+  "runs": [
+    {
+      "mode": "normal",
+      "weapon": "storm",
+      "branch": "trail",
+      "seconds": 560.33,
+      "win": false,
+      "buffShare": 0.061442435487050626,
+      "boss": {
+        "appearedAt": null,
+        "killedAt": null,
+        "killSeconds": null,
+        "observedSeconds": 0,
+        "damage": {
+          "total": 0,
+          "buff": 0,
+          "buffShare": 0,
+          "sources": []
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 2,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "blast/force",
+          "casts": 246,
+          "connected": 100,
+          "contacts": 137
+        },
+        {
+          "pair": "field/fire",
+          "casts": 125,
+          "connected": 82,
+          "contacts": 669
+        }
+      ]
+    },
+    {
+      "mode": "normal",
+      "weapon": "storm",
+      "branch": "furnace",
+      "seconds": 495.7,
+      "win": false,
+      "buffShare": 0.043756685331982806,
+      "boss": {
+        "appearedAt": null,
+        "killedAt": null,
+        "killSeconds": null,
+        "observedSeconds": 0,
+        "damage": {
+          "total": 0,
+          "buff": 0,
+          "buffShare": 0,
+          "sources": []
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 2,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "blast/force",
+          "casts": 223,
+          "connected": 103,
+          "contacts": 150
+        },
+        {
+          "pair": "field/fire",
+          "casts": 91,
+          "connected": 47,
+          "contacts": 161
+        }
+      ]
+    },
+    {
+      "mode": "normal",
+      "weapon": "storm",
+      "branch": "shards",
+      "seconds": 565.37,
+      "win": false,
+      "buffShare": 0.019202804609985535,
+      "boss": {
+        "appearedAt": null,
+        "killedAt": null,
+        "killSeconds": null,
+        "observedSeconds": 0,
+        "damage": {
+          "total": 0,
+          "buff": 0,
+          "buffShare": 0,
+          "sources": []
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 2,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "orbit/ice",
+          "casts": 241,
+          "connected": 48,
+          "contacts": 152
+        },
+        {
+          "pair": "blast/force",
+          "casts": 98,
+          "connected": 8,
+          "contacts": 11
+        }
+      ]
+    },
+    {
+      "mode": "normal",
+      "weapon": "storm",
+      "branch": "prison",
+      "seconds": 617.18,
+      "win": false,
+      "buffShare": 0.027478855922486434,
+      "boss": {
+        "appearedAt": 600.0166666664496,
+        "killedAt": null,
+        "killSeconds": null,
+        "observedSeconds": 17.166666666651054,
+        "damage": {
+          "total": 7385,
+          "buff": 697,
+          "buffShare": 0.0943805010155721,
+          "sources": [
+            {
+              "id": "storm",
+              "damage": 6688,
+              "share": 0.9056194989844278
+            },
+            {
+              "id": "orbit/ice",
+              "damage": 527,
+              "share": 0.07136086662153013
+            },
+            {
+              "id": "blast/force",
+              "damage": 170,
+              "share": 0.023019634394041977
+            }
+          ]
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 2,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "orbit/ice",
+          "casts": 261,
+          "connected": 61,
+          "contacts": 293
+        },
+        {
+          "pair": "blast/force",
+          "casts": 126,
+          "connected": 15,
+          "contacts": 21
+        }
+      ]
+    },
+    {
+      "mode": "normal",
+      "weapon": "flame",
+      "branch": "trail",
+      "seconds": 482.27,
+      "win": false,
+      "buffShare": 0.07652508713758478,
+      "boss": {
+        "appearedAt": null,
+        "killedAt": null,
+        "killSeconds": null,
+        "observedSeconds": 0,
+        "damage": {
+          "total": 0,
+          "buff": 0,
+          "buffShare": 0,
+          "sources": []
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 0,
+          "contacts": 0
+        },
+        {
+          "pair": "blast/force",
+          "casts": 209,
+          "connected": 48,
+          "contacts": 70
+        },
+        {
+          "pair": "field/fire",
+          "casts": 219,
+          "connected": 156,
+          "contacts": 600
+        }
+      ]
+    },
+    {
+      "mode": "normal",
+      "weapon": "flame",
+      "branch": "furnace",
+      "seconds": 467.5,
+      "win": false,
+      "buffShare": 0.04644653399407413,
+      "boss": {
+        "appearedAt": null,
+        "killedAt": null,
+        "killSeconds": null,
+        "observedSeconds": 0,
+        "damage": {
+          "total": 0,
+          "buff": 0,
+          "buffShare": 0,
+          "sources": []
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 0,
+          "contacts": 0
+        },
+        {
+          "pair": "blast/force",
+          "casts": 203,
+          "connected": 40,
+          "contacts": 52
+        },
+        {
+          "pair": "field/fire",
+          "casts": 205,
+          "connected": 119,
+          "contacts": 232
+        }
+      ]
+    },
+    {
+      "mode": "normal",
+      "weapon": "flame",
+      "branch": "shards",
+      "seconds": 497.85,
+      "win": false,
+      "buffShare": 0.07715000974767866,
+      "boss": {
+        "appearedAt": null,
+        "killedAt": null,
+        "killSeconds": null,
+        "observedSeconds": 0,
+        "damage": {
+          "total": 0,
+          "buff": 0,
+          "buffShare": 0,
+          "sources": []
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 0,
+          "contacts": 0
+        },
+        {
+          "pair": "orbit/ice",
+          "casts": 200,
+          "connected": 139,
+          "contacts": 465
+        },
+        {
+          "pair": "blast/force",
+          "casts": 142,
+          "connected": 20,
+          "contacts": 27
+        }
+      ]
+    },
+    {
+      "mode": "normal",
+      "weapon": "flame",
+      "branch": "prison",
+      "seconds": 528.23,
+      "win": false,
+      "buffShare": 0.06876749486983101,
+      "boss": {
+        "appearedAt": null,
+        "killedAt": null,
+        "killSeconds": null,
+        "observedSeconds": 0,
+        "damage": {
+          "total": 0,
+          "buff": 0,
+          "buffShare": 0,
+          "sources": []
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 0,
+          "contacts": 0
+        },
+        {
+          "pair": "orbit/ice",
+          "casts": 212,
+          "connected": 152,
+          "contacts": 522
+        },
+        {
+          "pair": "blast/force",
+          "casts": 157,
+          "connected": 26,
+          "contacts": 33
+        }
+      ]
+    },
+    {
+      "mode": "normal",
+      "weapon": "blade",
+      "branch": "trail",
+      "seconds": 404.45,
+      "win": false,
+      "buffShare": 0.291674944776317,
+      "boss": {
+        "appearedAt": null,
+        "killedAt": null,
+        "killSeconds": null,
+        "observedSeconds": 0,
+        "damage": {
+          "total": 0,
+          "buff": 0,
+          "buffShare": 0,
+          "sources": []
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "blast/force",
+          "casts": 177,
+          "connected": 110,
+          "contacts": 275
+        },
+        {
+          "pair": "field/fire",
+          "casts": 209,
+          "connected": 145,
+          "contacts": 1011
+        }
+      ]
+    },
+    {
+      "mode": "normal",
+      "weapon": "blade",
+      "branch": "furnace",
+      "seconds": 478.62,
+      "win": false,
+      "buffShare": 0.23084549380796726,
+      "boss": {
+        "appearedAt": null,
+        "killedAt": null,
+        "killSeconds": null,
+        "observedSeconds": 0,
+        "damage": {
+          "total": 0,
+          "buff": 0,
+          "buffShare": 0,
+          "sources": []
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "blast/force",
+          "casts": 206,
+          "connected": 142,
+          "contacts": 330
+        },
+        {
+          "pair": "field/fire",
+          "casts": 238,
+          "connected": 163,
+          "contacts": 743
+        }
+      ]
+    },
+    {
+      "mode": "normal",
+      "weapon": "blade",
+      "branch": "shards",
+      "seconds": 379.85,
+      "win": false,
+      "buffShare": 0.08375429307060492,
+      "boss": {
+        "appearedAt": null,
+        "killedAt": null,
+        "killSeconds": null,
+        "observedSeconds": 0,
+        "damage": {
+          "total": 0,
+          "buff": 0,
+          "buffShare": 0,
+          "sources": []
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "orbit/ice",
+          "casts": 154,
+          "connected": 129,
+          "contacts": 419
+        },
+        {
+          "pair": "blast/force",
+          "casts": 137,
+          "connected": 13,
+          "contacts": 15
+        }
+      ]
+    },
+    {
+      "mode": "normal",
+      "weapon": "blade",
+      "branch": "prison",
+      "seconds": 362.78,
+      "win": false,
+      "buffShare": 0.07713799386989661,
+      "boss": {
+        "appearedAt": null,
+        "killedAt": null,
+        "killSeconds": null,
+        "observedSeconds": 0,
+        "damage": {
+          "total": 0,
+          "buff": 0,
+          "buffShare": 0,
+          "sources": []
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "orbit/ice",
+          "casts": 146,
+          "connected": 119,
+          "contacts": 356
+        },
+        {
+          "pair": "blast/force",
+          "casts": 121,
+          "connected": 19,
+          "contacts": 23
+        }
+      ]
+    },
+    {
+      "mode": "protected",
+      "weapon": "storm",
+      "branch": "trail",
+      "seconds": 618.03,
+      "win": true,
+      "buffShare": 0.0646925242879028,
+      "boss": {
+        "appearedAt": 600.0166666664496,
+        "killedAt": 618.0333333330999,
+        "killSeconds": 18.01666666665028,
+        "observedSeconds": 18.01666666665028,
+        "damage": {
+          "total": 8400,
+          "buff": 853,
+          "buffShare": 0.10154761904761905,
+          "sources": [
+            {
+              "id": "storm",
+              "damage": 7547,
+              "share": 0.898452380952381
+            },
+            {
+              "id": "blast/force",
+              "damage": 552,
+              "share": 0.06571428571428571
+            },
+            {
+              "id": "field/fire",
+              "damage": 301,
+              "share": 0.035833333333333335
+            }
+          ]
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 2,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "blast/force",
+          "casts": 269,
+          "connected": 117,
+          "contacts": 157
+        },
+        {
+          "pair": "field/fire",
+          "casts": 144,
+          "connected": 96,
+          "contacts": 797
+        }
+      ]
+    },
+    {
+      "mode": "protected",
+      "weapon": "storm",
+      "branch": "furnace",
+      "seconds": 630.55,
+      "win": true,
+      "buffShare": 0.08594975411879412,
+      "boss": {
+        "appearedAt": 600.0166666664496,
+        "killedAt": 630.5499999997552,
+        "killSeconds": 30.533333333305563,
+        "observedSeconds": 30.533333333305563,
+        "damage": {
+          "total": 8400,
+          "buff": 985,
+          "buffShare": 0.11726190476190476,
+          "sources": [
+            {
+              "id": "storm",
+              "damage": 7415,
+              "share": 0.8827380952380952
+            },
+            {
+              "id": "blast/force",
+              "damage": 868,
+              "share": 0.10333333333333333
+            },
+            {
+              "id": "field/fire",
+              "damage": 117,
+              "share": 0.013928571428571429
+            }
+          ]
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 2,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "blast/force",
+          "casts": 276,
+          "connected": 147,
+          "contacts": 284
+        },
+        {
+          "pair": "field/fire",
+          "casts": 154,
+          "connected": 89,
+          "contacts": 553
+        }
+      ]
+    },
+    {
+      "mode": "protected",
+      "weapon": "storm",
+      "branch": "shards",
+      "seconds": 617.15,
+      "win": true,
+      "buffShare": 0.020416378820323183,
+      "boss": {
+        "appearedAt": 600.0166666664496,
+        "killedAt": 617.1499999997674,
+        "killSeconds": 17.13333333331775,
+        "observedSeconds": 17.13333333331775,
+        "damage": {
+          "total": 8400,
+          "buff": 1310,
+          "buffShare": 0.15595238095238095,
+          "sources": [
+            {
+              "id": "storm",
+              "damage": 7090,
+              "share": 0.844047619047619
+            },
+            {
+              "id": "orbit/ice",
+              "damage": 1037,
+              "share": 0.12345238095238095
+            },
+            {
+              "id": "blast/force",
+              "damage": 273,
+              "share": 0.0325
+            }
+          ]
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 2,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "orbit/ice",
+          "casts": 261,
+          "connected": 59,
+          "contacts": 175
+        },
+        {
+          "pair": "blast/force",
+          "casts": 120,
+          "connected": 11,
+          "contacts": 14
+        }
+      ]
+    },
+    {
+      "mode": "protected",
+      "weapon": "storm",
+      "branch": "prison",
+      "seconds": 619.5,
+      "win": true,
+      "buffShare": 0.027914469280397872,
+      "boss": {
+        "appearedAt": 600.0166666664496,
+        "killedAt": 619.4999999997652,
+        "killSeconds": 19.483333333315613,
+        "observedSeconds": 19.483333333315613,
+        "damage": {
+          "total": 8400,
+          "buff": 948,
+          "buffShare": 0.11285714285714285,
+          "sources": [
+            {
+              "id": "storm",
+              "damage": 7452,
+              "share": 0.8871428571428571
+            },
+            {
+              "id": "orbit/ice",
+              "damage": 693,
+              "share": 0.0825
+            },
+            {
+              "id": "blast/force",
+              "damage": 255,
+              "share": 0.030357142857142857
+            }
+          ]
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 2,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "orbit/ice",
+          "casts": 262,
+          "connected": 62,
+          "contacts": 295
+        },
+        {
+          "pair": "blast/force",
+          "casts": 127,
+          "connected": 16,
+          "contacts": 22
+        }
+      ]
+    },
+    {
+      "mode": "protected",
+      "weapon": "flame",
+      "branch": "trail",
+      "seconds": 609.2,
+      "win": true,
+      "buffShare": 0.0778763608892509,
+      "boss": {
+        "appearedAt": 600.0166666664496,
+        "killedAt": 609.1999999997746,
+        "killSeconds": 9.183333333324981,
+        "observedSeconds": 9.183333333324981,
+        "damage": {
+          "total": 8400.000000000015,
+          "buff": 376,
+          "buffShare": 0.04476190476190468,
+          "sources": [
+            {
+              "id": "flame",
+              "damage": 8024.000000000015,
+              "share": 0.9552380952380953
+            },
+            {
+              "id": "blast/force",
+              "damage": 376,
+              "share": 0.04476190476190468
+            }
+          ]
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 0,
+          "contacts": 0
+        },
+        {
+          "pair": "blast/force",
+          "casts": 257,
+          "connected": 73,
+          "contacts": 115
+        },
+        {
+          "pair": "field/fire",
+          "casts": 282,
+          "connected": 213,
+          "contacts": 1049
+        }
+      ]
+    },
+    {
+      "mode": "protected",
+      "weapon": "flame",
+      "branch": "furnace",
+      "seconds": 615.47,
+      "win": true,
+      "buffShare": 0.04698870104994998,
+      "boss": {
+        "appearedAt": 600.0166666664496,
+        "killedAt": 615.4666666664356,
+        "killSeconds": 15.449999999985948,
+        "observedSeconds": 15.449999999985948,
+        "damage": {
+          "total": 8399.99999999993,
+          "buff": 484.20000000006524,
+          "buffShare": 0.057642857142865385,
+          "sources": [
+            {
+              "id": "flame",
+              "damage": 7915.7999999998665,
+              "share": 0.9423571428571347
+            },
+            {
+              "id": "blast/force",
+              "damage": 299.20000000006524,
+              "share": 0.03561904761905568
+            },
+            {
+              "id": "field/fire",
+              "damage": 185,
+              "share": 0.022023809523809706
+            }
+          ]
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 0,
+          "contacts": 0
+        },
+        {
+          "pair": "blast/force",
+          "casts": 258,
+          "connected": 71,
+          "contacts": 102
+        },
+        {
+          "pair": "field/fire",
+          "casts": 280,
+          "connected": 178,
+          "contacts": 451
+        }
+      ]
+    },
+    {
+      "mode": "protected",
+      "weapon": "flame",
+      "branch": "shards",
+      "seconds": 615.05,
+      "win": true,
+      "buffShare": 0.08196482447783839,
+      "boss": {
+        "appearedAt": 600.0166666664496,
+        "killedAt": 615.0499999997693,
+        "killSeconds": 15.03333333331966,
+        "observedSeconds": 15.03333333331966,
+        "damage": {
+          "total": 8399.99999999996,
+          "buff": 537,
+          "buffShare": 0.06392857142857174,
+          "sources": [
+            {
+              "id": "flame",
+              "damage": 7862.999999999961,
+              "share": 0.9360714285714283
+            },
+            {
+              "id": "orbit/ice",
+              "damage": 452,
+              "share": 0.053809523809524064
+            },
+            {
+              "id": "blast/force",
+              "damage": 85,
+              "share": 0.010119047619047668
+            }
+          ]
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 0,
+          "contacts": 0
+        },
+        {
+          "pair": "orbit/ice",
+          "casts": 244,
+          "connected": 179,
+          "contacts": 752
+        },
+        {
+          "pair": "blast/force",
+          "casts": 199,
+          "connected": 36,
+          "contacts": 52
+        }
+      ]
+    },
+    {
+      "mode": "protected",
+      "weapon": "flame",
+      "branch": "prison",
+      "seconds": 616.33,
+      "win": true,
+      "buffShare": 0.07264956682311999,
+      "boss": {
+        "appearedAt": 600.0166666664496,
+        "killedAt": 616.3333333331015,
+        "killSeconds": 16.316666666651827,
+        "observedSeconds": 16.316666666651827,
+        "damage": {
+          "total": 8400.000000000035,
+          "buff": 718,
+          "buffShare": 0.08547619047619012,
+          "sources": [
+            {
+              "id": "flame",
+              "damage": 7682.000000000035,
+              "share": 0.9145238095238098
+            },
+            {
+              "id": "orbit/ice",
+              "damage": 524,
+              "share": 0.06238095238095213
+            },
+            {
+              "id": "blast/force",
+              "damage": 194,
+              "share": 0.023095238095238
+            }
+          ]
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 0,
+          "contacts": 0
+        },
+        {
+          "pair": "orbit/ice",
+          "casts": 246,
+          "connected": 181,
+          "contacts": 713
+        },
+        {
+          "pair": "blast/force",
+          "casts": 196,
+          "connected": 41,
+          "contacts": 53
+        }
+      ]
+    },
+    {
+      "mode": "protected",
+      "weapon": "blade",
+      "branch": "trail",
+      "seconds": 638.93,
+      "win": true,
+      "buffShare": 0.36664250439256335,
+      "boss": {
+        "appearedAt": 600.0166666664496,
+        "killedAt": 638.9333333330809,
+        "killSeconds": 38.91666666663127,
+        "observedSeconds": 38.91666666663127,
+        "damage": {
+          "total": 8400,
+          "buff": 2690,
+          "buffShare": 0.3202380952380952,
+          "sources": [
+            {
+              "id": "blade",
+              "damage": 5710,
+              "share": 0.6797619047619048
+            },
+            {
+              "id": "field/fire",
+              "damage": 1862,
+              "share": 0.22166666666666668
+            },
+            {
+              "id": "blast/force",
+              "damage": 828,
+              "share": 0.09857142857142857
+            }
+          ]
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "blast/force",
+          "casts": 266,
+          "connected": 185,
+          "contacts": 525
+        },
+        {
+          "pair": "field/fire",
+          "casts": 332,
+          "connected": 258,
+          "contacts": 3802
+        }
+      ]
+    },
+    {
+      "mode": "protected",
+      "weapon": "blade",
+      "branch": "furnace",
+      "seconds": 637.57,
+      "win": true,
+      "buffShare": 0.2377597540631392,
+      "boss": {
+        "appearedAt": 600.0166666664496,
+        "killedAt": 637.5666666664155,
+        "killSeconds": 37.54999999996585,
+        "observedSeconds": 37.54999999996585,
+        "damage": {
+          "total": 8400,
+          "buff": 1536,
+          "buffShare": 0.18285714285714286,
+          "sources": [
+            {
+              "id": "blade",
+              "damage": 6794,
+              "share": 0.8088095238095238
+            },
+            {
+              "id": "blast/force",
+              "damage": 920,
+              "share": 0.10952380952380952
+            },
+            {
+              "id": "field/fire",
+              "damage": 616,
+              "share": 0.07333333333333333
+            },
+            {
+              "id": "thorns",
+              "damage": 70,
+              "share": 0.008333333333333333
+            }
+          ]
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "blast/force",
+          "casts": 265,
+          "connected": 189,
+          "contacts": 556
+        },
+        {
+          "pair": "field/fire",
+          "casts": 315,
+          "connected": 224,
+          "contacts": 1217
+        }
+      ]
+    },
+    {
+      "mode": "protected",
+      "weapon": "blade",
+      "branch": "shards",
+      "seconds": 628.37,
+      "win": true,
+      "buffShare": 0.1136364409997972,
+      "boss": {
+        "appearedAt": 600.0166666664496,
+        "killedAt": 628.3666666664238,
+        "killSeconds": 28.349999999974216,
+        "observedSeconds": 28.349999999974216,
+        "damage": {
+          "total": 8400,
+          "buff": 2157,
+          "buffShare": 0.2567857142857143,
+          "sources": [
+            {
+              "id": "blade",
+              "damage": 6153,
+              "share": 0.7325
+            },
+            {
+              "id": "orbit/ice",
+              "damage": 2065,
+              "share": 0.24583333333333332
+            },
+            {
+              "id": "blast/force",
+              "damage": 92,
+              "share": 0.010952380952380953
+            },
+            {
+              "id": "thorns",
+              "damage": 90,
+              "share": 0.010714285714285714
+            }
+          ]
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "orbit/ice",
+          "casts": 247,
+          "connected": 221,
+          "contacts": 1113
+        },
+        {
+          "pair": "blast/force",
+          "casts": 259,
+          "connected": 40,
+          "contacts": 49
+        }
+      ]
+    },
+    {
+      "mode": "protected",
+      "weapon": "blade",
+      "branch": "prison",
+      "seconds": 640.5,
+      "win": true,
+      "buffShare": 0.10681923436287376,
+      "boss": {
+        "appearedAt": 600.0166666664496,
+        "killedAt": 640.4999999997461,
+        "killSeconds": 40.483333333296514,
+        "observedSeconds": 40.483333333296514,
+        "damage": {
+          "total": 8400,
+          "buff": 2167,
+          "buffShare": 0.25797619047619047,
+          "sources": [
+            {
+              "id": "blade",
+              "damage": 6233,
+              "share": 0.7420238095238095
+            },
+            {
+              "id": "orbit/ice",
+              "damage": 1621,
+              "share": 0.19297619047619047
+            },
+            {
+              "id": "blast/force",
+              "damage": 546,
+              "share": 0.065
+            }
+          ]
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "orbit/ice",
+          "casts": 248,
+          "connected": 217,
+          "contacts": 1083
+        },
+        {
+          "pair": "blast/force",
+          "casts": 250,
+          "connected": 42,
+          "contacts": 55
+        }
+      ]
+    }
+  ]
+}

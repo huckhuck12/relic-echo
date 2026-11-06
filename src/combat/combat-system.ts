@@ -36,6 +36,8 @@ export interface EnemyDamageHooks {
     /** 敌人已标记 dead。先结算击杀与掉落；返回 true 表示 Boss 终局，停止后续命中派发。 */
     killed(enemy: Enemy, triggerBuffs: boolean): boolean;
     triggerHit(x: number, y: number): void;
+    /** Actual weapon HP contact only, including continuous attacks; excludes Buffs/thorns. */
+    weaponContact?(enemy: Enemy): void;
 }
 /**
  * 敌人伤害唯一规则入口。不依赖 Game、Laya、节点池或渲染器。
@@ -67,6 +69,9 @@ export function damageEnemy(state: EnemyDamageState, hooks: EnemyDamageHooks, en
         if (hooks.killed(enemy, triggerBuffs))
             return;
     }
+    const source = options.source || feedback?.weapon;
+    if (!enemy.dead && effective > 0 && (source === 'storm' || source === 'flame' || source === 'blade'))
+        hooks.weaponContact?.(enemy);
     // 普通致死命中仍派发 hit；Boss 致死命中在上方终局返回，不派发。
     if (triggerBuffs && impact)
         hooks.triggerHit(enemy.x, enemy.y);

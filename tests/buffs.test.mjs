@@ -84,7 +84,7 @@ test('fire burns after contact, ice slows temporarily, lightning arcs and force 
 
 test('invalid, locked and incomplete recipes cannot activate and cooldown survives editing',()=>{
   const {runtime}=fixture();runtime.reset();assert.equal(runtime.owned.size,3);assert.equal(runtime.install(0,'trigger','hurt'),false);assert.equal(runtime.install(0,'trigger','fire'),false);assert.equal(runtime.install(2,'trigger','hit'),false);assert.equal(runtime.install(.5,'action','blast'),false);assert.equal(runtime.grant('unknown'),false);
-  runtime.install(0,'trigger','hit');runtime.trigger('hit',0,0,1,()=>0);assert.equal(runtime.procs,0);runtime.install(0,'action','blast');runtime.install(0,'element','fire');runtime.trigger('hit',0,0,1,()=>.9);assert.equal(runtime.procs,0);runtime.trigger('hit',0,0,1,()=>0);assert.equal(runtime.procs,1);
+  runtime.install(0,'trigger','hit');runtime.trigger('hit',0,0,1,()=>0);assert.equal(runtime.procs,0);runtime.install(0,'action','blast');runtime.install(0,'element','fire');runtime.trigger('hit',0,0,1,()=>{throw Error('contact must be deterministic');});assert.equal(runtime.procs,1);runtime.trigger('hit',0,0,1,()=>0);assert.equal(runtime.procs,1);
   runtime.install(0,'element',null);runtime.install(0,'element','fire');runtime.trigger('hit',0,0,1,()=>0);assert.equal(runtime.procs,1);runtime.update(2);runtime.trigger('hit',0,0,1,()=>0);assert.equal(runtime.procs,2);
 });
 

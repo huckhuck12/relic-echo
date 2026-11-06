@@ -2,7 +2,7 @@
  * 本文件不导入运行时或 Laya；玩法和说明从同一份数据读取，避免文案/机制分离。
  */
 export const TRIGGERS = [
-    { id: 'hit', name: '命中', note: '武器命中 30% 触发', cooldown: 2 },
+    { id: 'hit', name: '命中', note: '冷却后武器命中必定触发', cooldown: 2 },
     { id: 'dash', name: '冲刺', note: '冲刺结束触发', cooldown: 1 },
     { id: 'kill', name: '击杀', note: '击杀敌人触发', cooldown: 2.5 },
     { id: 'hurt', name: '受击', note: '实际受伤且存活时触发', cooldown: 4 },
@@ -38,7 +38,7 @@ export const BUFF_ACTIONS = {
     field: { damage: 10, life: 4 }, orbit: { damage: 20, life: 3 },
 } as const;
 export const BUFF_RULES = {
-    hitChance: .3, duplicateXP: 5, slots: 2,
+    duplicateXP: 5, slots: 2,
     bolt: {
         seek: 500, speed: 480, thunderSpeed: 900, queryPadding: 40, hitRadius: 32, thunderTurnSpeed: 8
     },
