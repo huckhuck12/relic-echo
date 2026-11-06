@@ -30,6 +30,12 @@ export class BuffRuntime<T extends BuffTarget> {
     private visualTime = 0;
     private statuses = new Map<T, BuffStatus>();
     private dispatching = false;
+    private directThunderTarget?: T;
+    /** Ordinary deaths settle immediately; a lethal base bolt merges its newly invested marks below. */
+    enemyKilled(target: T): void {
+        if (target !== this.directThunderTarget)
+            this.evolutions.killed(target);
+    }
     procs = 0;
     starterChosen = false;
     private starterRequested = false;
@@ -230,9 +236,21 @@ export class BuffRuntime<T extends BuffTarget> {
             return;
         // Sustained contact must not eject its own target; elemental force remains explicit below.
         const sustained = effect.kind === 'field' || effect.kind === 'orbit';
-        this.host.damage(target, effect.damage, !sustained, sustained, effect);
-        if (target.dead)
+        const directThunder = effect.kind === 'bolt' && effect.element === 'lightning';
+        const previous = this.directThunderTarget;
+        if (directThunder)
+            this.directThunderTarget = target;
+        try {
+            this.host.damage(target, effect.damage, !sustained, sustained, effect);
+        }
+        finally {
+            this.directThunderTarget = previous;
+        }
+        if (target.dead) {
+            if (directThunder)
+                this.evolutions.killed(target, effect);
             return;
+        }
         const status = this.statuses.get(target);
         if (effect.element === 'force' && effect.slot !== undefined && status && status.burn > 0 && status.burnSlot !== undefined && status.burnSlot !== effect.slot) {
             const field = this.effects.filter(e => e.life > 0 && e.kind === 'field' && e.element === 'fire' && e.slot === status.burnSlot && Math.hypot(e.x - target.x, e.y - target.y) <= (e.radius || BUFF_RULES.field.radius))

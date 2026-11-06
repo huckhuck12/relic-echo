@@ -930,6 +930,7 @@ export class Game {
             this.healDropCooldown = difficultyAt(this.time, this.run).healCooldown;
             this.dropXP(e.x + 10, e.y + 10, -15);
         }
+        this.buffs.enemyKilled(e);
         return false;
     }
     /** 无敌/训练免伤先拦截；受击 Buff 只在实际扣血且存活时触发，反伤禁止递归。 */

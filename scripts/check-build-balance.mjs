@@ -28,7 +28,9 @@ try{
   for(const action of ['start','complete']){
    const original=g.mapEventHooks[action];g.mapEventHooks[action]=site=>{events.push({time:+g.time.toFixed(2),type:'seal-'+action,id:site.id});return original(site);};
   }
-  const reactions={reforges:0,shatters:0,detonations:0};
+  const reactions={reforges:0,shatters:0,detonations:0,inheritances:0};
+  const inheritedDeath=g.buffs.evolutions.killed.bind(g.buffs.evolutions);
+  g.buffs.evolutions.killed=(...args)=>{const transferred=inheritedDeath(...args);if(transferred)reactions.inheritances++;return transferred;};
   // Bounded diagnostics: 16 action/element pairs, weak cast ownership shared by trail pieces.
   const contacts=new Map(),castOwners=new WeakMap(),phases={};
   const trigger=g.buffs.trigger.bind(g.buffs),apply=g.buffs.apply;

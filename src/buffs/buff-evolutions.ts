@@ -2,7 +2,7 @@ import type { Action, Element, Recipe, BuffHost, BuffTarget, BuffBranch } from '
 /** 行为与元素共同决定进化，触发碎片继续决定释放时机/冷却，不增加第四种槽位。 */
 export const EVOLUTIONS = [
     {
-        id: 'thunderMark', action: 'bolt', element: 'lightning', name: '雷印引爆', note: '9 秒内三印引爆 160%，附近 3 敌各 80%；跨槽冰霜导冷额外一印，每敌 1 秒一次。引爆后锁定 1 秒。'
+        id: 'thunderMark', action: 'bolt', element: 'lightning', name: '雷印引爆', note: '9 秒内三印引爆 160%，附近 3 敌各 80%；跨槽冰霜导冷额外一印，每敌 1 秒一次。引爆后锁定 1 秒。击杀余电向 180 范围内一敌继承，每印放电 40%，不自动引爆或连续继承。'
     },
     {
         id: 'fireLinks', action: 'field', element: 'fire', name: '火种连线', note: '火种持续 6 秒，连接 260 范围内火种；燃烧带每 0.5 秒伤害 65%，交叉不叠加。'
@@ -16,7 +16,8 @@ export function evolutionOf(recipe: Pick<Recipe, 'action' | 'element'>) {
     return EVOLUTIONS.find(e => e.action === recipe.action && e.element === recipe.element);
 }
 export const EVOLUTION_LIMITS = {
-    targets: 200, seeds: 6, links: 8, shatterTargets: 8, frostBurstsPerStep: 16, thunderBurstsPerStep: 16
+    targets: 200, seeds: 6, links: 8, shatterTargets: 8, frostBurstsPerStep: 16, thunderBurstsPerStep: 16,
+    thunderInheritsPerStep: 16, thunderInheritRadius: 180, thunderRemnantDamage: .4
 };
 export interface EvolutionSource {
     kind: Action;
@@ -33,6 +34,8 @@ export interface EvolutionMark {
     lock: number;
     source?: EvolutionSource;
     conductiveLock?: number;
+    /** Inherited energy cannot travel again until a new direct bolt invests in it. */
+    inherited?: boolean;
 }
 export interface FireSeed {
     x: number;
@@ -69,6 +72,8 @@ export class BuffEvolutions<T extends BuffTarget> {
     shatters = 0;
     frostRejected = 0;
     thunderRejected = 0;
+    inheritances = 0;
+    private inheritanceBudget: number = EVOLUTION_LIMITS.thunderInheritsPerStep;
     private thunderBudget: number = EVOLUTION_LIMITS.thunderBurstsPerStep;
     private frostBudget: number = EVOLUTION_LIMITS.frostBurstsPerStep;
     private linkTick = 0;
@@ -83,6 +88,8 @@ export class BuffEvolutions<T extends BuffTarget> {
         this.shatters = 0;
         this.frostRejected = 0;
         this.thunderRejected = 0;
+        this.inheritances = 0;
+        this.inheritanceBudget = EVOLUTION_LIMITS.thunderInheritsPerStep;
         this.thunderBudget = EVOLUTION_LIMITS.thunderBurstsPerStep;
         this.frostBudget = EVOLUTION_LIMITS.frostBurstsPerStep;
     }
@@ -98,6 +105,50 @@ export class BuffEvolutions<T extends BuffTarget> {
             this.stackThunder(target, source, conductive);
         else if (source.kind === 'orbit' && source.element === 'ice')
             this.stackFrost(target, source);
+    }
+    /** Called once by authoritative death settlement, with a direct source only for a lethal base bolt.
+     * Reserve/remove ownership before callbacks. No hit dispatch, random draws or deferred deaths.
+     */
+    killed(target: T, direct?: EvolutionSource): boolean {
+        if (!target.dead)
+            return false;
+        const mark = this.thunder.get(target);
+        this.thunder.delete(target);
+        const live = mark && mark.life > 0 && mark.lock <= 0 && mark.stacks > 0;
+        const source = direct || (live ? mark.source : undefined);
+        if (target.kind === 4 || !source || (!direct && (!live || mark.inherited)) || this.inheritanceBudget <= 0)
+            return false;
+        // A locked mark cannot pay out a second time just because a bolt kills during the lock.
+        if (mark && mark.lock > 0)
+            return false;
+        const stacks = Math.min(source.branch === 'charge' ? 4 : 2, (live ? mark.stacks : 0) + (direct ? direct.branch === 'charge' ? 2 : 1 : 0));
+        if (!stacks)
+            return false;
+        this.inheritanceBudget--;
+        let recipient: T | undefined, nearest = Infinity;
+        for (const other of this.host.query(target.x, target.y, EVOLUTION_LIMITS.thunderInheritRadius)) {
+            const distance = Math.hypot(other.x - target.x, other.y - target.y), existing = this.thunder.get(other);
+            if (other === target || other.dead || distance > EVOLUTION_LIMITS.thunderInheritRadius || existing && (existing.lock > 0 || existing.inherited) || !existing && this.thunder.size >= EVOLUTION_LIMITS.targets)
+                continue;
+            if (distance < nearest) {
+                nearest = distance;
+                recipient = other;
+            }
+        }
+        if (!recipient)
+            return false;
+        this.inheritances++;
+        const existing = this.thunder.get(recipient);
+        const owner = existing?.source || { ...source };
+        const threshold = owner.branch === 'charge' ? 5 : 3;
+        this.thunder.set(recipient, {
+            stacks: Math.min(threshold - 1, (existing?.stacks || 0) + stacks),
+            life: Math.min(existing?.life ?? 9, live ? mark.life : 9), lock: 0,
+            source: owner, conductiveLock: existing?.conductiveLock || 0, inherited: true
+        });
+        this.hooks.arc(target.x, target.y, recipient.x, recipient.y, source.branch);
+        this.host.damage(recipient, source.damage * stacks * EVOLUTION_LIMITS.thunderRemnantDamage, true, true, source);
+        return true;
     }
     private stackFrost(target: T, source: EvolutionSource): void {
         let mark = this.frost.get(target);
@@ -199,6 +250,7 @@ export class BuffEvolutions<T extends BuffTarget> {
             kind: source.kind, element: source.element, damage: source.damage, level: source.level, slot: source.slot, branch: source.branch
         };
         mark.stacks = stacks;
+        mark.inherited = false;
         // 蓄雷靠持续直击保留积累；导冷/传播不能独立续期，也不穿过爆发锁。
         if (source.branch === 'charge')
             mark.life = 9;
@@ -272,6 +324,7 @@ export class BuffEvolutions<T extends BuffTarget> {
     update(dt: number): void {
         this.frostBudget = EVOLUTION_LIMITS.frostBurstsPerStep;
         this.thunderBudget = EVOLUTION_LIMITS.thunderBurstsPerStep;
+        this.inheritanceBudget = EVOLUTION_LIMITS.thunderInheritsPerStep;
         for (const map of [this.thunder, this.frost])
             for (const [target, mark] of map) {
                 mark.life -= dt;

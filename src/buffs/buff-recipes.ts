@@ -19,7 +19,7 @@ export function recipeDescription(recipe: Recipe, scale = 1, level = 1, branch?:
     const element = ELEMENTS.find(e => e.id === recipe.element)!;
     const damage = Number((recipeDamage(recipe, scale, level) * damageScale * (branch === 'prison' ? .8 : 1)).toFixed(1));
     if (branch && compact)
-        return `Lv.${level}/${BUFF_UPGRADES.maxLevel} · ${BRANCH_TEXT[branch].name} · ${trigger.name}触发\n${BRANCH_COMPACT[branch]}`;
+        return `Lv.${level}/${BUFF_UPGRADES.maxLevel} · ${BRANCH_TEXT[branch].name} · ${trigger.name}触发\n${BRANCH_COMPACT[branch]}${evolutionOf(recipe)?.id === 'thunderMark' ? ' 击杀余电继承一敌。' : ''}`;
     const action = {
         bolt: `发射${recipe.element === 'lightning' ? '有限追踪雷丸' : '弹丸'}，命中伤害 ${damage}`,
         blast: `半径 ${BUFF_RULES.blast.radius} 爆炸，伤害 ${damage}`,
@@ -28,5 +28,6 @@ export function recipeDescription(recipe: Recipe, scale = 1, level = 1, branch?:
     }[recipe.action];
     const evolution = evolutionOf(recipe);
     return `Lv.${level}/${BUFF_UPGRADES.maxLevel} · 伤害 +${Math.round((buffLevelMultiplier(level) - 1) * 100)}%\n${trigger.note} · 冷却 ${Number((trigger.cooldown * cooldown).toFixed(2))} 秒\n${action}；${element.note}。`
-        + (branch ? `\n分支 · ${BRANCH_TEXT[branch].name}：${BRANCH_TEXT[branch].note}` : evolution ? `\n进化 · ${evolution.name}：${evolution.note}` : '');
+        + (branch ? `\n分支 · ${BRANCH_TEXT[branch].name}：${BRANCH_TEXT[branch].note}` : evolution ? `\n进化 · ${evolution.name}：${evolution.note}` : '')
+        + (branch && evolution?.id === 'thunderMark' ? '\n击杀余电：180 内一敌继承，每印放电 40%；不能自动引爆或连续继承。' : '');
 }
