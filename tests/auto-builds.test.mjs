@@ -26,6 +26,53 @@ test('field builds aim a safe dash at a nearby target and ignore dead enemies',(
  const result=autoPlayIntent(player,{...world,enemies:[t]},0,tactics);assert.equal(result.dash,true);assert.ok(result.x>.99);
  assert.equal(buildTactics(b,player,[enemy(300)]).dashTarget,undefined);
 });
+
+test('frost dash candidates prefer stored layers, skip expiry before landing, stay bounded and read only',()=>{
+ const b=runtime('ice'),near=enemy(100),high=enemy(170),expiring=enemy(120);
+ for(const [e,n] of [[near,1],[high,4],[expiring,5]])for(let i=0;i<n;i++)b.evolutions.hit(e,{kind:'orbit',element:'ice',damage:20,slot:0,branch:'prison'});
+ b.evolutions.frost.get(expiring).life=.1;
+ const before=JSON.stringify([...b.evolutions.frost.values()]);
+ const t=buildTactics(b,player,[near,high,expiring]);
+ assert.deepEqual(t.dashTargets,[high,near]);assert.equal(t.dashTarget,high);assert.equal(t.dashPathRadius,56);
+ assert.equal(JSON.stringify([...b.evolutions.frost.values()]),before);
+ for(let i=0;i<20;i++)b.evolutions.hit(enemy(180+i),{kind:'orbit',element:'ice',damage:20,slot:0,branch:'prison'});
+ assert.equal(buildTactics(b,player,[near,high]).dashTargets.length,8);
+ b.cooldowns[1]=1;assert.equal(buildTactics(b,player,[near,high]).dashTargets,undefined);
+});
+
+test('automatic frost dash can harvest a safe path outside the landing radius without expanding field rules',()=>{
+ const b=runtime('ice'),target=enemy(80),w={...world,enemies:[target],pillars:[{x:160,y:-60}]};
+ b.evolutions.hit(target,{kind:'orbit',element:'ice',damage:20,slot:0,branch:'prison'});
+ const tactics=buildTactics(b,player,[target]),a=autoPlayIntent(player,w,0,tactics);
+ assert.equal(a.dash,true);assert.ok(a.y>0);
+ assert.ok(Math.hypot(a.x*180-target.x,a.y*180-target.y)>110);
+ assert.equal(autoPlayIntent(player,w,0,{orbit:true,dashTarget:target,dashRadius:110}).dash,false);
+ const plain=runtime('thunder');assert.equal(buildTactics(plain,player,[target]).dashPathRadius,undefined);
+});
+
+test('blocked high-stack frost falls back to a reachable second target and still yields to projectile danger',()=>{
+ const b=runtime('ice'),high=enemy(150),low=enemy(-100);
+ for(const [e,n]of [[high,4],[low,1]])for(let i=0;i<n;i++)b.evolutions.hit(e,{kind:'orbit',element:'ice',damage:20,slot:0,branch:'prison'});
+ const w={...world,enemies:[high,low],pillars:[{x:90,y:0}]},t=buildTactics(b,player,w.enemies);
+ const a=autoPlayIntent(player,w,0,t);assert.equal(a.dash,true);assert.ok(a.x<-.99);
+ const danger={...w,shots:[{x:40,y:0,vx:-200,vy:0,hostile:true}]};
+ assert.deepEqual(autoPlayIntent(player,danger,0,t),autoPlayIntent(player,danger,0));
+});
+
+test('automatic path choice settles through actual Game movement with ice attribution at 30/60/120Hz',()=>{
+ for(const hz of [30,60,120]){
+  const g=new Game();g.start('storm',true);g.sound=false;g.buffs.chooseStarter('ice');g.enemies.length=0;g.pillars.length=0;
+  Object.assign(g.player,{x:0,y:0});g.pillars.push({x:160,y:-60});g.spawnEnemy(0);
+  const e=g.enemies[0];Object.assign(e,{x:80,y:0,hp:10000,speed:0});g.grid.rebuild(g.enemies);
+  g.buffs.evolutions.hit(e,{kind:'orbit',element:'ice',damage:20,slot:0,branch:'prison'});g.buffs.cooldowns[0]=999;g.attackTimer=999;
+  const a=autoPlayIntent(g.player,{...world,enemies:g.enemies,pillars:g.pillars},0,buildTactics(g.buffs,g.player,g.enemies));
+  assert.equal(a.dash,true);g.player.dx=a.x;g.player.dy=a.y;g.dash();
+  for(let i=0;i<Math.ceil(.2*hz);i++)g.update(1/hz);
+  assert.equal(g.buffs.dashShatters,1);assert.ok(Math.hypot(g.player.x-e.x,g.player.y-e.y)>110);
+  assert.ok(g.damageRanking.rows().some(r=>r.id==='orbit/ice'&&r.damage>0));
+  assert.equal(g.damageRanking.rows().some(r=>r.id==='blast/force'),false);g.returnToTitle();
+ }
+});
 test('ice steering approaches the contact band rather than continuously fleeing; generic steering is preserved',()=>{
  const e=enemy(180),w={...world,enemies:[e]},b=runtime('ice');assert.ok(autoPlayIntent(player,w,0,buildTactics(b,player,[e])).x>0);
  const near=enemy(20);assert.ok(autoPlayIntent(player,{...world,enemies:[near]},0).x<0);

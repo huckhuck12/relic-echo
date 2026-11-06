@@ -1,6 +1,8 @@
 import type { BuffRuntime, BuffTarget } from '../buffs/buffs.js';
 import type { Point } from '../shared/entities.js';
 import { BUFF_RULES } from '../buffs/buff-config.js';
+import { harvestableFrost } from '../buffs/buff-frost-dash.js';
+import { COMBAT } from '../progression/config.js';
 /** Each profile is tested with all three weapons before advancing to the next. */
 export const AUTO_BUILDS = [
     { build: 'fire', branch: 'trail', name: '火径' },
@@ -27,6 +29,8 @@ export interface BuildTactics {
     waypointRadius?: number;
     focus?: Point;
     dashTarget?: Point;
+    dashTargets?: readonly Point[];
+    dashPathRadius?: number;
     dashRadius?: number;
 }
 /** Read only, bounded by existing enemy/effect/mark caps; never deals damage or grants fragments. */
@@ -48,15 +52,26 @@ export function buildTactics<T extends BuffTarget>(buffs: BuffRuntime<T>, player
     if (dash && buffs.cooldowns[buffs.recipes.indexOf(dash)] > 0)
         return { orbit, focus };
     if (dash?.element === 'force' && dash.action === 'blast') {
-        let nearest = Infinity;
         const slot = buffs.recipes.indexOf(dash);
+        const candidates: {
+            enemy: T;
+            stacks: number;
+            distance: number;
+        }[] = [];
         for (const [enemy, mark] of buffs.evolutions.frost) {
             const distance = Math.hypot(enemy.x - player.x, enemy.y - player.y);
-            if (!enemy.dead && mark.stacks >= 1 && mark.lock <= 0 && mark.life > 0 && mark.source?.slot !== undefined && mark.source.slot !== slot && distance < 260 && distance < nearest) {
-                nearest = distance;
-                dashTarget = enemy;
-            }
+            if (!harvestableFrost(enemy, mark, slot) || mark.life <= COMBAT.dashDuration || distance >= 260)
+                continue;
+            const candidate = { enemy, stacks: mark.stacks, distance };
+            const index = candidates.findIndex(c => candidate.stacks > c.stacks || candidate.stacks === c.stacks && distance < c.distance);
+            candidates.splice(index < 0 ? candidates.length : index, 0, candidate);
+            if (candidates.length > BUFF_RULES.frost.dashTargets)
+                candidates.pop();
         }
+        const dashTargets = candidates.map(c => c.enemy);
+        return {
+            orbit, focus, dashTarget: dashTargets[0], dashTargets, dashRadius: BUFF_RULES.blast.radius, dashPathRadius: BUFF_RULES.frost.dashRadius
+        };
     }
     else if (dash?.action === 'field' && focus && best < 260)
         dashTarget = focus;

@@ -11,6 +11,7 @@ import { sealNavigationTarget } from './map-events.js';
 import { BuildRunMetrics } from './build-run-metrics.js';
 import { GAME_VERSION } from '../shared/version.js';
 import { BUFF_RULES } from '../buffs/buff-config.js';
+import { segmentDistance } from '../buffs/buff-effects.js';
 export interface AutoPlayWorld {
     enemies: readonly Enemy[];
     shots: readonly Shot[];
@@ -315,12 +316,17 @@ export function autoPlayIntent(player: Point & {
     if (Math.abs(player.y) > edge)
         y -= Math.sign(player.y) * 4;
     if (!danger && tactics?.dashTarget) {
-        const dx = tactics.dashTarget.x - player.x, dy = tactics.dashTarget.y - player.y, d = Math.hypot(dx, dy);
-        for (const angle of [0, Math.PI / 6, -Math.PI / 6, Math.PI / 3, -Math.PI / 3]) {
-            const direction = { x: (dx * Math.cos(angle) - dy * Math.sin(angle)) / (d || 1), y: (dy * Math.cos(angle) + dx * Math.sin(angle)) / (d || 1) };
-            const landingDistance = Math.hypot(dx - direction.x * COMBAT.dashDistance, dy - direction.y * COMBAT.dashDistance);
-            if (d > 1 && landingDistance <= (tactics.dashRadius ?? 110) && safeAutoDash(player, direction, world))
-                return { ...direction, dash: true };
+        // A blocked high-stack target must not hide a safe second choice. Bound work to 8 x 5 headings.
+        for (const target of (tactics.dashTargets ?? [tactics.dashTarget]).slice(0, BUFF_RULES.frost.dashTargets)) {
+            const dx = target.x - player.x, dy = target.y - player.y, d = Math.hypot(dx, dy);
+            for (const angle of [0, Math.PI / 6, -Math.PI / 6, Math.PI / 3, -Math.PI / 3]) {
+                const direction = { x: (dx * Math.cos(angle) - dy * Math.sin(angle)) / (d || 1), y: (dy * Math.cos(angle) + dx * Math.sin(angle)) / (d || 1) };
+                const endX = player.x + direction.x * COMBAT.dashDistance, endY = player.y + direction.y * COMBAT.dashDistance;
+                const landingDistance = Math.hypot(target.x - endX, target.y - endY);
+                const crossesFrost = tactics.dashPathRadius !== undefined && segmentDistance(target.x, target.y, player.x, player.y, endX, endY) <= tactics.dashPathRadius;
+                if (d > 1 && (crossesFrost || landingDistance <= (tactics.dashRadius ?? 110)) && safeAutoDash(player, direction, world))
+                    return { ...direction, dash: true };
+            }
         }
     }
     const length = Math.hypot(x, y) || 1;
