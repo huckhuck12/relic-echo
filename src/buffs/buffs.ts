@@ -95,9 +95,9 @@ export class BuffRuntime<T extends BuffTarget> {
     constructor(private readonly host: BuffHost<T>) {
         this.evolutions = new BuffEvolutions(host, {
             slow: (target, seconds) => applyBuffSlow(this.statuses, target, seconds),
-            burst: (kind, x, y, level) => this.feedbackAt(kind, kind === 'detonate' ? 'lightning' : 'ice', x, y, x, y, level),
-            arc: (x, y, tx, ty) => this.feedbackAt('arc', 'lightning', x, y, tx, ty),
-            shard: (x, y, tx, ty, level) => this.feedbackAt('impact', 'ice', tx, ty, x, y, level),
+            burst: (kind, x, y, level, branch) => this.feedbackAt(kind, kind === 'detonate' ? 'lightning' : 'ice', x, y, x, y, level, branch),
+            arc: (x, y, tx, ty, branch) => this.feedbackAt('arc', 'lightning', x, y, tx, ty, 1, branch),
+            shard: (x, y, tx, ty, level) => this.feedbackAt('shard', 'ice', tx, ty, x, y, level),
         });
     }
     levelOf(recipe: Recipe): number { return this.upgrades.level(recipe); }
@@ -220,8 +220,8 @@ export class BuffRuntime<T extends BuffTarget> {
         if (this.feedback.length > this.visualBudget)
             this.feedback.splice(0, this.feedback.length - this.visualBudget);
     }
-    private readonly feedbackAt: BuffFeedbackSink = (kind, element, x, y, tx = x, ty = y, level = 1) => {
-        enqueueBuffFeedback(this.feedback, this.visualBudget, kind, element, x, y, tx, ty, level);
+    private readonly feedbackAt: BuffFeedbackSink = (kind, element, x, y, tx = x, ty = y, level = 1, branch) => {
+        enqueueBuffFeedback(this.feedback, this.visualBudget, kind, element, x, y, tx, ty, level, branch);
     };
     speedMultiplier(target: T): number { return (this.statuses.get(target)?.slow || 0) > 0 ? (target.kind === 4 ? .85 : BUFF_RULES.slow.multiplier) : 1; }
     /** 基础扣血→元素→进化；进化额外伤害不再调用 apply。 */
@@ -243,7 +243,7 @@ export class BuffRuntime<T extends BuffTarget> {
                     this.reforges++;
                     if (target.kind !== 4)
                         this.host.knock(target, -BUFF_RULES.knockback, field.x, field.y);
-                    this.feedbackAt('impact', 'force', target.x, target.y, field.x, field.y);
+                    this.feedbackAt('reforge', 'fire', target.x, target.y, field.x, field.y, field.level, field.branch);
                     if (field.branch === 'furnace' && field.level >= 5 && !(status.heatLock! > 0)) {
                         status.heatLock = 2;
                         this.host.damage(target, field.damage * .6, true, true, field);

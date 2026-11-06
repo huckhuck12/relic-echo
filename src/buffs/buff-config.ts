@@ -56,6 +56,6 @@ export const BUFF_RULES = {
 export const BUFF_FEEDBACK = {
     defaultBudget: 20, maxBudget: 48, mergeAge: .1, mergeRadius: 55,
     lifetime: {
-        scorch: .65, arc: .24, impact: .3, detonate: .3, shatter: .3
+        scorch: .65, arc: .24, impact: .3, detonate: .3, shatter: .3, reforge: .3, shard: .3
     },
 } as const;

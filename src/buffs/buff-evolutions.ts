@@ -50,8 +50,8 @@ export interface FireLink {
 interface EvolutionHooks<T> {
     slow(target: T, seconds: number): void;
     /** 爆发反馈进入 BuffRuntime 原有反馈预算，不单开无上限粒子数组。 */
-    burst(kind: 'detonate' | 'shatter', x: number, y: number, level: number): void;
-    arc(x: number, y: number, tx: number, ty: number): void;
+    burst(kind: 'detonate' | 'shatter', x: number, y: number, level: number, branch?: BuffBranch): void;
+    arc(x: number, y: number, tx: number, ty: number, branch?: BuffBranch): void;
     shard?(x: number, y: number, tx: number, ty: number, level: number): void;
 }
 /**
@@ -135,7 +135,7 @@ export class BuffEvolutions<T extends BuffTarget> {
         mark.lock = 1;
         mark.life = 1;
         this.shatters++;
-        this.hooks.burst('shatter', target.x, target.y, source.level || 1);
+        this.hooks.burst('shatter', target.x, target.y, source.level || 1, source.branch);
         if (manual) {
             const multiplier = source.branch === 'prison' && (source.level || 1) >= 5 && stacks >= 4 ? 1.25 : 1;
             this.host.damage(target, source.damage * stacks * .4 * multiplier, true, true, source);
@@ -208,7 +208,7 @@ export class BuffEvolutions<T extends BuffTarget> {
         mark.lock = 1;
         mark.life = 1;
         this.detonations++;
-        this.hooks.burst('detonate', target.x, target.y, source.level || 1);
+        this.hooks.burst('detonate', target.x, target.y, source.level || 1, source.branch);
         const multiplier = source.branch === 'charge' ? ((source.level || 1) >= 5 ? 3.5 : 3) : source.branch === 'spread' ? 1.2 : 1.6;
         this.host.damage(target, source.damage * multiplier, true, true, source);
         if (source.branch === 'charge')
@@ -231,7 +231,7 @@ export class BuffEvolutions<T extends BuffTarget> {
             }
             else
                 this.host.damage(other, source.damage * .8, true, true, source);
-            this.hooks.arc(target.x, target.y, other.x, other.y);
+            this.hooks.arc(target.x, target.y, other.x, other.y, source.branch);
             if (++count === cap)
                 break;
         }

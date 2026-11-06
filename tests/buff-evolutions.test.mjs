@@ -34,7 +34,7 @@ test('three thunder marks detonate once, chain at most three, and respect lock a
 
 test('frost shatter caps its burst targets and spreads slow without recursively stacking them',()=>{
  const f=fixture(30),target=f.targets[0];for(let i=0;i<3;i++)f.evolution.hit(target,ice);
- assert.deepEqual(f.bursts,[['shatter',target.x,target.y,1]]);assert.equal(f.hits.length,EVOLUTION_LIMITS.shatterTargets);assert.ok(f.hits.every(h=>h.value===12));
+ assert.deepEqual(f.bursts,[['shatter',target.x,target.y,1,undefined]]);assert.equal(f.hits.length,EVOLUTION_LIMITS.shatterTargets);assert.ok(f.hits.every(h=>h.value===12));
  assert.equal(f.slows.length,EVOLUTION_LIMITS.shatterTargets);assert.ok(f.slows.every(([,seconds])=>seconds===2));
  assert.equal(f.evolution.frost.size,1);assert.equal(f.evolution.frost.get(target).stacks,0);
 });

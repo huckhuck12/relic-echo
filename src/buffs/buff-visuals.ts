@@ -1,4 +1,4 @@
-import type { Element, Action } from './buff-types.js';
+import type { Element, Action, BuffBranch } from './buff-types.js';
 import { directionalShape, lightningStroke, spark } from '../rendering/skill-visuals.js';
 import { paintVfx, vfxAtlas } from '../rendering/vfx-atlas.js';
 type Project = (x: number, y: number) => {
@@ -80,6 +80,29 @@ export interface BuffVisualEffect {
     age: number;
     level?: number;
     radius?: number;
+    branch?: BuffBranch;
+}
+/** Inward furnace brackets versus a low fire trail; all motif points stay inside the true field. */
+export function fireFieldMotif(g: any, project: Project, e: BuffVisualEffect): void {
+    const r = e.radius || 90, points: number[] = [];
+    if (e.branch === 'furnace') {
+        for (let i = 0; i < 6; i++) {
+            const a = i * Math.PI / 3, q = project(e.x + Math.cos(a) * r * .48, e.y + Math.sin(a) * r * .48);
+            points.push(q.x, q.y);
+        }
+        g.drawPoly(0, 0, points, null, '#c59560', 1.3);
+        for (const side of [-1, 1]) {
+            const a = project(e.x + side * r * .28, e.y - r * .16), b = project(e.x + side * r * .12, e.y), c = project(e.x + side * r * .28, e.y + r * .16);
+            g.drawLines(0, 0, [a.x, a.y, b.x, b.y, c.x, c.y], '#e5b57b', 1.5);
+        }
+    }
+    else {
+        for (let i = 0; i < 3; i++) {
+            const a = i * Math.PI * 2 / 3 + .6, q = project(e.x + Math.cos(a) * r * .5, e.y + Math.sin(a) * r * .5);
+            if (!paintVfx(g, 'focus', 'fire', q.x, q.y, 10 + Math.sin(e.age * 5 + i * 2) * 2, 13, 0, .55))
+                g.drawPoly(q.x, q.y, [-4, 0, -2, -4, 1, -8, 4, 0], '#c58b54');
+        }
+    }
 }
 /**
  * 让行为决定运动方式、元素决定材质轮廓；复用现有运行时与装饰预算。
@@ -132,7 +155,9 @@ export function drawBuffEffect(overlay: any, floor: any, project: Project, e: Bu
         // 内部纹路低亮、边界高亮，保留可读范围而不糊成整块高亮色。
         const dim = { fire: '#81503b', ice: '#3d6c86', lightning: '#65547d', force: '#77664a' }[e.element];
         ring(floor, project, e.x, e.y, (e.radius || 90) * .844, dim, 1);
-        for (let i = 0; i < detail; i++) {
+        if (e.element === 'fire')
+            fireFieldMotif(floor, project, e);
+        for (let i = 0; i < (e.element === 'fire' ? 0 : detail); i++) {
             const a = i * Math.PI * 2 / detail, v = project(e.x + Math.cos(a) * (e.radius || 90) * .733, e.y + Math.sin(a) * (e.radius || 90) * .733);
             const pulse = .5 + .5 * Math.sin(e.age * 7 + i * 2);
             if (e.element === 'lightning') {
@@ -192,7 +217,9 @@ function drawPaintedBuffEffect(g: any, floor: any, project: Project, e: BuffVisu
         // Full-resolution boundary is independent of the painted interior and quality tier.
         paintVfx(floor, 'field', e.element, q.x, q.y, 146 * (e.radius || 90) / 90, 146 * (e.radius || 90) / 90, 0, .62 + tier * .1);
         ring(floor, project, e.x, e.y, e.radius || 90, color, 1.2);
-        const count = Math.min(3, detail);
+        if (e.element === 'fire')
+            fireFieldMotif(floor, project, e);
+        const count = e.element === 'fire' ? 0 : Math.min(3, detail);
         for (let i = 0; i < count; i++) {
             const a = i / count * Math.PI * 2 + .6, v = project(e.x + Math.cos(a) * 53, e.y + Math.sin(a) * 53);
             const pulse = .7 + .3 * Math.sin(e.age * (e.element === 'fire' ? 7 : 3) + i * 2);

@@ -75,11 +75,12 @@ export interface BuffFeedback {
     tx: number;
     ty: number;
     element: Element;
-    kind: 'impact' | 'arc' | 'scorch' | 'detonate' | 'shatter';
+    kind: 'impact' | 'arc' | 'scorch' | 'detonate' | 'shatter' | 'reforge' | 'shard';
     life: number;
     max: number;
     age: number;
     level: number;
+    branch?: BuffBranch;
 }
 export interface BuffStatus {
     burn: number;
@@ -94,4 +95,4 @@ export interface BuffStatus {
     iceSlow0?: number;
     iceSlow1?: number;
 }
-export type BuffFeedbackSink = (kind: BuffFeedback['kind'], element: Element, x: number, y: number, tx?: number, ty?: number, level?: number) => void;
+export type BuffFeedbackSink = (kind: BuffFeedback['kind'], element: Element, x: number, y: number, tx?: number, ty?: number, level?: number, branch?: BuffBranch) => void;

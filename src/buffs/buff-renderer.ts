@@ -1,4 +1,5 @@
-import { glyph, ring, arc, drawBuffEffect, elementImpact } from './buff-visuals.js';
+import { ring, drawBuffEffect, elementImpact } from './buff-visuals.js';
+import { drawBuffStatus, drawBuffTransfer } from './buff-state-visuals.js';
 import { drawEvolutionState, drawEvolutionBurst } from './buff-evolution-visuals.js';
 import { paintVfx } from '../rendering/vfx-atlas.js';
 import type { BuffEvolutions } from './buff-evolutions.js';
@@ -27,25 +28,18 @@ export function renderBuffs<T extends BuffTarget>(state: BuffRenderState<T>, ove
             continue;
         if (statusCount++ >= detail * 2)
             break;
-        const q = project(target.x, target.y);
-        if (status.slow > 0) {
-            glyph(overlay, q.x - 13, q.y - 5, 'ice', 7);
-            glyph(overlay, q.x + 13, q.y - 8, 'ice', 5);
-        }
-        if (status.burn > 0)
-            glyph(overlay, q.x, q.y - 18 - (Math.sin(state.visualTime * 13 + target.x) + 1) * 3, 'fire', 6);
+        drawBuffStatus(overlay, floor, project, target, status, state.visualTime);
     }
     for (const feedback of state.feedback) {
         if (!visible(feedback.x, feedback.y) && !visible(feedback.tx, feedback.ty))
             continue;
         const t = 1 - feedback.life / feedback.max;
+        if (t >= 1)
+            continue;
         if (feedback.kind === 'detonate' || feedback.kind === 'shatter')
-            drawEvolutionBurst(overlay, floor, project, feedback.kind, feedback.x, feedback.y, t, feedback.level, detail);
-        else if (feedback.kind === 'arc') {
-            arc(overlay, project, feedback.x, feedback.y, feedback.tx, feedback.ty, feedback.age);
-            const end = project(feedback.tx, feedback.ty);
-            glyph(overlay, end.x, end.y - 27, 'lightning', 8 * (1 - t) + 2);
-        }
+            drawEvolutionBurst(overlay, floor, project, feedback.kind, feedback.x, feedback.y, t, feedback.level, detail, feedback.branch);
+        else if (feedback.kind === 'arc' || feedback.kind === 'reforge' || feedback.kind === 'shard')
+            drawBuffTransfer(overlay, floor, project, feedback);
         else if (feedback.kind === 'scorch') {
             const q = project(feedback.x, feedback.y);
             if (!paintVfx(floor, 'field', 'fire', q.x, q.y, 28 + t * 22, 28 + t * 22, 0, .5 * (1 - t)))

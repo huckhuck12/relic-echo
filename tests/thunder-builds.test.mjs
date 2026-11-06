@@ -119,8 +119,8 @@ test('lightning branch cards retain transaction protection and fit phone portrai
 test('charge displays five ticks and a lock indicator without changing simulation state or exceeding mark budget',()=>{
  const {e,targets}=fixture();e.hit(targets[0],bolt('charge'));e.hit(targets[1],bolt('charge'));
  const calls=[];const g=new Proxy({},{get:(_,name)=>(...args)=>calls.push({name,args})});
- const before=JSON.stringify([...e.thunder.values()]);drawEvolutionState(g,g,(x,y)=>({x,y}),e,()=>true,1);assert.equal(JSON.stringify([...e.thunder.values()]),before);
- assert.equal(calls.filter(c=>c.name==='drawPoly'&&c.args[1]===-53).length,10);
+ const before=JSON.stringify([...e.thunder.values()]);drawEvolutionState(g,g,(x,y)=>({x,y}),e,()=>true,2);assert.equal(JSON.stringify([...e.thunder.values()]),before);
+ assert.equal(calls.filter(c=>c.name==='drawPoly'&&c.args[1]===-94&&c.args.length>=5).length,10);
  for(let i=0;i<4;i++)e.hit(targets[0],bolt('charge'));calls.length=0;drawEvolutionState(g,g,(x,y)=>({x,y}),e,()=>true,1);
- assert.ok(calls.some(c=>c.name==='drawLine'&&c.args[1]===-59));
+ assert.ok(calls.some(c=>c.name==='drawLine'&&c.args[1]===-87));
 });

@@ -9,7 +9,7 @@ export async function checkVfxAudit({send,evaluate,origin,directory}){
  // Allow the first rendering call to finish the optional async image upload.
  for(let i=0;i<100&&!await evaluate('vfxReview.paint().atlas.ready');i++)await new Promise(r=>setTimeout(r,100));
  const rows=[];
- for(const [mode,age,level,detail]of [['buffs',.08,1,3],['buffs',.08,3,5],['buffs',.18,5,8],['buffs',1.8,5,8],['weapons',.08,3,5],['weapons',.19,3,3],['player-stages',.08,3,5],['accents',.08,3,5],['evolutions',.08,3,5],['evolutions',.18,5,8]]){
+ for(const [mode,age,level,detail]of [['buffs',.08,1,3],['buffs',.08,3,5],['buffs',.18,5,8],['buffs',1.8,5,8],['weapons',.08,3,5],['weapons',.19,3,3],['player-stages',.08,3,5],['build-states',.08,3,5],['build-states',.22,5,3],['accents',.08,3,5],['evolutions',.08,3,5],['evolutions',.18,5,8]]){
   const row=await evaluate(`(async()=>{
    const L=Laya,original=L.stage._loop,samples=[];
    L.stage._loop=function(...args){const d=L.Stat.renderBatches;const value=original.apply(this,args);samples.push(L.Stat.renderBatches-d);return value;};
