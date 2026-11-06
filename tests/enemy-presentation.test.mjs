@@ -5,6 +5,19 @@ import {project} from '../dist/shared/model.js';
 import {enemyShapes} from '../dist/rendering/voxel.js';
 import {enemyArtPose,ENEMY_ACTION_SECONDS} from '../dist/enemies/enemy-actions.js';
 
+test('elite and Boss release match crystal and crown silhouettes within one shape',()=>{
+ const snapshots=[];
+ for(const kind of [3,4]){
+  const calls=[],g={drawPoly:(...a)=>calls.push(a)};
+  const e=Object.freeze({kind,x:10,y:20,action:'burst',actionTime:ENEMY_ACTION_SECONDS.burst,dead:false});
+  drawEnemyRelease(g,{},e,0,true);assert.equal(calls.length,1);
+  snapshots.push(JSON.stringify(calls[0][2]));
+  assert.ok(calls[0][2].every(Number.isFinite));
+  calls.length=0;drawEnemyRelease(g,{}, {...e,actionTime:0},0,true);assert.equal(calls.length,0);
+ }
+ assert.notEqual(snapshots[0],snapshots[1]);
+});
+
 test('attack articulation differs from idle and stays finite within the 40-shape budget in both quality modes',()=>{
  const old=Math.random;Math.random=()=>{throw Error('visual consumed RNG');};
  try{for(const [kind,action]of [[1,'cast'],[2,'launch'],[2,'brake'],[3,'burst'],[4,'slam']])for(const detail of [false,true]){

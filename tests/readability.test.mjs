@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {paintHostileShot} from '../dist/rendering/projectile-presentation.js';
+import {paintHostileShot,hostileShotPose} from '../dist/rendering/projectile-presentation.js';
 import {experienceShapes,fragmentShapes,lootPose} from '../dist/rendering/loot-presentation.js';
 import {setupLayaStub} from './helpers/laya-stub.mjs';
 
@@ -18,6 +18,24 @@ test('hostile shots have four directional polygons without loot-like white squar
   const a=points(1,0),b=points(-1,0);
   for(let j=0;j<a.length;j++)for(let i=0;i<a[j].length;i+=2){assert.ok(Math.abs(a[j][i]+b[j][i])<1e-9);assert.ok(Math.abs(a[j][i+1]+b[j][i+1]+36)<1e-9);}
  }finally{Math.random=random;}
+});
+
+test('mage, elite and Boss silhouettes differ geometrically with the same four-polygon budget',()=>{
+ const shapes=[];
+ for(const color of ['#c99bef','#c29ce4','#efab82']){
+  const calls=[];paintHostileShot({drawPoly:(...args)=>calls.push(args)},1,-1,color);
+  assert.equal(calls.length,4);
+  shapes.push(JSON.stringify(calls.map(c=>c[2])));
+  assert.equal(calls[2][3],'#ff778b');
+  assert.equal(calls[3][3],color);
+ }
+ assert.equal(new Set(shapes).size,3,'shape differences must survive grayscale');
+ for(const life of [6,5.95,5.9,3,.12,.06,0]){
+  const p=hostileShotPose(life);assert.ok(p.scale>=1&&p.scale<=1.12);assert.ok(p.alpha>=.9&&p.alpha<=1);
+  assert.deepEqual(hostileShotPose(life),p);
+ }
+ assert.deepEqual(hostileShotPose(3),{scale:1,alpha:1});
+ assert.ok(hostileShotPose(6).scale>hostileShotPose(5.95).scale);
 });
 
 test('reward shapes and low floating pose distinguish XP, healing and fragments',()=>{

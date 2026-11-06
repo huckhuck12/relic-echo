@@ -13,7 +13,7 @@ import {PlayerAtlas} from '/dist/rendering/player-atlas.js';
 import {routeVfx,vfxAtlas} from '/dist/rendering/vfx-atlas.js';
 import {CombatAccentBudget,dashWake,impactFlecks} from '/dist/rendering/combat-accents.js';
 import {drawHitFeedback} from '/dist/rendering/hit-feedback.js';
-import {paintHostileShot} from '/dist/rendering/projectile-presentation.js';
+import {paintHostileShot,hostileShotPose} from '/dist/rendering/projectile-presentation.js';
 import {drawBuffMark,drawBuffStatus,drawBuffTransfer} from '/dist/buffs/buff-state-visuals.js';
 Laya.init(1024,960,Laya.WebGL);Laya.stage.bgColor='#526b50';
 await new Promise(resolve=>heroArt().whenReady(resolve));
@@ -75,6 +75,19 @@ window.vfxReview={paint(mode='buffs',age=.08,level=3,detail=5){
    const x=128+i*256;place((g,f)=>{if(kind==='detonate')drawEvolutionBurst(g,f,project,kind,0,0,.2,5,detail,'charge');else drawBuffTransfer(g,f,project,{kind,branch:kind==='arc'?'spread':'furnace',x:-35,y:35,tx:35,ty:-35,age:.08,max:1,life:.8});},x,755);
    label(['inward reforge','outward ice shards','spread direction','single-target charge'][i],x-100,840);
   }
+ }
+ else if(mode==='enemy-shots'){
+  const colors=['#c99bef','#c29ce4','#efab82'];
+  for(let row=0;row<3;row++){
+   const y=180+row*245;label(['mage / needle','elite / heavy crystal','Boss / forked crown'][row],65,y-75);
+   for(let i=0;i<8;i++){
+    const n=new Laya.Sprite();n.pos(100+i*118,y);overlayArt.addChild(n);routeVfx(n.graphics,n.graphics);
+    paintHostileShot(n.graphics,Math.cos(i*Math.PI/4)*600,Math.sin(i*Math.PI/4)*600,colors[row]);
+    const p=hostileShotPose(6-age);n.scale(p.scale,p.scale);n.alpha=p.alpha;
+   }
+  }
+  for(let i=0;i<4;i++){const n=new Laya.Sprite();n.pos(160+i*230,885);overlayArt.addChild(n);routeVfx(n.graphics,n.graphics);paintFlameShot(n.graphics,600,0);}
+  label('friendly / round amber core and separate flame tail',65,930);
  }
  else if(mode==='accents'){
   const place=(fn,x,y)=>{const n=new Laya.Sprite();n.pos(x,y);overlay.addChild(n);const raster=new Laya.Sprite();raster.pos(x,y);overlayArt.addChild(raster);routeVfx(n.graphics,raster.graphics);fn(n.graphics);};

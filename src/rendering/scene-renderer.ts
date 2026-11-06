@@ -2,6 +2,7 @@ import { PlayerAtlas } from './player-atlas.js';
 import { routeVfx, vfxAtlas, paintVfx } from './vfx-atlas.js';
 import { enemyGaitFrame } from './enemy-art.js';
 import { shotTile } from './painted-world.js';
+import { hostileShotPose } from './projectile-presentation.js';
 import { platform } from '../platform/runtime.js';
 import { ELEMENTS } from '../buffs/buffs.js';
 import type { BuffRuntime } from '../buffs/buffs.js';
@@ -262,6 +263,11 @@ export class SceneRenderer {
             if (this.shotPaint.get(s) !== state.visuals.detail && this.enemyAtlas.paintKey(s.node.graphics, shotTile(s.hostile, s.flame, s.vx, s.vy, s.color), state.visuals.detail))
                 this.shotPaint.set(s, state.visuals.detail);
             const launch = Math.max(0, 1 - ((s.launchLife ?? 1.2) - s.life) / .12);
+            if (s.hostile) {
+                const pose = hostileShotPose(s.life);
+                s.node.scale(pose.scale, pose.scale);
+                s.node.alpha = pose.alpha;
+            }
             s.node.pos(q.x + (s.launchX || 0) * launch, q.y + (s.launchY || 0) * launch);
             this.depth(s.node, s.x + s.y + 5);
         }

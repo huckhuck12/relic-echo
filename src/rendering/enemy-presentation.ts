@@ -213,6 +213,10 @@ export function drawEnemyRelease(g: any, floor: any, e: Enemy, time: number, det
         }
         floor.drawPoly(0, 0, points, null, t < .35 ? '#f1c69a' : '#a67c58', 1.5);
     }
-    if (e.action === 'burst' && t < .5)
-        g.drawPoly(q.x, q.y - (e.kind === 4 ? 64 : 40), [0, -8 * (1 - t), 8 * (1 - t), 0, 0, 8 * (1 - t), -8 * (1 - t), 0], null, '#f8d6ac', 1.5);
+    if (e.action === 'burst' && t < .5) {
+        // 一轮弹幕共用一个释放标记；冠状 Boss 与实心精英晶体呼应各自弹头。
+        const r = 12 * (1 - t / .5), boss = e.kind === 4;
+        const points = boss ? [-r, 0, -r, -r, -r * .3, -r * .4, 0, -r * 1.2, r * .3, -r * .4, r, -r, r, 0] : [0, -r, r * .8, 0, 0, r, -r * .8, 0];
+        g.drawPoly(q.x, q.y - (boss ? 64 : 40), points, boss ? null : '#c29ce4', boss ? '#efab82' : '#ff778b', 1.5);
+    }
 }
