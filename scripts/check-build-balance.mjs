@@ -102,7 +102,7 @@ try{
    if(level===5&&maxLevelAt===null)maxLevelAt=+g.time.toFixed(2);
    reactions.reforges=g.buffs.reforges;
    const boss=g.enemies.find(e=>e.kind===4&&!e.dead);if(boss&&bossStartHP===null)bossStartHP=boss.max;
-   if(g.time>=nextCheckpoint){checkpoints.push({time:nextCheckpoint,hp:g.player.hp,maxHP:g.stats.hp,enemies:g.enemies.length,shots:g.shots.length,pressureHits,protectedHits,kills:g.kills,level:g.level,buffLevel:level,buffDamage:Math.round(buffDamage),procs:g.buffs.procs,...reactions});nextCheckpoint+=60;}
+   if(g.time>=nextCheckpoint){checkpoints.push({time:nextCheckpoint,hp:g.player.hp,maxHP:g.stats.hp,enemies:g.enemies.length,shots:g.shots.length,pressureHits,protectedHits,kills:g.kills,level:g.level,buffLevel:level,buffDamage:Math.round(buffDamage),procs:g.buffs.procs,dashShatters:g.buffs.dashShatters,...reactions});nextCheckpoint+=60;}
   }
   const boss=g.enemies.find(e=>e.kind===4);
   const balance=g.autoPlay.balanceReport();
@@ -110,7 +110,7 @@ try{
   assert.ok(Math.abs(balance.damage.buff-buffDamage)<.001,'Buff damage must agree with the runtime ledger.');
   assert.ok(Math.abs(balance.boss.damage.buff-bossBuffDamage)<.001,'Boss Buff damage must agree with the runtime ledger.');
   assert.equal(balance.combat.hitsTaken,pressureHits,'Hurt event count must agree.');
-  rows.push({weapon,seed,build,branch,mode,balance:g.autoPlay.balanceReport(),control,contacts:[...contacts.values()],phases,phaseReactions,targetReactions,peak,lethalContext,seals:g.mapEvents.sites.map(s=>({id:s.id,state:s.state,progress:+s.progress.toFixed(2)})),protected:protectedRun,seconds:+g.time.toFixed(2),win:g.dialog?.win||false,kills:g.kills,firstBranch,maxLevelAt,buffLevel:g.buffs.levelOf(g.buffs.recipes[0]),buffDamage:Math.round(buffDamage),totalDamage:Math.round(totalDamage),bossBuffDamage:Math.round(bossBuffDamage),bossRemaining:boss?+Math.max(0,boss.hp).toFixed(1):null,bossStartHP,pressureHits,protectedHits,procs:g.buffs.procs,...reactions,checkpoints,events});
+  rows.push({weapon,seed,build,branch,mode,balance:g.autoPlay.balanceReport(),control,contacts:[...contacts.values()],phases,phaseReactions,targetReactions,peak,lethalContext,seals:g.mapEvents.sites.map(s=>({id:s.id,state:s.state,progress:+s.progress.toFixed(2)})),protected:protectedRun,seconds:+g.time.toFixed(2),win:g.dialog?.win||false,kills:g.kills,firstBranch,maxLevelAt,buffLevel:g.buffs.levelOf(g.buffs.recipes[0]),buffDamage:Math.round(buffDamage),totalDamage:Math.round(totalDamage),bossBuffDamage:Math.round(bossBuffDamage),bossRemaining:boss?+Math.max(0,boss.hp).toFixed(1):null,bossStartHP,pressureHits,protectedHits,procs:g.buffs.procs,dashShatters:g.buffs.dashShatters,...reactions,checkpoints,events});
   console.log(JSON.stringify(rows.at(-1)));g.autoPlay.stop();g.returnToTitle();
  }
 }finally{Math.random=originalRandom;}

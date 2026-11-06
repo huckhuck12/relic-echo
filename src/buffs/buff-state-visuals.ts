@@ -19,6 +19,8 @@ export function drawBuffMark(g: any, x: number, y: number, element: 'ice' | 'lig
         const bright = filled && mark.stacks >= slots - 1 && mark.lock <= 0;
         g.drawPoly(px, row, ice ? [-2, 3, -3, -2, 0, -5, 3, -2, 2, 3] : [-3, 2, 0, -4, 3, -2, 1, 0, 3, 0, -1, 4], filled ? bright ? '#f4edda' : color : '#293d40', color, .7);
     }
+    if (ice && mark.lock <= 0 && mark.stacks >= slots - 1)
+        g.drawPoly(x, row, [-slots * 4 - 3, 0, -slots * 4 - 6, -8, slots * 4 + 6, -8, slots * 4 + 3, 0, slots * 4 + 6, 7, -slots * 4 - 6, 7], null, '#f4edda', 1);
     if (mark.lock > 0)
         g.drawLine(x - 16, row + 7, x - 16 + 32 * Math.min(1, mark.lock), row + 7, '#748d8b', 1);
 }
@@ -38,7 +40,13 @@ export function drawBuffTransfer(g: any, floor: any, project: Project, feedback:
     if (t >= 1)
         return;
     const to = project(feedback.x, feedback.y), from = project(feedback.tx, feedback.ty), ease = 1 - (1 - t) ** 3;
-    if (feedback.kind === 'reforge') {
+    if (feedback.kind === 'harvest') {
+        // A short directed cut links the dash landing to the actual consumed ice target.
+        const dx = to.x - from.x, dy = to.y - from.y;
+        floor.drawLine(from.x + dx * ease, from.y + dy * ease, to.x, to.y, '#a8e6ed', 2 * (1 - t));
+        directionalShape(g, to.x, to.y - 26, dx, dy, [-20 * (1 - t), 0, -3, -3 * (1 - t), 10 * (1 - t), 0, -3, 3 * (1 - t)], '#eff6df');
+    }
+    else if (feedback.kind === 'reforge') {
         // Target -> furnace: an inward tether, not the outward push of a normal force hit.
         const dx = from.x - to.x, dy = from.y - to.y, f = .15 + .7 * ease;
         directionalShape(g, to.x + dx * f, to.y - 18 * (1 - f) + dy * f, dx, dy + 18, [-14 * (1 - t), 0, 0, -3 * (1 - t), 8 * (1 - t), 0, 0, 3 * (1 - t)], '#efbe7c');

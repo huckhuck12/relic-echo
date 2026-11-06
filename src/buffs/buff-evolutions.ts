@@ -191,16 +191,19 @@ export class BuffEvolutions<T extends BuffTarget> {
         this.consumeFrost(target, mark, false);
     }
     /** Direct cross-slot force only. Reserve the mark before damage callbacks; secondary damage never re-enters hit. */
-    private breakFrost(target: T, force: EvolutionSource): void {
+    harvestFrost(target: T, force: EvolutionSource): boolean {
+        return !target.dead && force.element === 'force' && this.breakFrost(target, force);
+    }
+    private breakFrost(target: T, force: EvolutionSource): boolean {
         const mark = this.frost.get(target);
         if (!mark || mark.lock > 0 || mark.life <= 0 || mark.stacks < 1 || force.slot === undefined || mark.source?.slot === undefined || force.slot === mark.source.slot)
-            return;
-        this.consumeFrost(target, mark, true);
+            return false;
+        return this.consumeFrost(target, mark, true);
     }
-    private consumeFrost(target: T, mark: EvolutionMark, manual: boolean): void {
+    private consumeFrost(target: T, mark: EvolutionMark, manual: boolean): boolean {
         if (this.frostBudget <= 0) {
             this.frostRejected++;
-            return;
+            return false;
         }
         this.frostBudget--;
         const source = mark.source!, stacks = mark.stacks;
@@ -247,6 +250,7 @@ export class BuffEvolutions<T extends BuffTarget> {
                     break;
             }
         }
+        return true;
     }
     /** Propagation only prepares targets; bolts and rate-limited weapon contacts can detonate. */
     private stackThunder(target: T, source: EvolutionSource, conductive: boolean, weapon = false): void {

@@ -10,11 +10,11 @@ function recorder(){const calls=[];return{calls,g:Object.fromEntries(['drawPoly'
 const source=(branch)=>({kind:branch==='prison'?'orbit':'bolt',element:branch==='prison'?'ice':'lightning',damage:10,level:5,slot:0,branch});
 function runtime(){const targets=[{x:30,y:0,dead:false},{x:60,y:0,dead:false}],damage=[];const r=new BuffRuntime({player:{x:0,y:0,dx:1,dy:0},query:()=>targets,damage:(t,d)=>damage.push([targets.indexOf(t),d]),knock(){}});return{r,targets,damage};}
 
-test('simultaneous ice and thunder use separate lanes, distinct shapes and exact three/five slots',()=>{
+test('simultaneous ice and thunder use separate lanes, exact slot counts and a frost readiness frame',()=>{
  for(const branch of [undefined,'charge','prison','shards']){
   const a=recorder(),b=recorder(),mark=Object.freeze({stacks:2,life:3,lock:0,source:source(branch)});
   drawBuffMark(a.g,0,0,'lightning',mark);drawBuffMark(b.g,0,0,'ice',mark);
-  assert.equal(a.calls.length,branch==='charge'?6:4);assert.equal(b.calls.length,branch==='prison'?6:branch==='shards'?3:4);
+  assert.equal(a.calls.length,branch==='charge'?6:4);assert.equal(b.calls.length,branch==='prison'?6:branch==='shards'?4:5);
   const bounds=c=>c.calls.flatMap(v=>v.args[2].filter((_,i)=>i%2).map(y=>y+v.args[1]));
   assert.ok(Math.max(...bounds(a))<Math.min(...bounds(b)));
   assert.notDeepEqual(a.calls[1].args[2],b.calls[1].args[2]);
@@ -33,7 +33,7 @@ test('simultaneous ice and thunder use separate lanes, distinct shapes and exact
 test('both mark types remain represented under dense overlap without exceeding the existing total target budget',()=>{
  const state={links:[],seeds:[],thunder:new Map(),frost:new Map()};
  for(let i=0;i<200;i++){const target={x:i,y:0,dead:false};state.thunder.set(target,{stacks:4,life:9,lock:0,source:source('charge')});state.frost.set(target,{stacks:4,life:4,lock:0,source:source('prison')});}
- const out=recorder();drawEvolutionState(out.g,out.g,project,state,()=>true,3);assert.equal(out.calls.length,36);
+ const out=recorder();drawEvolutionState(out.g,out.g,project,state,()=>true,3);assert.equal(out.calls.length,39);
  assert.ok(out.calls.some(c=>c.args[2].length===8));
  const hidden=recorder();drawEvolutionState(hidden.g,hidden.g,project,state,()=>false,3);assert.equal(hidden.calls.length,0);
 });
@@ -51,7 +51,7 @@ test('fire branch motifs are distinct and stay inside the snapshotted field radi
 
 test('reaction snapshots stay read-only, finite, expired and independent of combat RNG',()=>{
  const random=Math.random;Math.random=()=>{throw Error('render consumed RNG');};
- try{for(const kind of ['reforge','shard','arc'])for(const branch of [undefined,'spread'])for(const t of [0,.3,.8,1]){
+ try{for(const kind of ['reforge','shard','arc','harvest'])for(const branch of [undefined,'spread'])for(const t of [0,.3,.8,1]){
   const effect=Object.freeze({kind,branch,x:30,y:40,tx:-50,ty:70,life:1-t,max:1,age:t}),out=recorder();drawBuffTransfer(out.g,out.g,project,effect);
   assert.ok(out.calls.length<=6);for(const v of out.calls.flatMap(c=>c.args.flat(Infinity)))if(typeof v==='number')assert.ok(Number.isFinite(v));
   if(t===1)assert.equal(out.calls.length,0);

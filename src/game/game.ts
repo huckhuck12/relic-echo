@@ -661,6 +661,8 @@ export class Game {
             velocity = Math.min(velocity, Math.hypot(this.input.mouseTarget.x - p.x, this.input.mouseTarget.y - p.y) / dt);
         const previousX = p.x, previousY = p.y;
         this.movePlayer(dx * velocity * dt, dy * velocity * dt);
+        if (dashing)
+            this.buffs.traceDash(p.x, p.y);
         if (dashing && p.dashTime === 0)
             this.triggerBuff('dash', p.x, p.y);
         const traveled = Math.hypot(p.x - previousX, p.y - previousY);

@@ -8,6 +8,7 @@ import { createBuffEffect, updateBuffEffects } from './buff-effects.js';
 import { applyBuffElement, applyBuffSlow, updateBuffStatuses } from './buff-status.js';
 import { enqueueBuffFeedback, updateBuffFeedback } from './buff-feedback.js';
 import { renderBuffs } from './buff-renderer.js';
+import { FrostDash, harvestableFrost } from './buff-frost-dash.js';
 import type { BuffEffect, BuffFeedback, BuffFeedbackSink, BuffHost, BuffStatus, BuffTarget, FragmentReward, BuffBranch, Part, Recipe, Trigger } from './buff-types.js';
 // 公共导出兼容既有场景、测试和预览；内部模块应直接依赖 config/types，避免循环依赖。
 export * from './buff-config.js';
@@ -17,6 +18,8 @@ export * from './buff-recipes.js';
  * 主效果/碰撞、元素状态、装饰反馈和绘制各有独立模块，不能跨模块重复派发命中。
  */
 export class BuffRuntime<T extends BuffTarget> {
+    private readonly frostDash = new FrostDash<T>();
+    dashShatters = 0;
     readonly recipes: Recipe[] = [emptyRecipe(), emptyRecipe()];
     readonly owned = new Set<string>(START_FRAGMENTS);
     readonly cooldowns = [0, 0];
@@ -52,7 +55,27 @@ export class BuffRuntime<T extends BuffTarget> {
         y: number;
     } | null = null;
     reforges = 0;
-    beginDash(x: number, y: number): void { this.dashStart = { x, y }; }
+    beginDash(x: number, y: number): void {
+        this.dashStart = { x, y };
+        this.frostDash.begin(x, y);
+    }
+    traceDash(x: number, y: number): void { this.frostDash.trace(x, y, this.evolutions.frost); }
+    /** Read-only hint; it never aims or activates a dash for the player. */
+    frostDashTarget(): T | undefined {
+        const slot = this.recipes.findIndex(r => r.trigger === 'dash' && r.action === 'blast' && r.element === 'force');
+        if (slot < 0 || this.cooldowns[slot] > 0)
+            return;
+        let best: T | undefined, stacks = 0, distance = Infinity;
+        for (const [target, mark] of this.evolutions.frost) {
+            const d = Math.hypot(target.x - this.host.player.x, target.y - this.host.player.y);
+            if (harvestableFrost(target, mark, slot) && d <= BUFF_RULES.orbit.radius + BUFF_RULES.orbit.hitRadius && (mark.stacks > stacks || mark.stacks === stacks && d < distance)) {
+                best = target;
+                stacks = mark.stacks;
+                distance = d;
+            }
+        }
+        return best;
+    }
     branchOf(recipe: Recipe): BuffBranch | undefined {
         const pair = branchPair(recipe);
         return pair ? this.upgrades.branches.get(pair.pair) : undefined;
@@ -143,10 +166,12 @@ export class BuffRuntime<T extends BuffTarget> {
         this.branchRequested.clear();
         this.castSequence = 0;
         this.reforges = 0;
+        this.dashShatters = 0;
     }
     clearTransient(): void {
         this.effects.length = 0;
         this.dashStart = null;
+        this.frostDash.clear();
         this.branchRequested.clear();
         if (!this.starterChosen)
             this.starterRequested = false;
@@ -216,6 +241,8 @@ export class BuffRuntime<T extends BuffTarget> {
                     for (const t of [0, .5])
                         this.effects.push({ ...effect, x: this.dashStart.x + (effect.x - this.dashStart.x) * t, y: this.dashStart.y + (effect.y - this.dashStart.y) * t });
                 }
+                if (event === 'dash')
+                    this.frostDash.queue(effect, this.evolutions.frost);
                 this.effects.push(effect);
                 this.procs++;
                 if (recipe.action === 'field' && recipe.element === 'fire')
@@ -223,8 +250,10 @@ export class BuffRuntime<T extends BuffTarget> {
             }
         }
         finally {
-            if (event === 'dash')
+            if (event === 'dash') {
                 this.dashStart = null;
+                this.frostDash.finish();
+            }
             this.dispatching = false;
         }
     }
@@ -296,6 +325,13 @@ export class BuffRuntime<T extends BuffTarget> {
             this.cooldowns[slot] = Math.max(0, this.cooldowns[slot] - dt);
         updateBuffStatuses(this.statuses, this.host, dt);
         this.evolutions.update(dt);
+        this.frostDash.resolve(this.effects, (target, effect) => {
+            const source = this.evolutions.frost.get(target)?.source;
+            if (this.evolutions.harvestFrost(target, effect)) {
+                this.dashShatters++;
+                this.feedbackAt('harvest', 'ice', target.x, target.y, effect.x, effect.y, source?.level, source?.branch);
+            }
+        });
         updateBuffEffects(this.effects, this.host, dt, this.apply);
     }
     render(overlay: any, project: (x: number, y: number) => {

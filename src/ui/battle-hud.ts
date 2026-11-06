@@ -295,7 +295,9 @@ export class BattleHUD {
         this.bars.combo.visible = s.combo > 0 || s.overdrive > 0;
         this.fill('combo', s.overdrive > 0 ? s.overdrive / COMBAT.frenzyDuration : s.momentum / COMBAT.frenzyKills, s.overdrive > 0 ? '#ffc76a' : C.mint);
         this.set('buffs', this.mobile ? `Buff ${this.game.buffs.recipes.filter(complete).length}/2` : `Buff ${this.game.buffs.recipes.filter(complete).length}/2 · 碎片 ${this.game.buffs.owned.size}/12`);
-        this.set('dash', s.dash > 0 ? `冷却 ${s.dash.toFixed(1)} 秒` : this.mobile ? '点击冲刺' : '已就绪 · SPACE');
+        const frostTarget = s.dash <= 0 ? this.game.buffs.frostDashTarget() : undefined;
+        const highFrost = frostTarget && (this.game.buffs.evolutions.frost.get(frostTarget)?.stacks || 0) >= 4;
+        this.set('dash', s.dash > 0 ? `冷却 ${s.dash.toFixed(1)} 秒` : frostTarget ? highFrost ? '高层冰 · 冲刺碎裂' : '穿冰冲刺可碎裂' : this.mobile ? '点击冲刺' : '已就绪 · SPACE');
         this.fill('dash', 1 - s.dash / s.dashMax, C.mint);
         this.set('perf', `${s.fps} FPS · ${s.enemies} ENEMIES${this.game.training ? ' · 试装' : ''}`);
         this.labels.boss.visible = !!s.boss;

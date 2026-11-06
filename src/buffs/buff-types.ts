@@ -75,7 +75,7 @@ export interface BuffFeedback {
     tx: number;
     ty: number;
     element: Element;
-    kind: 'impact' | 'arc' | 'scorch' | 'detonate' | 'shatter' | 'reforge' | 'shard';
+    kind: 'impact' | 'arc' | 'scorch' | 'detonate' | 'shatter' | 'reforge' | 'shard' | 'harvest';
     life: number;
     max: number;
     age: number;

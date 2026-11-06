@@ -49,7 +49,9 @@ export const BUFF_RULES = {
     },
     burn: { duration: 3, tick: .5, damage: .2 },
     slow: { duration: 2, multiplier: .65 },
-    frost: { shardsStacks: 2, prisonSlowPerLayer: .05, prisonMinSpeed: .45 },
+    frost: {
+        shardsStacks: 2, prisonSlowPerLayer: .05, prisonMinSpeed: .45, dashRadius: 56, dashTargets: 8
+    },
     chain: { radius: 135, count: 2, damage: .55 },
     knockback: 380,
 } as const;
@@ -57,6 +59,6 @@ export const BUFF_RULES = {
 export const BUFF_FEEDBACK = {
     defaultBudget: 20, maxBudget: 48, mergeAge: .1, mergeRadius: 55,
     lifetime: {
-        scorch: .65, arc: .24, impact: .3, detonate: .3, shatter: .3, reforge: .3, shard: .3
+        scorch: .65, arc: .24, impact: .3, detonate: .3, shatter: .3, reforge: .3, shard: .3, harvest: .24
     },
 } as const;

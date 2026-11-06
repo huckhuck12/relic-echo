@@ -29,5 +29,6 @@ export function recipeDescription(recipe: Recipe, scale = 1, level = 1, branch?:
     const evolution = evolutionOf(recipe);
     return `Lv.${level}/${BUFF_UPGRADES.maxLevel} · 伤害 +${Math.round((buffLevelMultiplier(level) - 1) * 100)}%\n${trigger.note} · 冷却 ${Number((trigger.cooldown * cooldown).toFixed(2))} 秒\n${action}；${element.note}。`
         + (branch ? `\n分支 · ${BRANCH_TEXT[branch].name}：${BRANCH_TEXT[branch].note}` : evolution ? `\n进化 · ${evolution.name}：${evolution.note}` : '')
-        + (branch && evolution?.id === 'thunderMark' ? `\n武器命中已有雷印可充能：每敌 0.5 秒，全局间隔 0.12 秒。击杀余电：180 内${branch === 'spread' ? '3/5 敌' : '一敌'}继承，每印放电 40%；不能自行引爆或连续继承。` : '');
+        + (branch && evolution?.id === 'thunderMark' ? `\n武器命中已有雷印可充能：每敌 0.5 秒，全局间隔 0.12 秒。击杀余电：180 内${branch === 'spread' ? '3/5 敌' : '一敌'}继承，每印放电 40%；不能自行引爆或连续继承。` : '')
+        + (recipe.trigger === 'dash' && recipe.action === 'blast' && recipe.element === 'force' ? '\n冲刺结束先碎裂实际经过及落点附近的跨槽冰层，最多 8 敌；沿途不追加普通冲击伤害。' : '');
 }

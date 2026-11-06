@@ -38,7 +38,7 @@ export function renderBuffs<T extends BuffTarget>(state: BuffRenderState<T>, ove
             continue;
         if (feedback.kind === 'detonate' || feedback.kind === 'shatter')
             drawEvolutionBurst(overlay, floor, project, feedback.kind, feedback.x, feedback.y, t, feedback.level, detail, feedback.branch);
-        else if (feedback.kind === 'arc' || feedback.kind === 'reforge' || feedback.kind === 'shard')
+        else if (feedback.kind === 'arc' || feedback.kind === 'reforge' || feedback.kind === 'shard' || feedback.kind === 'harvest')
             drawBuffTransfer(overlay, floor, project, feedback);
         else if (feedback.kind === 'scorch') {
             const q = project(feedback.x, feedback.y);
