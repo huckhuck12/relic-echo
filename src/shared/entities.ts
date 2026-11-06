@@ -68,6 +68,8 @@ export interface Enemy extends Point {
     node: any;
     /** 先标记死亡，逻辑步末统一从数组移除并回收 node。 */
     dead: boolean;
+    /** 古门封印指定守卫；仅实际死亡可推进任务。 */
+    sealId?: string;
 }
 /** 发射时保存伤害与范围，途中换装不能改变已发出的弹道。 */
 export interface Shot extends Point {

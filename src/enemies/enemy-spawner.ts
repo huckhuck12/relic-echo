@@ -5,6 +5,7 @@ import { RUN, progressionTime, encounterBeat } from '../game/pace.js';
 import type { Player, Enemy, Shot, Field } from '../shared/entities.js';
 import type { RunPace } from '../game/pace.js';
 import { enemyDirection } from './enemy-facing.js';
+import { surgeMember, surgePattern } from './encounter-patterns.js';
 /**
  * 敌人生成与时间轴所需的当前局状态；模块不导入 Game、不保存跨局引用。
  * time 已由 Game 增加本步 dt；本模块只推进刷怪计时，不再次推进局内时间。
@@ -47,7 +48,7 @@ const LIMIT = 1120;
  * 包装层必须原样传 undefined，不能再抽一次随机数，否则整局随机序列会变化。
  * 节点只绘制一次；空间索引留给 Game 在刷怪与流程节点结束后统一重建。
  */
-export function spawnEnemy(state: SpawnState, hooks: SpawnHooks, kind: number, distance = 360 + Math.random() * 150, angle = Math.random() * Math.PI * 2): void {
+export function spawnEnemy(state: SpawnState, hooks: SpawnHooks, kind: number, distance = 360 + Math.random() * 150, angle = Math.random() * Math.PI * 2): Enemy | undefined {
     const difficulty = difficultyAt(state.time, state.run);
     if (state.enemies.length >= difficulty.maxEnemies) {
         if (kind < 3)
@@ -83,6 +84,7 @@ export function spawnEnemy(state: SpawnState, hooks: SpawnHooks, kind: number, d
     };
     state.enemies.push(enemy);
     hooks.paintEnemy(enemy);
+    return enemy;
 }
 /**
  * Boss 登场先清瞬态 Buff，再归还旧敌人与弹道节点、清火焰区域/空间索引，最后生成核心。
@@ -124,8 +126,10 @@ export function updateSpawns(state: SpawnState, hooks: SpawnHooks, dt: number): 
     if (state.time < run.bossAt - 10 && state.time >= state.nextSurge && !beat.recovery && !relief) {
         state.nextSurge = run.id === 'standard' ? state.time + difficulty.surgeInterval : state.nextSurge + difficulty.surgeInterval;
         const direction = Math.random() * Math.PI * 2;
-        for (let i = 0; i < difficulty.pack; i++)
-            spawnEnemy(state, hooks, enemyKind(state.time, Math.random(), state.run), 340 + (i % 4) * 30, direction + i / difficulty.pack * Math.PI * 2);
+        for (let i = 0; i < difficulty.pack; i++) {
+            const member = surgeMember(state.time, i, difficulty.pack, direction, Math.random(), run);
+            spawnEnemy(state, hooks, member.kind, 340 + (i % 4) * 30, member.angle);
+        }
         if (progressionTime(state.time, state.run) >= 240) {
             const eliteCount = state.enemies.filter(enemy => !enemy.dead && enemy.kind === 3).length;
             const room = run.id === 'standard' ? Math.max(0, 3 - eliteCount) : 2;
@@ -134,7 +138,8 @@ export function updateSpawns(state: SpawnState, hooks: SpawnHooks, dt: number): 
             if (room > 1 && progressionTime(state.time, state.run) >= 420)
                 spawnEnemy(state, hooks, 3, 460, direction + Math.PI);
         }
-        hooks.onToast(progressionTime(state.time, state.run) >= 240 ? '围攻怪潮 · 优先躲避远程与冲锋' : '怪潮涌入 · 连续击杀积蓄狂热');
+        const pattern = surgePattern(state.time, run);
+        hooks.onToast(run.id === 'standard' ? `${pattern.name} · ${pattern.hint}` : progressionTime(state.time, state.run) >= 240 ? '围攻怪潮 · 优先躲避远程与冲锋' : '怪潮涌入 · 连续击杀积蓄狂热');
     }
     // 核心登场后关闭普通波次，但保留远程/冲锋援军；封印时刻不再补援军。
     if (state.bossSpawned && state.time < run.duration && state.spawnTimer <= 0) {

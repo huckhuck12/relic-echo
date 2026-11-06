@@ -1,7 +1,7 @@
 import type { Point } from '../shared/entities.js';
 import type { AutoPlayWorld } from './auto-play.js';
 import type { SealEvent } from './map-events.js';
-import { SEAL_RULES } from './map-events.js';
+import { SEAL_RULES, sealRule, sealNavigationTarget } from './map-events.js';
 import { WORLD_RULES } from './game-config.js';
 import { COMBAT } from '../progression/config.js';
 function segmentDistance(x: number, y: number, dx: number, dy: number): number {
@@ -48,10 +48,11 @@ export function pursueAutoSeal(player: Point & {
     const active = site.state === 'active';
     if (player.hp / Math.max(1, maxHp) < (active ? .3 : .55))
         return false;
-    const radius = active ? SEAL_RULES.holdRadius : SEAL_RULES.activateRadius;
-    const travel = Math.max(0, Math.hypot(site.x - player.x, site.y - player.y) - radius) / Math.max(1, speed) * 1.5;
+    const radius = active ? sealRule(site).radius : SEAL_RULES.activateRadius, target = sealNavigationTarget(site, world.enemies);
+    const travel = Math.max(0, Math.hypot(target.x - player.x, target.y - player.y) - radius) / Math.max(1, speed) * 1.5;
     const remaining = active ? site.startedAt + SEAL_RULES.challengeSeconds - time : site.at + SEAL_RULES.availableSeconds - time;
-    if (travel + (active ? SEAL_RULES.holdSeconds - site.progress : 0) + 3 >= remaining)
+    const work = active ? site.objective === 'guardian' ? 10 : site.objective === 'clear' ? (sealRule(site).goal - site.progress) * 1.5 : sealRule(site).goal - site.progress + (site.objective === 'relay' ? Math.max(0, 2 - Math.floor(site.progress / 4)) * 240 / Math.max(1, speed) * 1.5 : 0) : 0;
+    if (travel + work + 3 >= remaining)
         return false;
     let pressure = 0;
     for (const e of world.enemies) {

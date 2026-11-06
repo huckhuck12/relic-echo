@@ -24,6 +24,7 @@ export interface BuildTactics {
     attackRange?: number;
     maxHp?: number;
     waypoint?: Point;
+    waypointRadius?: number;
     focus?: Point;
     dashTarget?: Point;
     dashRadius?: number;

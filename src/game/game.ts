@@ -32,7 +32,8 @@ import type { Enemy, Shot, Drop, Field, Effect, DamageLabel, Player } from '../s
 export type { Dialog } from './run-flow.js';
 import { RUN, RUNS } from './pace.js';
 import type { RunKind } from './pace.js';
-import { MapEvents } from './map-events.js';
+import { MapEvents, sealNavigationTarget } from './map-events.js';
+import type { SealEvent } from './map-events.js';
 import { difficultyAt } from './difficulty.js';
 import { QUALITY_PRESETS, VisualQuality } from '../rendering/quality.js';
 import { profileEngine } from './engine-profiler.js';
@@ -131,15 +132,22 @@ export class Game {
     runKind: RunKind = 'quick';
     get run() { return RUNS[this.runKind]; }
     readonly mapEvents = new MapEvents();
+    get mapEventTarget() {
+        const site = this.mapEvents.active();
+        return site ? sealNavigationTarget(site, this.enemies) : undefined;
+    }
     private readonly mapEventHooks = {
         announce: (message: string) => this.onToast(message),
-        start: (site: {
-            x: number;
-            y: number;
-        }) => {
-            this.spawnEnemy(3, 230, Math.atan2(site.y - this.player.y, site.x - this.player.x));
-            for (let i = 0; i < 4; i++)
-                this.spawnEnemy(i % 2, 270, i * Math.PI / 2);
+        start: (site: SealEvent) => {
+            if (site.objective === 'guardian') {
+                // 容量全是精英时借用现存守卫，避免目标未出生而任务永远无法完成。
+                const guardian = this.spawnEnemy(3, 230, Math.PI / 4) || this.enemies.find(e => !e.dead && e.kind === 3 && !e.sealId);
+                if (guardian)
+                    guardian.sealId = site.id;
+            }
+            const count = site.objective === 'clear' ? 6 : site.objective === 'guardian' ? 2 : 4;
+            for (let i = 0; i < count; i++)
+                this.spawnEnemy(site.objective === 'clear' ? i % 3 : site.objective === 'guardian' ? 1 : 0, 270, i / count * Math.PI * 2);
         },
         complete: (site: {
             name: string;
@@ -787,10 +795,11 @@ export class Game {
         }, ring: (...args) => this.ring(...args), isBattle: () => this.mode === 'battle',
     };
     /** 默认随机距离/角度只在生成模块求值一次；保留开局与练习/压力场景的统一入口。 */
-    private spawnEnemy(kind: number, distance?: number, angle?: number): void {
+    private spawnEnemy(kind: number, distance?: number, angle?: number): Enemy | undefined {
         const state = this.spawnState();
-        EnemySpawner.spawnEnemy(state, this.spawnHooks, kind, distance, angle);
+        const enemy = EnemySpawner.spawnEnemy(state, this.spawnHooks, kind, distance, angle);
         this.applySpawnState(state);
+        return enemy;
     }
     /** Boss 登场清场及瞬态 Buff，但保留装备、已安装配方和它们的触发冷却。 */
     private spawnBoss(): void {
@@ -884,6 +893,7 @@ export class Game {
      * 提交碎裂、检查 Boss 终局，再生成掉落与派发击杀 Buff，保留随机数调用次序。
      */
     private onEnemyKilled(e: Enemy, triggerBuffs: boolean): boolean {
+        this.mapEvents.recordKill(e, this.player, this.time, this.run);
         this.kills++;
         this.onKill();
         if (e.kind >= 3) {

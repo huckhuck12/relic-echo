@@ -7,6 +7,7 @@ import { platform } from '../platform/runtime.js';
 import { autoBuildProfile, buildTactics } from './auto-builds.js';
 import type { AutoPlaySelection, BuildTactics } from './auto-builds.js';
 import { pursueAutoSeal, safeAutoDash } from './auto-navigation.js';
+import { sealNavigationTarget } from './map-events.js';
 import { BuildRunMetrics } from './build-run-metrics.js';
 import { GAME_VERSION } from '../shared/version.js';
 export interface AutoPlayWorld {
@@ -158,7 +159,12 @@ export class AutoPlay {
         tactics.maxHp = g.stats.hp;
         const site = g.mapEvents.active();
         if (site && pursueAutoSeal(g.player, g.stats.hp, 240 * (1 + g.stats.speed), site, g.time, world)) {
-            tactics.waypoint = site;
+            const target = sealNavigationTarget(site, world.enemies);
+            if (site.state === 'active' && site.objective === 'guardian')
+                tactics.focus = target;
+            else
+                tactics.waypoint = target;
+            tactics.waypointRadius = site.state === 'active' && site.objective === 'relay' ? 20 : 55;
             tactics.dashTarget = undefined;
         }
         const intent = autoPlayIntent(g.player, world, g.time, tactics);
@@ -287,9 +293,10 @@ export function autoPlayIntent(player: Point & {
     }
     if (!danger && tactics?.waypoint) {
         const dx = tactics.waypoint.x - player.x, dy = tactics.waypoint.y - player.y, d = Math.hypot(dx, dy) || 1;
-        const approach = Math.max(-1, Math.min(1, (d - 55) / 70));
-        x += (dx / d * approach - dy / d * .2) * 6;
-        y += (dy / d * approach + dx / d * .2) * 6;
+        const radius = tactics.waypointRadius ?? 55, tangent = radius < 55 ? .05 : .2;
+        const approach = Math.max(-1, Math.min(1, (d - radius) / 70));
+        x += (dx / d * approach - dy / d * tangent) * 6;
+        y += (dy / d * approach + dx / d * tangent) * 6;
     }
     else if (!danger && tactics?.focus) {
         const dx = tactics.focus.x - player.x, dy = tactics.focus.y - player.y, d = Math.hypot(dx, dy) || 1;

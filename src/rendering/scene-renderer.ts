@@ -399,6 +399,10 @@ export class SceneRenderer {
         for (const e of state.enemies) {
             if (!e.node.visible && e.wind <= 0)
                 continue;
+            if (e.sealId && !e.dead && state.sites?.some(site => site.id === e.sealId && site.state === 'active')) {
+                const q = project(e.x, e.y);
+                g.drawPoly(q.x, q.y - 110, [-9, 3, -10, -6, -4, -1, 0, -9, 4, -1, 10, -6, 9, 3], '#e1cc89', '#365b4d', 1);
+            }
             if (e.wind > 0 && e.kind === 1) {
                 drawRangedWarning(g, floor, e, state.time, state.visuals.detail);
             }

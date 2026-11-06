@@ -8,7 +8,7 @@ import { COMBAT, QUALITY, QUALITY_COLOR, SLOTS, SLOT_NAME, UPGRADES, WEAPONS, ge
 import { clamp } from '../shared/model.js';
 import type { Loadout } from '../shared/model.js';
 import { encounterBeat } from '../game/pace.js';
-import { SEAL_RULES } from '../game/map-events.js';
+import { SEAL_RULES, sealRule, sealProgressText } from '../game/map-events.js';
 import { clock, SYMBOLS } from './ui-config.js';
 import { mobileHUDLayout, TOUCH_UI } from './hud-layout.js';
 /** HUD 持有战斗显示节点与缓存；只通过 Game 动作请求交互，不写战斗数值。 */
@@ -281,11 +281,12 @@ export class BattleHUD {
         this.set('kills', this.mobile ? `击败 ${s.kills}` : String(s.kills));
         this.set('level', this.mobile ? `Lv.${s.level}` : String(s.level).padStart(2, '0'));
         const run = this.game.run, beat = encounterBeat(s.time, run), site = this.game.mapEvents.active();
+        const target = this.game.mapEventTarget;
         this.set('objective', this.game.training ? '试装模式 · 角色不会死亡\n按 E 切换装备，查看背面。' : s.time >= run.bossAt ? '击败遗迹核心。\n在封印合拢前完成挑战。' : `${run.name} · ${beat.name}\n${clock(run.bossAt)} 挑战遗迹核心。`);
         this.fill('progress', s.time / run.duration, C.gold);
         this.set('event', site ? site.state === 'active'
-            ? site.name + ' · 守护 ' + site.progress.toFixed(0) + '/' + SEAL_RULES.holdSeconds + 's · 余 ' + Math.max(0, Math.ceil(site.startedAt + SEAL_RULES.challengeSeconds - s.time)) + 's'
-            : site.name + ' · ' + this.siteDirection(site.x - this.game.player.x, site.y - this.game.player.y) + ' · 距离 ' + Math.round(Math.hypot(site.x - this.game.player.x, site.y - this.game.player.y))
+            ? sealProgressText(site) + (site.objective === 'relay' || site.objective === 'guardian' ? ' · ' + this.siteDirection(target!.x - this.game.player.x, target!.y - this.game.player.y) : '') + ' · 余 ' + Math.max(0, Math.ceil(site.startedAt + SEAL_RULES.challengeSeconds - s.time)) + 's'
+            : site.name + ' · ' + sealRule(site).name + ' · ' + this.siteDirection(site.x - this.game.player.x, site.y - this.game.player.y) + ' ' + Math.round(Math.hypot(site.x - this.game.player.x, site.y - this.game.player.y))
             : s.time >= run.bossAt ? '最终封印 · ' + clock(run.duration) + ' 合拢' : s.time < this.game.mapEvents.reliefUntil ? '封印整备 · 余 ' + Math.ceil(this.game.mapEvents.reliefUntil - s.time) + ' 秒 · 新怪减缓' : beat.name + ' · 下次' + (run.eliteTimes.find(t => t > s.time) ? '精英' : '核心') + ' ' + clock(run.eliteTimes.find(t => t > s.time) ?? run.bossAt));
         if (this.mobile && this.labels.event)
             this.labels.event.visible = !s.boss && this.game.runKind === 'standard';

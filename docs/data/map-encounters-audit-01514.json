@@ -1,0 +1,1443 @@
+﻿{
+    "version":  "0.15.14",
+    "scope":  "Single-seed, trail branch, three weapons normal/protected Node logic; not human balance or native performance",
+    "samples":  [
+                    {
+                        "weapon":  "storm",
+                        "seed":  1104,
+                        "build":  "fire",
+                        "branch":  "trail",
+                        "mode":  "standard",
+                        "protected":  false,
+                        "seconds":  551.33,
+                        "win":  false,
+                        "peak":  {
+                                     "enemies":  129,
+                                     "shots":  208
+                                 },
+                        "pressureHits":  20,
+                        "protectedHits":  1,
+                        "seals":  [
+                                      {
+                                          "id":  "grove",
+                                          "state":  "completed",
+                                          "progress":  18
+                                      },
+                                      {
+                                          "id":  "court",
+                                          "state":  "expired",
+                                          "progress":  6
+                                      },
+                                      {
+                                          "id":  "spring",
+                                          "state":  "completed",
+                                          "progress":  12
+                                      },
+                                      {
+                                          "id":  "gate",
+                                          "state":  "completed",
+                                          "progress":  1
+                                      }
+                                  ],
+                        "events":  [
+                                       {
+                                           "time":  3.13,
+                                           "type":  "build",
+                                           "id":  "fire"
+                                       },
+                                       {
+                                           "time":  60.5,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  60.5,
+                                           "type":  "fragment",
+                                           "id":  "dash"
+                                       },
+                                       {
+                                           "time":  60.52,
+                                           "type":  "branch",
+                                           "id":  "trail",
+                                           "pair":  "field/fire"
+                                       },
+                                       {
+                                           "time":  80.4,
+                                           "type":  "seal-start",
+                                           "id":  "grove"
+                                       },
+                                       {
+                                           "time":  98.4,
+                                           "type":  "seal-complete",
+                                           "id":  "grove"
+                                       },
+                                       {
+                                           "time":  98.4,
+                                           "type":  "seal-reward",
+                                           "id":  "fragment",
+                                           "healed":  0
+                                       },
+                                       {
+                                           "time":  98.4,
+                                           "type":  "fragment",
+                                           "id":  "field"
+                                       },
+                                       {
+                                           "time":  150.65,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  215.15,
+                                           "type":  "seal-start",
+                                           "id":  "court"
+                                       },
+                                       {
+                                           "time":  240,
+                                           "type":  "mastery",
+                                           "id":  "power",
+                                           "pair":  "field/fire"
+                                       },
+                                       {
+                                           "time":  241.32,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  278.6,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  302.2,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  323.35,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  331.62,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  345.72,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  364.1,
+                                           "type":  "seal-start",
+                                           "id":  "spring"
+                                       },
+                                       {
+                                           "time":  370.65,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  391.2,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  394.98,
+                                           "type":  "seal-complete",
+                                           "id":  "spring"
+                                       },
+                                       {
+                                           "time":  394.98,
+                                           "type":  "seal-reward",
+                                           "id":  "fragment",
+                                           "healed":  22
+                                       },
+                                       {
+                                           "time":  394.98,
+                                           "type":  "fragment",
+                                           "id":  "bolt"
+                                       },
+                                       {
+                                           "time":  420.02,
+                                           "type":  "mastery",
+                                           "id":  "power",
+                                           "pair":  "blast/force"
+                                       },
+                                       {
+                                           "time":  430.93,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  438.93,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  444.13,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  473.2,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  486,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  488.07,
+                                           "type":  "seal-start",
+                                           "id":  "gate"
+                                       },
+                                       {
+                                           "time":  489.33,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  489.35,
+                                           "type":  "seal-complete",
+                                           "id":  "gate"
+                                       },
+                                       {
+                                           "time":  489.35,
+                                           "type":  "seal-reward",
+                                           "id":  "fragment",
+                                           "healed":  0
+                                       },
+                                       {
+                                           "time":  489.35,
+                                           "type":  "fragment",
+                                           "id":  "fire"
+                                       },
+                                       {
+                                           "time":  501.48,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  512.82,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  544.02,
+                                           "type":  "elite-kill"
+                                       }
+                                   ]
+                    },
+                    {
+                        "weapon":  "flame",
+                        "seed":  1104,
+                        "build":  "fire",
+                        "branch":  "trail",
+                        "mode":  "standard",
+                        "protected":  false,
+                        "seconds":  480.32,
+                        "win":  false,
+                        "peak":  {
+                                     "enemies":  75,
+                                     "shots":  155
+                                 },
+                        "pressureHits":  26,
+                        "protectedHits":  1,
+                        "seals":  [
+                                      {
+                                          "id":  "grove",
+                                          "state":  "completed",
+                                          "progress":  18
+                                      },
+                                      {
+                                          "id":  "court",
+                                          "state":  "completed",
+                                          "progress":  8
+                                      },
+                                      {
+                                          "id":  "spring",
+                                          "state":  "expired",
+                                          "progress":  9.07
+                                      },
+                                      {
+                                          "id":  "gate",
+                                          "state":  "available",
+                                          "progress":  0
+                                      }
+                                  ],
+                        "events":  [
+                                       {
+                                           "time":  2.43,
+                                           "type":  "build",
+                                           "id":  "fire"
+                                       },
+                                       {
+                                           "time":  61.03,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  61.03,
+                                           "type":  "fragment",
+                                           "id":  "dash"
+                                       },
+                                       {
+                                           "time":  77.7,
+                                           "type":  "seal-start",
+                                           "id":  "grove"
+                                       },
+                                       {
+                                           "time":  95.7,
+                                           "type":  "seal-complete",
+                                           "id":  "grove"
+                                       },
+                                       {
+                                           "time":  95.7,
+                                           "type":  "seal-reward",
+                                           "id":  "fragment",
+                                           "healed":  0
+                                       },
+                                       {
+                                           "time":  95.7,
+                                           "type":  "fragment",
+                                           "id":  "fire"
+                                       },
+                                       {
+                                           "time":  104.2,
+                                           "type":  "branch",
+                                           "id":  "trail",
+                                           "pair":  "field/fire"
+                                       },
+                                       {
+                                           "time":  161.78,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  214.9,
+                                           "type":  "seal-start",
+                                           "id":  "court"
+                                       },
+                                       {
+                                           "time":  217.67,
+                                           "type":  "seal-complete",
+                                           "id":  "court"
+                                       },
+                                       {
+                                           "time":  217.67,
+                                           "type":  "seal-reward",
+                                           "id":  "fragment",
+                                           "healed":  24
+                                       },
+                                       {
+                                           "time":  217.67,
+                                           "type":  "fragment",
+                                           "id":  "fire"
+                                       },
+                                       {
+                                           "time":  240,
+                                           "type":  "mastery",
+                                           "id":  "power",
+                                           "pair":  "field/fire"
+                                       },
+                                       {
+                                           "time":  242.92,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  270.93,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  295.35,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  318.3,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  331.55,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  340.4,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  362.73,
+                                           "type":  "seal-start",
+                                           "id":  "spring"
+                                       },
+                                       {
+                                           "time":  363.93,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  382.5,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  404.12,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  420.02,
+                                           "type":  "mastery",
+                                           "id":  "power",
+                                           "pair":  "blast/force"
+                                       },
+                                       {
+                                           "time":  421.82,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  423.27,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  452.55,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  474.93,
+                                           "type":  "elite-kill"
+                                       }
+                                   ]
+                    },
+                    {
+                        "weapon":  "blade",
+                        "seed":  1104,
+                        "build":  "fire",
+                        "branch":  "trail",
+                        "mode":  "standard",
+                        "protected":  false,
+                        "seconds":  333.62,
+                        "win":  false,
+                        "peak":  {
+                                     "enemies":  111,
+                                     "shots":  208
+                                 },
+                        "pressureHits":  34,
+                        "protectedHits":  1,
+                        "seals":  [
+                                      {
+                                          "id":  "grove",
+                                          "state":  "completed",
+                                          "progress":  18
+                                      },
+                                      {
+                                          "id":  "court",
+                                          "state":  "completed",
+                                          "progress":  8
+                                      },
+                                      {
+                                          "id":  "spring",
+                                          "state":  "locked",
+                                          "progress":  0
+                                      },
+                                      {
+                                          "id":  "gate",
+                                          "state":  "locked",
+                                          "progress":  0
+                                      }
+                                  ],
+                        "events":  [
+                                       {
+                                           "time":  1.75,
+                                           "type":  "build",
+                                           "id":  "fire"
+                                       },
+                                       {
+                                           "time":  61.72,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  61.72,
+                                           "type":  "fragment",
+                                           "id":  "field"
+                                       },
+                                       {
+                                           "time":  76.63,
+                                           "type":  "seal-start",
+                                           "id":  "grove"
+                                       },
+                                       {
+                                           "time":  94.9,
+                                           "type":  "branch",
+                                           "id":  "trail",
+                                           "pair":  "field/fire"
+                                       },
+                                       {
+                                           "time":  96.27,
+                                           "type":  "seal-complete",
+                                           "id":  "grove"
+                                       },
+                                       {
+                                           "time":  96.27,
+                                           "type":  "seal-reward",
+                                           "id":  "fragment",
+                                           "healed":  10
+                                       },
+                                       {
+                                           "time":  96.27,
+                                           "type":  "fragment",
+                                           "id":  "dash"
+                                       },
+                                       {
+                                           "time":  159.08,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  211.17,
+                                           "type":  "seal-start",
+                                           "id":  "court"
+                                       },
+                                       {
+                                           "time":  213.75,
+                                           "type":  "seal-complete",
+                                           "id":  "court"
+                                       },
+                                       {
+                                           "time":  213.75,
+                                           "type":  "seal-reward",
+                                           "id":  "fragment",
+                                           "healed":  24
+                                       },
+                                       {
+                                           "time":  213.75,
+                                           "type":  "fragment",
+                                           "id":  "dash"
+                                       },
+                                       {
+                                           "time":  240,
+                                           "type":  "mastery",
+                                           "id":  "power",
+                                           "pair":  "field/fire"
+                                       },
+                                       {
+                                           "time":  243.03,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  319.67,
+                                           "type":  "elite-kill"
+                                       }
+                                   ]
+                    },
+                    {
+                        "weapon":  "storm",
+                        "seed":  1104,
+                        "build":  "fire",
+                        "branch":  "trail",
+                        "mode":  "standard",
+                        "protected":  true,
+                        "seconds":  628.02,
+                        "win":  true,
+                        "peak":  {
+                                     "enemies":  186,
+                                     "shots":  208
+                                 },
+                        "pressureHits":  53,
+                        "protectedHits":  30,
+                        "seals":  [
+                                      {
+                                          "id":  "grove",
+                                          "state":  "completed",
+                                          "progress":  18
+                                      },
+                                      {
+                                          "id":  "court",
+                                          "state":  "expired",
+                                          "progress":  6
+                                      },
+                                      {
+                                          "id":  "spring",
+                                          "state":  "completed",
+                                          "progress":  12
+                                      },
+                                      {
+                                          "id":  "gate",
+                                          "state":  "completed",
+                                          "progress":  1
+                                      }
+                                  ],
+                        "events":  [
+                                       {
+                                           "time":  3.13,
+                                           "type":  "build",
+                                           "id":  "fire"
+                                       },
+                                       {
+                                           "time":  60.5,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  60.5,
+                                           "type":  "fragment",
+                                           "id":  "dash"
+                                       },
+                                       {
+                                           "time":  60.52,
+                                           "type":  "branch",
+                                           "id":  "trail",
+                                           "pair":  "field/fire"
+                                       },
+                                       {
+                                           "time":  80.4,
+                                           "type":  "seal-start",
+                                           "id":  "grove"
+                                       },
+                                       {
+                                           "time":  98.4,
+                                           "type":  "seal-complete",
+                                           "id":  "grove"
+                                       },
+                                       {
+                                           "time":  98.4,
+                                           "type":  "seal-reward",
+                                           "id":  "fragment",
+                                           "healed":  0
+                                       },
+                                       {
+                                           "time":  98.4,
+                                           "type":  "fragment",
+                                           "id":  "field"
+                                       },
+                                       {
+                                           "time":  150.65,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  215.15,
+                                           "type":  "seal-start",
+                                           "id":  "court"
+                                       },
+                                       {
+                                           "time":  240,
+                                           "type":  "mastery",
+                                           "id":  "power",
+                                           "pair":  "field/fire"
+                                       },
+                                       {
+                                           "time":  241.32,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  278.6,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  302.2,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  323.35,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  331.62,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  345.72,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  364.1,
+                                           "type":  "seal-start",
+                                           "id":  "spring"
+                                       },
+                                       {
+                                           "time":  370.65,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  391.2,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  394.98,
+                                           "type":  "seal-complete",
+                                           "id":  "spring"
+                                       },
+                                       {
+                                           "time":  394.98,
+                                           "type":  "seal-reward",
+                                           "id":  "fragment",
+                                           "healed":  22
+                                       },
+                                       {
+                                           "time":  394.98,
+                                           "type":  "fragment",
+                                           "id":  "bolt"
+                                       },
+                                       {
+                                           "time":  420.02,
+                                           "type":  "mastery",
+                                           "id":  "power",
+                                           "pair":  "blast/force"
+                                       },
+                                       {
+                                           "time":  430.93,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  438.93,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  444.13,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  473.2,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  486,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  488.07,
+                                           "type":  "seal-start",
+                                           "id":  "gate"
+                                       },
+                                       {
+                                           "time":  489.33,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  489.35,
+                                           "type":  "seal-complete",
+                                           "id":  "gate"
+                                       },
+                                       {
+                                           "time":  489.35,
+                                           "type":  "seal-reward",
+                                           "id":  "fragment",
+                                           "healed":  0
+                                       },
+                                       {
+                                           "time":  489.35,
+                                           "type":  "fragment",
+                                           "id":  "fire"
+                                       },
+                                       {
+                                           "time":  501.48,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  512.82,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  544.02,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  571.22,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  572.68,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  574.28,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  628.02,
+                                           "type":  "boss-kill"
+                                       }
+                                   ]
+                    },
+                    {
+                        "weapon":  "flame",
+                        "seed":  1104,
+                        "build":  "fire",
+                        "branch":  "trail",
+                        "mode":  "standard",
+                        "protected":  true,
+                        "seconds":  618.35,
+                        "win":  true,
+                        "peak":  {
+                                     "enemies":  94,
+                                     "shots":  209
+                                 },
+                        "pressureHits":  66,
+                        "protectedHits":  30,
+                        "seals":  [
+                                      {
+                                          "id":  "grove",
+                                          "state":  "completed",
+                                          "progress":  18
+                                      },
+                                      {
+                                          "id":  "court",
+                                          "state":  "completed",
+                                          "progress":  8
+                                      },
+                                      {
+                                          "id":  "spring",
+                                          "state":  "expired",
+                                          "progress":  9.07
+                                      },
+                                      {
+                                          "id":  "gate",
+                                          "state":  "completed",
+                                          "progress":  1
+                                      }
+                                  ],
+                        "events":  [
+                                       {
+                                           "time":  2.43,
+                                           "type":  "build",
+                                           "id":  "fire"
+                                       },
+                                       {
+                                           "time":  61.03,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  61.03,
+                                           "type":  "fragment",
+                                           "id":  "dash"
+                                       },
+                                       {
+                                           "time":  77.7,
+                                           "type":  "seal-start",
+                                           "id":  "grove"
+                                       },
+                                       {
+                                           "time":  95.7,
+                                           "type":  "seal-complete",
+                                           "id":  "grove"
+                                       },
+                                       {
+                                           "time":  95.7,
+                                           "type":  "seal-reward",
+                                           "id":  "fragment",
+                                           "healed":  0
+                                       },
+                                       {
+                                           "time":  95.7,
+                                           "type":  "fragment",
+                                           "id":  "fire"
+                                       },
+                                       {
+                                           "time":  104.2,
+                                           "type":  "branch",
+                                           "id":  "trail",
+                                           "pair":  "field/fire"
+                                       },
+                                       {
+                                           "time":  161.78,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  214.9,
+                                           "type":  "seal-start",
+                                           "id":  "court"
+                                       },
+                                       {
+                                           "time":  217.67,
+                                           "type":  "seal-complete",
+                                           "id":  "court"
+                                       },
+                                       {
+                                           "time":  217.67,
+                                           "type":  "seal-reward",
+                                           "id":  "fragment",
+                                           "healed":  24
+                                       },
+                                       {
+                                           "time":  217.67,
+                                           "type":  "fragment",
+                                           "id":  "fire"
+                                       },
+                                       {
+                                           "time":  240,
+                                           "type":  "mastery",
+                                           "id":  "power",
+                                           "pair":  "field/fire"
+                                       },
+                                       {
+                                           "time":  242.92,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  270.93,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  295.35,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  318.3,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  331.55,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  340.4,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  362.73,
+                                           "type":  "seal-start",
+                                           "id":  "spring"
+                                       },
+                                       {
+                                           "time":  363.93,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  382.5,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  404.12,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  420.02,
+                                           "type":  "mastery",
+                                           "id":  "power",
+                                           "pair":  "blast/force"
+                                       },
+                                       {
+                                           "time":  421.82,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  423.27,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  452.55,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  474.93,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  490.62,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  507.17,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  508.87,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  523.08,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  525.57,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  526.68,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  544.25,
+                                           "type":  "seal-start",
+                                           "id":  "gate"
+                                       },
+                                       {
+                                           "time":  545.08,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  545.53,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  547.03,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  559.98,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  560,
+                                           "type":  "seal-complete",
+                                           "id":  "gate"
+                                       },
+                                       {
+                                           "time":  560,
+                                           "type":  "seal-reward",
+                                           "id":  "heal",
+                                           "healed":  87.75
+                                       },
+                                       {
+                                           "time":  575.35,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  577.33,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  618.35,
+                                           "type":  "boss-kill"
+                                       }
+                                   ]
+                    },
+                    {
+                        "weapon":  "blade",
+                        "seed":  1104,
+                        "build":  "fire",
+                        "branch":  "trail",
+                        "mode":  "standard",
+                        "protected":  true,
+                        "seconds":  667.38,
+                        "win":  true,
+                        "peak":  {
+                                     "enemies":  240,
+                                     "shots":  208
+                                 },
+                        "pressureHits":  92,
+                        "protectedHits":  15,
+                        "seals":  [
+                                      {
+                                          "id":  "grove",
+                                          "state":  "completed",
+                                          "progress":  18
+                                      },
+                                      {
+                                          "id":  "court",
+                                          "state":  "completed",
+                                          "progress":  8
+                                      },
+                                      {
+                                          "id":  "spring",
+                                          "state":  "expired",
+                                          "progress":  2.85
+                                      },
+                                      {
+                                          "id":  "gate",
+                                          "state":  "completed",
+                                          "progress":  1
+                                      }
+                                  ],
+                        "events":  [
+                                       {
+                                           "time":  1.75,
+                                           "type":  "build",
+                                           "id":  "fire"
+                                       },
+                                       {
+                                           "time":  61.72,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  61.72,
+                                           "type":  "fragment",
+                                           "id":  "field"
+                                       },
+                                       {
+                                           "time":  76.63,
+                                           "type":  "seal-start",
+                                           "id":  "grove"
+                                       },
+                                       {
+                                           "time":  94.9,
+                                           "type":  "branch",
+                                           "id":  "trail",
+                                           "pair":  "field/fire"
+                                       },
+                                       {
+                                           "time":  96.27,
+                                           "type":  "seal-complete",
+                                           "id":  "grove"
+                                       },
+                                       {
+                                           "time":  96.27,
+                                           "type":  "seal-reward",
+                                           "id":  "fragment",
+                                           "healed":  10
+                                       },
+                                       {
+                                           "time":  96.27,
+                                           "type":  "fragment",
+                                           "id":  "dash"
+                                       },
+                                       {
+                                           "time":  159.08,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  211.17,
+                                           "type":  "seal-start",
+                                           "id":  "court"
+                                       },
+                                       {
+                                           "time":  213.75,
+                                           "type":  "seal-complete",
+                                           "id":  "court"
+                                       },
+                                       {
+                                           "time":  213.75,
+                                           "type":  "seal-reward",
+                                           "id":  "fragment",
+                                           "healed":  24
+                                       },
+                                       {
+                                           "time":  213.75,
+                                           "type":  "fragment",
+                                           "id":  "dash"
+                                       },
+                                       {
+                                           "time":  240,
+                                           "type":  "mastery",
+                                           "id":  "power",
+                                           "pair":  "field/fire"
+                                       },
+                                       {
+                                           "time":  243.03,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  319.67,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  333.83,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  349.73,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  365.42,
+                                           "type":  "seal-start",
+                                           "id":  "spring"
+                                       },
+                                       {
+                                           "time":  372.23,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  392.93,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  420.02,
+                                           "type":  "mastery",
+                                           "id":  "power",
+                                           "pair":  "blast/force"
+                                       },
+                                       {
+                                           "time":  443.13,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  443.93,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  445.33,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  447.53,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  461.73,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  472.83,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  490.08,
+                                           "type":  "seal-start",
+                                           "id":  "gate"
+                                       },
+                                       {
+                                           "time":  490.93,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  491.83,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  491.85,
+                                           "type":  "seal-complete",
+                                           "id":  "gate"
+                                       },
+                                       {
+                                           "time":  491.85,
+                                           "type":  "seal-reward",
+                                           "id":  "fragment",
+                                           "healed":  0
+                                       },
+                                       {
+                                           "time":  491.85,
+                                           "type":  "fragment",
+                                           "id":  "blast"
+                                       },
+                                       {
+                                           "time":  497.45,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  535.58,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  554.85,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  588.92,
+                                           "type":  "elite-kill"
+                                       },
+                                       {
+                                           "time":  667.38,
+                                           "type":  "boss-kill"
+                                       }
+                                   ]
+                    }
+                ],
+    "mapRendering":  {
+                         "scope":  "Real Laya WebGL static map regions and active seal overlays; desktop browser, not native performance.",
+                         "rows":  [
+                                      {
+                                          "id":  "grove",
+                                          "objective":  "hold",
+                                          "progress":  "守护 0/18s",
+                                          "active":  false,
+                                          "x":  -650,
+                                          "y":  -520,
+                                          "textureBytes":  19922944,
+                                          "dc":  18,
+                                          "actorNodes":  9
+                                      },
+                                      {
+                                          "id":  "grove",
+                                          "objective":  "hold",
+                                          "progress":  "守护 9/18s",
+                                          "active":  true,
+                                          "x":  -650,
+                                          "y":  -520,
+                                          "textureBytes":  19922944,
+                                          "dc":  18,
+                                          "actorNodes":  9
+                                      },
+                                      {
+                                          "id":  "court",
+                                          "objective":  "clear",
+                                          "progress":  "清剿 0/8",
+                                          "active":  false,
+                                          "x":  650,
+                                          "y":  -500,
+                                          "textureBytes":  19922944,
+                                          "dc":  19,
+                                          "actorNodes":  9
+                                      },
+                                      {
+                                          "id":  "court",
+                                          "objective":  "clear",
+                                          "progress":  "清剿 4/8",
+                                          "active":  true,
+                                          "x":  650,
+                                          "y":  -500,
+                                          "textureBytes":  19922944,
+                                          "dc":  19,
+                                          "actorNodes":  9
+                                      },
+                                      {
+                                          "id":  "spring",
+                                          "objective":  "relay",
+                                          "progress":  "符石 0/3 · 驻留 0/4s",
+                                          "active":  false,
+                                          "x":  -580,
+                                          "y":  620,
+                                          "textureBytes":  19922944,
+                                          "dc":  19,
+                                          "actorNodes":  9
+                                      },
+                                      {
+                                          "id":  "spring",
+                                          "objective":  "relay",
+                                          "progress":  "符石 1/3 · 驻留 2/4s",
+                                          "active":  true,
+                                          "x":  -580,
+                                          "y":  620,
+                                          "textureBytes":  19922944,
+                                          "dc":  19,
+                                          "actorNodes":  9
+                                      },
+                                      {
+                                          "id":  "gate",
+                                          "objective":  "guardian",
+                                          "progress":  "守卫 0/1",
+                                          "active":  false,
+                                          "x":  600,
+                                          "y":  600,
+                                          "textureBytes":  19922944,
+                                          "dc":  18,
+                                          "actorNodes":  9
+                                      },
+                                      {
+                                          "id":  "gate",
+                                          "objective":  "guardian",
+                                          "progress":  "守卫 0/1",
+                                          "active":  true,
+                                          "x":  600,
+                                          "y":  600,
+                                          "textureBytes":  19922944,
+                                          "dc":  19,
+                                          "actorNodes":  10
+                                      },
+                                      {
+                                          "id":  "grove",
+                                          "objective":  "hold",
+                                          "progress":  "守护 9/18s",
+                                          "active":  true,
+                                          "x":  -650,
+                                          "y":  -520,
+                                          "textureBytes":  19922944,
+                                          "dc":  22,
+                                          "actorNodes":  9,
+                                          "mobile":  true
+                                      },
+                                      {
+                                          "id":  "court",
+                                          "objective":  "clear",
+                                          "progress":  "清剿 4/8",
+                                          "active":  true,
+                                          "x":  650,
+                                          "y":  -500,
+                                          "textureBytes":  19922944,
+                                          "dc":  23,
+                                          "actorNodes":  9,
+                                          "mobile":  true
+                                      },
+                                      {
+                                          "id":  "spring",
+                                          "objective":  "relay",
+                                          "progress":  "符石 1/3 · 驻留 2/4s",
+                                          "active":  true,
+                                          "x":  -580,
+                                          "y":  620,
+                                          "textureBytes":  19922944,
+                                          "dc":  23,
+                                          "actorNodes":  9,
+                                          "mobile":  true
+                                      },
+                                      {
+                                          "id":  "gate",
+                                          "objective":  "guardian",
+                                          "progress":  "守卫 0/1",
+                                          "active":  true,
+                                          "x":  600,
+                                          "y":  600,
+                                          "textureBytes":  19922944,
+                                          "dc":  23,
+                                          "actorNodes":  10,
+                                          "mobile":  true
+                                      }
+                                  ]
+                     },
+    "wechatProbe":  {
+                        "active":  false,
+                        "error":  "",
+                        "report":  {
+                                       "capturedAt":  1793933214407,
+                                       "context":  {
+                                                       "version":  "0.15.14",
+                                                       "seconds":  271.49999999999864,
+                                                       "quality":  "精细",
+                                                       "enemies":  235,
+                                                       "shots":  208,
+                                                       "drops":  150,
+                                                       "width":  393,
+                                                       "height":  760
+                                                   },
+                                       "baseline":  28,
+                                       "finalBaseline":  28,
+                                       "stable":  true,
+                                       "rows":  [
+                                                    {
+                                                        "group":  "enemies",
+                                                        "label":  "怪物本体",
+                                                        "without":  28,
+                                                        "saved":  0
+                                                    },
+                                                    {
+                                                        "group":  "shots",
+                                                        "label":  "弹道",
+                                                        "without":  28,
+                                                        "saved":  0
+                                                    },
+                                                    {
+                                                        "group":  "buffs",
+                                                        "label":  "Buff 特效",
+                                                        "without":  25,
+                                                        "saved":  3
+                                                    },
+                                                    {
+                                                        "group":  "effects",
+                                                        "label":  "其他特效",
+                                                        "without":  28,
+                                                        "saved":  0
+                                                    },
+                                                    {
+                                                        "group":  "warnings",
+                                                        "label":  "血条/预警",
+                                                        "without":  24,
+                                                        "saved":  4
+                                                    },
+                                                    {
+                                                        "group":  "drops",
+                                                        "label":  "掉落/光柱",
+                                                        "without":  28,
+                                                        "saved":  0
+                                                    },
+                                                    {
+                                                        "group":  "labels",
+                                                        "label":  "飘字",
+                                                        "without":  27,
+                                                        "saved":  1
+                                                    },
+                                                    {
+                                                        "group":  "environment",
+                                                        "label":  "地图/柱子",
+                                                        "without":  26,
+                                                        "saved":  2
+                                                    },
+                                                    {
+                                                        "group":  "player",
+                                                        "label":  "玩家本体",
+                                                        "without":  26,
+                                                        "saved":  2
+                                                    },
+                                                    {
+                                                        "group":  "ui",
+                                                        "label":  "界面",
+                                                        "without":  14,
+                                                        "saved":  14
+                                                    }
+                                                ]
+                                   },
+                        "time":  271.49999999999864,
+                        "hp":  100,
+                        "dialog":  "performance"
+                    },
+    "wechatAtlas":  {
+                        "atlas":  {
+                                      "bytes":  8388608,
+                                      "tiles":  341
+                                  },
+                        "highAtlas":  {
+                                          "quality":  "high",
+                                          "ready":  true,
+                                          "bytes":  8388608,
+                                          "error":  "",
+                                          "total":  8388608
+                                      }
+                    }
+}

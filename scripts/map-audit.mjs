@@ -6,18 +6,20 @@ export async function checkMapAudit({send,evaluate,origin,directory}){
  await send('Page.navigate',{url:origin+'/'});
  for(let i=0;i<100&&!await evaluate('!!window.Laya?.stage?.getChildByName("game-ui")');i++)await new Promise(r=>setTimeout(r,100));
  await evaluate(`(async()=>{
-  const {game:g}=await import('/dist/main.js'),{SEAL_SITES}=await import('/dist/game/map-events.js');
+  const {game:g,ui}=await import('/dist/main.js'),{SEAL_SITES,sealRule,sealProgressText}=await import('/dist/game/map-events.js');
   g.sound=false;g.start('blade',true,'standard');Laya.timer.clear(g.loop,g.loop.frame);
   for(const e of g.enemies)g.release(e.node);g.enemies=[];
   window.mapReview={async paint(index,active=false){
    const site=SEAL_SITES[index];g.player.x=site.x;g.player.y=site.y;g.time=site.at;
-   for(const s of g.mapEvents.sites){s.state=s.id===site.id&&active?'active':'locked';s.progress=s.state==='active'?9:0;s.startedAt=g.time;}
-   g.render();
+   for(const e of g.enemies)g.release(e.node);g.enemies=[];
+   for(const s of g.mapEvents.sites){s.state=s.id===site.id&&active?'active':'locked';s.progress=s.state==='active'?sealRule(s).goal*.5:0;s.startedAt=g.time;}
+   if(active&&site.objective==='guardian'){const e=g.spawnEnemy(3,230,Math.PI/4);e.sealId=site.id;g.mapEvents.sites[index].progress=0;}
+   ui.mobile=Laya.stage.width<500;ui.resize();g.onChange();g.render();
    const samples=[],original=Laya.stage._loop;
    Laya.stage._loop=function(...args){const before=Laya.Stat.renderBatches;const value=original.apply(this,args);samples.push(Laya.Stat.renderBatches-before);return value;};
    try{for(let n=0;n<12;n++)await new Promise(requestAnimationFrame);}finally{Laya.stage._loop=original;}
    const sorted=samples.slice(4).sort((a,b)=>a-b);
-   return {id:site.id,active,x:g.player.x,y:g.player.y,textureBytes:g.scene.textureBytes,dc:sorted[Math.floor(sorted.length/2)],actorNodes:g.scene.actors.numChildren};
+   return {id:site.id,objective:site.objective,progress:sealProgressText(g.mapEvents.sites[index]),active,x:g.player.x,y:g.player.y,textureBytes:g.scene.textureBytes,dc:sorted[Math.floor(sorted.length/2)],actorNodes:g.scene.actors.numChildren};
   }};
  })()`);
  const rows=[];

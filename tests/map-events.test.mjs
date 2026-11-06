@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {setupLayaStub} from './helpers/laya-stub.mjs';
-import {MapEvents,SEAL_SITES} from '../dist/game/map-events.js';
+import {MapEvents,SEAL_SITES,sealRelayPoints,sealTarget,sealNavigationTarget,sealRule,sealProgressText} from '../dist/game/map-events.js';
 import {RUN,RUNS,encounterBeat,progressionTime} from '../dist/game/pace.js';
 import {difficultyAt} from '../dist/game/difficulty.js';
 import {WORLD_RULES,WORLD_PILLARS} from '../dist/game/game-config.js';
@@ -16,6 +16,70 @@ const fixture=()=>{
  const update=(time,player,dt=1/60)=>map.update(time,player,dt,RUNS.standard,{start:s=>calls.push('start:'+s.id),complete:s=>calls.push('complete:'+s.id),announce:()=>{}});
  return {map,calls,update};
 };
+
+test('court needs eight distinct real local deaths, never hold time, remote kills or duplicate credit',()=>{
+ const f=fixture(),s=f.map.sites[1];f.update(210,s);f.update(211,s,18);assert.equal(s.progress,0);
+ const killed=(extra={})=>({x:s.x,y:s.y,kind:0,dead:true,...extra});
+ const e=killed();f.map.recordKill(e,s,211,RUNS.standard);f.map.recordKill(e,s,211,RUNS.standard);assert.equal(s.progress,1);
+ for(const e of [killed({dead:false}),killed({kind:4}),killed({x:s.x+261})])f.map.recordKill(e,s,211,RUNS.standard);
+ f.map.recordKill(killed(),{x:s.x+261,y:s.y},211,RUNS.standard);assert.equal(s.progress,1);
+ for(let n=0;n<9;n++)f.map.recordKill(killed(),s,212,RUNS.standard);
+ assert.equal(s.progress,8);f.update(212,s);assert.equal(s.state,'completed');
+ f.update(213,s);assert.equal(f.calls.filter(c=>c==='complete:court').length,1);
+ const late=fixture(),t=late.map.sites[1];late.update(210,t);
+ late.map.recordKill({...e},t,255,RUNS.standard);assert.equal(t.progress,0);
+});
+
+test('spring requires ordered visits, retains partial hold and cannot skip nodes with a large delta',()=>{
+ const f=fixture(),s=f.map.sites[2],points=sealRelayPoints(s);f.update(360,s);
+ f.update(361,points[2],4);assert.equal(s.progress,0);
+ f.update(362,points[0],2);assert.equal(s.progress,2);
+ f.update(363,s,1);assert.equal(s.progress,2);
+ f.update(364,points[0],20);assert.equal(s.progress,4);assert.deepEqual(sealTarget(s),points[1]);
+ f.update(365,points[0],20);assert.equal(s.progress,4);
+ f.update(366,points[1],4);assert.equal(s.progress,8);
+ f.update(367,points[2],4);assert.equal(s.progress,12);assert.equal(s.state,'completed');
+ assert.equal(f.calls.filter(c=>c==='complete:spring').length,1);
+});
+
+test('gate only counts its marked guardian, including a kill outside the activation ring',()=>{
+ const f=fixture(),s=f.map.sites[3];f.update(480,s);
+ for(const sealId of [undefined,'other'])f.map.recordKill({x:s.x,y:s.y,kind:3,dead:true,sealId},s,481,RUNS.standard);
+ assert.equal(s.progress,0);
+ const guard={x:0,y:0,kind:3,dead:false,sealId:s.id};assert.equal(sealNavigationTarget(s,[guard]),guard);
+ guard.dead=true;f.map.recordKill(guard,{x:0,y:0},481,RUNS.standard);f.update(482,{x:0,y:0});assert.equal(s.state,'completed');
+});
+
+test('game connects marked guardian and actual damage death to the event reward transaction',()=>{
+ const g=new Game();g.sound=false;g.start('storm',true,'standard');g.time=480;
+ const site=g.mapEvents.sites[3];Object.assign(g.player,{x:site.x,y:site.y});
+ g.mapEvents.update(g.time,g.player,0,g.run,g.mapEventHooks);
+ const guard=g.enemies.find(e=>e.sealId===site.id);assert.ok(guard);assert.equal(guard.kind,3);
+ assert.equal(g.mapEventTarget,guard);
+ g.hit(guard,1e8,{canCrit:false,triggerBuffs:false});assert.equal(site.progress,1);
+ g.mapEvents.update(481,g.player,0,g.run,g.mapEventHooks);assert.equal(site.state,'completed');
+ assert.ok(g.flow.paused || g.gate.paused); // Real rewards may queue behind an elite fragment.
+ const normal=g.enemies.find(e=>e.kind!==3);assert.ok(normal);assert.equal(normal.sealId,undefined);
+});
+
+test('all objective geometry is reachable and each objective has a distinct instruction and progress unit',()=>{
+ const f=fixture();assert.equal(new Set(f.map.sites.map(s=>sealRule(s).instruction)).size,4);
+ const relay=f.map.sites[2];
+ for(const p of sealRelayPoints(relay)){
+  assert.ok(Math.abs(p.x)+65<WORLD_RULES.limit&&Math.abs(p.y)+65<WORLD_RULES.limit);
+  for(const pillar of WORLD_PILLARS)assert.ok(Math.hypot(p.x-pillar.x,p.y-pillar.y)>WORLD_RULES.playerPillarRadius+65);
+ }
+ for(const s of f.map.sites){assert.ok(sealProgressText(s).includes('/'));const snapshot=JSON.stringify(s);let n=0;drawMapEvents({drawPoly(){n++;},drawLine(){n++;}},[{...s,state:'active'}]);assert.ok(n<=60);assert.equal(JSON.stringify(s),snapshot);}
+});
+
+test('a full elite budget reuses an existing guardian instead of creating an impossible missing target',()=>{
+ const g=new Game();g.sound=false;g.start('storm',true,'standard');g.time=480;
+ for(const e of g.enemies)g.release(e.node);g.enemies=[];
+ for(let i=0;i<240;i++)g.spawnEnemy(3,400,0);
+ const count=g.enemies.length,s=g.mapEvents.sites[3];Object.assign(g.player,{x:s.x,y:s.y});
+ g.mapEvents.update(g.time,g.player,0,g.run,g.mapEventHooks);
+ assert.equal(g.enemies.length,count);assert.equal(g.enemies.filter(e=>e.sealId===s.id).length,1);
+});
 
 test('run modes preserve quick timing and map the same combat difficulty without global mutation',()=>{
  assert.equal(RUN.bossAt,300);assert.equal(RUN.duration,360);

@@ -45,3 +45,13 @@ test('healing drop priority follows maximum health instead of an absolute sevent
  const a=autoPlayIntent({...p,hp:90},{...w,drops},0,{orbit:false,maxHp:200});assert.ok(a.x>.99);
  const b=autoPlayIntent({...p,hp:90},{...w,drops},0,{orbit:false,maxHp:100});assert.ok(b.y>.8);
 });
+
+test('a narrow relay waypoint guides the pilot inside its 65-unit hold circle without granting progress',()=>{
+ const player={x:0,y:0,hp:100},target={x:100,y:0};
+ for(let i=0;i<120;i++){
+  const intent=autoPlayIntent(player,w,i/30,{orbit:false,waypoint:target,waypointRadius:20});
+  player.x+=intent.x*240/30;player.y+=intent.y*240/30;
+ }
+ assert.ok(Math.hypot(player.x-target.x,player.y-target.y)<55);
+ assert.equal(target.progress,undefined);
+});
