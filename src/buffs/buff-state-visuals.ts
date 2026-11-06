@@ -1,5 +1,6 @@
 import type { BuffFeedback, BuffStatus, BuffTarget } from './buff-types.js';
 import type { EvolutionMark } from './buff-evolutions.js';
+import { BUFF_RULES } from './buff-config.js';
 import { glyph } from './buff-visuals.js';
 import { clamp } from '../shared/model.js';
 import { directionalShape, lightningStroke } from '../rendering/skill-visuals.js';
@@ -9,7 +10,7 @@ type Project = (x: number, y: number) => {
 };
 /** Separate lanes and silhouettes keep simultaneous ice/thunder marks readable. No frozen state is invented. */
 export function drawBuffMark(g: any, x: number, y: number, element: 'ice' | 'lightning', mark: EvolutionMark, kind = 0): void {
-    const ice = element === 'ice', slots = mark.source?.branch === (ice ? 'prison' : 'charge') ? 5 : 3;
+    const ice = element === 'ice', slots = mark.source?.branch === (ice ? 'prison' : 'charge') ? 5 : ice && mark.source?.branch === 'shards' ? BUFF_RULES.frost.shardsStacks : 3;
     // Health bars occupy y-65 (ordinary) / y-90 (elite); keep both mark lanes above them.
     const row = y - (ice ? 79 : 94) - (kind >= 3 ? 25 : 0), color = ice ? '#a8e6ed' : '#d6b5ee';
     g.drawPoly(x - 27, row, ice ? [0, -5, 3, -2, 0, 4, -3, -2] : [1, -5, -3, 0, 0, 0, -1, 5, 4, -1, 1, -1], color);

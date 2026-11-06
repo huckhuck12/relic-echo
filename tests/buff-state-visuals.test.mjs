@@ -11,10 +11,10 @@ const source=(branch)=>({kind:branch==='prison'?'orbit':'bolt',element:branch===
 function runtime(){const targets=[{x:30,y:0,dead:false},{x:60,y:0,dead:false}],damage=[];const r=new BuffRuntime({player:{x:0,y:0,dx:1,dy:0},query:()=>targets,damage:(t,d)=>damage.push([targets.indexOf(t),d]),knock(){}});return{r,targets,damage};}
 
 test('simultaneous ice and thunder use separate lanes, distinct shapes and exact three/five slots',()=>{
- for(const branch of [undefined,'charge','prison']){
+ for(const branch of [undefined,'charge','prison','shards']){
   const a=recorder(),b=recorder(),mark=Object.freeze({stacks:2,life:3,lock:0,source:source(branch)});
   drawBuffMark(a.g,0,0,'lightning',mark);drawBuffMark(b.g,0,0,'ice',mark);
-  assert.equal(a.calls.length,branch==='charge'?6:4);assert.equal(b.calls.length,branch==='prison'?6:4);
+  assert.equal(a.calls.length,branch==='charge'?6:4);assert.equal(b.calls.length,branch==='prison'?6:branch==='shards'?3:4);
   const bounds=c=>c.calls.flatMap(v=>v.args[2].filter((_,i)=>i%2).map(y=>y+v.args[1]));
   assert.ok(Math.max(...bounds(a))<Math.min(...bounds(b)));
   assert.notDeepEqual(a.calls[1].args[2],b.calls[1].args[2]);

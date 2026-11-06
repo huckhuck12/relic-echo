@@ -1,4 +1,5 @@
 import type { Action, Element, Recipe, BuffHost, BuffTarget, BuffBranch } from './buff-types.js';
+import { BUFF_RULES } from './buff-config.js';
 /** 行为与元素共同决定进化，触发碎片继续决定释放时机/冷却，不增加第四种槽位。 */
 export const EVOLUTIONS = [
     {
@@ -60,7 +61,7 @@ interface EvolutionHooks<T> {
 }
 /**
  * 三种进化的模拟状态，和普通 Buff 冷却分开；不引用 Game、Laya 或显示节点。
- * 只接受基础 Buff 的一次实际接触，进化伤害直接走 host.damage，不递归调用 hit。
+ * 接受基础 Buff 实际接触及限频武器充能，进化伤害直接走 host.damage，不递归调用 hit。
  * 标记分别最多 200 个，死亡/超时清理；种子/连线有独立硬上限，暂停不调用 update。
  */
 export class BuffEvolutions<T extends BuffTarget> {
@@ -185,7 +186,7 @@ export class BuffEvolutions<T extends BuffTarget> {
             kind: source.kind, element: source.element, damage: source.reactionDamage ?? source.damage, level: source.level, slot: source.slot, branch: source.branch
         };
         mark.stacks = Math.min(source.branch === 'prison' ? 5 : 3, mark.stacks + 1);
-        if (source.branch === 'prison' || mark.stacks < 3)
+        if (source.branch === 'prison' || mark.stacks < (source.branch === 'shards' ? BUFF_RULES.frost.shardsStacks : 3))
             return;
         this.consumeFrost(target, mark, false);
     }
@@ -222,7 +223,7 @@ export class BuffEvolutions<T extends BuffTarget> {
             }
         }
         else if (source.branch === 'shards') {
-            // A lone elite/Boss must still receive the payoff for three real contacts.
+            // A lone elite/Boss also receives the payoff after real orbit contacts.
             this.host.damage(target, source.damage * .7, true, true, source);
             let count = 0;
             for (const other of this.host.query(target.x, target.y, 110)) {

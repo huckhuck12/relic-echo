@@ -49,6 +49,7 @@ export const BUFF_RULES = {
     },
     burn: { duration: 3, tick: .5, damage: .2 },
     slow: { duration: 2, multiplier: .65 },
+    frost: { shardsStacks: 2, prisonSlowPerLayer: .05, prisonMinSpeed: .45 },
     chain: { radius: 135, count: 2, damage: .55 },
     knockback: 380,
 } as const;

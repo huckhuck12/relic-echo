@@ -31,10 +31,10 @@ test('same-slot, unknown provenance, empty, expired and dead targets do not cons
 
 test('shards pays off on the main target and bounds separate neighbor damage at level five',()=>{
  for(const [level,cap]of [[3,3],[5,5]]){
-  const {e,targets,hits}=fixture();for(let i=0;i<3;i++)e.hit(targets[0],ice('shards',level));
+  const {e,targets,hits}=fixture();e.hit(targets[0],ice('shards',level));assert.equal(e.shatters,0);e.hit(targets[0],ice('shards',level));
   assert.equal(e.shatters,1);assert.equal(hits.length,cap+1);assert.equal(hits[0].t,targets[0]);assert.equal(hits[0].d,7);assert.ok(hits.slice(1).every(h=>h.t!==targets[0]&&h.d===7));assert.equal(targets[0].hp,9993);
  }
- const {e,targets,hits}=fixture(1);for(let i=0;i<3;i++)e.hit(targets[0],ice('shards'));assert.equal(hits.length,1);assert.equal(hits[0].d,7);assert.equal(e.shatters,1);
+ const {e,targets,hits}=fixture(1);for(let i=0;i<2;i++)e.hit(targets[0],ice('shards'));assert.equal(hits.length,1);assert.equal(hits[0].d,7);assert.equal(e.shatters,1);
 });
 
 test('prison stores five layers in its first-contact window and requires cross-slot force',()=>{
@@ -45,6 +45,42 @@ test('prison stores five layers in its first-contact window and requires cross-s
  }
  const {e,targets}=fixture();e.hit(targets[0],ice('prison'));e.update(3.5);e.hit(targets[0],ice('prison'));e.update(.51);assert.equal(e.frost.size,0);
  for(let i=0;i<20;i++)e.hit(targets[0],ice('prison'));assert.equal(e.frost.get(targets[0]).stacks,5);
+});
+
+test('prison trades stored layers for control and returns to base slow after consumption, expiry or clear',()=>{
+ const {host,targets}=fixture(1),r=new BuffRuntime(host),t=targets[0];
+ for(let n=1;n<=7;n++){
+  r.apply(t,{...ice('prison',5),x:0,y:0});
+  assert.ok(Math.abs(r.speedMultiplier(t)-( .65-Math.min(n-1,4)*.05))<1e-9);
+ }
+ r.evolutions.hit(t,force);assert.equal(r.speedMultiplier(t),.65);
+ r.update(1.01);r.apply(t,{...ice('prison',5),x:0,y:0});r.apply(t,{...ice('prison',5),x:0,y:0});
+ assert.equal(r.speedMultiplier(t),.6);r.evolutions.update(4.01);assert.equal(r.speedMultiplier(t),.65);
+ r.update(2.01);assert.equal(r.speedMultiplier(t),1);r.clearTransient();assert.equal(r.speedMultiplier(t),1);
+});
+
+test('prison keeps Boss slow capped and unrelated ice does not gain layer control',()=>{
+ for(const [branch,kind,expected]of [['prison',4,.85],['shards',0,.65],[undefined,0,.65]]){
+  const {host,targets}=fixture(1),r=new BuffRuntime(host),t=targets[0];t.kind=kind;
+  for(let i=0;i<5;i++)r.apply(t,{...ice(branch,5),x:0,y:0});
+  assert.equal(r.speedMultiplier(t),expected);
+ }
+});
+
+test('two-contact shards still respect expiry, burst lock and the per-step reaction budget',()=>{
+ const {e,targets}=fixture(1),t=targets[0];e.hit(t,ice('shards'));e.update(3.01);e.hit(t,ice('shards'));assert.equal(e.shatters,0);
+ e.hit(t,ice('shards'));assert.equal(e.shatters,1);for(let i=0;i<10;i++)e.hit(t,ice('shards'));assert.equal(e.shatters,1);
+ e.clear();for(let i=0;i<20;i++){const a={x:i,y:0,dead:false};e.hit(a,ice('shards'));e.hit(a,ice('shards'));}
+ assert.equal(e.shatters,16);assert.equal(e.frostRejected,4);
+});
+
+test('a single physical ice orbit pays two-contact shards at 30/60/120Hz without stacking casts',()=>{
+ for(const hz of [30,60,120]){
+  const {host,targets}=fixture(1),r=new BuffRuntime(host);targets[0].x=150;r.chooseStarter('ice');
+  r.receiveFragment('ice');r.receiveFragment('ice');r.takeBranchRequest('orbit/ice');r.chooseBranch('shards','orbit/ice');r.trigger('hit',0,0,1);
+  for(let n=0;n<Math.round(.7*hz);n++)r.update(1/hz);
+  assert.equal(r.evolutions.shatters,1);assert.equal(r.effects.length,1);assert.equal(r.evolutions.frost.get(targets[0]).lock>0,true);
+ }
 });
 
 test('prison weakens only direct orbit damage; old effects keep their branch and level snapshots',()=>{

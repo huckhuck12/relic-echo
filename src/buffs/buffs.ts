@@ -236,7 +236,15 @@ export class BuffRuntime<T extends BuffTarget> {
     private readonly feedbackAt: BuffFeedbackSink = (kind, element, x, y, tx = x, ty = y, level = 1, branch) => {
         enqueueBuffFeedback(this.feedback, this.visualBudget, kind, element, x, y, tx, ty, level, branch);
     };
-    speedMultiplier(target: T): number { return (this.statuses.get(target)?.slow || 0) > 0 ? (target.kind === 4 ? .85 : BUFF_RULES.slow.multiplier) : 1; }
+    speedMultiplier(target: T): number {
+        if (!((this.statuses.get(target)?.slow || 0) > 0))
+            return 1;
+        if (target.kind === 4)
+            return .85;
+        const frost = this.evolutions.frost.get(target);
+        const layers = frost && frost.life > 0 && frost.lock <= 0 && frost.source?.branch === 'prison' ? frost.stacks : 0;
+        return Math.max(BUFF_RULES.frost.prisonMinSpeed, BUFF_RULES.slow.multiplier - Math.max(0, layers - 1) * BUFF_RULES.frost.prisonSlowPerLayer);
+    }
     /** 基础扣血→元素→进化；进化额外伤害不再调用 apply。 */
     private readonly apply = (target: T, effect: BuffEffect): void => {
         if (target.dead)

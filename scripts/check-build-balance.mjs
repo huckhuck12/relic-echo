@@ -30,6 +30,8 @@ try{
   }
   const reactions={reforges:0,shatters:0,detonations:0,inheritances:0,weaponCharges:0};
   const phaseReactions={early:0,growth:0,formed:0,boss:0},targetReactions={ordinary:0,elite:0,boss:0};
+  // Summed live-target seconds of active slow, not wall time or estimated avoided damage.
+  const control={slowedEnemySeconds:0,speedReductionEnemySeconds:0,targets:{ordinary:0,elite:0,boss:0}};
   const weaponContact=g.buffs.evolutions.weaponHit.bind(g.buffs.evolutions);
   g.buffs.evolutions.weaponHit=(...args)=>{const before=g.buffs.evolutions.weaponCharges;weaponContact(...args);reactions.weaponCharges+=g.buffs.evolutions.weaponCharges-before;};
   const inheritedDeath=g.buffs.evolutions.killed.bind(g.buffs.evolutions);
@@ -87,6 +89,13 @@ try{
   for(let step=0;step<65000&&g.dialog?.type!=='result';step++){
    now+=1000/60;g.autoPlay.frame(now);
    if(g.mode!=='battle'||g.gate.paused)continue;
+   for(const [enemy,status] of g.buffs.statuses){
+    if(enemy.dead||status.slow<=0)continue;
+    const duration=Math.min(1/60,status.slow),reduction=1-g.buffs.speedMultiplier(enemy);
+    if(reduction<=0)continue;
+    control.slowedEnemySeconds+=duration;control.speedReductionEnemySeconds+=duration*reduction;
+    control.targets[enemy.kind===4?'boss':enemy.kind===3?'elite':'ordinary']+=duration;
+   }
    g.update(1/60);
    peak.enemies=Math.max(peak.enemies,g.enemies.length);peak.shots=Math.max(peak.shots,g.shots.length);
    const level=g.buffs.levelOf(g.buffs.recipes[0]);
@@ -101,7 +110,7 @@ try{
   assert.ok(Math.abs(balance.damage.buff-buffDamage)<.001,'Buff damage must agree with the runtime ledger.');
   assert.ok(Math.abs(balance.boss.damage.buff-bossBuffDamage)<.001,'Boss Buff damage must agree with the runtime ledger.');
   assert.equal(balance.combat.hitsTaken,pressureHits,'Hurt event count must agree.');
-  rows.push({weapon,seed,build,branch,mode,balance:g.autoPlay.balanceReport(),contacts:[...contacts.values()],phases,phaseReactions,targetReactions,peak,lethalContext,seals:g.mapEvents.sites.map(s=>({id:s.id,state:s.state,progress:+s.progress.toFixed(2)})),protected:protectedRun,seconds:+g.time.toFixed(2),win:g.dialog?.win||false,kills:g.kills,firstBranch,maxLevelAt,buffLevel:g.buffs.levelOf(g.buffs.recipes[0]),buffDamage:Math.round(buffDamage),totalDamage:Math.round(totalDamage),bossBuffDamage:Math.round(bossBuffDamage),bossRemaining:boss?+Math.max(0,boss.hp).toFixed(1):null,bossStartHP,pressureHits,protectedHits,procs:g.buffs.procs,...reactions,checkpoints,events});
+  rows.push({weapon,seed,build,branch,mode,balance:g.autoPlay.balanceReport(),control,contacts:[...contacts.values()],phases,phaseReactions,targetReactions,peak,lethalContext,seals:g.mapEvents.sites.map(s=>({id:s.id,state:s.state,progress:+s.progress.toFixed(2)})),protected:protectedRun,seconds:+g.time.toFixed(2),win:g.dialog?.win||false,kills:g.kills,firstBranch,maxLevelAt,buffLevel:g.buffs.levelOf(g.buffs.recipes[0]),buffDamage:Math.round(buffDamage),totalDamage:Math.round(totalDamage),bossBuffDamage:Math.round(bossBuffDamage),bossRemaining:boss?+Math.max(0,boss.hp).toFixed(1):null,bossStartHP,pressureHits,protectedHits,procs:g.buffs.procs,...reactions,checkpoints,events});
   console.log(JSON.stringify(rows.at(-1)));g.autoPlay.stop();g.returnToTitle();
  }
 }finally{Math.random=originalRandom;}

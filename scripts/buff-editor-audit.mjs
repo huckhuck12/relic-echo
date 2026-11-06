@@ -32,6 +32,11 @@ export async function checkBuffEditorAudit({send,evaluate,origin,directory}){
   // Exercise a real branch plus mastery; the compact description must still be visible.
   await run(`for(let n=0;n<5&&g.buffs.levelOf(g.buffs.recipes[0])<3;n++)g.buffs.receiveFragment('lightning');g.buffs.takeBranchRequest('bolt/lightning');g.buffs.chooseBranch('charge','bolt/lightning');const pair=g.buffs.mastery.take(240,g.buffs.recipes,r=>g.buffs.levelOf(r));g.buffs.mastery.choose(pair,'tempo');g.flow.refresh();`);
   await capture('branch-mastery');assert.match(await run(`return find(ui.root,'buff-description')?.text||'';`),/蓄雷/);await tap('buff-page-growth');await capture('branch-growth');
+  for(const branch of ['shards','prison']){
+   await run(`g.start('blade',false,'standard');Laya.timer.clear(g.loop,g.loop.frame);g.buffs.chooseStarter('ice');for(let n=0;n<5&&g.buffs.levelOf(g.buffs.recipes[0])<3;n++)g.buffs.receiveFragment('ice');g.buffs.takeBranchRequest('orbit/ice');if(!g.buffs.chooseBranch(${JSON.stringify(branch)},'orbit/ice'))throw Error('Ice branch setup failed');g.buffs.cooldowns[0]=1.5;ui.buffEditor.page='recipe';ui.buffEditor.slot=0;g.toggleBuffs();ui.update();`);
+   await capture(branch+'-recipe');
+   assert.match(await run(`return find(ui.root,'buff-description')?.text||'';`),branch==='shards'?/两层/:/35%[\s\S]*55%/);
+  }
  }
  const report={scope:'Production Laya, real touch page navigation at four phone sizes. Static compatibility, no native FPS claim.',rows};await writeFile(resolve(directory,'buff-editor-audit.json'),JSON.stringify(report,null,2));return report;
 }
