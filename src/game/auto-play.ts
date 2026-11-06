@@ -10,6 +10,7 @@ import { pursueAutoSeal, safeAutoDash } from './auto-navigation.js';
 import { sealNavigationTarget } from './map-events.js';
 import { BuildRunMetrics } from './build-run-metrics.js';
 import { GAME_VERSION } from '../shared/version.js';
+import { BUFF_RULES } from '../buffs/buff-config.js';
 export interface AutoPlayWorld {
     enemies: readonly Enemy[];
     shots: readonly Shot[];
@@ -300,7 +301,7 @@ export function autoPlayIntent(player: Point & {
     }
     else if (!danger && tactics?.focus) {
         const dx = tactics.focus.x - player.x, dy = tactics.focus.y - player.y, d = Math.hypot(dx, dy) || 1;
-        const desired = Math.min(tactics.orbit ? 105 : 220, (tactics.attackRange ?? 490) * .75);
+        const desired = tactics.orbit ? BUFF_RULES.orbit.radius : Math.min(220, (tactics.attackRange ?? 490) * .75);
         const approach = Math.max(-1, Math.min(1, (d - desired) / 80));
         // Emergency avoidance takes precedence over approaching the contact band.
         x += (dx / d * approach - dy / d * .55) * 3;

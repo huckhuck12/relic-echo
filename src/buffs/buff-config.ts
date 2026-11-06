@@ -40,12 +40,12 @@ export const BUFF_ACTIONS = {
 export const BUFF_RULES = {
     hitChance: .3, duplicateXP: 5, slots: 2,
     bolt: {
-        seek: 500, speed: 480, queryPadding: 40, hitRadius: 32, thunderTurnSpeed: 8
+        seek: 500, speed: 480, thunderSpeed: 900, queryPadding: 40, hitRadius: 32, thunderTurnSpeed: 8
     },
     blast: { radius: 110, tick: 1 },
     field: { radius: 90, tick: .5 },
     orbit: {
-        radius: 90, hitRadius: 38, tick: .35, speed: 6, count: 2
+        radius: 150, hitRadius: 38, tick: .35, speed: 6, count: 2
     },
     burn: { duration: 3, tick: .5, damage: .2 },
     slow: { duration: 2, multiplier: .65 },

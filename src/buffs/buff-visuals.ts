@@ -1,3 +1,4 @@
+import { BUFF_RULES } from './buff-config.js';
 import type { Element, Action, BuffBranch } from './buff-types.js';
 import { directionalShape, lightningStroke, spark } from '../rendering/skill-visuals.js';
 import { paintVfx, vfxAtlas } from '../rendering/vfx-atlas.js';
@@ -130,16 +131,16 @@ export function drawBuffEffect(overlay: any, floor: any, project: Project, e: Bu
         }
     }
     else if (e.kind === 'orbit') {
-        ring(floor, project, e.x, e.y, 90, c, 1);
+        ring(floor, project, e.x, e.y, BUFF_RULES.orbit.radius, c, 1);
         for (let n = 0; n < 2; n++) {
             const tail: number[] = [];
             for (let j = detail; j >= 0; j--) {
-                const a = e.age * 6 + n * Math.PI - j * .13, v = project(e.x + Math.cos(a) * 90, e.y + Math.sin(a) * 90);
+                const a = e.age * 6 + n * Math.PI - j * .13, v = project(e.x + Math.cos(a) * BUFF_RULES.orbit.radius, e.y + Math.sin(a) * BUFF_RULES.orbit.radius);
                 tail.push(v.x, v.y - 22);
             }
             overlay.drawLines(0, 0, tail, e.element === 'fire' ? '#9e533f' : '#4c526f', 7);
             overlay.drawLines(0, 0, tail, tier === 2 ? RANK_CORE[e.element] : tier === 1 ? RANK_TINT[e.element] : c, 3);
-            const a = e.age * 6 + n * Math.PI, tip = project(e.x + Math.cos(a) * 90, e.y + Math.sin(a) * 90);
+            const a = e.age * 6 + n * Math.PI, tip = project(e.x + Math.cos(a) * BUFF_RULES.orbit.radius, e.y + Math.sin(a) * BUFF_RULES.orbit.radius);
             glyph(overlay, tip.x, tip.y - 22, e.element, 14, e.age * 12);
             spark(overlay, tip.x, tip.y - 25, 4, '#fff4d2');
             if (tier) {
@@ -235,12 +236,12 @@ function drawPaintedBuffEffect(g: any, floor: any, project: Project, e: BuffVisu
         return;
     }
     if (e.kind === 'orbit') {
-        ring(floor, project, e.x, e.y, 90, '#8e9d8a', .7);
+        ring(floor, project, e.x, e.y, BUFF_RULES.orbit.radius, '#8e9d8a', .7);
         for (let n = 0; n < 2; n++) {
-            const a = e.age * 6 + n * Math.PI, tip = project(e.x + Math.cos(a) * 90, e.y + Math.sin(a) * 90);
+            const a = e.age * 6 + n * Math.PI, tip = project(e.x + Math.cos(a) * BUFF_RULES.orbit.radius, e.y + Math.sin(a) * BUFF_RULES.orbit.radius);
             const tangent = project(-Math.sin(a), Math.cos(a)), points: number[] = [];
             for (let j = 0; j <= Math.min(5, detail); j++) {
-                const v = project(e.x + Math.cos(a - j * .12) * 90, e.y + Math.sin(a - j * .12) * 90);
+                const v = project(e.x + Math.cos(a - j * .12) * BUFF_RULES.orbit.radius, e.y + Math.sin(a - j * .12) * BUFF_RULES.orbit.radius);
                 points.push(v.x, v.y - 22);
             }
             g.drawLines(0, 0, points, tier === 2 ? RANK_CORE[e.element] : color, 1 + tier * .35);

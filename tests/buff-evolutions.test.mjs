@@ -86,7 +86,7 @@ test('real slow trigger cooldown still permits thunder evolution and old project
 });
 
 test('actual ice orbit contact shatters and slows neighbors that the orbit itself never touched',()=>{
- const f=runtimeFixture('orbit','ice',2),r=f.runtime;Object.assign(f.targets[0],{x:90,y:0});Object.assign(f.targets[1],{x:20,y:0});
+ const f=runtimeFixture('orbit','ice',2),r=f.runtime;Object.assign(f.targets[0],{x:150,y:0});Object.assign(f.targets[1],{x:70,y:0});
  r.trigger('hurt',0,0,1);let found=false;
  for(let i=0;i<180;i++){r.update(1/60);if(r.feedback.some(v=>v.kind==='shatter')){found=true;break;}}
  assert.ok(found);assert.equal(r.speedMultiplier(f.targets[1]),.65);assert.ok(f.hits.some(h=>h.t===f.targets[1]&&Math.abs(h.value-24)<1e-9));

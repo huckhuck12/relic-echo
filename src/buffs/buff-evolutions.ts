@@ -150,6 +150,8 @@ export class BuffEvolutions<T extends BuffTarget> {
             }
         }
         else if (source.branch === 'shards') {
+            // A lone elite/Boss must still receive the payoff for three real contacts.
+            this.host.damage(target, source.damage * .7, true, true, source);
             let count = 0;
             for (const other of this.host.query(target.x, target.y, 110)) {
                 if (other === target || other.dead)
@@ -186,7 +188,8 @@ export class BuffEvolutions<T extends BuffTarget> {
             return;
         const extra = conductive && (mark.conductiveLock || 0) <= 0;
         const threshold = source.branch === 'charge' ? 5 : 3;
-        const stacks = Math.min(threshold, mark.stacks + (extra ? 2 : 1));
+        const direct = source.branch === 'charge' ? 2 : 1;
+        const stacks = Math.min(threshold, mark.stacks + direct + (extra ? 1 : 0));
         // Budget rejection leaves marks and both locks untouched; no deferred queue.
         if (stacks >= threshold && this.thunderBudget <= 0) {
             this.thunderRejected++;
@@ -227,7 +230,7 @@ export class BuffEvolutions<T extends BuffTarget> {
                     this.thunder.set(other, next);
                 }
                 const limit = next.source?.branch === 'charge' ? 5 : 3;
-                next.stacks = Math.min(limit - 1, next.stacks + 1);
+                next.stacks = Math.min(limit - 1, next.stacks + 2);
             }
             else
                 this.host.damage(other, source.damage * .8, true, true, source);

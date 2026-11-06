@@ -28,11 +28,11 @@ window.vfxReview={paint(mode='buffs',age=.08,level=3,detail=5){
  label(mode+' / level '+level+' / detail '+detail+' / age '+age,20,16);
  const elements=['fire','ice','lightning','force'],kinds=['bolt','blast','field','orbit'];
  if(mode==='buffs')for(const [row,kind]of kinds.entries())for(const [col,element]of elements.entries()){
-  const x=128+col*256,y=165+row*220,pr=(a,b)=>{const q=project(a,b);return{x:q.x+x,y:q.y+y};};
+  const x=128+col*256,y=165+row*220,scale=kind==='orbit'?.65:1,pr=(a,b)=>{const q=project(a,b);return{x:q.x*scale+x,y:q.y*scale+y};};
   const e={kind,element,x:0,y:0,vx:480,vy:0,age,level};
   drawBuffEffect(overlay.graphics,floor.graphics,pr,e,detail);
   if(kind==='field')person(x,y+7);
-  label(kind+' / '+element,x-75,y+65);
+  label(kind+' / '+element+(kind==='orbit'?' (65%)':''),x-95,y+65);
  }
  else if(mode==='weapons'){
   const place=(fn,x,y,parent=overlay)=>{const n=new Laya.Sprite();n.pos(x,y);parent.addChild(n);const raster=new Laya.Sprite();raster.pos(x,y);(parent===floor?floorArt:overlayArt).addChild(raster);routeVfx(n.graphics,raster.graphics);fn(n.graphics);};

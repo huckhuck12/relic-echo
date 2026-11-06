@@ -29,12 +29,12 @@ test('same-slot, unknown provenance, empty, expired and dead targets do not cons
  e.hit(targets[0],ice());e.hit(targets[0],ice());targets[0].dead=true;e.hit(targets[0],force);assert.equal(hits.length,0);
 });
 
-test('shards replaces the old area burst, excludes the owner and scales neighbor cap at five',()=>{
+test('shards pays off on the main target and bounds separate neighbor damage at level five',()=>{
  for(const [level,cap]of [[3,3],[5,5]]){
   const {e,targets,hits}=fixture();for(let i=0;i<3;i++)e.hit(targets[0],ice('shards',level));
-  assert.equal(e.shatters,1);assert.equal(hits.length,cap);assert.ok(hits.every(h=>h.t!==targets[0]&&h.d===7));assert.equal(targets[0].hp,10000);
+  assert.equal(e.shatters,1);assert.equal(hits.length,cap+1);assert.equal(hits[0].t,targets[0]);assert.equal(hits[0].d,7);assert.ok(hits.slice(1).every(h=>h.t!==targets[0]&&h.d===7));assert.equal(targets[0].hp,9993);
  }
- const {e,targets,hits}=fixture(1);for(let i=0;i<3;i++)e.hit(targets[0],ice('shards'));assert.equal(hits.length,0);assert.equal(e.shatters,1);
+ const {e,targets,hits}=fixture(1);for(let i=0;i<3;i++)e.hit(targets[0],ice('shards'));assert.equal(hits.length,1);assert.equal(hits[0].d,7);assert.equal(e.shatters,1);
 });
 
 test('prison stores five layers in its first-contact window and requires cross-slot force',()=>{
@@ -77,7 +77,7 @@ test('ice branch rewards preserve stale-token protection and fit phone layouts',
 });
 
 test('Boss frost slow caps at 15 percent while layers and shatter damage remain active',()=>{
- const {host,targets}=fixture(1),r=new BuffRuntime(host),boss=targets[0];boss.kind=4;r.chooseStarter('ice');
+ const {host,targets}=fixture(1),r=new BuffRuntime(host),boss=targets[0];boss.kind=4;boss.x=150;r.chooseStarter('ice');
  r.trigger('hit',0,0,1,()=>0);r.update(.001);assert.equal(r.speedMultiplier(boss),.85);
  r.evolutions.hit(boss,ice());r.evolutions.hit(boss,ice());r.evolutions.hit(boss,force);assert.equal(r.evolutions.shatters,1);assert.ok(boss.hp<10000);
 });

@@ -17,8 +17,8 @@ function fixture(count=10){
  const e=new BuffEvolutions(host,{slow(){},burst(){},arc(){}});return {targets,hits,host,e};
 }
 test('conductive ice adds only one mark per second, checks the threshold once and respects detonation lock',()=>{
- const {e,targets}=fixture(),t=targets[0];e.hit(t,bolt('charge'),true);assert.equal(e.thunder.get(t).stacks,2);
- e.hit(t,bolt('charge'),true);assert.equal(e.thunder.get(t).stacks,3);e.update(1.01);e.hit(t,bolt('charge'),true);
+ const {e,targets}=fixture(),t=targets[0];e.hit(t,bolt(),true);assert.equal(e.thunder.get(t).stacks,2);
+ e.hit(t,bolt('charge'),true);assert.equal(e.thunder.get(t).stacks,4);e.update(1.01);e.hit(t,bolt('charge'),true);
  assert.equal(e.detonations,1);assert.equal(e.thunder.get(t).stacks,0);e.hit(t,bolt('charge'),true);assert.equal(e.thunder.get(t).stacks,0);
  const f=fixture();f.e.hit(f.targets[0],bolt(),true);f.e.update(1.01);f.e.hit(f.targets[0],bolt(),true);assert.equal(f.e.detonations,1);
 });
@@ -33,32 +33,43 @@ test('only live ice from the other slot qualifies; unowned and secondary slow ne
  r.apply(t,effect('ice',1));r.update(1.5);applyBuffSlow(r.statuses,t,5);r.update(.51);
  r.apply(t,effect('lightning'));assert.equal(r.evolutions.thunder.get(t).stacks,2);assert.equal(r.speedMultiplier(t),.65);
 });
+
+test('charge and cross-slot ice pay off in two spaced direct hits, propagation still cannot detonate',()=>{
+ const {e,targets,hits}=fixture(),[a,b]=targets;
+ e.hit(b,bolt('charge'),true);assert.equal(e.thunder.get(b).stacks,3);
+ e.update(1.01);e.hit(b,bolt('charge'),true);
+ assert.equal(e.detonations,1);assert.equal(hits[0].d,30);
+ e.update(1.01);e.hit(b,bolt('charge'));e.hit(b,bolt('charge'));
+ for(let i=0;i<3;i++)e.hit(a,bolt('spread'));
+ assert.equal(e.thunder.get(b).stacks,4);assert.equal(e.detonations,2);
+ e.hit(b,bolt('charge'));assert.equal(e.detonations,3);
+});
 test('overlapping ice provenance survives a same-slot hit but expires independently; chains never mark neighbors',()=>{
  const {host,targets}=fixture(),r=new BuffRuntime(host),t=targets[0];
  r.apply(t,effect('ice',1));r.update(1);r.apply(t,effect('ice',0));r.apply(t,effect('lightning'));
  assert.equal(r.evolutions.thunder.get(t).stacks,2);assert.equal(r.evolutions.thunder.size,1);
- r.update(1.01);r.apply(t,{...effect('lightning'),branch:'charge'});assert.equal(r.evolutions.thunder.get(t).stacks,3);
+ r.update(1.01);r.apply(t,{...effect('lightning'),branch:'charge'});assert.equal(r.evolutions.thunder.get(t).stacks,4);
  const dead=targets[1];dead.hp=1;r.apply(dead,effect('lightning'));assert.equal(r.evolutions.thunder.has(dead),false);
 });
 test('spread replaces evolution splash with bounded non-detonating marks and scales at level five',()=>{
  for(const [level,cap] of [[3,3],[5,5]]){
   const {e,targets,hits}=fixture();for(let i=0;i<3;i++)e.hit(targets[0],bolt('spread',level));
   assert.deepEqual(hits.map(h=>h.d),[12]);assert.equal(e.thunder.size,cap+1);assert.equal(e.detonations,1);
-  for(const t of targets.slice(1,cap+1))assert.equal(e.thunder.get(t).stacks,1);
+  for(const t of targets.slice(1,cap+1))assert.equal(e.thunder.get(t).stacks,2);
  }
 });
 test('spread respects existing branch thresholds, first-contact expiry and neighbor locks',()=>{
  const {e,targets}=fixture(),[a,b,c,d]=targets;
- e.hit(b,bolt('charge'));e.hit(b,bolt('charge'));e.hit(b,bolt('charge'));e.hit(b,bolt('charge'));
+ e.hit(b,bolt('charge'));e.hit(b,bolt('charge'));
  e.hit(c,bolt());e.hit(c,bolt());for(let i=0;i<3;i++)e.hit(d,bolt());
  e.update(.1);for(let i=0;i<3;i++)e.hit(a,bolt('spread'));
  assert.equal(e.detonations,2);assert.equal(e.thunder.get(b).stacks,4);assert.equal(e.thunder.get(b).source.branch,'charge');
  assert.equal(e.thunder.get(c).stacks,2);assert.equal(e.thunder.get(d).stacks,0);assert.ok(e.thunder.get(b).life<9);
  e.update(8.91);assert.equal(e.thunder.has(b),false);assert.equal(e.thunder.has(c),false);
 });
-test('charge needs five direct marks, deals 300 or 350 percent and has no evolution splash',()=>{
+test('charge adds two marks per direct hit, needs three unassisted hits and has no evolution splash',()=>{
  for(const [level,multiplier]of [[3,3],[5,3.5]]){
-  const {e,targets,hits}=fixture();for(let i=0;i<4;i++)e.hit(targets[0],bolt('charge',level));assert.equal(hits.length,0);
+  const {e,targets,hits}=fixture();for(let i=0;i<2;i++)e.hit(targets[0],bolt('charge',level));assert.equal(hits.length,0);
   e.hit(targets[0],bolt('charge',level));assert.deepEqual(hits.map(h=>h.d),[10*multiplier]);assert.equal(e.thunder.size,1);
  }
  const {host,targets,hits}=fixture(),r=new BuffRuntime(host);for(let i=0;i<5;i++)r.apply(targets[0],{...effect('lightning'),branch:'charge'});
@@ -67,7 +78,7 @@ test('charge needs five direct marks, deals 300 or 350 percent and has no evolut
 
 test('charge survives a sustained sequence beyond nine seconds but expires after nine seconds without a direct hit',()=>{
  const {e,targets,hits}=fixture(1),t=targets[0];
- for(let i=0;i<4;i++){e.hit(t,bolt('charge'));e.update(3);}
+ for(let i=0;i<2;i++){e.hit(t,bolt('charge'));e.update(6);}
  assert.equal(e.thunder.get(t).stacks,4);assert.equal(e.detonations,0);
  e.hit(t,bolt('charge'));assert.equal(e.detonations,1);assert.equal(hits[0].d,30);
  e.hit(t,bolt('charge'));assert.equal(e.thunder.get(t).life,1,'locked hits must not extend the lock');
@@ -77,7 +88,7 @@ test('charge survives a sustained sequence beyond nine seconds but expires after
 test('spread propagation cannot refresh a charge window or detonate stored charge',()=>{
  const {e,targets}=fixture(2),[a,b]=targets;e.hit(b,bolt('charge'));e.update(8);
  for(let i=0;i<3;i++)e.hit(a,bolt('spread'));
- assert.equal(e.thunder.get(b).stacks,2);assert.equal(e.thunder.get(b).life,1);assert.equal(e.detonations,1);
+ assert.equal(e.thunder.get(b).stacks,4);assert.equal(e.thunder.get(b).life,1);assert.equal(e.detonations,1);
  e.update(1.01);assert.equal(e.thunder.has(b),false);
 });
 test('thunder burst budget rejects without consuming marks or reserving either lock, then permits retry',()=>{

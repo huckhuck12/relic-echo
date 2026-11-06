@@ -23,8 +23,9 @@ export function createBuffEffect<T extends BuffTarget>(host: BuffHost<T>, recipe
         }
         const dx = target ? target.x - origin.x : player.dx, dy = target ? target.y - origin.y : player.dy;
         const distance = Math.hypot(dx, dy) || 1;
-        vx = dx / distance * BUFF_RULES.bolt.speed;
-        vy = dy / distance * BUFF_RULES.bolt.speed;
+        const speed = recipe.element === 'lightning' ? BUFF_RULES.bolt.thunderSpeed : BUFF_RULES.bolt.speed;
+        vx = dx / distance * speed;
+        vy = dy / distance * speed;
         if (recipe.element === 'lightning')
             tracked = target;
     }
@@ -121,6 +122,7 @@ export function updateBuffEffects<T extends BuffTarget>(effects: BuffEffect[], h
         }
         else if (effect.kind === 'bolt') {
             const oldX = effect.x, oldY = effect.y;
+            const speed = effect.element === 'lightning' ? BUFF_RULES.bolt.thunderSpeed : BUFF_RULES.bolt.speed;
             let tracked = thunderTargets.get(effect);
             // One bounded rescue query per cast; never scan every frame or extend its life.
             if (effect.element === 'lightning' && tracked?.dead && !thunderRetargeted.has(effect)) {
@@ -143,14 +145,14 @@ export function updateBuffEffects<T extends BuffTarget>(effects: BuffEffect[], h
                 const heading = Math.atan2(effect.vy, effect.vx), desired = Math.atan2(tracked.y - oldY, tracked.x - oldX);
                 const delta = Math.atan2(Math.sin(desired - heading), Math.cos(desired - heading));
                 const turn = Math.max(-BUFF_RULES.bolt.thunderTurnSpeed * elapsed, Math.min(BUFF_RULES.bolt.thunderTurnSpeed * elapsed, delta));
-                effect.vx = Math.cos(heading + turn) * BUFF_RULES.bolt.speed;
-                effect.vy = Math.sin(heading + turn) * BUFF_RULES.bolt.speed;
+                effect.vx = Math.cos(heading + turn) * speed;
+                effect.vy = Math.sin(heading + turn) * speed;
             }
             else if (tracked?.dead)
                 thunderTargets.delete(effect);
             effect.x += effect.vx * elapsed;
             effect.y += effect.vy * elapsed;
-            const radius = BUFF_RULES.bolt.queryPadding + BUFF_RULES.bolt.speed * elapsed * .5;
+            const radius = BUFF_RULES.bolt.queryPadding + speed * elapsed * .5;
             const target = boltContact(host.query((oldX + effect.x) / 2, (oldY + effect.y) / 2, radius), oldX, oldY, effect.x, effect.y);
             if (target) {
                 apply(target, effect);
