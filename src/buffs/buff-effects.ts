@@ -2,6 +2,7 @@ import { BUFF_ACTIONS, BUFF_LIMITS, BUFF_RULES } from './buff-config.js';
 import type { BuffEffect, BuffHost, BuffTarget, CompleteRecipe, Trigger } from './buff-types.js';
 // Flight ownership stays out of serializable damage/visual snapshots and expires with the cast.
 const thunderTargets = new WeakMap<BuffEffect, BuffTarget>();
+const thunderRetargeted = new WeakSet<BuffEffect>();
 /** 决定释放原点和弹道，不接触 UI、节点或随机源。damage/level 由编排层一起快照。 */
 export function createBuffEffect<T extends BuffTarget>(host: BuffHost<T>, recipe: CompleteRecipe, event: Trigger, x: number, y: number, damage: number, level: number, priority: (target: T) => number = () => 0): BuffEffect {
     const player = host.player;
@@ -120,7 +121,24 @@ export function updateBuffEffects<T extends BuffTarget>(effects: BuffEffect[], h
         }
         else if (effect.kind === 'bolt') {
             const oldX = effect.x, oldY = effect.y;
-            const tracked = thunderTargets.get(effect);
+            let tracked = thunderTargets.get(effect);
+            // One bounded rescue query per cast; never scan every frame or extend its life.
+            if (effect.element === 'lightning' && tracked?.dead && !thunderRetargeted.has(effect)) {
+                thunderRetargeted.add(effect);
+                let nearest = Infinity;
+                tracked = undefined;
+                for (const candidate of host.query(oldX, oldY, BUFF_RULES.bolt.seek)) {
+                    const distance = Math.hypot(candidate.x - oldX, candidate.y - oldY);
+                    if (!candidate.dead && distance <= BUFF_RULES.bolt.seek && distance < nearest) {
+                        tracked = candidate;
+                        nearest = distance;
+                    }
+                }
+                if (tracked)
+                    thunderTargets.set(effect, tracked);
+                else
+                    thunderTargets.delete(effect);
+            }
             if (effect.element === 'lightning' && tracked && !tracked.dead) {
                 const heading = Math.atan2(effect.vy, effect.vx), desired = Math.atan2(tracked.y - oldY, tracked.x - oldX);
                 const delta = Math.atan2(Math.sin(desired - heading), Math.cos(desired - heading));

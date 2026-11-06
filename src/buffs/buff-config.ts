@@ -35,7 +35,7 @@ export const BUFF_LIMITS = {
 /** 每种行为的基础伤害、寿命；范围/频率放在下方规则表，不能从视觉大小反推伤害。 */
 export const BUFF_ACTIONS = {
     bolt: { damage: 26, life: 1.2 }, blast: { damage: 22, life: .25 },
-    field: { damage: 10, life: 4 }, orbit: { damage: 12, life: 3 },
+    field: { damage: 10, life: 4 }, orbit: { damage: 20, life: 3 },
 } as const;
 export const BUFF_RULES = {
     hitChance: .3, duplicateXP: 5, slots: 2,

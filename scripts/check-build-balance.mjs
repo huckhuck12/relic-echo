@@ -29,9 +29,29 @@ try{
    const original=g.mapEventHooks[action];g.mapEventHooks[action]=site=>{events.push({time:+g.time.toFixed(2),type:'seal-'+action,id:site.id});return original(site);};
   }
   const reactions={reforges:0,shatters:0,detonations:0};
+  // Bounded diagnostics: 16 action/element pairs, weak cast ownership shared by trail pieces.
+  const contacts=new Map(),castOwners=new WeakMap(),phases={};
+  const trigger=g.buffs.trigger.bind(g.buffs),apply=g.buffs.apply;
+  g.buffs.trigger=(...args)=>{
+   const before=g.buffs.castSequence;trigger(...args);const tokens=new Map();
+   for(const e of g.buffs.effects)if(e.cast>before){
+    const pair=e.kind+'/'+e.element;
+    if(!contacts.has(pair))contacts.set(pair,{pair,casts:0,connected:0,contacts:0});
+    let token=tokens.get(e.cast);
+    if(!token){token={hit:false,row:contacts.get(pair)};tokens.set(e.cast,token);token.row.casts++;}
+    castOwners.set(e,token);
+   }
+  };
+  g.buffs.apply=(target,e)=>{
+   const token=castOwners.get(e);
+   if(!target.dead&&token){token.row.contacts++;if(!token.hit){token.hit=true;token.row.connected++;}}
+   return apply(target,e);
+  };
   // Share the authoritative effective-damage event and preserve every forwarded argument.
   const record=g.enemyDamageHooks.recordDamage;
   g.enemyDamageHooks.recordDamage=(value,actual,source,enemy)=>{
+   const phase=g.time<120?'early':g.time<300?'growth':g.time<g.run.bossAt?'formed':'boss';
+   const row=phases[phase]??={total:0,buff:0};row.total+=actual;if(source&&typeof source==='object')row.buff+=actual;
    totalDamage+=actual;
    if(source && typeof source==='object'){buffDamage+=actual;if(enemy.kind===4)bossBuffDamage+=actual;}
    record(value,actual,source,enemy);
@@ -76,7 +96,7 @@ try{
   assert.ok(Math.abs(balance.damage.buff-buffDamage)<.001,'Buff damage must agree with the runtime ledger.');
   assert.ok(Math.abs(balance.boss.damage.buff-bossBuffDamage)<.001,'Boss Buff damage must agree with the runtime ledger.');
   assert.equal(balance.combat.hitsTaken,pressureHits,'Hurt event count must agree.');
-  rows.push({weapon,seed,build,branch,mode,balance:g.autoPlay.balanceReport(),peak,lethalContext,seals:g.mapEvents.sites.map(s=>({id:s.id,state:s.state,progress:+s.progress.toFixed(2)})),protected:protectedRun,seconds:+g.time.toFixed(2),win:g.dialog?.win||false,kills:g.kills,firstBranch,maxLevelAt,buffLevel:g.buffs.levelOf(g.buffs.recipes[0]),buffDamage:Math.round(buffDamage),totalDamage:Math.round(totalDamage),bossBuffDamage:Math.round(bossBuffDamage),bossRemaining:boss?+Math.max(0,boss.hp).toFixed(1):null,bossStartHP,pressureHits,protectedHits,procs:g.buffs.procs,...reactions,checkpoints,events});
+  rows.push({weapon,seed,build,branch,mode,balance:g.autoPlay.balanceReport(),contacts:[...contacts.values()],phases,peak,lethalContext,seals:g.mapEvents.sites.map(s=>({id:s.id,state:s.state,progress:+s.progress.toFixed(2)})),protected:protectedRun,seconds:+g.time.toFixed(2),win:g.dialog?.win||false,kills:g.kills,firstBranch,maxLevelAt,buffLevel:g.buffs.levelOf(g.buffs.recipes[0]),buffDamage:Math.round(buffDamage),totalDamage:Math.round(totalDamage),bossBuffDamage:Math.round(bossBuffDamage),bossRemaining:boss?+Math.max(0,boss.hp).toFixed(1):null,bossStartHP,pressureHits,protectedHits,procs:g.buffs.procs,...reactions,checkpoints,events});
   console.log(JSON.stringify(rows.at(-1)));g.autoPlay.stop();g.returnToTitle();
  }
 }finally{Math.random=originalRandom;}

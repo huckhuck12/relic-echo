@@ -198,7 +198,7 @@ export class BuffRuntime<T extends BuffTarget> {
                 }
                 const room = BUFF_LIMITS.field - this.effects.filter(e => e.kind === 'field').length;
                 if (event === 'dash' && effect.kind === 'field' && effect.element === 'fire' && effect.branch === 'trail' && this.dashStart && room >= 3) {
-                    effect.damage *= .45;
+                    effect.damage *= .85;
                     effect.life = level >= 5 ? 4 : 3;
                     for (const t of [0, .5])
                         this.effects.push({ ...effect, x: this.dashStart.x + (effect.x - this.dashStart.x) * t, y: this.dashStart.y + (effect.y - this.dashStart.y) * t });

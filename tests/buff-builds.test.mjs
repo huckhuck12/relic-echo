@@ -16,7 +16,7 @@ function fixture(){
 function branch(r,id){r.receiveFragment('fire');r.receiveFragment('fire');assert.equal(r.takeBranchRequest(),true);assert.equal(r.chooseBranch(id),true);}
 
 test('pair growth survives trigger and slot edits, offers one exclusive branch and bounds pending upgrades',()=>{
- const {r}=fixture();assert.deepEqual([1,2,3,4,5].map(buffLevelMultiplier),[1,1.1,1.1,1.2,1.2]);
+ const {r}=fixture();assert.deepEqual([1,2,3,4,5].map(buffLevelMultiplier),[1,1.35,1.35,1.7,1.7]);
  r.receiveFragment('fire');r.receiveFragment('fire');assert.equal(r.levelOf(r.recipes[0]),3);
  assert.equal(r.takeBranchRequest(),true);assert.equal(r.takeBranchRequest(),false);
  r.receiveFragment('fire');assert.equal(r.levelOf(r.recipes[0]),4);assert.equal(r.receiveFragment('fire').kind,'xp');
@@ -30,11 +30,11 @@ test('trail follows actual completed dash, snapshots branch, deduplicates overla
  const {r,player,targets,hits}=fixture();branch(r,'trail');
  r.beginDash(0,0);player.x=120;r.trigger('dash',120,0,1);
  assert.deepEqual(r.effects.map(e=>e.x),[0,60,120]);assert.equal(r.evolutions.seeds.length,1);assert.equal(r.evolutions.seeds[0].x,120);
- targets[0].x=60;r.update(.01);assert.deepEqual(hits,[11*.45]);
+ targets[0].x=60;r.update(.01);assert.deepEqual(hits,[14*.85]);
  r.receiveFragment('fire');r.receiveFragment('fire');assert.equal(r.effects[0].level,3);assert.equal(r.effects[0].life,2.99);
  r.effects.length=0;for(let i=0;i<BUFF_LIMITS.field-2;i++)r.effects.push({kind:'field',element:'ice',life:4});
  r.cooldowns[0]=0;r.beginDash(120,0);player.x=240;r.trigger('dash',240,0,1);
- assert.equal(r.effects.length,BUFF_LIMITS.field-1);assert.equal(r.effects.at(-1).x,240);assert.equal(r.effects.at(-1).damage,12);
+ assert.equal(r.effects.length,BUFF_LIMITS.field-1);assert.equal(r.effects.at(-1).x,240);assert.equal(r.effects.at(-1).damage,17);
 });
 
 test('cross-slot reforge pulls living burning targets in valid fields, preserves Boss immunity and locks each target',()=>{
@@ -59,10 +59,10 @@ test('same-slot force never reforges, and lethal base hits cannot react or attac
 
 test('furnace refreshes its own center and Lv.5 heat burst does not recursively dispatch buffs',()=>{
  const {r,player,hits}=fixture();branch(r,'furnace');r.receiveFragment('fire');r.receiveFragment('fire');
- r.trigger('dash',0,0,1);assert.equal(r.effects[0].radius,70);assert.equal(r.effects[0].damage,12*1.35);
+ r.trigger('dash',0,0,1);assert.equal(r.effects[0].radius,70);assert.equal(r.effects[0].damage,17*1.35);
  r.cooldowns[0]=0;player.x=10;r.trigger('dash',10,0,1);assert.equal(r.effects.length,1);
  r.update(.01);r.trigger('hit',30,0,1,()=>0);r.update(.01);
- assert.equal(r.reforges,1);assert.equal(r.procs,3);assert.ok(hits.includes(12*1.35*.6));
+ assert.equal(r.reforges,1);assert.equal(r.procs,3);assert.ok(hits.includes(17*1.35*.6));
 });
 
 test('first growth offers editable complete builds once and free choice preserves a normal upgrade',()=>{

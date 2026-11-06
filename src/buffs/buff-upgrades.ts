@@ -1,6 +1,6 @@
 import { branchPair } from './buff-branches.js';
 import type { BuffBranch, Recipe } from './buff-types.js';
-export const BUFF_UPGRADES = { maxLevel: 5, damagePerLevel: .1 } as const;
+export const BUFF_UPGRADES = { maxLevel: 5, damagePerLevel: .35 } as const;
 export interface BuffUpgradeTarget {
     slot: number;
     level: number;

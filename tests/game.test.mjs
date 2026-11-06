@@ -104,10 +104,10 @@ test('Buff panel shows upgraded level/benefit on phone and refreshes without res
  const g=new Game(),ui=new GameUI(g);g.start('storm',true);g.buffs.receiveFragment('fire');g.buffs.cooldowns[0]=1.5;g.toggleBuffs();
  for(const [w,h]of [[320,568],[390,844],[568,320],[844,390]]){
   Laya.stage.width=w;Laya.stage.height=h;Laya.stage.emit('resize');
-  assert.match(find(ui.root,'buff-description').text,/伤害 \+10%/);
+  assert.match(find(ui.root,'buff-description').text,/伤害 \+35%/);
   assert.ok(childrenOf(find(ui.root,'buff-slot-0')).some(c=>c.text?.includes('Lv.2')));assertControls(find(ui.root,'dialog-panel'),w,h,true);
  }
- assert.equal(g.buffs.cooldowns[0],1.5);g.buffs.receiveFragment('fire');g.flow.refresh();assert.match(find(ui.root,'buff-description').text,/伤害 \+10%/);
+ assert.equal(g.buffs.cooldowns[0],1.5);g.buffs.receiveFragment('fire');g.flow.refresh();assert.match(find(ui.root,'buff-description').text,/伤害 \+35%/);
 });
 
 test('fragment cards remain clickable and inside desktop/phone dialogs across rotation',()=>{

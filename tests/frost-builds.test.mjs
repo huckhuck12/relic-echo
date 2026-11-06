@@ -49,9 +49,9 @@ test('prison stores five layers in its first-contact window and requires cross-s
 
 test('prison weakens only direct orbit damage; old effects keep their branch and level snapshots',()=>{
  const {host,targets}=fixture(1),r=new BuffRuntime(host);r.chooseStarter('ice');r.receiveFragment('ice');r.receiveFragment('ice');
- r.trigger('hit',0,0,1,()=>0);const old=r.effects[0];assert.equal(old.branch,undefined);assert.equal(old.damage,13);
+ r.trigger('hit',0,0,1,()=>0);const old=r.effects[0];assert.equal(old.branch,undefined);assert.equal(old.damage,27);
  assert.ok(r.takeBranchRequest('orbit/ice'));assert.ok(r.chooseBranch('prison','orbit/ice'));assert.equal(old.branch,undefined);
- r.effects.length=0;r.cooldowns[0]=0;r.trigger('hit',0,0,1,()=>0);const effect=r.effects[0];assert.equal(effect.damage,13*.8);assert.equal(effect.reactionDamage,13);
+ r.effects.length=0;r.cooldowns[0]=0;r.trigger('hit',0,0,1,()=>0);const effect=r.effects[0];assert.equal(effect.damage,27*.8);assert.equal(effect.reactionDamage,27);
  r.evolutions.hit(targets[0],effect);r.evolutions.hit(targets[0],effect);r.evolutions.hit(targets[0],force);assert.equal(r.evolutions.shatters,1);
  assert.match(recipeDescription(r.recipes[0],1,3,'prison'),/不再自动碎裂/);
 });
