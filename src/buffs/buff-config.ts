@@ -40,7 +40,7 @@ export const BUFF_ACTIONS = {
 export const BUFF_RULES = {
     duplicateXP: 5, slots: 2,
     bolt: {
-        seek: 500, speed: 480, thunderSpeed: 900, queryPadding: 40, hitRadius: 32, thunderTurnSpeed: 8
+        seek: 500, speed: 480, thunderSpeed: 900, iceSpeed: 900, iceTargets: 3, queryPadding: 40, hitRadius: 32, thunderTurnSpeed: 8
     },
     blast: { radius: 110, tick: 1 },
     field: { radius: 90, tick: .5 },
@@ -50,7 +50,7 @@ export const BUFF_RULES = {
     burn: { duration: 3, tick: .5, damage: .2 },
     slow: { duration: 2, multiplier: .65 },
     frost: {
-        shardsStacks: 2, prisonSlowPerLayer: .05, prisonMinSpeed: .45, dashRadius: 56, dashTargets: 8
+        shardsStacks: 2, boltStacks: 2, prisonSlowPerLayer: .05, prisonMinSpeed: .45, dashRadius: 56, dashTargets: 8
     },
     chain: { radius: 135, count: 2, damage: .55 },
     knockback: 380,

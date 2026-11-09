@@ -12,6 +12,7 @@ import { FRAGMENTS, BuffRuntime } from '../buffs/buffs.js';
 import { fragmentChoices, fragmentRewardText } from './fragment-rewards.js';
 import type { Dialog } from '../game/run-flow.js';
 import { SEAL_REWARDS } from '../game/map-events.js';
+import { iceStarterAction } from '../buffs/buff-recipes.js';
 /** 只共享成长所需的局内数据；渲染节点、输入、帧时钟不进入奖励事务。 */
 export interface ProgressionState {
     readonly dialog: Dialog;
@@ -115,7 +116,7 @@ export class RunProgression {
             return { message: `专精已生效 · ${MASTERY[choice.id as Mastery].name}` };
         }
         if (choice.type === 'build' && dialog.type === 'build') {
-            if (!dialog.choices.includes(choice.id) || !state.buffs.chooseStarter(choice.id))
+            if (!dialog.choices.includes(choice.id) || !state.buffs.chooseStarter(choice.id, iceStarterAction(weaponOf(state.loadout))))
                 return null;
             if (choice.id === 'free')
                 this.hooks.show({ type: 'upgrade', choices: [] });

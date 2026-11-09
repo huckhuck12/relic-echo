@@ -3,7 +3,6 @@ import { UIControls, C } from './ui-controls.js';
 import { TouchStick } from './touch-stick.js';
 import type { Game, Snapshot } from '../game/game.js';
 import type { ScreenLayout } from './layout.js';
-import { complete } from '../buffs/buffs.js';
 import { COMBAT, QUALITY, QUALITY_COLOR, SLOTS, SLOT_NAME, UPGRADES, WEAPONS, gear } from '../progression/config.js';
 import { clamp } from '../shared/model.js';
 import type { Loadout } from '../shared/model.js';
@@ -11,6 +10,7 @@ import { encounterBeat } from '../game/pace.js';
 import { SEAL_RULES, sealRule, sealProgressText } from '../game/map-events.js';
 import { clock, SYMBOLS } from './ui-config.js';
 import { mobileHUDLayout, TOUCH_UI } from './hud-layout.js';
+import { buffSlotSummary } from './buff-build-view.js';
 /** HUD 持有战斗显示节点与缓存；只通过 Game 动作请求交互，不写战斗数值。 */
 export class BattleHUD {
     private previous: Pick<Snapshot, 'hp' | 'level' | 'dash' | 'time' | 'mode'> | null = null;
@@ -162,7 +162,9 @@ export class BattleHUD {
         const buffButton = this.button(this.root, '', dashX, dashY - 54, dashW, 44, () => {
             this.openBuffs();
         }, false, 'buffs');
-        this.label('buffs', 'Buff 碎片 B', buffButton, 4, 13, dashW - 8, 11, C.hudGold, 'center');
+        this.label('buffs', '', buffButton, 4, 5, dashW - 8, 11, C.hudGold, 'center');
+        this.labels.buffs.leading = 3;
+        this.labels.buffs.wordWrap = false;
         const dashButton = this.button(this.root, '»  相位冲刺', dashX, dashY, dashW, 54, () => {
             if (!this.mobile)
                 this.game.dash();
@@ -221,7 +223,9 @@ export class BattleHUD {
         this.labels.event.stroke = 2;
         this.labels.event.strokeColor = C.hud;
         const buff = this.button(this.root, '', p.buffX, p.buffY, TOUCH_UI.buffWidth, TOUCH_UI.buffHeight, this.openBuffs, false, 'buffs');
-        this.label('buffs', '', buff, 4, 13, TOUCH_UI.buffWidth - 8, 13, C.hudGold, 'center');
+        this.label('buffs', '', buff, 4, 5, TOUCH_UI.buffWidth - 8, 11, C.hudGold, 'center');
+        this.labels.buffs.leading = 3;
+        this.labels.buffs.wordWrap = false;
         const dash = this.button(this.root, '冲刺', p.dashX, p.dashY, TOUCH_UI.dashWidth, TOUCH_UI.dashHeight, () => { }, true, 'dash');
         // 冲刺主文字扩大；冷却放按钮下方，不覆盖文字和命中区域。
         dash.caption.fontSize = 18;
@@ -294,7 +298,7 @@ export class BattleHUD {
         this.labels.combo.visible = s.combo > 0 || s.overdrive > 0;
         this.bars.combo.visible = s.combo > 0 || s.overdrive > 0;
         this.fill('combo', s.overdrive > 0 ? s.overdrive / COMBAT.frenzyDuration : s.momentum / COMBAT.frenzyKills, s.overdrive > 0 ? '#ffc76a' : C.mint);
-        this.set('buffs', this.mobile ? `Buff ${this.game.buffs.recipes.filter(complete).length}/2` : `Buff ${this.game.buffs.recipes.filter(complete).length}/2 · 碎片 ${this.game.buffs.owned.size}/12`);
+        this.set('buffs', this.game.buffs.recipes.map(r => buffSlotSummary(r, this.game.buffs.levelOf(r), this.game.buffs.branchOf(r))).join('\n'));
         const frostTarget = s.dash <= 0 ? this.game.buffs.frostDashTarget() : undefined;
         const highFrost = frostTarget && (this.game.buffs.evolutions.frost.get(frostTarget)?.stacks || 0) >= 4;
         this.set('dash', s.dash > 0 ? `冷却 ${s.dash.toFixed(1)} 秒` : frostTarget ? highFrost ? '高层冰 · 冲刺碎裂' : '穿冰冲刺可碎裂' : this.mobile ? '点击冲刺' : '已就绪 · SPACE');

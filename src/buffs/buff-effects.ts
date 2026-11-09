@@ -3,16 +3,23 @@ import type { BuffEffect, BuffHost, BuffTarget, CompleteRecipe, Trigger } from '
 // Flight ownership stays out of serializable damage/visual snapshots and expires with the cast.
 const thunderTargets = new WeakMap<BuffEffect, BuffTarget>();
 const thunderRetargeted = new WeakSet<BuffEffect>();
+// A piercing ice projectile owns at most three actual contacts; the weak entry dies with the cast.
+const iceContacts = new WeakMap<BuffEffect, Set<BuffTarget>>();
+const boltSpeed = (element: BuffEffect['element']) => element === 'lightning' ? BUFF_RULES.bolt.thunderSpeed : element === 'ice' ? BUFF_RULES.bolt.iceSpeed : BUFF_RULES.bolt.speed;
 /** 决定释放原点和弹道，不接触 UI、节点或随机源。damage/level 由编排层一起快照。 */
 export function createBuffEffect<T extends BuffTarget>(host: BuffHost<T>, recipe: CompleteRecipe, event: Trigger, x: number, y: number, damage: number, level: number, priority: (target: T) => number = () => 0): BuffEffect {
     const player = host.player;
-    const origin = recipe.action === 'bolt' || recipe.action === 'orbit' ? player : event === 'hit' || event === 'kill' ? { x, y } : player;
+    const impactIce = recipe.action === 'bolt' && recipe.element === 'ice' && (event === 'hit' || event === 'kill');
+    const origin = impactIce ? { x, y } : recipe.action === 'bolt' || recipe.action === 'orbit' ? player : event === 'hit' || event === 'kill' ? { x, y } : player;
     let vx = 0, vy = 0, tracked: T | undefined;
     if (recipe.action === 'bolt') {
         let target: T | undefined, bestPriority = -Infinity, bestDistance = Infinity;
         for (const enemy of host.query(origin.x, origin.y, BUFF_RULES.bolt.seek)) {
             const distance = Math.hypot(enemy.x - origin.x, enemy.y - origin.y);
             if (enemy.dead || distance > BUFF_RULES.bolt.seek)
+                continue;
+            // The hit target already lies on the swept origin. Aim onward rather than making a zero-speed bolt.
+            if (impactIce && distance < 1)
                 continue;
             const rank = priority(enemy);
             if (rank > bestPriority || rank === bestPriority && distance < bestDistance) {
@@ -23,7 +30,7 @@ export function createBuffEffect<T extends BuffTarget>(host: BuffHost<T>, recipe
         }
         const dx = target ? target.x - origin.x : player.dx, dy = target ? target.y - origin.y : player.dy;
         const distance = Math.hypot(dx, dy) || 1;
-        const speed = recipe.element === 'lightning' ? BUFF_RULES.bolt.thunderSpeed : BUFF_RULES.bolt.speed;
+        const speed = boltSpeed(recipe.element);
         vx = dx / distance * speed;
         vy = dy / distance * speed;
         if (recipe.element === 'lightning')
@@ -122,7 +129,7 @@ export function updateBuffEffects<T extends BuffTarget>(effects: BuffEffect[], h
         }
         else if (effect.kind === 'bolt') {
             const oldX = effect.x, oldY = effect.y;
-            const speed = effect.element === 'lightning' ? BUFF_RULES.bolt.thunderSpeed : BUFF_RULES.bolt.speed;
+            const speed = boltSpeed(effect.element);
             let tracked = thunderTargets.get(effect);
             // One bounded rescue query per cast; never scan every frame or extend its life.
             if (effect.element === 'lightning' && tracked?.dead && !thunderRetargeted.has(effect)) {
@@ -153,10 +160,31 @@ export function updateBuffEffects<T extends BuffTarget>(effects: BuffEffect[], h
             effect.x += effect.vx * elapsed;
             effect.y += effect.vy * elapsed;
             const radius = BUFF_RULES.bolt.queryPadding + speed * elapsed * .5;
-            const target = boltContact(host.query((oldX + effect.x) / 2, (oldY + effect.y) / 2, radius), oldX, oldY, effect.x, effect.y);
-            if (target) {
-                apply(target, effect);
-                effect.life = 0;
+            const candidates = host.query((oldX + effect.x) / 2, (oldY + effect.y) / 2, radius);
+            if (effect.element === 'ice') {
+                let hit = iceContacts.get(effect);
+                if (!hit) {
+                    hit = new Set();
+                    iceContacts.set(effect, hit);
+                }
+                while (hit.size < BUFF_RULES.bolt.iceTargets) {
+                    const target = boltContact(candidates.filter(t => !hit!.has(t)), oldX, oldY, effect.x, effect.y);
+                    if (!target)
+                        break;
+                    hit.add(target); // Reserve before lethal callbacks and secondary shatter damage.
+                    apply(target, effect);
+                    if (!effects.includes(effect))
+                        break;
+                }
+                if (hit.size >= BUFF_RULES.bolt.iceTargets)
+                    effect.life = 0;
+            }
+            else {
+                const target = boltContact(candidates, oldX, oldY, effect.x, effect.y);
+                if (target) {
+                    apply(target, effect);
+                    effect.life = 0;
+                }
             }
         }
         else if (effect.tick <= 0) {

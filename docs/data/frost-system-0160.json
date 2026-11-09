@@ -1,0 +1,3660 @@
+{
+  "version": "0.16.0",
+  "scope": "Seeded Node logic only; changed starter policy and combat RNG. Not human win rate or native performance.",
+  "paired": [
+    {
+      "before": {
+        "weapon": "storm",
+        "seed": 1104,
+        "branch": "shards",
+        "protected": false,
+        "seconds": 617.5,
+        "win": true,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 3.2833333333333266,
+            "firstBranchAt": 62.24999999999775,
+            "firstMaxLevelAt": 213.2833333333952,
+            "firstEvolutionAt": 151.11666666667907
+          },
+          "combat": {
+            "hitsTaken": 20,
+            "damageTaken": 655,
+            "lethalExposures": 0
+          },
+          "boss": {
+            "appearedAt": 600.0166666664496,
+            "killedAt": 617.499999999767,
+            "killSeconds": 17.483333333317432,
+            "observedSeconds": 17.483333333317432,
+            "damage": {
+              "total": 8400,
+              "buff": 802,
+              "buffShare": 0.09547619047619048,
+              "sources": [
+                {
+                  "id": "storm",
+                  "damage": 7598,
+                  "share": 0.9045238095238095
+                },
+                {
+                  "id": "orbit/ice",
+                  "damage": 802,
+                  "share": 0.09547619047619048
+                }
+              ]
+            }
+          },
+          "damage": {
+            "total": 510377.9309531944,
+            "buff": 9187.006279543131,
+            "buffShare": 0.01800039876799777,
+            "sources": [
+              {
+                "id": "storm",
+                "damage": 501190.9246736512,
+                "share": 0.9819996012320021
+              },
+              {
+                "id": "orbit/ice",
+                "damage": 8917.237802919863,
+                "share": 0.017471832659899322
+              },
+              {
+                "id": "blast/force",
+                "damage": 266.7684766232687,
+                "share": 0.0005226881109946219
+              },
+              {
+                "id": "blast/fire",
+                "damage": 3,
+                "share": 0.000005877997103826817
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 23.733333333333285,
+          "speedReductionEnemySeconds": 6.583333333333558,
+          "targets": {
+            "ordinary": 9.700000000000065,
+            "elite": 5.4166666666666545,
+            "boss": 8.61666666666668
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 2,
+            "connected": 1,
+            "contacts": 1
+          },
+          {
+            "pair": "orbit/ice",
+            "casts": 262,
+            "connected": 53,
+            "contacts": 158
+          },
+          {
+            "pair": "blast/force",
+            "casts": 125,
+            "connected": 7,
+            "contacts": 8
+          }
+        ],
+        "shatters": 7,
+        "dashShatters": 3,
+        "buffLevel": 5
+      },
+      "after": {
+        "weapon": "storm",
+        "seed": 1104,
+        "branch": "shards",
+        "protected": false,
+        "seconds": 487.65,
+        "win": false,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 3.2833333333333266,
+            "firstBranchAt": 62.066666666664425,
+            "firstMaxLevelAt": 276.00000000007765,
+            "firstEvolutionAt": 208.2166666667245
+          },
+          "combat": {
+            "hitsTaken": 9,
+            "damageTaken": 231,
+            "lethalExposures": 1
+          },
+          "boss": {
+            "appearedAt": null,
+            "killedAt": null,
+            "killSeconds": null,
+            "observedSeconds": 0,
+            "damage": {
+              "total": 0,
+              "buff": 0,
+              "buffShare": 0,
+              "sources": []
+            }
+          },
+          "damage": {
+            "total": 290433.3708340869,
+            "buff": 7261.812160714458,
+            "buffShare": 0.02500336700241944,
+            "sources": [
+              {
+                "id": "storm",
+                "damage": 283171.55867337243,
+                "share": 0.9749966329975805
+              },
+              {
+                "id": "bolt/ice",
+                "damage": 7224.58541525989,
+                "share": 0.024875190459387707
+              },
+              {
+                "id": "blast/force",
+                "damage": 34.226745454567336,
+                "share": 0.00011784715150422477
+              },
+              {
+                "id": "blast/fire",
+                "damage": 3,
+                "share": 0.000010329391527510732
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 8.783333333333353,
+          "speedReductionEnemySeconds": 3.0741666666666796,
+          "targets": {
+            "ordinary": 0,
+            "elite": 8.783333333333353,
+            "boss": 0
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 2,
+            "connected": 1,
+            "contacts": 1
+          },
+          {
+            "pair": "bolt/ice",
+            "casts": 206,
+            "connected": 136,
+            "contacts": 197
+          },
+          {
+            "pair": "blast/force",
+            "casts": 57,
+            "connected": 1,
+            "contacts": 2
+          }
+        ],
+        "shatters": 19,
+        "dashShatters": 0,
+        "buffLevel": 5
+      }
+    },
+    {
+      "before": {
+        "weapon": "storm",
+        "seed": 1104,
+        "branch": "prison",
+        "protected": false,
+        "seconds": 623.08,
+        "win": true,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 3.2833333333333266,
+            "firstBranchAt": 62.24999999999775,
+            "firstMaxLevelAt": 213.2833333333952,
+            "firstEvolutionAt": 151.11666666667907
+          },
+          "combat": {
+            "hitsTaken": 20,
+            "damageTaken": 609,
+            "lethalExposures": 0
+          },
+          "boss": {
+            "appearedAt": 600.0166666664496,
+            "killedAt": 623.0833333330953,
+            "killSeconds": 23.066666666645688,
+            "observedSeconds": 23.066666666645688,
+            "damage": {
+              "total": 8400,
+              "buff": 705,
+              "buffShare": 0.08392857142857142,
+              "sources": [
+                {
+                  "id": "storm",
+                  "damage": 7695,
+                  "share": 0.9160714285714285
+                },
+                {
+                  "id": "orbit/ice",
+                  "damage": 620,
+                  "share": 0.07380952380952381
+                },
+                {
+                  "id": "blast/force",
+                  "damage": 85,
+                  "share": 0.01011904761904762
+                }
+              ]
+            }
+          },
+          "damage": {
+            "total": 511987.9208415023,
+            "buff": 11405.122112659395,
+            "buffShare": 0.022276154667699895,
+            "sources": [
+              {
+                "id": "storm",
+                "damage": 500582.7987288429,
+                "share": 0.9777238453323002
+              },
+              {
+                "id": "orbit/ice",
+                "damage": 10284.795244153118,
+                "share": 0.020087964628636257
+              },
+              {
+                "id": "blast/force",
+                "damage": 1117.3268685062783,
+                "share": 0.002182330525825379
+              },
+              {
+                "id": "blast/fire",
+                "damage": 3,
+                "share": 0.000005859513238260008
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 38.59999999999909,
+          "speedReductionEnemySeconds": 10.969999999999656,
+          "targets": {
+            "ordinary": 20.983333333333427,
+            "elite": 4.9166666666666545,
+            "boss": 12.700000000000214
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 2,
+            "connected": 1,
+            "contacts": 1
+          },
+          {
+            "pair": "orbit/ice",
+            "casts": 264,
+            "connected": 62,
+            "contacts": 229
+          },
+          {
+            "pair": "blast/force",
+            "casts": 127,
+            "connected": 14,
+            "contacts": 19
+          }
+        ],
+        "shatters": 10,
+        "dashShatters": 10,
+        "buffLevel": 5
+      },
+      "after": {
+        "weapon": "storm",
+        "seed": 1104,
+        "branch": "prison",
+        "protected": false,
+        "seconds": 520.77,
+        "win": false,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 3.2833333333333266,
+            "firstBranchAt": 62.066666666664425,
+            "firstMaxLevelAt": 285.1500000000693,
+            "firstEvolutionAt": null
+          },
+          "combat": {
+            "hitsTaken": 12,
+            "damageTaken": 335,
+            "lethalExposures": 1
+          },
+          "boss": {
+            "appearedAt": null,
+            "killedAt": null,
+            "killSeconds": null,
+            "observedSeconds": 0,
+            "damage": {
+              "total": 0,
+              "buff": 0,
+              "buffShare": 0,
+              "sources": []
+            }
+          },
+          "damage": {
+            "total": 340005.3284795289,
+            "buff": 6829.290186363055,
+            "buffShare": 0.02008583282180601,
+            "sources": [
+              {
+                "id": "storm",
+                "damage": 333176.0382931658,
+                "share": 0.9799141671781939
+              },
+              {
+                "id": "bolt/ice",
+                "damage": 6412.280440584035,
+                "share": 0.01885935279090812
+              },
+              {
+                "id": "blast/force",
+                "damage": 414.00974577901945,
+                "share": 0.0012176566397662978
+              },
+              {
+                "id": "blast/fire",
+                "damage": 3,
+                "share": 0.000008823391131591117
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 29.166666666666313,
+          "speedReductionEnemySeconds": 11.786666666666399,
+          "targets": {
+            "ordinary": 15.583333333333693,
+            "elite": 13.583333333333595,
+            "boss": 0
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 2,
+            "connected": 1,
+            "contacts": 1
+          },
+          {
+            "pair": "bolt/ice",
+            "casts": 219,
+            "connected": 145,
+            "contacts": 208
+          },
+          {
+            "pair": "blast/force",
+            "casts": 70,
+            "connected": 4,
+            "contacts": 11
+          }
+        ],
+        "shatters": 0,
+        "dashShatters": 0,
+        "buffLevel": 5
+      }
+    },
+    {
+      "before": {
+        "weapon": "flame",
+        "seed": 1104,
+        "branch": "shards",
+        "protected": false,
+        "seconds": 571.8,
+        "win": false,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 2.4333333333333296,
+            "firstBranchAt": 63.466666666664345,
+            "firstMaxLevelAt": 295.4666666667266,
+            "firstEvolutionAt": 2.933333333333328
+          },
+          "combat": {
+            "hitsTaken": 22,
+            "damageTaken": 482,
+            "lethalExposures": 1
+          },
+          "boss": {
+            "appearedAt": null,
+            "killedAt": null,
+            "killSeconds": null,
+            "observedSeconds": 0,
+            "damage": {
+              "total": 0,
+              "buff": 0,
+              "buffShare": 0,
+              "sources": []
+            }
+          },
+          "damage": {
+            "total": 484710.3044723403,
+            "buff": 43738.21773192186,
+            "buffShare": 0.09023579100414555,
+            "sources": [
+              {
+                "id": "flame",
+                "damage": 440972.0867404185,
+                "share": 0.9097642089958545
+              },
+              {
+                "id": "orbit/ice",
+                "damage": 40783.33616135947,
+                "share": 0.08413961037151159
+              },
+              {
+                "id": "blast/force",
+                "damage": 2954.8815705623915,
+                "share": 0.006096180632633961
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 55.16666666666482,
+          "speedReductionEnemySeconds": 19.308333333332403,
+          "targets": {
+            "ordinary": 50.7499999999984,
+            "elite": 4.416666666666658,
+            "boss": 0
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 1,
+            "connected": 0,
+            "contacts": 0
+          },
+          {
+            "pair": "orbit/ice",
+            "casts": 229,
+            "connected": 159,
+            "contacts": 717
+          },
+          {
+            "pair": "blast/force",
+            "casts": 187,
+            "connected": 36,
+            "contacts": 47
+          }
+        ],
+        "shatters": 10,
+        "dashShatters": 10,
+        "buffLevel": 5
+      },
+      "after": {
+        "weapon": "flame",
+        "seed": 1104,
+        "branch": "shards",
+        "protected": false,
+        "seconds": 558.52,
+        "win": false,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 2.4333333333333296,
+            "firstBranchAt": 61.21666666666447,
+            "firstMaxLevelAt": 345.3833333333479,
+            "firstEvolutionAt": 3.099999999999994
+          },
+          "combat": {
+            "hitsTaken": 29,
+            "damageTaken": 719,
+            "lethalExposures": 1
+          },
+          "boss": {
+            "appearedAt": null,
+            "killedAt": null,
+            "killSeconds": null,
+            "observedSeconds": 0,
+            "damage": {
+              "total": 0,
+              "buff": 0,
+              "buffShare": 0,
+              "sources": []
+            }
+          },
+          "damage": {
+            "total": 453514.07884092786,
+            "buff": 20547.290889067095,
+            "buffShare": 0.04530684238421218,
+            "sources": [
+              {
+                "id": "flame",
+                "damage": 432931.7879518608,
+                "share": 0.954615982503409
+              },
+              {
+                "id": "bolt/ice",
+                "damage": 19439.888950863817,
+                "share": 0.04286501755479668
+              },
+              {
+                "id": "blast/force",
+                "damage": 1107.4019382032795,
+                "share": 0.002441824829415507
+              },
+              {
+                "id": "thorns",
+                "damage": 35,
+                "share": 0.00007717511237898396
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 18.333333333333584,
+          "speedReductionEnemySeconds": 6.4166666666666945,
+          "targets": {
+            "ordinary": 4.699999999999989,
+            "elite": 13.633333333333598,
+            "boss": 0
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 1,
+            "connected": 0,
+            "contacts": 0
+          },
+          {
+            "pair": "bolt/ice",
+            "casts": 224,
+            "connected": 160,
+            "contacts": 262
+          },
+          {
+            "pair": "blast/force",
+            "casts": 156,
+            "connected": 18,
+            "contacts": 20
+          }
+        ],
+        "shatters": 44,
+        "dashShatters": 5,
+        "buffLevel": 5
+      }
+    },
+    {
+      "before": {
+        "weapon": "flame",
+        "seed": 1104,
+        "branch": "prison",
+        "protected": false,
+        "seconds": 528.23,
+        "win": false,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 2.4333333333333296,
+            "firstBranchAt": 63.466666666664345,
+            "firstMaxLevelAt": 220.9333333334013,
+            "firstEvolutionAt": 2.933333333333328
+          },
+          "combat": {
+            "hitsTaken": 25,
+            "damageTaken": 611,
+            "lethalExposures": 1
+          },
+          "boss": {
+            "appearedAt": null,
+            "killedAt": null,
+            "killSeconds": null,
+            "observedSeconds": 0,
+            "damage": {
+              "total": 0,
+              "buff": 0,
+              "buffShare": 0,
+              "sources": []
+            }
+          },
+          "damage": {
+            "total": 366711.3871842679,
+            "buff": 25217.823436902756,
+            "buffShare": 0.06876749486983101,
+            "sources": [
+              {
+                "id": "flame",
+                "damage": 341490.6276837288,
+                "share": 0.9312244986603975
+              },
+              {
+                "id": "orbit/ice",
+                "damage": 23996.35658051773,
+                "share": 0.06543662787449755
+              },
+              {
+                "id": "blast/force",
+                "damage": 1221.4668563850246,
+                "share": 0.003330866995333452
+              },
+              {
+                "id": "thorns",
+                "damage": 2.9360636363742785,
+                "share": 0.000008006469771550735
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 39.51666666666571,
+          "speedReductionEnemySeconds": 13.830833333333388,
+          "targets": {
+            "ordinary": 34.66666666666598,
+            "elite": 4.849999999999988,
+            "boss": 0
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 1,
+            "connected": 0,
+            "contacts": 0
+          },
+          {
+            "pair": "orbit/ice",
+            "casts": 212,
+            "connected": 152,
+            "contacts": 522
+          },
+          {
+            "pair": "blast/force",
+            "casts": 157,
+            "connected": 20,
+            "contacts": 24
+          }
+        ],
+        "shatters": 12,
+        "dashShatters": 12,
+        "buffLevel": 5
+      },
+      "after": {
+        "weapon": "flame",
+        "seed": 1104,
+        "branch": "prison",
+        "protected": false,
+        "seconds": 612.98,
+        "win": true,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 2.4333333333333296,
+            "firstBranchAt": 61.21666666666447,
+            "firstMaxLevelAt": 274.8166666667454,
+            "firstEvolutionAt": 3.099999999999994
+          },
+          "combat": {
+            "hitsTaken": 20,
+            "damageTaken": 409,
+            "lethalExposures": 0
+          },
+          "boss": {
+            "appearedAt": 600.0166666664496,
+            "killedAt": 612.9833333331045,
+            "killSeconds": 12.966666666654874,
+            "observedSeconds": 12.966666666654874,
+            "damage": {
+              "total": 8399.999999999989,
+              "buff": 400,
+              "buffShare": 0.04761904761904768,
+              "sources": [
+                {
+                  "id": "flame",
+                  "damage": 7999.999999999989,
+                  "share": 0.9523809523809523
+                },
+                {
+                  "id": "bolt/ice",
+                  "damage": 400,
+                  "share": 0.04761904761904768
+                }
+              ]
+            }
+          },
+          "damage": {
+            "total": 525822.0188419304,
+            "buff": 19011.319502487542,
+            "buffShare": 0.03615542678178073,
+            "sources": [
+              {
+                "id": "flame",
+                "damage": 506680.2729076247,
+                "share": 0.9635965302927719
+              },
+              {
+                "id": "bolt/ice",
+                "damage": 14531.661862552883,
+                "share": 0.027636084724176047
+              },
+              {
+                "id": "blast/force",
+                "damage": 4479.657639934659,
+                "share": 0.00851934205760468
+              },
+              {
+                "id": "thorns",
+                "damage": 130.42643181814736,
+                "share": 0.0002480429254472803
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 144.26666666667364,
+          "speedReductionEnemySeconds": 55.63583333333716,
+          "targets": {
+            "ordinary": 105.56666666666199,
+            "elite": 30.666666666666238,
+            "boss": 8.033333333333319
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 1,
+            "connected": 0,
+            "contacts": 0
+          },
+          {
+            "pair": "bolt/ice",
+            "casts": 243,
+            "connected": 171,
+            "contacts": 278
+          },
+          {
+            "pair": "blast/force",
+            "casts": 187,
+            "connected": 47,
+            "contacts": 74
+          }
+        ],
+        "shatters": 10,
+        "dashShatters": 10,
+        "buffLevel": 5
+      }
+    },
+    {
+      "before": {
+        "weapon": "blade",
+        "seed": 1104,
+        "branch": "shards",
+        "protected": false,
+        "seconds": 467.68,
+        "win": false,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 1.7499999999999987,
+            "firstBranchAt": 60.98333333333115,
+            "firstMaxLevelAt": 216.58333333339783,
+            "firstEvolutionAt": 271.73333333341486
+          },
+          "combat": {
+            "hitsTaken": 39,
+            "damageTaken": 819,
+            "lethalExposures": 1
+          },
+          "boss": {
+            "appearedAt": null,
+            "killedAt": null,
+            "killSeconds": null,
+            "observedSeconds": 0,
+            "damage": {
+              "total": 0,
+              "buff": 0,
+              "buffShare": 0,
+              "sources": []
+            }
+          },
+          "damage": {
+            "total": 234761.40475682192,
+            "buff": 22944.881622077533,
+            "buffShare": 0.09773702643262437,
+            "sources": [
+              {
+                "id": "blade",
+                "damage": 211781.5231347444,
+                "share": 0.9021138860287479
+              },
+              {
+                "id": "orbit/ice",
+                "damage": 21644.25297922053,
+                "share": 0.09219681148884236
+              },
+              {
+                "id": "blast/force",
+                "damage": 1292.6286428570018,
+                "share": 0.005506137792095654
+              },
+              {
+                "id": "thorns",
+                "damage": 35,
+                "share": 0.00014908753862780306
+              },
+              {
+                "id": "blast/fire",
+                "damage": 8,
+                "share": 0.00003407715168635499
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 16.00000000000038,
+          "speedReductionEnemySeconds": 5.6000000000000245,
+          "targets": {
+            "ordinary": 5.28333333333332,
+            "elite": 10.716666666666786,
+            "boss": 0
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 1,
+            "connected": 1,
+            "contacts": 1
+          },
+          {
+            "pair": "orbit/ice",
+            "casts": 187,
+            "connected": 162,
+            "contacts": 719
+          },
+          {
+            "pair": "blast/force",
+            "casts": 179,
+            "connected": 25,
+            "contacts": 37
+          }
+        ],
+        "shatters": 4,
+        "dashShatters": 1,
+        "buffLevel": 5
+      },
+      "after": {
+        "weapon": "blade",
+        "seed": 1104,
+        "branch": "shards",
+        "protected": false,
+        "seconds": 467.68,
+        "win": false,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 1.7499999999999987,
+            "firstBranchAt": 60.98333333333115,
+            "firstMaxLevelAt": 216.58333333339783,
+            "firstEvolutionAt": 271.73333333341486
+          },
+          "combat": {
+            "hitsTaken": 39,
+            "damageTaken": 819,
+            "lethalExposures": 1
+          },
+          "boss": {
+            "appearedAt": null,
+            "killedAt": null,
+            "killSeconds": null,
+            "observedSeconds": 0,
+            "damage": {
+              "total": 0,
+              "buff": 0,
+              "buffShare": 0,
+              "sources": []
+            }
+          },
+          "damage": {
+            "total": 234761.40475682192,
+            "buff": 22944.881622077533,
+            "buffShare": 0.09773702643262437,
+            "sources": [
+              {
+                "id": "blade",
+                "damage": 211781.5231347444,
+                "share": 0.9021138860287479
+              },
+              {
+                "id": "orbit/ice",
+                "damage": 21644.25297922053,
+                "share": 0.09219681148884236
+              },
+              {
+                "id": "blast/force",
+                "damage": 1292.6286428570018,
+                "share": 0.005506137792095654
+              },
+              {
+                "id": "thorns",
+                "damage": 35,
+                "share": 0.00014908753862780306
+              },
+              {
+                "id": "blast/fire",
+                "damage": 8,
+                "share": 0.00003407715168635499
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 16.00000000000038,
+          "speedReductionEnemySeconds": 5.6000000000000245,
+          "targets": {
+            "ordinary": 5.28333333333332,
+            "elite": 10.716666666666786,
+            "boss": 0
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 1,
+            "connected": 1,
+            "contacts": 1
+          },
+          {
+            "pair": "orbit/ice",
+            "casts": 187,
+            "connected": 162,
+            "contacts": 719
+          },
+          {
+            "pair": "blast/force",
+            "casts": 179,
+            "connected": 25,
+            "contacts": 37
+          }
+        ],
+        "shatters": 4,
+        "dashShatters": 1,
+        "buffLevel": 5
+      }
+    },
+    {
+      "before": {
+        "weapon": "blade",
+        "seed": 1104,
+        "branch": "prison",
+        "protected": false,
+        "seconds": 362.78,
+        "win": false,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 1.7499999999999987,
+            "firstBranchAt": 60.98333333333115,
+            "firstMaxLevelAt": 184.98333333337268,
+            "firstEvolutionAt": 151.20000000001247
+          },
+          "combat": {
+            "hitsTaken": 29,
+            "damageTaken": 491,
+            "lethalExposures": 1
+          },
+          "boss": {
+            "appearedAt": null,
+            "killedAt": null,
+            "killSeconds": null,
+            "observedSeconds": 0,
+            "damage": {
+              "total": 0,
+              "buff": 0,
+              "buffShare": 0,
+              "sources": []
+            }
+          },
+          "damage": {
+            "total": 112335.81268832397,
+            "buff": 8665.35923052179,
+            "buffShare": 0.07713799386989661,
+            "sources": [
+              {
+                "id": "blade",
+                "damage": 103670.45345780218,
+                "share": 0.9228620061301034
+              },
+              {
+                "id": "orbit/ice",
+                "damage": 8022.299367209891,
+                "share": 0.07141355170027373
+              },
+              {
+                "id": "blast/force",
+                "damage": 635.0598633118991,
+                "share": 0.005653227124228624
+              },
+              {
+                "id": "blast/fire",
+                "damage": 8,
+                "share": 0.00007121504539425929
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 9.683333333333396,
+          "speedReductionEnemySeconds": 3.3891666666666795,
+          "targets": {
+            "ordinary": 5.266666666666653,
+            "elite": 4.416666666666658,
+            "boss": 0
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 1,
+            "connected": 1,
+            "contacts": 1
+          },
+          {
+            "pair": "orbit/ice",
+            "casts": 146,
+            "connected": 119,
+            "contacts": 356
+          },
+          {
+            "pair": "blast/force",
+            "casts": 121,
+            "connected": 19,
+            "contacts": 23
+          }
+        ],
+        "shatters": 2,
+        "dashShatters": 2,
+        "buffLevel": 5
+      },
+      "after": {
+        "weapon": "blade",
+        "seed": 1104,
+        "branch": "prison",
+        "protected": false,
+        "seconds": 362.78,
+        "win": false,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 1.7499999999999987,
+            "firstBranchAt": 60.98333333333115,
+            "firstMaxLevelAt": 184.98333333337268,
+            "firstEvolutionAt": 151.20000000001247
+          },
+          "combat": {
+            "hitsTaken": 29,
+            "damageTaken": 491,
+            "lethalExposures": 1
+          },
+          "boss": {
+            "appearedAt": null,
+            "killedAt": null,
+            "killSeconds": null,
+            "observedSeconds": 0,
+            "damage": {
+              "total": 0,
+              "buff": 0,
+              "buffShare": 0,
+              "sources": []
+            }
+          },
+          "damage": {
+            "total": 112335.81268832397,
+            "buff": 8665.35923052179,
+            "buffShare": 0.07713799386989661,
+            "sources": [
+              {
+                "id": "blade",
+                "damage": 103670.45345780218,
+                "share": 0.9228620061301034
+              },
+              {
+                "id": "orbit/ice",
+                "damage": 8022.299367209891,
+                "share": 0.07141355170027373
+              },
+              {
+                "id": "blast/force",
+                "damage": 635.0598633118991,
+                "share": 0.005653227124228624
+              },
+              {
+                "id": "blast/fire",
+                "damage": 8,
+                "share": 0.00007121504539425929
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 9.683333333333396,
+          "speedReductionEnemySeconds": 3.3891666666666795,
+          "targets": {
+            "ordinary": 5.266666666666653,
+            "elite": 4.416666666666658,
+            "boss": 0
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 1,
+            "connected": 1,
+            "contacts": 1
+          },
+          {
+            "pair": "orbit/ice",
+            "casts": 146,
+            "connected": 119,
+            "contacts": 356
+          },
+          {
+            "pair": "blast/force",
+            "casts": 121,
+            "connected": 19,
+            "contacts": 23
+          }
+        ],
+        "shatters": 2,
+        "dashShatters": 2,
+        "buffLevel": 5
+      }
+    },
+    {
+      "before": {
+        "weapon": "storm",
+        "seed": 1104,
+        "branch": "shards",
+        "protected": true,
+        "seconds": 617.5,
+        "win": true,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 3.2833333333333266,
+            "firstBranchAt": 62.24999999999775,
+            "firstMaxLevelAt": 213.2833333333952,
+            "firstEvolutionAt": 151.11666666667907
+          },
+          "combat": {
+            "hitsTaken": 20,
+            "damageTaken": 655,
+            "lethalExposures": 0
+          },
+          "boss": {
+            "appearedAt": 600.0166666664496,
+            "killedAt": 617.499999999767,
+            "killSeconds": 17.483333333317432,
+            "observedSeconds": 17.483333333317432,
+            "damage": {
+              "total": 8400,
+              "buff": 802,
+              "buffShare": 0.09547619047619048,
+              "sources": [
+                {
+                  "id": "storm",
+                  "damage": 7598,
+                  "share": 0.9045238095238095
+                },
+                {
+                  "id": "orbit/ice",
+                  "damage": 802,
+                  "share": 0.09547619047619048
+                }
+              ]
+            }
+          },
+          "damage": {
+            "total": 510377.9309531944,
+            "buff": 9187.006279543131,
+            "buffShare": 0.01800039876799777,
+            "sources": [
+              {
+                "id": "storm",
+                "damage": 501190.9246736512,
+                "share": 0.9819996012320021
+              },
+              {
+                "id": "orbit/ice",
+                "damage": 8917.237802919863,
+                "share": 0.017471832659899322
+              },
+              {
+                "id": "blast/force",
+                "damage": 266.7684766232687,
+                "share": 0.0005226881109946219
+              },
+              {
+                "id": "blast/fire",
+                "damage": 3,
+                "share": 0.000005877997103826817
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 23.733333333333285,
+          "speedReductionEnemySeconds": 6.583333333333558,
+          "targets": {
+            "ordinary": 9.700000000000065,
+            "elite": 5.4166666666666545,
+            "boss": 8.61666666666668
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 2,
+            "connected": 1,
+            "contacts": 1
+          },
+          {
+            "pair": "orbit/ice",
+            "casts": 262,
+            "connected": 53,
+            "contacts": 158
+          },
+          {
+            "pair": "blast/force",
+            "casts": 125,
+            "connected": 7,
+            "contacts": 8
+          }
+        ],
+        "shatters": 7,
+        "dashShatters": 3,
+        "buffLevel": 5
+      },
+      "after": {
+        "weapon": "storm",
+        "seed": 1104,
+        "branch": "shards",
+        "protected": true,
+        "seconds": 620.47,
+        "win": true,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 3.2833333333333266,
+            "firstBranchAt": 62.066666666664425,
+            "firstMaxLevelAt": 276.00000000007765,
+            "firstEvolutionAt": 208.2166666667245
+          },
+          "combat": {
+            "hitsTaken": 40,
+            "damageTaken": 728.75,
+            "lethalExposures": 20
+          },
+          "boss": {
+            "appearedAt": 600.0166666664496,
+            "killedAt": 620.466666666431,
+            "killSeconds": 20.4499999999814,
+            "observedSeconds": 20.4499999999814,
+            "damage": {
+              "total": 8400,
+              "buff": 1295,
+              "buffShare": 0.15416666666666667,
+              "sources": [
+                {
+                  "id": "storm",
+                  "damage": 7105,
+                  "share": 0.8458333333333333
+                },
+                {
+                  "id": "bolt/ice",
+                  "damage": 1295,
+                  "share": 0.15416666666666667
+                }
+              ]
+            }
+          },
+          "damage": {
+            "total": 514582.22746098164,
+            "buff": 18360.748736035483,
+            "buffShare": 0.0356808839408036,
+            "sources": [
+              {
+                "id": "storm",
+                "damage": 495637.96474929707,
+                "share": 0.963185159337589
+              },
+              {
+                "id": "bolt/ice",
+                "damage": 17976.191001295338,
+                "share": 0.03493356365996606
+              },
+              {
+                "id": "thorns",
+                "damage": 583.5139756490698,
+                "share": 0.0011339567216073643
+              },
+              {
+                "id": "blast/force",
+                "damage": 381.55773474014484,
+                "share": 0.0007414903087943832
+              },
+              {
+                "id": "blast/fire",
+                "damage": 3,
+                "share": 0.00000582997204315121
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 33.7999999999994,
+          "speedReductionEnemySeconds": 9.029999999999994,
+          "targets": {
+            "ordinary": 0,
+            "elite": 19.80000000000017,
+            "boss": 14.000000000000288
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 2,
+            "connected": 1,
+            "contacts": 1
+          },
+          {
+            "pair": "bolt/ice",
+            "casts": 258,
+            "connected": 184,
+            "contacts": 298
+          },
+          {
+            "pair": "blast/force",
+            "casts": 108,
+            "connected": 7,
+            "contacts": 9
+          }
+        ],
+        "shatters": 42,
+        "dashShatters": 0,
+        "buffLevel": 5
+      }
+    },
+    {
+      "before": {
+        "weapon": "storm",
+        "seed": 1104,
+        "branch": "prison",
+        "protected": true,
+        "seconds": 623.08,
+        "win": true,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 3.2833333333333266,
+            "firstBranchAt": 62.24999999999775,
+            "firstMaxLevelAt": 213.2833333333952,
+            "firstEvolutionAt": 151.11666666667907
+          },
+          "combat": {
+            "hitsTaken": 20,
+            "damageTaken": 609,
+            "lethalExposures": 0
+          },
+          "boss": {
+            "appearedAt": 600.0166666664496,
+            "killedAt": 623.0833333330953,
+            "killSeconds": 23.066666666645688,
+            "observedSeconds": 23.066666666645688,
+            "damage": {
+              "total": 8400,
+              "buff": 705,
+              "buffShare": 0.08392857142857142,
+              "sources": [
+                {
+                  "id": "storm",
+                  "damage": 7695,
+                  "share": 0.9160714285714285
+                },
+                {
+                  "id": "orbit/ice",
+                  "damage": 620,
+                  "share": 0.07380952380952381
+                },
+                {
+                  "id": "blast/force",
+                  "damage": 85,
+                  "share": 0.01011904761904762
+                }
+              ]
+            }
+          },
+          "damage": {
+            "total": 511987.9208415023,
+            "buff": 11405.122112659395,
+            "buffShare": 0.022276154667699895,
+            "sources": [
+              {
+                "id": "storm",
+                "damage": 500582.7987288429,
+                "share": 0.9777238453323002
+              },
+              {
+                "id": "orbit/ice",
+                "damage": 10284.795244153118,
+                "share": 0.020087964628636257
+              },
+              {
+                "id": "blast/force",
+                "damage": 1117.3268685062783,
+                "share": 0.002182330525825379
+              },
+              {
+                "id": "blast/fire",
+                "damage": 3,
+                "share": 0.000005859513238260008
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 38.59999999999909,
+          "speedReductionEnemySeconds": 10.969999999999656,
+          "targets": {
+            "ordinary": 20.983333333333427,
+            "elite": 4.9166666666666545,
+            "boss": 12.700000000000214
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 2,
+            "connected": 1,
+            "contacts": 1
+          },
+          {
+            "pair": "orbit/ice",
+            "casts": 264,
+            "connected": 62,
+            "contacts": 229
+          },
+          {
+            "pair": "blast/force",
+            "casts": 127,
+            "connected": 14,
+            "contacts": 19
+          }
+        ],
+        "shatters": 10,
+        "dashShatters": 10,
+        "buffLevel": 5
+      },
+      "after": {
+        "weapon": "storm",
+        "seed": 1104,
+        "branch": "prison",
+        "protected": true,
+        "seconds": 622.02,
+        "win": true,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 3.2833333333333266,
+            "firstBranchAt": 62.066666666664425,
+            "firstMaxLevelAt": 285.1500000000693,
+            "firstEvolutionAt": 614.0666666664368
+          },
+          "combat": {
+            "hitsTaken": 35,
+            "damageTaken": 765,
+            "lethalExposures": 13
+          },
+          "boss": {
+            "appearedAt": 600.0166666664496,
+            "killedAt": 622.0166666664296,
+            "killSeconds": 21.99999999997999,
+            "observedSeconds": 21.99999999997999,
+            "damage": {
+              "total": 8400,
+              "buff": 805,
+              "buffShare": 0.09583333333333334,
+              "sources": [
+                {
+                  "id": "storm",
+                  "damage": 7553,
+                  "share": 0.8991666666666667
+                },
+                {
+                  "id": "bolt/ice",
+                  "damage": 720,
+                  "share": 0.08571428571428572
+                },
+                {
+                  "id": "blast/force",
+                  "damage": 85,
+                  "share": 0.01011904761904762
+                },
+                {
+                  "id": "thorns",
+                  "damage": 42,
+                  "share": 0.005
+                }
+              ]
+            }
+          },
+          "damage": {
+            "total": 500396.45735643955,
+            "buff": 12920.773241556126,
+            "buffShare": 0.025821072574765402,
+            "sources": [
+              {
+                "id": "storm",
+                "damage": 487433.6841148834,
+                "share": 0.9740949939773004
+              },
+              {
+                "id": "bolt/ice",
+                "damage": 11433.233485712584,
+                "share": 0.022848350178403698
+              },
+              {
+                "id": "blast/force",
+                "damage": 1484.5397558435418,
+                "share": 0.0029667271500806868
+              },
+              {
+                "id": "thorns",
+                "damage": 42,
+                "share": 0.00008393344793423027
+              },
+              {
+                "id": "blast/fire",
+                "damage": 3,
+                "share": 0.000005995246281016448
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 80.93333333333004,
+          "speedReductionEnemySeconds": 28.824166666668493,
+          "targets": {
+            "ordinary": 36.94999999999921,
+            "elite": 28.916666666666337,
+            "boss": 15.066666666667007
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 2,
+            "connected": 1,
+            "contacts": 1
+          },
+          {
+            "pair": "bolt/ice",
+            "casts": 259,
+            "connected": 183,
+            "contacts": 292
+          },
+          {
+            "pair": "blast/force",
+            "casts": 111,
+            "connected": 12,
+            "contacts": 30
+          }
+        ],
+        "shatters": 1,
+        "dashShatters": 1,
+        "buffLevel": 5
+      }
+    },
+    {
+      "before": {
+        "weapon": "flame",
+        "seed": 1104,
+        "branch": "shards",
+        "protected": true,
+        "seconds": 614.28,
+        "win": true,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 2.4333333333333296,
+            "firstBranchAt": 63.466666666664345,
+            "firstMaxLevelAt": 295.4666666667266,
+            "firstEvolutionAt": 2.933333333333328
+          },
+          "combat": {
+            "hitsTaken": 25,
+            "damageTaken": 628,
+            "lethalExposures": 1
+          },
+          "boss": {
+            "appearedAt": 600.0166666664496,
+            "killedAt": 614.2833333331033,
+            "killSeconds": 14.266666666653691,
+            "observedSeconds": 14.266666666653691,
+            "damage": {
+              "total": 8400.00000000004,
+              "buff": 1341,
+              "buffShare": 0.1596428571428564,
+              "sources": [
+                {
+                  "id": "flame",
+                  "damage": 7059.00000000004,
+                  "share": 0.8403571428571436
+                },
+                {
+                  "id": "orbit/ice",
+                  "damage": 1341,
+                  "share": 0.1596428571428564
+                }
+              ]
+            }
+          },
+          "damage": {
+            "total": 520652.72284413123,
+            "buff": 47902.02547510307,
+            "buffShare": 0.09200379326440897,
+            "sources": [
+              {
+                "id": "flame",
+                "damage": 472750.6973690282,
+                "share": 0.907996206735591
+              },
+              {
+                "id": "orbit/ice",
+                "damage": 44759.14390454068,
+                "share": 0.08596736738461332
+              },
+              {
+                "id": "blast/force",
+                "damage": 3142.8815705623915,
+                "share": 0.0060364258797956614
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 67.84999999999744,
+          "speedReductionEnemySeconds": 21.6974999999996,
+          "targets": {
+            "ordinary": 53.183333333331596,
+            "elite": 4.416666666666658,
+            "boss": 10.250000000000092
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 1,
+            "connected": 0,
+            "contacts": 0
+          },
+          {
+            "pair": "orbit/ice",
+            "casts": 244,
+            "connected": 174,
+            "contacts": 769
+          },
+          {
+            "pair": "blast/force",
+            "casts": 209,
+            "connected": 37,
+            "contacts": 49
+          }
+        ],
+        "shatters": 14,
+        "dashShatters": 10,
+        "buffLevel": 5
+      },
+      "after": {
+        "weapon": "flame",
+        "seed": 1104,
+        "branch": "shards",
+        "protected": true,
+        "seconds": 611.73,
+        "win": true,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 2.4333333333333296,
+            "firstBranchAt": 61.21666666666447,
+            "firstMaxLevelAt": 345.3833333333479,
+            "firstEvolutionAt": 3.099999999999994
+          },
+          "combat": {
+            "hitsTaken": 35,
+            "damageTaken": 856,
+            "lethalExposures": 4
+          },
+          "boss": {
+            "appearedAt": 600.0166666664496,
+            "killedAt": 611.7333333331056,
+            "killSeconds": 11.71666666665601,
+            "observedSeconds": 11.71666666665601,
+            "damage": {
+              "total": 8399.99999999998,
+              "buff": 850,
+              "buffShare": 0.10119047619047643,
+              "sources": [
+                {
+                  "id": "flame",
+                  "damage": 7549.99999999998,
+                  "share": 0.8988095238095236
+                },
+                {
+                  "id": "bolt/ice",
+                  "damage": 850,
+                  "share": 0.10119047619047643
+                }
+              ]
+            }
+          },
+          "damage": {
+            "total": 523532.59021984064,
+            "buff": 23895.219816663463,
+            "buffShare": 0.045642277602296805,
+            "sources": [
+              {
+                "id": "flame",
+                "damage": 499567.37040317716,
+                "share": 0.9542240153442978
+              },
+              {
+                "id": "bolt/ice",
+                "damage": 22393.440504109643,
+                "share": 0.04277372779162848
+              },
+              {
+                "id": "blast/force",
+                "damage": 1501.7793125538178,
+                "share": 0.002868549810668318
+              },
+              {
+                "id": "thorns",
+                "damage": 70,
+                "share": 0.000133707053405416
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 28.49999999999969,
+          "speedReductionEnemySeconds": 8.318333333333445,
+          "targets": {
+            "ordinary": 4.699999999999989,
+            "elite": 15.516666666667026,
+            "boss": 8.283333333333331
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 1,
+            "connected": 0,
+            "contacts": 0
+          },
+          {
+            "pair": "bolt/ice",
+            "casts": 244,
+            "connected": 177,
+            "contacts": 291
+          },
+          {
+            "pair": "blast/force",
+            "casts": 179,
+            "connected": 23,
+            "contacts": 27
+          }
+        ],
+        "shatters": 55,
+        "dashShatters": 5,
+        "buffLevel": 5
+      }
+    },
+    {
+      "before": {
+        "weapon": "flame",
+        "seed": 1104,
+        "branch": "prison",
+        "protected": true,
+        "seconds": 616.33,
+        "win": true,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 2.4333333333333296,
+            "firstBranchAt": 63.466666666664345,
+            "firstMaxLevelAt": 220.9333333334013,
+            "firstEvolutionAt": 2.933333333333328
+          },
+          "combat": {
+            "hitsTaken": 48,
+            "damageTaken": 925,
+            "lethalExposures": 17
+          },
+          "boss": {
+            "appearedAt": 600.0166666664496,
+            "killedAt": 616.3333333331015,
+            "killSeconds": 16.316666666651827,
+            "observedSeconds": 16.316666666651827,
+            "damage": {
+              "total": 8400.000000000035,
+              "buff": 718,
+              "buffShare": 0.08547619047619012,
+              "sources": [
+                {
+                  "id": "flame",
+                  "damage": 7682.000000000035,
+                  "share": 0.9145238095238098
+                },
+                {
+                  "id": "orbit/ice",
+                  "damage": 524,
+                  "share": 0.06238095238095213
+                },
+                {
+                  "id": "blast/force",
+                  "damage": 194,
+                  "share": 0.023095238095238
+                }
+              ]
+            }
+          },
+          "damage": {
+            "total": 509256.2149376603,
+            "buff": 36997.243417202706,
+            "buffShare": 0.07264956682311999,
+            "sources": [
+              {
+                "id": "flame",
+                "damage": 472256.03545682126,
+                "share": 0.9273446677810926
+              },
+              {
+                "id": "orbit/ice",
+                "damage": 34483.88916601271,
+                "share": 0.06771422351759418
+              },
+              {
+                "id": "blast/force",
+                "damage": 2513.354251189997,
+                "share": 0.004935343305525814
+              },
+              {
+                "id": "thorns",
+                "damage": 2.9360636363742785,
+                "share": 0.000005765395787528467
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 64.01666666666432,
+          "speedReductionEnemySeconds": 21.104999999999333,
+          "targets": {
+            "ordinary": 52.5499999999983,
+            "elite": 4.949999999999988,
+            "boss": 6.516666666666652
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 1,
+            "connected": 0,
+            "contacts": 0
+          },
+          {
+            "pair": "orbit/ice",
+            "casts": 246,
+            "connected": 181,
+            "contacts": 713
+          },
+          {
+            "pair": "blast/force",
+            "casts": 196,
+            "connected": 33,
+            "contacts": 41
+          }
+        ],
+        "shatters": 17,
+        "dashShatters": 17,
+        "buffLevel": 5
+      },
+      "after": {
+        "weapon": "flame",
+        "seed": 1104,
+        "branch": "prison",
+        "protected": true,
+        "seconds": 612.98,
+        "win": true,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 2.4333333333333296,
+            "firstBranchAt": 61.21666666666447,
+            "firstMaxLevelAt": 274.8166666667454,
+            "firstEvolutionAt": 3.099999999999994
+          },
+          "combat": {
+            "hitsTaken": 20,
+            "damageTaken": 409,
+            "lethalExposures": 0
+          },
+          "boss": {
+            "appearedAt": 600.0166666664496,
+            "killedAt": 612.9833333331045,
+            "killSeconds": 12.966666666654874,
+            "observedSeconds": 12.966666666654874,
+            "damage": {
+              "total": 8399.999999999989,
+              "buff": 400,
+              "buffShare": 0.04761904761904768,
+              "sources": [
+                {
+                  "id": "flame",
+                  "damage": 7999.999999999989,
+                  "share": 0.9523809523809523
+                },
+                {
+                  "id": "bolt/ice",
+                  "damage": 400,
+                  "share": 0.04761904761904768
+                }
+              ]
+            }
+          },
+          "damage": {
+            "total": 525822.0188419304,
+            "buff": 19011.319502487542,
+            "buffShare": 0.03615542678178073,
+            "sources": [
+              {
+                "id": "flame",
+                "damage": 506680.2729076247,
+                "share": 0.9635965302927719
+              },
+              {
+                "id": "bolt/ice",
+                "damage": 14531.661862552883,
+                "share": 0.027636084724176047
+              },
+              {
+                "id": "blast/force",
+                "damage": 4479.657639934659,
+                "share": 0.00851934205760468
+              },
+              {
+                "id": "thorns",
+                "damage": 130.42643181814736,
+                "share": 0.0002480429254472803
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 144.26666666667364,
+          "speedReductionEnemySeconds": 55.63583333333716,
+          "targets": {
+            "ordinary": 105.56666666666199,
+            "elite": 30.666666666666238,
+            "boss": 8.033333333333319
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 1,
+            "connected": 0,
+            "contacts": 0
+          },
+          {
+            "pair": "bolt/ice",
+            "casts": 243,
+            "connected": 171,
+            "contacts": 278
+          },
+          {
+            "pair": "blast/force",
+            "casts": 187,
+            "connected": 47,
+            "contacts": 74
+          }
+        ],
+        "shatters": 10,
+        "dashShatters": 10,
+        "buffLevel": 5
+      }
+    },
+    {
+      "before": {
+        "weapon": "blade",
+        "seed": 1104,
+        "branch": "shards",
+        "protected": true,
+        "seconds": 651.23,
+        "win": true,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 1.7499999999999987,
+            "firstBranchAt": 60.98333333333115,
+            "firstMaxLevelAt": 216.58333333339783,
+            "firstEvolutionAt": 271.73333333341486
+          },
+          "combat": {
+            "hitsTaken": 91,
+            "damageTaken": 1366,
+            "lethalExposures": 40
+          },
+          "boss": {
+            "appearedAt": 600.0166666664496,
+            "killedAt": 651.2333333330697,
+            "killSeconds": 51.216666666620085,
+            "observedSeconds": 51.216666666620085,
+            "damage": {
+              "total": 8400,
+              "buff": 2445,
+              "buffShare": 0.2910714285714286,
+              "sources": [
+                {
+                  "id": "blade",
+                  "damage": 5955,
+                  "share": 0.7089285714285715
+                },
+                {
+                  "id": "orbit/ice",
+                  "damage": 2445,
+                  "share": 0.2910714285714286
+                }
+              ]
+            }
+          },
+          "damage": {
+            "total": 442309.83656229806,
+            "buff": 54047.00398505334,
+            "buffShare": 0.12219263402576619,
+            "sources": [
+              {
+                "id": "blade",
+                "damage": 388227.8325772447,
+                "share": 0.8777282359230643
+              },
+              {
+                "id": "orbit/ice",
+                "damage": 51190.37849933994,
+                "share": 0.115734207715568
+              },
+              {
+                "id": "blast/force",
+                "damage": 2848.6254857134063,
+                "share": 0.006440339441359418
+              },
+              {
+                "id": "thorns",
+                "damage": 35,
+                "share": 0.00007913005116961795
+              },
+              {
+                "id": "blast/fire",
+                "damage": 8,
+                "share": 0.00001808686883876982
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 84.36666666666318,
+          "speedReductionEnemySeconds": 24.761666666667004,
+          "targets": {
+            "ordinary": 43.266666666665515,
+            "elite": 17.26666666666698,
+            "boss": 23.83333333333327
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 1,
+            "connected": 1,
+            "contacts": 1
+          },
+          {
+            "pair": "orbit/ice",
+            "casts": 251,
+            "connected": 224,
+            "contacts": 1287
+          },
+          {
+            "pair": "blast/force",
+            "casts": 260,
+            "connected": 43,
+            "contacts": 73
+          }
+        ],
+        "shatters": 18,
+        "dashShatters": 3,
+        "buffLevel": 5
+      },
+      "after": {
+        "weapon": "blade",
+        "seed": 1104,
+        "branch": "shards",
+        "protected": true,
+        "seconds": 651.23,
+        "win": true,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 1.7499999999999987,
+            "firstBranchAt": 60.98333333333115,
+            "firstMaxLevelAt": 216.58333333339783,
+            "firstEvolutionAt": 271.73333333341486
+          },
+          "combat": {
+            "hitsTaken": 91,
+            "damageTaken": 1366,
+            "lethalExposures": 40
+          },
+          "boss": {
+            "appearedAt": 600.0166666664496,
+            "killedAt": 651.2333333330697,
+            "killSeconds": 51.216666666620085,
+            "observedSeconds": 51.216666666620085,
+            "damage": {
+              "total": 8400,
+              "buff": 2445,
+              "buffShare": 0.2910714285714286,
+              "sources": [
+                {
+                  "id": "blade",
+                  "damage": 5955,
+                  "share": 0.7089285714285715
+                },
+                {
+                  "id": "orbit/ice",
+                  "damage": 2445,
+                  "share": 0.2910714285714286
+                }
+              ]
+            }
+          },
+          "damage": {
+            "total": 442309.83656229806,
+            "buff": 54047.00398505334,
+            "buffShare": 0.12219263402576619,
+            "sources": [
+              {
+                "id": "blade",
+                "damage": 388227.8325772447,
+                "share": 0.8777282359230643
+              },
+              {
+                "id": "orbit/ice",
+                "damage": 51190.37849933994,
+                "share": 0.115734207715568
+              },
+              {
+                "id": "blast/force",
+                "damage": 2848.6254857134063,
+                "share": 0.006440339441359418
+              },
+              {
+                "id": "thorns",
+                "damage": 35,
+                "share": 0.00007913005116961795
+              },
+              {
+                "id": "blast/fire",
+                "damage": 8,
+                "share": 0.00001808686883876982
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 84.36666666666318,
+          "speedReductionEnemySeconds": 24.761666666667004,
+          "targets": {
+            "ordinary": 43.266666666665515,
+            "elite": 17.26666666666698,
+            "boss": 23.83333333333327
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 1,
+            "connected": 1,
+            "contacts": 1
+          },
+          {
+            "pair": "orbit/ice",
+            "casts": 251,
+            "connected": 224,
+            "contacts": 1287
+          },
+          {
+            "pair": "blast/force",
+            "casts": 260,
+            "connected": 43,
+            "contacts": 73
+          }
+        ],
+        "shatters": 18,
+        "dashShatters": 3,
+        "buffLevel": 5
+      }
+    },
+    {
+      "before": {
+        "weapon": "blade",
+        "seed": 1104,
+        "branch": "prison",
+        "protected": true,
+        "seconds": 675.87,
+        "win": true,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 1.7499999999999987,
+            "firstBranchAt": 60.98333333333115,
+            "firstMaxLevelAt": 184.98333333337268,
+            "firstEvolutionAt": 151.20000000001247
+          },
+          "combat": {
+            "hitsTaken": 85,
+            "damageTaken": 1195,
+            "lethalExposures": 30
+          },
+          "boss": {
+            "appearedAt": 600.0166666664496,
+            "killedAt": 675.8666666663806,
+            "killSeconds": 75.84999999993101,
+            "observedSeconds": 75.84999999993101,
+            "damage": {
+              "total": 8400,
+              "buff": 1863,
+              "buffShare": 0.22178571428571428,
+              "sources": [
+                {
+                  "id": "blade",
+                  "damage": 6491,
+                  "share": 0.7727380952380952
+                },
+                {
+                  "id": "orbit/ice",
+                  "damage": 1763,
+                  "share": 0.2098809523809524
+                },
+                {
+                  "id": "blast/force",
+                  "damage": 100,
+                  "share": 0.011904761904761904
+                },
+                {
+                  "id": "thorns",
+                  "damage": 46,
+                  "share": 0.0054761904761904765
+                }
+              ]
+            }
+          },
+          "damage": {
+            "total": 300247.2213132999,
+            "buff": 32014.413643178028,
+            "buffShare": 0.1066268440491972,
+            "sources": [
+              {
+                "id": "blade",
+                "damage": 268016.67130648554,
+                "share": 0.8926532946222252
+              },
+              {
+                "id": "orbit/ice",
+                "damage": 30304.307917204213,
+                "share": 0.10093118525677372
+              },
+              {
+                "id": "blast/force",
+                "damage": 1702.1057259738143,
+                "share": 0.005669014082890422
+              },
+              {
+                "id": "thorns",
+                "damage": 216.13636363636365,
+                "share": 0.0007198613285777295
+              },
+              {
+                "id": "blast/fire",
+                "damage": 8,
+                "share": 0.00002664470953305581
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 73.88333333333043,
+          "speedReductionEnemySeconds": 20.33166666666864,
+          "targets": {
+            "ordinary": 25.41666666666652,
+            "elite": 20.450000000000134,
+            "boss": 28.016666666666378
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 1,
+            "connected": 1,
+            "contacts": 1
+          },
+          {
+            "pair": "orbit/ice",
+            "casts": 257,
+            "connected": 225,
+            "contacts": 889
+          },
+          {
+            "pair": "blast/force",
+            "casts": 269,
+            "connected": 40,
+            "contacts": 54
+          }
+        ],
+        "shatters": 5,
+        "dashShatters": 5,
+        "buffLevel": 5
+      },
+      "after": {
+        "weapon": "blade",
+        "seed": 1104,
+        "branch": "prison",
+        "protected": true,
+        "seconds": 675.87,
+        "win": true,
+        "balance": {
+          "growth": {
+            "firstBuildAt": 1.7499999999999987,
+            "firstBranchAt": 60.98333333333115,
+            "firstMaxLevelAt": 184.98333333337268,
+            "firstEvolutionAt": 151.20000000001247
+          },
+          "combat": {
+            "hitsTaken": 85,
+            "damageTaken": 1195,
+            "lethalExposures": 30
+          },
+          "boss": {
+            "appearedAt": 600.0166666664496,
+            "killedAt": 675.8666666663806,
+            "killSeconds": 75.84999999993101,
+            "observedSeconds": 75.84999999993101,
+            "damage": {
+              "total": 8400,
+              "buff": 1863,
+              "buffShare": 0.22178571428571428,
+              "sources": [
+                {
+                  "id": "blade",
+                  "damage": 6491,
+                  "share": 0.7727380952380952
+                },
+                {
+                  "id": "orbit/ice",
+                  "damage": 1763,
+                  "share": 0.2098809523809524
+                },
+                {
+                  "id": "blast/force",
+                  "damage": 100,
+                  "share": 0.011904761904761904
+                },
+                {
+                  "id": "thorns",
+                  "damage": 46,
+                  "share": 0.0054761904761904765
+                }
+              ]
+            }
+          },
+          "damage": {
+            "total": 300247.2213132999,
+            "buff": 32014.413643178028,
+            "buffShare": 0.1066268440491972,
+            "sources": [
+              {
+                "id": "blade",
+                "damage": 268016.67130648554,
+                "share": 0.8926532946222252
+              },
+              {
+                "id": "orbit/ice",
+                "damage": 30304.307917204213,
+                "share": 0.10093118525677372
+              },
+              {
+                "id": "blast/force",
+                "damage": 1702.1057259738143,
+                "share": 0.005669014082890422
+              },
+              {
+                "id": "thorns",
+                "damage": 216.13636363636365,
+                "share": 0.0007198613285777295
+              },
+              {
+                "id": "blast/fire",
+                "damage": 8,
+                "share": 0.00002664470953305581
+              }
+            ]
+          }
+        },
+        "control": {
+          "slowedEnemySeconds": 73.88333333333043,
+          "speedReductionEnemySeconds": 20.33166666666864,
+          "targets": {
+            "ordinary": 25.41666666666652,
+            "elite": 20.450000000000134,
+            "boss": 28.016666666666378
+          }
+        },
+        "contacts": [
+          {
+            "pair": "blast/fire",
+            "casts": 1,
+            "connected": 1,
+            "contacts": 1
+          },
+          {
+            "pair": "orbit/ice",
+            "casts": 257,
+            "connected": 225,
+            "contacts": 889
+          },
+          {
+            "pair": "blast/force",
+            "casts": 269,
+            "connected": 40,
+            "contacts": 54
+          }
+        ],
+        "shatters": 5,
+        "dashShatters": 5,
+        "buffLevel": 5
+      }
+    }
+  ],
+  "supplemental": [
+    {
+      "weapon": "storm",
+      "seed": 627,
+      "branch": "shards",
+      "protected": false,
+      "seconds": 553.52,
+      "win": false,
+      "balance": {
+        "growth": {
+          "firstBuildAt": 3.733333333333325,
+          "firstBranchAt": 174.21666666669745,
+          "firstMaxLevelAt": 293.38333333339517,
+          "firstEvolutionAt": 152.56666666668022
+        },
+        "combat": {
+          "hitsTaken": 25,
+          "damageTaken": 714,
+          "lethalExposures": 1
+        },
+        "boss": {
+          "appearedAt": null,
+          "killedAt": null,
+          "killSeconds": null,
+          "observedSeconds": 0,
+          "damage": {
+            "total": 0,
+            "buff": 0,
+            "buffShare": 0,
+            "sources": []
+          }
+        },
+        "damage": {
+          "total": 410770.53492107644,
+          "buff": 18194.46816265894,
+          "buffShare": 0.044293508457598454,
+          "sources": [
+            {
+              "id": "storm",
+              "damage": 392576.0667584175,
+              "share": 0.9557064915424016
+            },
+            {
+              "id": "bolt/ice",
+              "damage": 17068.62036233455,
+              "share": 0.04155268918111187
+            },
+            {
+              "id": "blast/force",
+              "damage": 1122.8478003243904,
+              "share": 0.0027335159288874727
+            },
+            {
+              "id": "blast/fire",
+              "damage": 3,
+              "share": 0.000007303347599107629
+            }
+          ]
+        }
+      },
+      "control": {
+        "slowedEnemySeconds": 26.183333333333152,
+        "speedReductionEnemySeconds": 9.16416666666671,
+        "targets": {
+          "ordinary": 2.2666666666666657,
+          "elite": 23.91666666666661,
+          "boss": 0
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 2,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "bolt/ice",
+          "casts": 231,
+          "connected": 158,
+          "contacts": 261
+        },
+        {
+          "pair": "blast/force",
+          "casts": 86,
+          "connected": 15,
+          "contacts": 20
+        }
+      ],
+      "shatters": 39,
+      "dashShatters": 1,
+      "buffLevel": 5
+    },
+    {
+      "weapon": "storm",
+      "seed": 627,
+      "branch": "prison",
+      "protected": false,
+      "seconds": 509.02,
+      "win": false,
+      "balance": {
+        "growth": {
+          "firstBuildAt": 3.733333333333325,
+          "firstBranchAt": 174.21666666669745,
+          "firstMaxLevelAt": 279.85000000007415,
+          "firstEvolutionAt": 152.56666666668022
+        },
+        "combat": {
+          "hitsTaken": 18,
+          "damageTaken": 389,
+          "lethalExposures": 1
+        },
+        "boss": {
+          "appearedAt": null,
+          "killedAt": null,
+          "killSeconds": null,
+          "observedSeconds": 0,
+          "damage": {
+            "total": 0,
+            "buff": 0,
+            "buffShare": 0,
+            "sources": []
+          }
+        },
+        "damage": {
+          "total": 315200.0940727172,
+          "buff": 7246.368872077814,
+          "buffShare": 0.02298974209825605,
+          "sources": [
+            {
+              "id": "storm",
+              "damage": 307953.7252006394,
+              "share": 0.977010257901744
+            },
+            {
+              "id": "bolt/ice",
+              "damage": 6987.990608766175,
+              "share": 0.022170014350167147
+            },
+            {
+              "id": "blast/force",
+              "damage": 255.378263311639,
+              "share": 0.0008102099844320567
+            },
+            {
+              "id": "blast/fire",
+              "damage": 3,
+              "share": 0.0000095177636568468
+            }
+          ]
+        }
+      },
+      "control": {
+        "slowedEnemySeconds": 30.54999999999957,
+        "speedReductionEnemySeconds": 12.08166666666635,
+        "targets": {
+          "ordinary": 21.116666666666767,
+          "elite": 9.433333333333385,
+          "boss": 0
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 2,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "bolt/ice",
+          "casts": 214,
+          "connected": 136,
+          "contacts": 211
+        },
+        {
+          "pair": "blast/force",
+          "casts": 61,
+          "connected": 5,
+          "contacts": 8
+        }
+      ],
+      "shatters": 1,
+      "dashShatters": 1,
+      "buffLevel": 5
+    },
+    {
+      "weapon": "flame",
+      "seed": 627,
+      "branch": "shards",
+      "protected": false,
+      "seconds": 564.12,
+      "win": false,
+      "balance": {
+        "growth": {
+          "firstBuildAt": 2.4333333333333296,
+          "firstBranchAt": 62.449999999997736,
+          "firstMaxLevelAt": 211.783333333394,
+          "firstEvolutionAt": 150.71666666667875
+        },
+        "combat": {
+          "hitsTaken": 28,
+          "damageTaken": 712,
+          "lethalExposures": 1
+        },
+        "boss": {
+          "appearedAt": null,
+          "killedAt": null,
+          "killSeconds": null,
+          "observedSeconds": 0,
+          "damage": {
+            "total": 0,
+            "buff": 0,
+            "buffShare": 0,
+            "sources": []
+          }
+        },
+        "damage": {
+          "total": 463315.19394871185,
+          "buff": 17182.38746623175,
+          "buffShare": 0.03708574139300472,
+          "sources": [
+            {
+              "id": "flame",
+              "damage": 446132.80648248014,
+              "share": 0.9629142586069954
+            },
+            {
+              "id": "bolt/ice",
+              "damage": 14621.475314067473,
+              "share": 0.031558376468193365
+            },
+            {
+              "id": "blast/force",
+              "damage": 2560.912152164277,
+              "share": 0.005527364924811348
+            }
+          ]
+        }
+      },
+      "control": {
+        "slowedEnemySeconds": 14.883333333333661,
+        "speedReductionEnemySeconds": 5.2091666666666905,
+        "targets": {
+          "ordinary": 1.4,
+          "elite": 13.483333333333592,
+          "boss": 0
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 0,
+          "contacts": 0
+        },
+        {
+          "pair": "bolt/ice",
+          "casts": 226,
+          "connected": 141,
+          "contacts": 234
+        },
+        {
+          "pair": "blast/force",
+          "casts": 154,
+          "connected": 32,
+          "contacts": 36
+        }
+      ],
+      "shatters": 21,
+      "dashShatters": 0,
+      "buffLevel": 5
+    },
+    {
+      "weapon": "flame",
+      "seed": 627,
+      "branch": "prison",
+      "protected": false,
+      "seconds": 537.83,
+      "win": false,
+      "balance": {
+        "growth": {
+          "firstBuildAt": 2.4333333333333296,
+          "firstBranchAt": 62.449999999997736,
+          "firstMaxLevelAt": 252.45000000009304,
+          "firstEvolutionAt": 140.90000000000427
+        },
+        "combat": {
+          "hitsTaken": 23,
+          "damageTaken": 570,
+          "lethalExposures": 1
+        },
+        "boss": {
+          "appearedAt": null,
+          "killedAt": null,
+          "killSeconds": null,
+          "observedSeconds": 0,
+          "damage": {
+            "total": 0,
+            "buff": 0,
+            "buffShare": 0,
+            "sources": []
+          }
+        },
+        "damage": {
+          "total": 389645.5944862036,
+          "buff": 11985.06845411179,
+          "buffShare": 0.030758896350196387,
+          "sources": [
+            {
+              "id": "flame",
+              "damage": 377660.5260320918,
+              "share": 0.9692411036498035
+            },
+            {
+              "id": "bolt/ice",
+              "damage": 10124.249716557973,
+              "share": 0.02598322644943044
+            },
+            {
+              "id": "blast/force",
+              "damage": 1860.8187375538166,
+              "share": 0.004775669900765948
+            }
+          ]
+        }
+      },
+      "control": {
+        "slowedEnemySeconds": 55.14999999999817,
+        "speedReductionEnemySeconds": 22.185000000000247,
+        "targets": {
+          "ordinary": 39.26666666666573,
+          "elite": 15.883333333333713,
+          "boss": 0
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 0,
+          "contacts": 0
+        },
+        {
+          "pair": "bolt/ice",
+          "casts": 215,
+          "connected": 136,
+          "contacts": 205
+        },
+        {
+          "pair": "blast/force",
+          "casts": 150,
+          "connected": 28,
+          "contacts": 35
+        }
+      ],
+      "shatters": 6,
+      "dashShatters": 6,
+      "buffLevel": 5
+    },
+    {
+      "weapon": "blade",
+      "seed": 627,
+      "branch": "shards",
+      "protected": false,
+      "seconds": 448.98,
+      "win": false,
+      "balance": {
+        "growth": {
+          "firstBuildAt": 1.7499999999999987,
+          "firstBranchAt": 68.64999999999739,
+          "firstMaxLevelAt": 230.45000000007553,
+          "firstEvolutionAt": 68.56666666666406
+        },
+        "combat": {
+          "hitsTaken": 35,
+          "damageTaken": 670,
+          "lethalExposures": 1
+        },
+        "boss": {
+          "appearedAt": null,
+          "killedAt": null,
+          "killSeconds": null,
+          "observedSeconds": 0,
+          "damage": {
+            "total": 0,
+            "buff": 0,
+            "buffShare": 0,
+            "sources": []
+          }
+        },
+        "damage": {
+          "total": 209083.56774124157,
+          "buff": 17699.129561364378,
+          "buffShare": 0.08465098310962693,
+          "sources": [
+            {
+              "id": "blade",
+              "damage": 191384.43817987718,
+              "share": 0.9153490168903731
+            },
+            {
+              "id": "orbit/ice",
+              "damage": 16715.784497727862,
+              "share": 0.07994786332714125
+            },
+            {
+              "id": "blast/force",
+              "damage": 975.3450636365164,
+              "share": 0.004664857569503442
+            },
+            {
+              "id": "blast/fire",
+              "damage": 8,
+              "share": 0.000038262212982230485
+            }
+          ]
+        }
+      },
+      "control": {
+        "slowedEnemySeconds": 12.150000000000189,
+        "speedReductionEnemySeconds": 4.252500000000018,
+        "targets": {
+          "ordinary": 2.833333333333328,
+          "elite": 9.316666666666714,
+          "boss": 0
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "orbit/ice",
+          "casts": 182,
+          "connected": 140,
+          "contacts": 553
+        },
+        {
+          "pair": "blast/force",
+          "casts": 174,
+          "connected": 30,
+          "contacts": 38
+        }
+      ],
+      "shatters": 6,
+      "dashShatters": 5,
+      "buffLevel": 5
+    },
+    {
+      "weapon": "blade",
+      "seed": 627,
+      "branch": "prison",
+      "protected": false,
+      "seconds": 481.93,
+      "win": false,
+      "balance": {
+        "growth": {
+          "firstBuildAt": 1.7499999999999987,
+          "firstBranchAt": 68.64999999999739,
+          "firstMaxLevelAt": 271.583333333415,
+          "firstEvolutionAt": 68.56666666666406
+        },
+        "combat": {
+          "hitsTaken": 39,
+          "damageTaken": 806.5,
+          "lethalExposures": 1
+        },
+        "boss": {
+          "appearedAt": null,
+          "killedAt": null,
+          "killSeconds": null,
+          "observedSeconds": 0,
+          "damage": {
+            "total": 0,
+            "buff": 0,
+            "buffShare": 0,
+            "sources": []
+          }
+        },
+        "damage": {
+          "total": 256717.62133863632,
+          "buff": 25704.814881818682,
+          "buffShare": 0.10012875137975609,
+          "sources": [
+            {
+              "id": "blade",
+              "damage": 231012.80645681763,
+              "share": 0.8998712486202439
+            },
+            {
+              "id": "orbit/ice",
+              "damage": 24656.401466558924,
+              "share": 0.09604483454618276
+            },
+            {
+              "id": "blast/force",
+              "damage": 1040.4134152597583,
+              "share": 0.004052754188959037
+            },
+            {
+              "id": "blast/fire",
+              "damage": 8,
+              "share": 0.00003116264461428301
+            }
+          ]
+        }
+      },
+      "control": {
+        "slowedEnemySeconds": 31.71666666666616,
+        "speedReductionEnemySeconds": 11.10083333333338,
+        "targets": {
+          "ordinary": 24.116666666666585,
+          "elite": 7.599999999999984,
+          "boss": 0
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "orbit/ice",
+          "casts": 195,
+          "connected": 167,
+          "contacts": 870
+        },
+        {
+          "pair": "blast/force",
+          "casts": 192,
+          "connected": 31,
+          "contacts": 39
+        }
+      ],
+      "shatters": 4,
+      "dashShatters": 4,
+      "buffLevel": 5
+    },
+    {
+      "weapon": "storm",
+      "seed": 627,
+      "branch": "shards",
+      "protected": true,
+      "seconds": 624.52,
+      "win": true,
+      "balance": {
+        "growth": {
+          "firstBuildAt": 3.733333333333325,
+          "firstBranchAt": 174.21666666669745,
+          "firstMaxLevelAt": 293.38333333339517,
+          "firstEvolutionAt": 152.56666666668022
+        },
+        "combat": {
+          "hitsTaken": 28,
+          "damageTaken": 824,
+          "lethalExposures": 3
+        },
+        "boss": {
+          "appearedAt": 600.0166666664496,
+          "killedAt": 624.5166666664273,
+          "killSeconds": 24.499999999977717,
+          "observedSeconds": 24.499999999977717,
+          "damage": {
+            "total": 8400,
+            "buff": 1375,
+            "buffShare": 0.1636904761904762,
+            "sources": [
+              {
+                "id": "storm",
+                "damage": 7025,
+                "share": 0.8363095238095238
+              },
+              {
+                "id": "bolt/ice",
+                "damage": 1375,
+                "share": 0.1636904761904762
+              }
+            ]
+          }
+        },
+        "damage": {
+          "total": 495210.6466892379,
+          "buff": 24404.51497466983,
+          "buffShare": 0.04928107894656094,
+          "sources": [
+            {
+              "id": "storm",
+              "damage": 470806.13171456807,
+              "share": 0.950718921053439
+            },
+            {
+              "id": "bolt/ice",
+              "damage": 23065.600092527282,
+              "share": 0.046577350965157575
+            },
+            {
+              "id": "blast/force",
+              "damage": 1335.9148821425472,
+              "share": 0.002697669953329741
+            },
+            {
+              "id": "blast/fire",
+              "damage": 3,
+              "share": 0.000006058028073622185
+            }
+          ]
+        }
+      },
+      "control": {
+        "slowedEnemySeconds": 44.44999999999879,
+        "speedReductionEnemySeconds": 12.70416666666629,
+        "targets": {
+          "ordinary": 2.2666666666666657,
+          "elite": 27.91666666666639,
+          "boss": 14.266666666666968
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 2,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "bolt/ice",
+          "casts": 259,
+          "connected": 184,
+          "contacts": 314
+        },
+        {
+          "pair": "blast/force",
+          "casts": 120,
+          "connected": 17,
+          "contacts": 23
+        }
+      ],
+      "shatters": 59,
+      "dashShatters": 1,
+      "buffLevel": 5
+    },
+    {
+      "weapon": "storm",
+      "seed": 627,
+      "branch": "prison",
+      "protected": true,
+      "seconds": 627.17,
+      "win": true,
+      "balance": {
+        "growth": {
+          "firstBuildAt": 3.733333333333325,
+          "firstBranchAt": 174.21666666669745,
+          "firstMaxLevelAt": 279.85000000007415,
+          "firstEvolutionAt": 152.56666666668022
+        },
+        "combat": {
+          "hitsTaken": 28,
+          "damageTaken": 588,
+          "lethalExposures": 5
+        },
+        "boss": {
+          "appearedAt": 600.0166666664496,
+          "killedAt": 627.1666666664249,
+          "killSeconds": 27.149999999975307,
+          "observedSeconds": 27.149999999975307,
+          "damage": {
+            "total": 8400,
+            "buff": 800,
+            "buffShare": 0.09523809523809523,
+            "sources": [
+              {
+                "id": "storm",
+                "damage": 7600,
+                "share": 0.9047619047619048
+              },
+              {
+                "id": "bolt/ice",
+                "damage": 800,
+                "share": 0.09523809523809523
+              }
+            ]
+          }
+        },
+        "damage": {
+          "total": 479417.34902138216,
+          "buff": 12791.258114608248,
+          "buffShare": 0.02668084110998193,
+          "sources": [
+            {
+              "id": "storm",
+              "damage": 466547.9521340467,
+              "share": 0.973156171937446
+            },
+            {
+              "id": "bolt/ice",
+              "damage": 12035.270530517631,
+              "share": 0.025103952860873323
+            },
+            {
+              "id": "blast/force",
+              "damage": 752.9875840906171,
+              "share": 0.0015706306532870876
+            },
+            {
+              "id": "thorns",
+              "damage": 78.13877272723306,
+              "share": 0.00016298695257218997
+            },
+            {
+              "id": "blast/fire",
+              "damage": 3,
+              "share": 0.000006257595821519173
+            }
+          ]
+        }
+      },
+      "control": {
+        "slowedEnemySeconds": 79.44999999999679,
+        "speedReductionEnemySeconds": 26.683333333335312,
+        "targets": {
+          "ordinary": 42.18333333333225,
+          "elite": 17.43333333333364,
+          "boss": 19.83333333333351
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 2,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "bolt/ice",
+          "casts": 260,
+          "connected": 179,
+          "contacts": 304
+        },
+        {
+          "pair": "blast/force",
+          "casts": 114,
+          "connected": 14,
+          "contacts": 21
+        }
+      ],
+      "shatters": 1,
+      "dashShatters": 1,
+      "buffLevel": 5
+    },
+    {
+      "weapon": "flame",
+      "seed": 627,
+      "branch": "shards",
+      "protected": true,
+      "seconds": 614.47,
+      "win": true,
+      "balance": {
+        "growth": {
+          "firstBuildAt": 2.4333333333333296,
+          "firstBranchAt": 62.449999999997736,
+          "firstMaxLevelAt": 211.783333333394,
+          "firstEvolutionAt": 150.71666666667875
+        },
+        "combat": {
+          "hitsTaken": 34,
+          "damageTaken": 850,
+          "lethalExposures": 5
+        },
+        "boss": {
+          "appearedAt": 600.0166666664496,
+          "killedAt": 614.4666666664365,
+          "killSeconds": 14.449999999986858,
+          "observedSeconds": 14.449999999986858,
+          "damage": {
+            "total": 8400.000000000044,
+            "buff": 940,
+            "buffShare": 0.11190476190476133,
+            "sources": [
+              {
+                "id": "flame",
+                "damage": 7460.000000000045,
+                "share": 0.8880952380952388
+              },
+              {
+                "id": "bolt/ice",
+                "damage": 940,
+                "share": 0.11190476190476133
+              }
+            ]
+          }
+        },
+        "damage": {
+          "total": 518510.70725060464,
+          "buff": 19991.450274131523,
+          "buffShare": 0.03855552063743465,
+          "sources": [
+            {
+              "id": "flame",
+              "damage": 498519.2569764731,
+              "share": 0.9614444793625653
+            },
+            {
+              "id": "bolt/ice",
+              "damage": 16873.71738560364,
+              "share": 0.032542659485425625
+            },
+            {
+              "id": "blast/force",
+              "damage": 3117.732888527885,
+              "share": 0.006012861152009025
+            }
+          ]
+        }
+      },
+      "control": {
+        "slowedEnemySeconds": 25.31666666666654,
+        "speedReductionEnemySeconds": 6.860833333333592,
+        "targets": {
+          "ordinary": 1.4,
+          "elite": 13.916666666666947,
+          "boss": 10.000000000000085
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 0,
+          "contacts": 0
+        },
+        {
+          "pair": "bolt/ice",
+          "casts": 244,
+          "connected": 156,
+          "contacts": 256
+        },
+        {
+          "pair": "blast/force",
+          "casts": 176,
+          "connected": 36,
+          "contacts": 42
+        }
+      ],
+      "shatters": 31,
+      "dashShatters": 0,
+      "buffLevel": 5
+    },
+    {
+      "weapon": "flame",
+      "seed": 627,
+      "branch": "prison",
+      "protected": true,
+      "seconds": 616.92,
+      "win": true,
+      "balance": {
+        "growth": {
+          "firstBuildAt": 2.4333333333333296,
+          "firstBranchAt": 62.449999999997736,
+          "firstMaxLevelAt": 252.45000000009304,
+          "firstEvolutionAt": 140.90000000000427
+        },
+        "combat": {
+          "hitsTaken": 43,
+          "damageTaken": 725,
+          "lethalExposures": 17
+        },
+        "boss": {
+          "appearedAt": 600.0166666664496,
+          "killedAt": 616.9166666664343,
+          "killSeconds": 16.89999999998463,
+          "observedSeconds": 16.89999999998463,
+          "damage": {
+            "total": 8399.99999999993,
+            "buff": 810,
+            "buffShare": 0.09642857142857222,
+            "sources": [
+              {
+                "id": "flame",
+                "damage": 7589.99999999993,
+                "share": 0.9035714285714277
+              },
+              {
+                "id": "bolt/ice",
+                "damage": 640,
+                "share": 0.07619047619047682
+              },
+              {
+                "id": "blast/force",
+                "damage": 170,
+                "share": 0.020238095238095406
+              }
+            ]
+          }
+        },
+        "damage": {
+          "total": 517046.80704219005,
+          "buff": 15884.897215366505,
+          "buffShare": 0.030722358206285813,
+          "sources": [
+            {
+              "id": "flame",
+              "damage": 501161.90982682357,
+              "share": 0.9692776417937142
+            },
+            {
+              "id": "bolt/ice",
+              "damage": 13181.08796872183,
+              "share": 0.02549302652911708
+            },
+            {
+              "id": "blast/force",
+              "damage": 2703.809246644677,
+              "share": 0.005229331677168739
+            }
+          ]
+        }
+      },
+      "control": {
+        "slowedEnemySeconds": 90.4833333333295,
+        "speedReductionEnemySeconds": 33.645833333334394,
+        "targets": {
+          "ordinary": 56.29999999999809,
+          "elite": 23.033333333333324,
+          "boss": 11.150000000000142
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 0,
+          "contacts": 0
+        },
+        {
+          "pair": "bolt/ice",
+          "casts": 245,
+          "connected": 164,
+          "contacts": 254
+        },
+        {
+          "pair": "blast/force",
+          "casts": 186,
+          "connected": 37,
+          "contacts": 46
+        }
+      ],
+      "shatters": 8,
+      "dashShatters": 8,
+      "buffLevel": 5
+    },
+    {
+      "weapon": "blade",
+      "seed": 627,
+      "branch": "shards",
+      "protected": true,
+      "seconds": 639.93,
+      "win": true,
+      "balance": {
+        "growth": {
+          "firstBuildAt": 1.7499999999999987,
+          "firstBranchAt": 68.64999999999739,
+          "firstMaxLevelAt": 230.45000000007553,
+          "firstEvolutionAt": 68.56666666666406
+        },
+        "combat": {
+          "hitsTaken": 72,
+          "damageTaken": 1178,
+          "lethalExposures": 22
+        },
+        "boss": {
+          "appearedAt": 600.0166666664496,
+          "killedAt": 639.93333333308,
+          "killSeconds": 39.91666666663036,
+          "observedSeconds": 39.91666666663036,
+          "damage": {
+            "total": 8400,
+            "buff": 2334,
+            "buffShare": 0.27785714285714286,
+            "sources": [
+              {
+                "id": "blade",
+                "damage": 5982,
+                "share": 0.7121428571428572
+              },
+              {
+                "id": "orbit/ice",
+                "damage": 1966,
+                "share": 0.23404761904761906
+              },
+              {
+                "id": "blast/force",
+                "damage": 368,
+                "share": 0.04380952380952381
+              },
+              {
+                "id": "thorns",
+                "damage": 84,
+                "share": 0.01
+              }
+            ]
+          }
+        },
+        "damage": {
+          "total": 424527.75625613536,
+          "buff": 49784.95303310701,
+          "buffShare": 0.11727137342480304,
+          "sources": [
+            {
+              "id": "blade",
+              "damage": 374533.34960614523,
+              "share": 0.8822352463101932
+            },
+            {
+              "id": "orbit/ice",
+              "damage": 47409.98194414621,
+              "share": 0.11167698989166161
+            },
+            {
+              "id": "blast/force",
+              "damage": 2366.9710889608004,
+              "share": 0.005575539064476877
+            },
+            {
+              "id": "thorns",
+              "damage": 209.4536168830715,
+              "share": 0.0004933802650036842
+            },
+            {
+              "id": "blast/fire",
+              "damage": 8,
+              "share": 0.00001884446866454891
+            }
+          ]
+        }
+      },
+      "control": {
+        "slowedEnemySeconds": 74.79999999999706,
+        "speedReductionEnemySeconds": 21.12666666666827,
+        "targets": {
+          "ordinary": 26.583333333333112,
+          "elite": 22.949999999999992,
+          "boss": 25.266666666666534
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "orbit/ice",
+          "casts": 251,
+          "connected": 209,
+          "contacts": 1131
+        },
+        {
+          "pair": "blast/force",
+          "casts": 260,
+          "connected": 46,
+          "contacts": 62
+        }
+      ],
+      "shatters": 19,
+      "dashShatters": 8,
+      "buffLevel": 5
+    },
+    {
+      "weapon": "blade",
+      "seed": 627,
+      "branch": "prison",
+      "protected": true,
+      "seconds": 629.95,
+      "win": true,
+      "balance": {
+        "growth": {
+          "firstBuildAt": 1.7499999999999987,
+          "firstBranchAt": 68.64999999999739,
+          "firstMaxLevelAt": 271.583333333415,
+          "firstEvolutionAt": 68.56666666666406
+        },
+        "combat": {
+          "hitsTaken": 79,
+          "damageTaken": 1392.75,
+          "lethalExposures": 25
+        },
+        "boss": {
+          "appearedAt": 600.0166666664496,
+          "killedAt": 629.9499999997557,
+          "killSeconds": 29.93333333330611,
+          "observedSeconds": 29.93333333330611,
+          "damage": {
+            "total": 8400,
+            "buff": 1720,
+            "buffShare": 0.20476190476190476,
+            "sources": [
+              {
+                "id": "blade",
+                "damage": 6680,
+                "share": 0.7952380952380952
+              },
+              {
+                "id": "orbit/ice",
+                "damage": 1550,
+                "share": 0.18452380952380953
+              },
+              {
+                "id": "blast/force",
+                "damage": 170,
+                "share": 0.02023809523809524
+              }
+            ]
+          }
+        },
+        "damage": {
+          "total": 438067.689213923,
+          "buff": 49282.036556810206,
+          "buffShare": 0.11249867947403934,
+          "sources": [
+            {
+              "id": "blade",
+              "damage": 388785.6526571128,
+              "share": 0.8875013205259606
+            },
+            {
+              "id": "orbit/ice",
+              "damage": 47036.63973830418,
+              "share": 0.10737299485088164
+            },
+            {
+              "id": "blast/force",
+              "damage": 2237.396818506026,
+              "share": 0.005107422605216225
+            },
+            {
+              "id": "blast/fire",
+              "damage": 8,
+              "share": 0.00001826201794146323
+            }
+          ]
+        }
+      },
+      "control": {
+        "slowedEnemySeconds": 94.58333333332926,
+        "speedReductionEnemySeconds": 28.164999999999857,
+        "targets": {
+          "ordinary": 51.29999999999838,
+          "elite": 17.78333333333362,
+          "boss": 25.499999999999847
+        }
+      },
+      "contacts": [
+        {
+          "pair": "blast/fire",
+          "casts": 1,
+          "connected": 1,
+          "contacts": 1
+        },
+        {
+          "pair": "orbit/ice",
+          "casts": 250,
+          "connected": 221,
+          "contacts": 1371
+        },
+        {
+          "pair": "blast/force",
+          "casts": 257,
+          "connected": 49,
+          "contacts": 65
+        }
+      ],
+      "shatters": 7,
+      "dashShatters": 7,
+      "buffLevel": 5
+    }
+  ]
+}

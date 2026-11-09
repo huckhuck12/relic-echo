@@ -18,6 +18,8 @@ if(!['quick','standard'].includes(mode))throw Error('Use --mode=quick or --mode=
 if(seeds.some(s=>!Number.isInteger(s))||weapons.some(w=>!Object.hasOwn(WEAPONS,w)))throw Error('Use integer seeds and weapons storm,flame,blade.');
 const protectedRun=!process.argv.includes('--normal');
 const legacyContact=process.argv.includes('--legacy-contact');
+const iceAction=arg('ice-action');
+if(iceAction&&!['bolt','orbit'].includes(iceAction))throw Error('Use --ice-action=bolt or --ice-action=orbit.');
 const rows=[],originalRandom=Math.random;
 try{
  for(const weapon of weapons)for(const seed of seeds)for(const [build,branch] of routes){
@@ -80,6 +82,7 @@ try{
    // Keep the initial weapon: this comparison measures the same weapon for every build.
    if(d.type==='drop'&&gear(d.item).slot==='weapon')choice={type:'drop',accept:d.item.id===weapon};
    const hpBefore=g.player.hp,ok=claim(token,choice);
+   if(ok&&choice.type==='build'&&choice.id==='ice'&&iceAction){g.buffs.grant(iceAction);g.buffs.install(0,'action',iceAction);}
    if(ok&&choice.type==='event')events.push({time:+g.time.toFixed(2),type:'seal-reward',id:choice.id,healed:g.player.hp-hpBefore});
    if(ok&&['build','branch','fragment','mastery'].includes(choice.type))events.push({time:+g.time.toFixed(2),type:choice.type,id:choice.id,pair:d.pair});
    if(ok&&choice.type==='branch'&&firstBranch===null)firstBranch=+g.time.toFixed(2);

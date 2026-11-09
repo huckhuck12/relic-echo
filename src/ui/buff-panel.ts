@@ -82,7 +82,7 @@ export function renderBuffPanel(p: LayaSprite, w: number, h: number, editor: Buf
         label.leading = short ? 3 : 12;
         label.name = 'buff-growth';
         if (!short) {
-            controls.text(p, '行为＋元素共享等级、分支和专精；换触发或换槽会保留。\nLv.2/4 增加伤害，Lv.3/5 强化机制；伤害最多 +20%。\n重复碎片按匹配配方分配，无可强化目标时转 5 经验。', pad, 290, inner, 12, C.muted);
+            controls.text(p, '行为＋元素共享等级、分支和专精；换触发或换槽会保留。\nLv.2/4 增加伤害，Lv.3/5 强化机制；伤害最多 +70%。\n重复碎片按匹配配方分配，无可强化目标时转 5 经验。', pad, 290, inner, 12, C.muted);
         }
     }
     else if (editor.picker) {

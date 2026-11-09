@@ -20,6 +20,8 @@ import { RUNS } from '../game/pace.js';
 import type { RunKind } from '../game/pace.js';
 import { renderAutoPlaySettings } from './auto-play-dialog.js';
 import type { AutoPlayDraft } from './auto-play-dialog.js';
+import { iceStarterAction } from '../buffs/buff-recipes.js';
+import { weaponOf } from '../rendering/appearance.js';
 export interface DialogHooks {
     /** 使原有弹窗缓存失效，保留编辑槽位；绘制层不自行推进战斗。 */
     invalidate(): void;
@@ -137,7 +139,7 @@ export class GameDialogs {
                     this.rankingOpen = false;
                     this.hooks.refresh();
                 }
-            });
+            }, this.game.buffs.controlSummary());
             return;
         }
         if (dialog.type === 'revive' || dialog.type === 'performance') {
@@ -194,7 +196,9 @@ export class GameDialogs {
         ]> = {
             ...Object.fromEntries(Object.entries(MASTERY).map(([id, m]) => [id, [m.name, m.note]])),
             fire: ['冲刺布场', '冲刺留火＋命中冲击。\n燃烧目标在火场内被另一槽冲击命中，回拉至火场；每目标 1 秒一次。'],
-            ice: ['冰冻碎裂', '命中生成冰环＋冲刺冲击。\n冰环叠至少 1 层后，另一槽冲击可提前引爆；每目标 1 秒一次。'],
+            ice: iceStarterAction(weaponOf(this.game.loadout)) === 'bolt'
+                ? ['冰霜穿刺 · 远程', '在命中处释放冰弹＋冲刺爆炸冲击。\n每弹最多 3 敌、每敌叠 2 层；Lv.3 选碎冰或寒牢。']
+                : ['冰霜环绕 · 近身', '命中生成冰环＋冲刺爆炸冲击。\n近身接触叠冰；Lv.3 选碎冰或寒牢。'],
             thunder: ['雷印引爆', '命中雷丸＋冲刺冰场。\n跨槽冰霜导冷加一印，每敌 1 秒一次；Lv.3 选传印或蓄雷。'],
             free: ['自由组合', '保留当前两槽，不替换。\n额外获得一次常规强化选择。'],
             ...Object.fromEntries(Object.entries(BRANCH_TEXT).map(([id, b]) => [id, [b.name, b.note]])),

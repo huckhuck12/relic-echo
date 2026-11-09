@@ -20,6 +20,14 @@ export * from './buff-recipes.js';
 export class BuffRuntime<T extends BuffTarget> {
     private readonly frostDash = new FrostDash<T>();
     dashShatters = 0;
+    readonly control = { slowedEnemySeconds: 0, reductionEnemySeconds: 0 };
+    controlSummary() {
+        let slowed = 0;
+        for (const [target, status] of this.statuses)
+            if (!target.dead && status.slow > 0)
+                slowed++;
+        return { slowed, ...this.control };
+    }
     readonly recipes: Recipe[] = [emptyRecipe(), emptyRecipe()];
     readonly owned = new Set<string>(START_FRAGMENTS);
     readonly cooldowns = [0, 0];
@@ -104,14 +112,14 @@ export class BuffRuntime<T extends BuffTarget> {
         this.upgrades.branches.set(pair, branch as BuffBranch);
         return true;
     }
-    chooseStarter(id: string): boolean {
+    chooseStarter(id: string, iceAction: 'bolt' | 'orbit' = 'orbit'): boolean {
         if (this.starterChosen || !['fire', 'ice', 'thunder', 'free'].includes(id))
             return false;
         this.starterChosen = true;
         if (id === 'free')
             return true;
         const recipes: Recipe[] = id === 'fire' ? [{ trigger: 'dash', action: 'field', element: 'fire' }, { trigger: 'hit', action: 'blast', element: 'force' }]
-            : id === 'ice' ? [{ trigger: 'hit', action: 'orbit', element: 'ice' }, { trigger: 'dash', action: 'blast', element: 'force' }]
+            : id === 'ice' ? [{ trigger: 'hit', action: iceAction, element: 'ice' }, { trigger: 'dash', action: 'blast', element: 'force' }]
                 : [{ trigger: 'hit', action: 'bolt', element: 'lightning' }, { trigger: 'dash', action: 'field', element: 'ice' }];
         recipes.forEach((r, slot) => {
             for (const part of PARTS) {
@@ -167,6 +175,8 @@ export class BuffRuntime<T extends BuffTarget> {
         this.castSequence = 0;
         this.reforges = 0;
         this.dashShatters = 0;
+        this.control.slowedEnemySeconds = 0;
+        this.control.reductionEnemySeconds = 0;
     }
     clearTransient(): void {
         this.effects.length = 0;
@@ -203,6 +213,10 @@ export class BuffRuntime<T extends BuffTarget> {
                 const branch = this.branchOf(recipe);
                 const mastery = this.mastery.of(recipe), tuning = mastery ? MASTERY[mastery] : undefined;
                 let effect = createBuffEffect(this.host, recipe, event, x, y, recipeDamage(recipe, scale, level) * (tuning?.damage || 1), level, target => {
+                    if (recipe.action === 'bolt' && recipe.element === 'ice') {
+                        const frost = this.evolutions.frost.get(target);
+                        return (target.kind === 4 ? 100 : target.kind === 3 ? 50 : 0) + (frost && frost.life > 0 && frost.lock <= 0 ? frost.stacks : 0);
+                    }
                     if (recipe.element !== 'lightning')
                         return 0;
                     const mark = this.evolutions.thunder.get(target);
@@ -323,6 +337,14 @@ export class BuffRuntime<T extends BuffTarget> {
         updateBuffFeedback(this.feedback, dt);
         for (let slot = 0; slot < BUFF_RULES.slots; slot++)
             this.cooldowns[slot] = Math.max(0, this.cooldowns[slot] - dt);
+        // Live-target seconds measure coverage, never inferred damage or avoided hits.
+        for (const [target, status] of this.statuses) {
+            if (target.dead || status.slow <= 0)
+                continue;
+            const seconds = Math.min(dt, status.slow);
+            this.control.slowedEnemySeconds += seconds;
+            this.control.reductionEnemySeconds += seconds * (1 - this.speedMultiplier(target));
+        }
         updateBuffStatuses(this.statuses, this.host, dt);
         this.evolutions.update(dt);
         this.frostDash.resolve(this.effects, (target, effect) => {

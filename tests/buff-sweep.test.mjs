@@ -37,7 +37,7 @@ test('orbit excludes dead targets, caps contact histories and never bypasses coo
 });
 test('bolt selects nearest live in-range target rather than query enumeration order',()=>{
  const {host}=fixture([enemy(200,100),enemy(60,0),{...enemy(0,10),dead:true}]);
- const e=createBuffEffect(host,{...recipe,action:'bolt'},'dash',0,0,26,1);assert.equal(e.vx,480);assert.equal(e.vy,0);
+ const e=createBuffEffect(host,{...recipe,action:'bolt'},'dash',0,0,26,1);assert.equal(e.vx,900);assert.equal(e.vy,0);
 });
 test('thunder focuses live unlocked marks, then falls back to nearest when expired or locked',()=>{
  const near=enemy(0,60),marked=enemy(120,0),{host}=fixture([near,marked]),runtime=new BuffRuntime(host);

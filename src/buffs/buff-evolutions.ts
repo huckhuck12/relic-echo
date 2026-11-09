@@ -11,6 +11,9 @@ export const EVOLUTIONS = [
     {
         id: 'frostShatter', action: 'orbit', element: 'ice', name: '冰层碎裂', note: '冰霜环绕对同一敌人 3 秒内叠满 3 层：碎裂伤害 120%，附近敌人减速 2 秒。'
     },
+    {
+        id: 'frostShatter', action: 'bolt', element: 'ice', name: '冰层碎裂', note: '冰霜弹丸穿透最多 3 敌，每敌每弹只命中一次并叠 2 层；3 秒内满 3 层碎裂，Lv.3 可选碎冰或寒牢。'
+    },
 ] as const;
 export type Evolution = typeof EVOLUTIONS[number]['id'];
 export function evolutionOf(recipe: Pick<Recipe, 'action' | 'element'>) {
@@ -109,7 +112,7 @@ export class BuffEvolutions<T extends BuffTarget> {
         }
         if (source.kind === 'bolt' && source.element === 'lightning')
             this.stackThunder(target, source, conductive);
-        else if (source.kind === 'orbit' && source.element === 'ice')
+        else if ((source.kind === 'orbit' || source.kind === 'bolt') && source.element === 'ice')
             this.stackFrost(target, source);
     }
     /** Weapons charge an existing seed, never create one. Shared gate bounds multi-target/DoT weapons. */
@@ -185,7 +188,7 @@ export class BuffEvolutions<T extends BuffTarget> {
         mark.source = {
             kind: source.kind, element: source.element, damage: source.reactionDamage ?? source.damage, level: source.level, slot: source.slot, branch: source.branch
         };
-        mark.stacks = Math.min(source.branch === 'prison' ? 5 : 3, mark.stacks + 1);
+        mark.stacks = Math.min(source.branch === 'prison' ? 5 : 3, mark.stacks + (source.kind === 'bolt' ? BUFF_RULES.frost.boltStacks : 1));
         if (source.branch === 'prison' || mark.stacks < (source.branch === 'shards' ? BUFF_RULES.frost.shardsStacks : 3))
             return;
         this.consumeFrost(target, mark, false);
